@@ -1,6 +1,23 @@
-
-backend/.venv/
-.venv/
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
 
+# Virtual environments
+.venv/
+venv/
+backend/.venv/
+
+# Env files
+.env
+backend/.env
+
+# Local DB / sqlite
+*.db
+backend/app.db
+
+# Node (if you have frontend)
+node_modules/
+dist/
+build/
