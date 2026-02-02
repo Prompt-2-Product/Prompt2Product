@@ -1,6 +1,6 @@
 # Prompt2Product - Quick Start Guide
 
-## 🚀 Get Running in 60 Seconds
+## Get Running in 60 Seconds
 
 ### 1. Install & Run
 ```bash
@@ -36,7 +36,7 @@ npm start        # Run production server
 | `/components/team-member-card.tsx` | Team member cards |
 | `/app/globals.css` | Theme & animations |
 
-## 🎨 Styling Quick Reference
+## Styling Quick Reference
 
 ### Add Button Glow Effect
 ```tsx
@@ -67,7 +67,7 @@ npm start        # Run production server
 --foreground: #e8ecf1;
 ```
 
-## 🔐 Authentication Flow
+## Authentication Flow
 
 1. User clicks "Sign In" or "Get Started"
 2. Modal opens with full-page blur
@@ -75,7 +75,7 @@ npm start        # Run production server
 4. Credentials stored in localStorage
 5. User profile appears in nav
 
-## 📱 Responsive Breakpoints
+## Responsive Breakpoints
 
 - **Mobile**: `< 640px` → Single column
 - **Tablet**: `640px - 1024px` → Two columns
@@ -88,7 +88,7 @@ Use Tailwind prefixes:
 </div>
 ```
 
-## 🧩 Component Templates
+## Component Templates
 
 ### Modal Trigger
 ```tsx
@@ -121,7 +121,7 @@ const [authModalOpen, setAuthModalOpen] = useState(false)
 </Button>
 ```
 
-## 🌈 Color Palette Quick Reference
+## Color Palette Quick Reference
 
 ```
 Primary Blue:     #2563eb
@@ -151,14 +151,6 @@ npm run lint     # Check code style
 ├── /preview (Code Preview)
 └── /ide (Code Editor)
 ```
-
-## 🚀 Deploy to Vercel
-
-1. Push code to GitHub
-2. Visit `vercel.com`
-3. Import repository
-4. Click "Deploy"
-5. Done! 🎉
 
 ## 📝 Common Edits
 
@@ -190,27 +182,3 @@ Edit `/components/navigation.tsx`:
 </Link>
 ```
 
-## 🎯 Next Steps
-
-1. **Customize**: Update team members and links
-2. **Add Features**: Integrate real code generation API
-3. **Deploy**: Push to Vercel for live website
-4. **Monitor**: Check analytics and user feedback
-5. **Iterate**: Improve based on feedback
-
-## 🤝 Need Help?
-
-- **Docs**: Read `/README.md` and `/DESIGN_GUIDE.md`
-- **Issues**: Check implementation notes in code
-- **Styling**: See `/app/globals.css` for theme
-- **Components**: Browse `/components` folder
-
-## 💡 Tips
-
-- Use responsive prefixes: `md:`, `lg:`, `sm:`
-- All animations defined in `globals.css`
-- Theme colors in CSS variables
-- Components are reusable and composable
-- Icons from `lucide-react`
-
-Happy building! 🚀
