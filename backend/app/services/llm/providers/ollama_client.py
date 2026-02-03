@@ -1,22 +1,44 @@
-from __future__ import annotations
 import httpx
-from app.services.llm.base import LLMClient
+from typing import Optional, List, Dict, Any
 
-class OllamaLLM(LLMClient):
+class OllamaLLM:
     def __init__(self, base_url: str):
         self.base_url = base_url.rstrip("/")
 
-    async def chat(self, model: str, system: str, user: str) -> str:
-        url = f"{self.base_url}/api/chat"
-        payload = {
-            "model": model,
-            "messages": [
-                {"role": "system", "content": system},
-                {"role": "user", "content": user},
-            ],
-            "stream": False,
-        }
-        async with httpx.AsyncClient(timeout=180) as client:
-            r = await client.post(url, json=payload)
+    async def chat(
+        self,
+        model: str,
+        messages: Optional[List[Dict[str, Any]]] = None,
+        system: Optional[str] = None,
+        user: Optional[str] = None,
+        timeout: int = 300,
+    ) -> str:
+        """
+        Supports two calling styles:
+          A) chat(model=..., messages=[...], system="...")
+          B) chat(model=..., system="...", user="...")
+        """
+        # Build messages if caller used user/system style
+        if messages is None:
+            messages = []
+            if system:
+                messages.append({"role": "system", "content": system})
+            if user:
+                messages.append({"role": "user", "content": user})
+        else:
+            # Prepend system prompt if provided separately
+            if system:
+                messages = [{"role": "system", "content": system}] + list(messages)
+
+        async with httpx.AsyncClient(timeout=timeout) as client:
+            # 1) Try Ollama native endpoint
+            native_url = f"{self.base_url}/api/chat"
+            native_payload = {"model": model, "messages": messages, "stream": False}
+            print(f"DEBUG: Ollama Request URL: {native_url}")
+            print(f"DEBUG: Ollama Request Payload: {native_payload}")
+            r = await client.post(native_url, json=native_payload)
+
+            r = await client.post(native_url, json=native_payload)
             r.raise_for_status()
-            return r.json()["message"]["content"]
+            data = r.json()
+            return data["message"]["content"]
