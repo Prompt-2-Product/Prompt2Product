@@ -76,7 +76,7 @@ export default function DescribePage() {
     if (description.trim()) {
       try {
         // 1. Create Project
-        const pRes = await fetch('http://localhost:8000/projects', {
+        const pRes = await fetch('http://127.0.0.1:8000/projects', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name: `Project ${new Date().toISOString()}` })
@@ -86,10 +86,10 @@ export default function DescribePage() {
 
         // 2. Start Run
         // We'll assume entrypoint based on language/type or default to main.py
-        const rRes = await fetch(`http://localhost:8000/projects/${project.id}/runs`, {
+        const rRes = await fetch(`http://127.0.0.1:8000/projects/${project.id}/runs`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
+          body: JSON.stringify({
             prompt: description + (additionalInstructions ? `\n\n${additionalInstructions}` : ''),
             entrypoint: 'main.py' // Default for now
           })
@@ -107,7 +107,7 @@ export default function DescribePage() {
           runId: run.run_id
         }))
         router.push('/generating')
-        
+
       } catch (err) {
         console.error(err)
         alert('Failed to start generation. Ensure backend is running.')

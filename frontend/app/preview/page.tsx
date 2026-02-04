@@ -39,14 +39,14 @@ export default function PreviewPage() {
 
   const handleDownload = () => {
     if (projectInfo?.projectId && projectInfo?.runId) {
-      window.location.href = `http://localhost:8000/projects/${projectInfo.projectId}/runs/${projectInfo.runId}/download`
+      window.location.href = `http://127.0.0.1:8000/projects/${projectInfo.projectId}/runs/${projectInfo.runId}/download`
     }
   }
 
   const handlePreview = () => {
     if (projectInfo?.runId) {
       const port = 8000 + projectInfo.runId
-      window.open(`http://localhost:${port}`, '_blank')
+      window.open(`http://127.0.0.1:${port}`, '_blank')
     }
   }
 

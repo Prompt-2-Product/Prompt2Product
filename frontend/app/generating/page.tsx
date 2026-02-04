@@ -28,7 +28,7 @@ export default function GeneratingPage() {
     const poll = async () => {
       try {
         // Fetch Status
-        const statusRes = await fetch(`http://localhost:8000/runs/${runId}`)
+        const statusRes = await fetch(`http://127.0.0.1:8000/runs/${runId}`)
         if (statusRes.ok) {
           const run = await statusRes.json()
           if (run.status === 'success') {
@@ -44,7 +44,7 @@ export default function GeneratingPage() {
         }
 
         // Fetch Logs
-        const logsRes = await fetch(`http://localhost:8000/runs/${runId}/logs`)
+        const logsRes = await fetch(`http://127.0.0.1:8000/runs/${runId}/logs`)
         if (logsRes.ok) {
           const logEvents = await logsRes.json()
           const logStrings = logEvents.map((e: any) => `[${e.level}] ${e.message}`)
@@ -101,10 +101,10 @@ export default function GeneratingPage() {
                   <div className="flex flex-col items-center flex-1">
                     <div
                       className={`flex h-10 w-10 items-center justify-center rounded-full font-semibold transition-all ${step.number < currentStep
+                        ? 'bg-primary text-primary-foreground'
+                        : step.number === currentStep
                           ? 'bg-primary text-primary-foreground'
-                          : step.number === currentStep
-                            ? 'bg-primary text-primary-foreground'
-                            : 'bg-secondary text-muted-foreground'
+                          : 'bg-secondary text-muted-foreground'
                         }`}
                     >
                       {step.number < currentStep ? (
