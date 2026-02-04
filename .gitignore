@@ -21,3 +21,4 @@ backend/app.db
 node_modules/
 dist/
 build/
+backend/app/storage/

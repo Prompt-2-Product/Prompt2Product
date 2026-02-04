@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8001:8000"
+    volumes:
+      # Mount the sqlite db for persistence
+      - ./backend/app.db:/code/backend/app.db
+    # Environment variables
+    environment:
+      - DATABASE_URL=sqlite:///./app.db
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8001
+    ports:
+      - "3001:3000"
+    environment:
+      # Ensure the frontend knows where to hit the backend
+      # Note: For client-side requests (browser), use localhost
+      - NEXT_PUBLIC_API_URL=http://localhost:8001
+    depends_on:
+      - backend

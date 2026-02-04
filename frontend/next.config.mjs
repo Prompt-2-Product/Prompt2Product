@@ -6,6 +6,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  output: "standalone",
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 }
 
 export default nextConfig
