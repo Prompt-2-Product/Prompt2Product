@@ -32,6 +32,7 @@ SYSTEM_CODE = """You generate a full-stack website:
   GET /api/menu returns JSON list
   POST /api/order accepts JSON and returns confirmation JSON
 - requirements.txt must contain fastapi and uvicorn.
+- Do NOT use exact version numbers in requirements.txt (e.g. use "fastapi" NOT "fastapi==0.92.0").
 - Output MUST be STRICT JSON ONLY with:
   { "files":[{"path":"...","content":"..."}], "entrypoint":"...", "run":{...} }
 No markdown. No explanations.
@@ -39,48 +40,33 @@ IMPORTANT: Escape all special characters in "content" strings properly (e.g. quo
 Do NOT include comments (// or #) inside the JSON.
 """
 
-def _clean_json(raw: str) -> str:
-    cleaned = raw.strip()
-    # Remove markdown code blocks if present
-    if "```" in cleaned:
-        lines = cleaned.splitlines()
-        # Strip opening (```json) and closing (```) fences
-        message_lines = []
-        in_code_block = False
-        for line in lines:
-            if line.strip().startswith("```"):
-                in_code_block = not in_code_block
-                continue
-            if in_code_block or (not in_code_block and line.strip().startswith("{")):
-                 # Simple heuristic: keep lines inside blocks, OR if no blocks, keep content starting with {
-                 # But valid simple heuristic for LLM output is usually: content between first ``` and last ```
-                 pass
-        
-        # Simpler approach strictly for fences at start/end
-        if lines[0].strip().startswith("```"):
-            lines = lines[1:]
-        if lines and lines[-1].strip().startswith("```"):
-            lines = lines[:-1]
-        cleaned = "\n".join(lines)
-    return cleaned.strip()
+from app.core.utils import extract_json
 
 async def llm_spec_to_code(llm: LLMClient, model: str, spec: TaskSpec) -> GenOutput:
     user = f"TASKSPEC_JSON:\n{spec.model_dump_json(indent=2)}\n\nReturn code files JSON only."
     raw = await llm.chat(model=model, system=SYSTEM_CODE, user=user)
     
-    cleaned = _clean_json(raw)
+    cleaned = extract_json(raw)
     
     try:
         output = GenOutput.model_validate_json(cleaned)
     except Exception as e:
         fix_system = f"{SYSTEM_CODE}\n\nYour previous output had validation errors:\n{str(e)}\n\nOutput ONLY corrected JSON."
         raw2 = await llm.chat(model=model, system=fix_system, user=user)
-        cleaned2 = _clean_json(raw2)
+        cleaned2 = extract_json(raw2)
         output = GenOutput.model_validate_json(cleaned2)
 
     # Post-process to fix common LLM escaping issues (like double \\n in requirements.txt)
+    # Post-process to fix common LLM escaping issues (like double \\n)
+    import re
     for file in output.files:
-        if file.path.endswith("requirements.txt"):
+        if "\\n" in file.content:
             file.content = file.content.replace("\\n", "\n")
+        
+        if file.path.endswith("requirements.txt"):
+            # Safety net: remove version pins if LLM ignored instructions
+            # Replace "pkg==1.2.3" or "pkg>=1.2" with "pkg"
+            file.content = re.sub(r"==[^\s]+", "", file.content)
+            file.content = re.sub(r">=[^\s]+", "", file.content)
             
     return output

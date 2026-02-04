@@ -1,4 +1,6 @@
 import httpx
+import sys
+import json
 from typing import Optional, List, Dict, Any
 
 class OllamaLLM:
@@ -11,7 +13,7 @@ class OllamaLLM:
         messages: Optional[List[Dict[str, Any]]] = None,
         system: Optional[str] = None,
         user: Optional[str] = None,
-        timeout: int = 300,
+        timeout: int = 1200,
     ) -> str:
         """
         Supports two calling styles:
@@ -33,12 +35,31 @@ class OllamaLLM:
         async with httpx.AsyncClient(timeout=timeout) as client:
             # 1) Try Ollama native endpoint
             native_url = f"{self.base_url}/api/chat"
-            native_payload = {"model": model, "messages": messages, "stream": False}
+            # Enable streaming
+            native_payload = {"model": model, "messages": messages, "stream": True}
             print(f"DEBUG: Ollama Request URL: {native_url}")
-            print(f"DEBUG: Ollama Request Payload: {native_payload}")
-            r = await client.post(native_url, json=native_payload)
-
-            r = await client.post(native_url, json=native_payload)
-            r.raise_for_status()
-            data = r.json()
-            return data["message"]["content"]
+            
+            full_content = []
+            
+            try:
+                async with client.stream("POST", native_url, json=native_payload) as response:
+                    response.raise_for_status()
+                    async for line in response.aiter_lines():
+                        if not line:
+                            continue
+                        try:
+                            chunk = json.loads(line)
+                            content = chunk.get("message", {}).get("content", "")
+                            if content:
+                                sys.stdout.write(content)
+                                sys.stdout.flush()
+                                full_content.append(content)
+                        except ValueError:
+                            pass
+            except Exception as e:
+                print(f"Stream error: {e}")
+                raise e
+            
+            print("\n") # Newline at end
+            return "".join(full_content)
+ 
