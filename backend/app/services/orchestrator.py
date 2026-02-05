@@ -64,7 +64,7 @@ def _context_snippets(workspace: Path, error_text: str = "") -> str:
             text = p.read_text(encoding="utf-8")
             # limit size per file
             text = text[:4000]
-            parts.append(f"\n--- FILE: {rel} ---\n{text}\n")
+            parts.append(f"\n--- FILE: {rel} (Use this exact path for patching) ---\n{text}\n")
     return "\n".join(parts)
 
 
@@ -106,57 +106,71 @@ class Orchestrator:
             backend_dir = ws / "generated_app" / "backend"
             req_path = backend_dir / "requirements.txt"
 
-            # 3) VENV SETUP + INSTALL
+            # 3) VENV SETUP
             log(session, run.id, "sandbox", "Setting up virtual environment...")
             self.runner.setup(ws)
             log(session, run.id, "sandbox", "Venv sandbox created")
 
-            log(session, run.id, "deps", "Installing dependencies...")
-            install_res = self.runner.install_deps(ws, req_path)
-            if install_res.stdout:
-                log(session, run.id, "deps", install_res.stdout.strip())
-            if install_res.exit_code != 0:
-                log(session, run.id, "deps", install_res.stderr or "Dependency install failed", level="ERROR")
-                update_run_status(session, run, "failed")
-                return
-
-            # 4) RUN + REPAIR LOOP
+            # 4) RUN + REPAIR LOOP (Includes Dependency Install)
             attempts = 0
             while True:
                 attempts += 1
-                log(session, run.id, "run", f"Starting uvicorn attempt {attempts}")
-
-                # Sanity Check: Syntax
-                syntax_err = self.runner.check_syntax(ws)
-                if syntax_err:
-                    log(session, run.id, "run", "Syntax check failed, skipping run", level="ERROR")
-                    out = ""
-                    err = syntax_err
-                    # Proceed directly to repair below
-                else:
-                    run_res = self.runner.run_uvicorn(ws, backend_dir, host=host, port=port)
-
-                    if run_res.exit_code == 0:
-                        update_run_status(session, run, "success")
-                        log(session, run.id, "done", "Generated app ran successfully")
-                        return
-
-                    # Failed
-                    err = (run_res.stderr or "").strip()
-                    out = (run_res.stdout or "").strip()
-                    log(session, run.id, "run", out if out else "No stdout")
-                    log(session, run.id, "run", err if err else "No stderr", level="ERROR")
-
-
-                if attempts >= settings.MAX_REPAIR_ATTEMPTS:
+                if attempts > settings.MAX_REPAIR_ATTEMPTS:
                     update_run_status(session, run, "failed")
                     log(session, run.id, "repair", "Max repair attempts reached", level="ERROR")
                     return
 
-                # 5) REPAIR (LLM) -> PATCH -> APPLY
+                # A. Install Dependencies
+                log(session, run.id, "deps", f"Installing dependencies (Attempt {attempts})...")
+                install_res = self.runner.install_deps(ws, req_path)
+                
+                if install_res.exit_code != 0:
+                    # Installation Failed -> Repair
+                    err = (install_res.stderr or "").strip()
+                    out = (install_res.stdout or "").strip()
+                    log(session, run.id, "deps", out if out else "No stdout")
+                    log(session, run.id, "deps", err if err else "Unknown install error", level="ERROR")
+                    
+                    log(session, run.id, "repair", "Dependency install failed, attempting repair...")
+                    # Fall through to repair logic below
+                    error_text = f"Dependency Installation Failed:\n{err}\nOutput:\n{out}"
+                    # Skip execution, go straight to repair
+                else:
+                    if install_res.stdout:
+                        log(session, run.id, "deps", install_res.stdout.strip())
+
+                    # B. Run Uvicorn
+                    log(session, run.id, "run", f"Starting uvicorn attempt {attempts}")
+
+                    # Sanity Check: Syntax
+                    syntax_err = self.runner.check_syntax(ws)
+                    if syntax_err:
+                        log(session, run.id, "run", "Syntax check failed, skipping run", level="ERROR")
+                        error_text = f"Syntax Error:\n{syntax_err}"
+                    else:
+                        run_res = self.runner.run_uvicorn(ws, backend_dir, host=host, port=port)
+
+                        if run_res.exit_code == 0:
+                            update_run_status(session, run, "success")
+                            log(session, run.id, "done", "Generated app ran successfully")
+                            return
+
+                        # Failed
+                        err = (run_res.stderr or "").strip()
+                        out = (run_res.stdout or "").strip()
+                        log(session, run.id, "run", out if out else "No stdout")
+                        log(session, run.id, "run", err if err else "No stderr", level="ERROR")
+                        error_text = f"Runtime Error:\n{err}\nOutput:\n{out}"
+
+                # C. Repair (LLM) -> PATCH -> APPLY
                 repair_model = self.router.repair_model().model
-                context = _context_snippets(ws, error_text=err or out)
-                patch = asyncio.run(llm_repair(self.llm, repair_model, error_text=err or out, context=context))
+                context = _context_snippets(ws, error_text=error_text)
+                
+                # Check if we should abort if context is empty or error invalid? 
+                # (Assuming llm_repair handles general queries)
+                
+                log(session, run.id, "repair", "Generating repair patch...")
+                patch = asyncio.run(llm_repair(self.llm, repair_model, error_text=error_text, context=context))
 
                 log(session, run.id, "repair", "Applying patch from repair LLM")
                 apply_unified_patch(ws, patch)
