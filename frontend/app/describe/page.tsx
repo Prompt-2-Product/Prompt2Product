@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Navigation } from '@/components/navigation'
 import { Button } from '@/components/ui/button'
+import { Loader } from 'lucide-react'
 
 const APP_TYPES = [
   'Web App',
@@ -64,6 +65,7 @@ export default function DescribePage() {
   const [language, setLanguage] = useState('Python')
   const [appType, setAppType] = useState('Web App')
   const [additionalInstructions, setAdditionalInstructions] = useState('')
+  const [isGenerating, setIsGenerating] = useState(false)
 
   const handleAutoDetect = () => {
     if (description.trim()) {
@@ -74,19 +76,24 @@ export default function DescribePage() {
 
   const handleGenerateProject = async () => {
     if (description.trim()) {
+      setIsGenerating(true)
       try {
         const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+        console.log('Starting generation with API URL:', apiUrl);
+
         // 1. Create Project
+        console.log('Creating project...');
         const pRes = await fetch(`${apiUrl}/projects`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name: `Project ${new Date().toISOString()}` })
         })
-        if (!pRes.ok) throw new Error('Failed to create project')
+        if (!pRes.ok) throw new Error(`Failed to create project: ${pRes.statusText}`)
         const project = await pRes.json()
+        console.log('Project created:', project);
 
         // 2. Start Run
-        // We'll assume entrypoint based on language/type or default to main.py
+        console.log('Starting run...');
         const rRes = await fetch(`${apiUrl}/projects/${project.id}/runs`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -95,23 +102,30 @@ export default function DescribePage() {
             entrypoint: 'main.py' // Default for now
           })
         })
-        if (!rRes.ok) throw new Error('Failed to start run')
+        if (!rRes.ok) throw new Error(`Failed to start run: ${rRes.statusText}`)
         const run = await rRes.json()
+        console.log('Run started:', run);
 
         // Store project info for the generating page
-        sessionStorage.setItem('projectInfo', JSON.stringify({
+        const projectInfo = {
           description,
           language,
           appType,
           additionalInstructions,
           projectId: project.id,
           runId: run.run_id
-        }))
+        };
+        console.log('Storing project info in sessionStorage:', projectInfo);
+        sessionStorage.setItem('projectInfo', JSON.stringify(projectInfo))
+
+        console.log('Redirecting to /generating...');
         router.push('/generating')
 
       } catch (err) {
-        console.error(err)
-        alert('Failed to start generation. Ensure backend is running.')
+        console.error('Generation Error:', err)
+        alert(`Failed to start generation: ${err instanceof Error ? err.message : 'Unknown error'}. Ensure backend is running at ${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}`)
+      } finally {
+        setIsGenerating(false)
       }
     }
   }
@@ -200,15 +214,21 @@ export default function DescribePage() {
             </div>
           </div>
 
-          {/* Generate Button */}
           <div className="flex justify-end pt-4">
             <Button
               onClick={handleGenerateProject}
-              disabled={!description.trim()}
+              disabled={!description.trim() || isGenerating}
               size="lg"
-              className="btn-glow bg-primary hover:bg-primary/85 text-primary-foreground disabled:opacity-50 disabled:cursor-not-allowed font-semibold shadow-lg hover:shadow-xl"
+              className="btn-glow bg-primary hover:bg-primary/85 text-primary-foreground disabled:opacity-50 disabled:cursor-not-allowed font-semibold shadow-lg hover:shadow-xl min-w-[160px]"
             >
-              Generate Project
+              {isGenerating ? (
+                <>
+                  <Loader className="mr-2 h-4 w-4 animate-spin" />
+                  Generating...
+                </>
+              ) : (
+                'Generate Project'
+              )}
             </Button>
           </div>
         </div>

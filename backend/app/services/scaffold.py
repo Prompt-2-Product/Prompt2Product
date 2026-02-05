@@ -22,6 +22,8 @@ def scaffold_from_spec(spec: TaskSpec) -> List[Dict[str, str]]:
     # Backend essentials
     files.append({"path": f"{backend_root}/main.py", "content": ""})
     files.append({"path": f"{backend_root}/requirements.txt", "content": ""})
+    files.append({"path": f"{backend_root}/Dockerfile", "content": ""})
+    files.append({"path": f"{app_root}/docker-compose.yml", "content": ""})
 
     # Frontend essentials
     files.append({"path": f"{frontend_root}/styles.css", "content": ""})

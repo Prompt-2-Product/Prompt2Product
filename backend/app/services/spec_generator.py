@@ -29,7 +29,8 @@ IMPORTANT:
 
 async def llm_prompt_to_spec(llm: LLMClient, model: str, prompt: str) -> TaskSpec:
     user = f"USER_PROMPT:\n{prompt}\n\nReturn TaskSpec JSON only."
-    raw = await llm.chat(model=model, system=SYSTEM_SPEC, user=user)
+    # Increase max_tokens for spec generation
+    raw = await llm.chat(model=model, system=SYSTEM_SPEC, user=user, max_tokens=4096)
     
     cleaned = extract_json(raw)
     
@@ -37,6 +38,6 @@ async def llm_prompt_to_spec(llm: LLMClient, model: str, prompt: str) -> TaskSpe
         return TaskSpec.model_validate_json(cleaned)
     except Exception as e:
         fix_system = f"{SYSTEM_SPEC}\n\nYour previous output had validation errors:\n{str(e)}\n\nOutput ONLY corrected JSON."
-        raw2 = await llm.chat(model=model, system=fix_system, user=user)
+        raw2 = await llm.chat(model=model, system=fix_system, user=user, max_tokens=4096)
         cleaned2 = extract_json(raw2)
         return TaskSpec.model_validate_json(cleaned2)
