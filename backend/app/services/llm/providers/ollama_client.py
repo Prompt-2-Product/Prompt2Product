@@ -14,7 +14,8 @@ class OllamaLLM:
         system: Optional[str] = None,
         user: Optional[str] = None,
         timeout: int = 1200,
-    ) -> str:
+        max_tokens: int = 1200,
+    ) -> str:                                                   
         """
         Supports two calling styles:
           A) chat(model=..., messages=[...], system="...")
@@ -36,7 +37,14 @@ class OllamaLLM:
             # 1) Try Ollama native endpoint
             native_url = f"{self.base_url}/api/chat"
             # Enable streaming
-            native_payload = {"model": model, "messages": messages, "stream": True}
+            native_payload = {
+                "model": model, 
+                "messages": messages, 
+                "stream": True,
+                "options": {
+                    "num_predict": max_tokens
+                }
+            }
             print(f"DEBUG: Ollama Request URL: {native_url}")
             
             full_content = []

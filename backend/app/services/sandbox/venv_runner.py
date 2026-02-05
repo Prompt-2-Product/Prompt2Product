@@ -12,6 +12,37 @@ class VenvSandboxRunner(SandboxRunner):
     def _venv_dir(self, workspace: Path) -> Path:
         return workspace / self.venv_dir_name
 
+    def check_syntax(self, workspace: Path) -> str | None:
+        """
+        Runs python -m py_compile on all .py files in generated_app/backend.
+        Returns error string if any, else None.
+        """
+        backend_dir = workspace / "generated_app" / "backend"
+        if not backend_dir.exists():
+            return "Backend directory not found"
+
+        # Find all .py files
+        py_files = list(backend_dir.rglob("*.py"))
+        if not py_files:
+            return None
+
+        for py_file in py_files:
+            # Run compile
+            # We run inside venv
+            cmd = [str(self._python_executable(workspace)), "-m", "py_compile", str(py_file)]
+            res = subprocess.run(cmd, capture_output=True, text=True)
+            if res.returncode != 0:
+                # Syntax error
+                return f"SyntaxError in {py_file.name}:\n{res.stderr}"
+        
+        return None
+
+    def _python_executable(self, workspace: Path) -> Path:
+        if sys.platform == "win32":
+            return workspace / ".venv_sandbox" / "Scripts" / "python.exe"
+        else:
+            return workspace / ".venv_sandbox" / "bin" / "python"
+
     def _python_path(self, workspace: Path) -> Path:
         venv_dir = self._venv_dir(workspace)
         if os.name == "nt":

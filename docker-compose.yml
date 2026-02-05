@@ -13,6 +13,9 @@ services:
     # Environment variables
     environment:
       - DATABASE_URL=sqlite:///./app.db
+      - OLLAMA_BASE_URL=http://host.docker.internal:11435
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   frontend:
     build:

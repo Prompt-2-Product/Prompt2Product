@@ -23,3 +23,22 @@ def extract_json(text: str) -> str:
         text = text[start:end+1]
         
     return text
+
+def parse_traceback(error_text: str) -> list[tuple[str, int]]:
+    """
+    Parses a python traceback string to find (filename, linenum) tuples.
+    Returns list of distinct files found in the trace.
+    """
+    # Regex for standard python trace: File "path/to/file.py", line 123, in func
+    # Also handles some common variations
+    matches = re.findall(r'File "(.*?)", line (\d+)', error_text)
+    
+    # Dedup and return
+    seen = set()
+    unique_matches = []
+    for file, line in matches:
+        if file not in seen:
+            unique_matches.append((file, int(line)))
+            seen.add(file)
+            
+    return unique_matches
