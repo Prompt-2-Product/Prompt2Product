@@ -17,10 +17,27 @@ from app.services.repair import llm_repair
 from app.services.patcher import apply_unified_patch
 
 
-def _context_snippets(workspace: Path) -> str:
+from app.core.utils import parse_traceback
+
+def _context_snippets(workspace: Path, error_text: str = "") -> str:
     """
     Send only important files to repair model (avoid huge context).
+    Uses error traceback to narrow down files.
     """
+    relevant_files = set()
+    if error_text:
+        matches = parse_traceback(error_text)
+        for fname, _ in matches:
+            # Clean up path (sometimes weird in trace)
+            if "generated_app" in fname:
+                # keep logical path relative to workspace
+                # e.g. .../generated_app/backend/main.py
+                # we try to find suffix in our candidate list
+                start_idx = fname.find("generated_app")
+                if start_idx != -1:
+                    rel = fname[start_idx:].replace("\\", "/")
+                    relevant_files.add(rel)
+
     candidates = [
         "generated_app/backend/main.py",
         "generated_app/backend/requirements.txt",
@@ -30,8 +47,18 @@ def _context_snippets(workspace: Path) -> str:
         "generated_app/frontend/order.html",
         "generated_app/frontend/styles.css",
     ]
+    
+    # If we found specific files in trace, prioritize them + requirements.txt
+    if relevant_files:
+        # Always include requirements just in case
+        relevant_files.add("generated_app/backend/requirements.txt")
+        final_list = list(relevant_files)
+    else:
+        # Fallback to all candidates
+        final_list = candidates
+
     parts = []
-    for rel in candidates:
+    for rel in final_list:
         p = workspace / rel
         if p.exists():
             text = p.read_text(encoding="utf-8")
@@ -99,18 +126,27 @@ class Orchestrator:
                 attempts += 1
                 log(session, run.id, "run", f"Starting uvicorn attempt {attempts}")
 
-                run_res = self.runner.run_uvicorn(ws, backend_dir, host=host, port=port)
+                # Sanity Check: Syntax
+                syntax_err = self.runner.check_syntax(ws)
+                if syntax_err:
+                    log(session, run.id, "run", "Syntax check failed, skipping run", level="ERROR")
+                    out = ""
+                    err = syntax_err
+                    # Proceed directly to repair below
+                else:
+                    run_res = self.runner.run_uvicorn(ws, backend_dir, host=host, port=port)
 
-                if run_res.exit_code == 0:
-                    update_run_status(session, run, "success")
-                    log(session, run.id, "done", "Generated app ran successfully")
-                    return
+                    if run_res.exit_code == 0:
+                        update_run_status(session, run, "success")
+                        log(session, run.id, "done", "Generated app ran successfully")
+                        return
 
-                # Failed
-                err = (run_res.stderr or "").strip()
-                out = (run_res.stdout or "").strip()
-                log(session, run.id, "run", out if out else "No stdout")
-                log(session, run.id, "run", err if err else "No stderr", level="ERROR")
+                    # Failed
+                    err = (run_res.stderr or "").strip()
+                    out = (run_res.stdout or "").strip()
+                    log(session, run.id, "run", out if out else "No stdout")
+                    log(session, run.id, "run", err if err else "No stderr", level="ERROR")
+
 
                 if attempts >= settings.MAX_REPAIR_ATTEMPTS:
                     update_run_status(session, run, "failed")
@@ -119,7 +155,7 @@ class Orchestrator:
 
                 # 5) REPAIR (LLM) -> PATCH -> APPLY
                 repair_model = self.router.repair_model().model
-                context = _context_snippets(ws)
+                context = _context_snippets(ws, error_text=err or out)
                 patch = asyncio.run(llm_repair(self.llm, repair_model, error_text=err or out, context=context))
 
                 log(session, run.id, "repair", "Applying patch from repair LLM")

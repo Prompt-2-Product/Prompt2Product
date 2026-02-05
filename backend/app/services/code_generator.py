@@ -21,14 +21,10 @@ SYSTEM_CODE = """You generate a full-stack website:
   generated_app/backend/main.py
   generated_app/backend/requirements.txt
   generated_app/frontend/index.html
-  generated_app/frontend/menu.html
-  generated_app/frontend/order.html
-  generated_app/frontend/styles.css
   generated_app/frontend/app.js
+  (Only create menu.html/order.html/styles.css if strictly necessary for the MVP. Start small.)
 - Backend routes:
   GET / -> index.html
-  GET /menu -> menu.html
-  GET /order -> order.html
   GET /api/menu returns JSON list
   POST /api/order accepts JSON and returns confirmation JSON
 - requirements.txt must contain fastapi and uvicorn.
@@ -38,6 +34,7 @@ SYSTEM_CODE = """You generate a full-stack website:
 No markdown. No explanations.
 IMPORTANT: Escape all special characters in "content" strings properly (e.g. quotes, newlines).
 Do NOT include comments (// or #) inside the JSON.
+Keep it simple. A Single-File MVP (main.py + index.html) is often best for the first pass.
 """
 
 from app.core.utils import extract_json
