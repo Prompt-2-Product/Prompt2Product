@@ -9,7 +9,7 @@ const _jetbrainsMono = JetBrains_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: 'Prompt2Product',
-  description: 'Turn Natural Language Into Executable Code',
+  description: 'Natural Language Into Executable Code',
   generator: 'v0.app',
   icons: {
     icon: [

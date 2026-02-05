@@ -84,10 +84,11 @@ export function Navigation() {
                   setAuthMode('signup')
                   setAuthModalOpen(true)
                 }}
+                variant="ghost"
                 size="sm"
-                className="btn-glow bg-primary hover:bg-primary/85 text-primary-foreground font-medium shadow-lg hover:shadow-xl"
+                className="btn-glow text-foreground hover:bg-secondary/50 font-medium"
               >
-                Get Started
+                Sign Up
               </Button>
             </div>
           )}
