@@ -13,9 +13,32 @@ export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user')
+    if (typeof window === 'undefined') return
+
+    const storedUser = window.localStorage.getItem('user')
     if (storedUser) {
       setUser(JSON.parse(storedUser))
+    } else if (window.location.pathname === '/') {
+      // Show sign-in dialog on first visit to the landing page if not logged in
+      setAuthMode('login')
+      setAuthModalOpen(true)
+    }
+
+    const handler = (event: Event) => {
+      const detail = (event as CustomEvent<{ mode?: 'login' | 'signup'; postAuthRedirect?: string }>).detail || {}
+      if (detail.mode) {
+        setAuthMode(detail.mode)
+      }
+      if (detail.postAuthRedirect) {
+        window.sessionStorage.setItem('postAuthRedirect', detail.postAuthRedirect)
+      }
+      setAuthModalOpen(true)
+    }
+
+    window.addEventListener('open-auth-modal', handler as EventListener)
+
+    return () => {
+      window.removeEventListener('open-auth-modal', handler as EventListener)
     }
   }, [])
 
@@ -42,9 +65,7 @@ export function Navigation() {
           {/* Center menu */}
           <div className="hidden items-center gap-8 md:flex">
             <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium">Home</Link>
-            <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium">About</Link>
-            <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium">Documentation</Link>
-            <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium">Templates</Link>
+            <Link href="/overview" className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium">Overview</Link>
           </div>
 
           {/* Right side - Auth */}
@@ -105,6 +126,7 @@ export function Navigation() {
             isOpen={authModalOpen}
             onClose={() => setAuthModalOpen(false)}
             mode={authMode}
+            onToggleMode={(mode) => setAuthMode(mode)}
           />
         </div>
 
@@ -114,14 +136,8 @@ export function Navigation() {
             <Link href="/" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 text-foreground hover:bg-secondary/50 rounded-lg">
               Home
             </Link>
-            <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 text-foreground hover:bg-secondary/50 rounded-lg">
-              About
-            </Link>
-            <Link href="#" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 text-muted-foreground hover:bg-secondary/50 rounded-lg">
-              Documentation
-            </Link>
-            <Link href="#" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 text-muted-foreground hover:bg-secondary/50 rounded-lg">
-              Templates
+            <Link href="/overview" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 text-foreground hover:bg-secondary/50 rounded-lg">
+              Overview
             </Link>
           </div>
         )}

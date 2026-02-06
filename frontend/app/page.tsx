@@ -1,10 +1,34 @@
 'use client'
 
-import Link from 'next/link'
 import { Navigation } from '@/components/navigation'
 import { Button } from '@/components/ui/button'
+import { useRouter } from 'next/navigation'
 
 export default function LandingPage() {
+  const router = useRouter()
+
+  const handleStartBuilding = () => {
+    if (typeof window === 'undefined') return
+
+    const storedUser = window.localStorage.getItem('user')
+
+    if (storedUser) {
+      // User is already signed in, go directly to describe page
+      router.push('/describe')
+      return
+    }
+
+    // Store where we want to go after successful auth
+    window.sessionStorage.setItem('postAuthRedirect', '/describe')
+
+    // Ask the navigation bar to open the auth modal (prefer signup for new users)
+    window.dispatchEvent(
+      new CustomEvent('open-auth-modal', {
+        detail: { mode: 'signup', postAuthRedirect: '/describe' },
+      }),
+    )
+  }
+
   const steps = [
     {
       step: '01',
@@ -56,14 +80,13 @@ export default function LandingPage() {
               </div>
 
               <div className="flex justify-center gap-4 pt-2 flex-wrap px-4">
-                <Link href="/describe">
-                  <Button
-                    size="lg"
-                    className="btn-glow bg-primary hover:bg-primary/85 text-primary-foreground font-semibold shadow-lg hover:shadow-xl text-sm sm:text-base"
-                  >
-                    Start Building →
-                  </Button>
-                </Link>
+                <Button
+                  size="lg"
+                  className="btn-glow bg-primary hover:bg-primary/85 text-primary-foreground font-semibold shadow-lg hover:shadow-xl text-sm sm:text-base"
+                  onClick={handleStartBuilding}
+                >
+                  Start Building
+                </Button>
               </div>
             </div>
 
