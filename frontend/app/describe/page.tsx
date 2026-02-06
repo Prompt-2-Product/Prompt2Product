@@ -74,45 +74,24 @@ export default function DescribePage() {
 
   const handleGenerateProject = async () => {
     if (description.trim()) {
-      try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-        // 1. Create Project
-        const pRes = await fetch(`${apiUrl}/projects`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: `Project ${new Date().toISOString()}` })
-        })
-        if (!pRes.ok) throw new Error('Failed to create project')
-        const project = await pRes.json()
+      // Mock implementation - no backend calls
+      // Generate dummy project and run IDs
+      const mockProjectId = Math.floor(Math.random() * 1000) + 1
+      const mockRunId = Math.floor(Math.random() * 10000) + 1
 
-        // 2. Start Run
-        // We'll assume entrypoint based on language/type or default to main.py
-        const rRes = await fetch(`${apiUrl}/projects/${project.id}/runs`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            prompt: description + (additionalInstructions ? `\n\n${additionalInstructions}` : ''),
-            entrypoint: 'main.py' // Default for now
-          })
-        })
-        if (!rRes.ok) throw new Error('Failed to start run')
-        const run = await rRes.json()
-
-        // Store project info for the generating page
-        sessionStorage.setItem('projectInfo', JSON.stringify({
-          description,
-          language,
-          appType,
-          additionalInstructions,
-          projectId: project.id,
-          runId: run.run_id
-        }))
-        router.push('/generating')
-
-      } catch (err) {
-        console.error(err)
-        alert('Failed to start generation. Ensure backend is running.')
-      }
+      // Store project info for the generating page
+      sessionStorage.setItem('projectInfo', JSON.stringify({
+        description,
+        language,
+        appType,
+        additionalInstructions,
+        projectId: mockProjectId,
+        runId: mockRunId
+      }))
+      
+      // Small delay to simulate API call
+      await new Promise(resolve => setTimeout(resolve, 300))
+      router.push('/generating')
     }
   }
 

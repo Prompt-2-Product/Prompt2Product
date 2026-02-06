@@ -38,16 +38,23 @@ export default function PreviewPage() {
   }
 
   const handleDownload = () => {
+    // Mock implementation - simulate download
     if (projectInfo?.projectId && projectInfo?.runId) {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      window.location.href = `${apiUrl}/projects/${projectInfo.projectId}/runs/${projectInfo.runId}/download`
+      // Create a dummy download (you can enhance this to create an actual zip file)
+      const fileName = `project-${projectInfo.projectId}-${Date.now()}.zip`
+      alert(`Mock download: ${fileName}\n\nIn production, this would download the generated project.`)
+      console.log('Mock download triggered for project:', projectInfo.projectId, 'run:', projectInfo.runId)
     }
   }
 
   const handlePreview = () => {
+    // Mock implementation - simulate preview
     if (projectInfo?.runId) {
-      const port = 8000 + projectInfo.runId
-      window.open(`http://127.0.0.1:${port}`, '_blank')
+      alert(`Mock preview: Opening preview for run ${projectInfo.runId}\n\nIn production, this would open the running application.`)
+      console.log('Mock preview triggered for run:', projectInfo.runId)
+      // Uncomment below to actually try opening (will fail without backend, but shows intent)
+      // const port = 8000 + projectInfo.runId
+      // window.open(`http://127.0.0.1:${port}`, '_blank')
     }
   }
 

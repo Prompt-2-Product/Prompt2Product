@@ -10,69 +10,75 @@ export default function GeneratingPage() {
   const [currentStep, setCurrentStep] = useState(1)
   const [progress, setProgress] = useState(0)
   const [logs, setLogs] = useState<string[]>([
-    '[INFO] Starting project generation...',
-    '[INFO] Analyzing prompt: "Turn Natural Language Into Executable Code"',
-    '[INFO] Extracting requirements and specifications',
-    '[INFO] Building project skeleton',
+    '[INFO] Initializing project generation...',
   ])
 
   useEffect(() => {
     const stored = sessionStorage.getItem('projectInfo')
-    if (!stored) return
-
-    const { projectId, runId } = JSON.parse(stored)
-    if (!projectId || !runId) return
-
-    let intervalId: NodeJS.Timeout
-
-    const poll = async () => {
-      try {
-        // Fetch Status
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-        const statusRes = await fetch(`${apiUrl}/runs/${runId}`)
-        if (statusRes.ok) {
-          const run = await statusRes.json()
-          if (run.status === 'success') {
-            setProgress(100)
-            setCurrentStep(3)
-            setTimeout(() => router.push('/preview'), 1000)
-            return
-          } else if (run.status === 'failed') {
-            // Handle failure
-            alert('Generation failed. Check logs.')
-            clearInterval(intervalId)
-          }
-        }
-
-        // Fetch Logs
-        const logsRes = await fetch(`${apiUrl}/runs/${runId}/logs`)
-        if (logsRes.ok) {
-          const logEvents = await logsRes.json()
-          const logStrings = logEvents.map((e: any) => `[${e.level}] ${e.message}`)
-          setLogs(logStrings)
-
-          // derive step from logs
-          const lastLog = logEvents[logEvents.length - 1]
-          if (lastLog) {
-            if (lastLog.stage === 'spec') {
-              setCurrentStep(1)
-              setProgress(30)
-            } else if (lastLog.stage === 'codegen') {
-              setCurrentStep(2)
-              setProgress(60)
-            } else if (['sandbox', 'deps', 'run', 'repair'].includes(lastLog.stage)) {
-              setCurrentStep(3)
-              setProgress(90)
-            }
-          }
-        }
-      } catch (err) {
-        console.error(err)
-      }
+    if (!stored) {
+      // If no project info, redirect to describe page
+      router.push('/describe')
+      return
     }
 
-    intervalId = setInterval(poll, 2000)
-    poll() // initial call
+    const { projectId, runId } = JSON.parse(stored)
+    if (!projectId || !runId) {
+      router.push('/describe')
+      return
+    }
+
+    // Mock implementation - simulate generation progress
+    const mockLogs = [
+      '[INFO] Starting project generation...',
+      '[INFO] Analyzing prompt and extracting requirements...',
+      '[INFO] Building project specification...',
+      '[INFO] Generating code structure...',
+      '[INFO] Creating main application files...',
+      '[INFO] Setting up dependencies...',
+      '[INFO] Writing configuration files...',
+      '[INFO] Validating generated code...',
+      '[INFO] Running tests...',
+      '[INFO] Project generation completed successfully!',
+    ]
+
+    let logIndex = 0
+    let progressValue = 0
+    let stepValue = 1
+
+    const simulateProgress = () => {
+      // Add logs progressively
+      if (logIndex < mockLogs.length) {
+        setLogs(prev => [...prev, mockLogs[logIndex]])
+        logIndex++
+      }
+
+      // Update progress and steps
+      if (progressValue < 30) {
+        progressValue += 5
+        stepValue = 1
+      } else if (progressValue < 60) {
+        progressValue += 5
+        stepValue = 2
+      } else if (progressValue < 90) {
+        progressValue += 5
+        stepValue = 3
+      } else if (progressValue < 100) {
+        progressValue += 2
+        stepValue = 3
+      } else {
+        // Complete
+        setProgress(100)
+        setCurrentStep(3)
+        setTimeout(() => router.push('/preview'), 1000)
+        return
+      }
+
+      setProgress(progressValue)
+      setCurrentStep(stepValue)
+    }
+
+    // Start simulation
+    const intervalId = setInterval(simulateProgress, 800)
 
     return () => clearInterval(intervalId)
   }, [router])

@@ -45,10 +45,13 @@ export default function LandingPage() {
             <div className="space-y-4 sm:space-y-6 md:space-y-8 animate-in fade-in duration-1000 text-center">
               <div>
                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight text-foreground mb-3 sm:mb-4 text-balance px-2">
-                  Natural Language to Executable Code
+                  Natural Language to{' '}
+                  <span className="bg-gradient-to-r from-blue-300 via-cyan-200 to-blue-200 bg-clip-text text-transparent">
+                    Executable Code
+                  </span>
                 </h1>
                 <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-xl sm:max-w-2xl lg:max-w-3xl mx-auto font-light px-4">
-                  Your idea into running code
+                  Where Ideas Become Running Code
                 </p>
               </div>
 
