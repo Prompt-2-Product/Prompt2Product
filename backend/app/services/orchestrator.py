@@ -11,6 +11,7 @@ from app.db.repo import update_run_status
 
 from app.services.llm.factory import get_llm_client
 from app.services.router import ModelRouter
+from app.services.prompt_enhancer import llm_enhance_prompt
 from app.services.spec_generator import llm_prompt_to_spec
 from app.services.code_generator import llm_spec_to_code
 from app.services.repair import llm_repair
@@ -84,14 +85,20 @@ class Orchestrator:
         log(session, run.id, "workspace", f"Workspace: {ws}")
 
         # Use unique port per run to avoid conflicts
-        port = 8000 + run.id
+        port = 8010 + run.id
         log(session, run.id, "run", f"Will start generated app on http://{host}:{port}")
 
         try:
+            # 0) PROMPT ENHANCEMENT
+            log(session, run.id, "enhance", "Enhancing prompt...")
+            enhance_model = self.router.enhance_model().model
+            enhanced_prompt = asyncio.run(llm_enhance_prompt(self.llm, enhance_model, prompt))
+            log(session, run.id, "enhance", f"Enhanced Prompt:\n{enhanced_prompt}")
+
             # 1) PROMPT -> SPEC (LLM)
             log(session, run.id, "spec", "Starting spec generation...")
             spec_model = self.router.spec_model().model
-            spec = asyncio.run(llm_prompt_to_spec(self.llm, spec_model, prompt))
+            spec = asyncio.run(llm_prompt_to_spec(self.llm, spec_model, enhanced_prompt))
             log(session, run.id, "spec", f"LLM TaskSpec: {spec.app_name}")
 
             # 2) SPEC -> CODE FILES (LLM)

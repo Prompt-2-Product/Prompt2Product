@@ -29,6 +29,7 @@ class Settings(BaseModel):
     MODEL_SPEC: str = (os.getenv("API_MODEL_SPEC") or os.getenv("MODEL_SPEC") or "").strip()
     MODEL_CODE: str = (os.getenv("API_MODEL_CODE") or os.getenv("MODEL_CODE") or "").strip()
     MODEL_REPAIR: str = (os.getenv("API_MODEL_REPAIR") or os.getenv("MODEL_REPAIR") or "").strip()
+    MODEL_ENHANCE: str = (os.getenv("API_MODEL_ENHANCE") or os.getenv("MODEL_ENHANCE") or "qwen2.5:7b-instruct").strip()
 
     MAX_REPAIR_ATTEMPTS: int = int(os.getenv("MAX_REPAIR_ATTEMPTS", "2"))
 

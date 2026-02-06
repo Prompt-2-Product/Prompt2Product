@@ -15,3 +15,6 @@ class ModelRouter:
 
     def repair_model(self) -> ModelChoice:
         return ModelChoice(settings.MODEL_REPAIR)
+
+    def enhance_model(self) -> ModelChoice:
+        return ModelChoice(settings.MODEL_ENHANCE)

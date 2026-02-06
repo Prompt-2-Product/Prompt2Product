@@ -35,6 +35,13 @@ No markdown. No explanations.
 IMPORTANT: Escape all special characters in "content" strings properly (e.g. quotes, newlines).
 Do NOT include comments (// or #) inside the JSON.
 Keep it simple. A Single-File MVP (main.py + index.html) is often best for the first pass.
+CODE STANDARDS:
+    - ALWAYS import types from 'typing' (List, Optional, etc).
+    - ALWAYS import 'HTMLResponse' from 'fastapi.responses'.
+    - ALWAYS import 'BaseModel' from 'pydantic'.
+    - If you use 'datetime', import it: 'from datetime import datetime'.
+    - If you use 'StaticFiles', import it: 'from fastapi.staticfiles import StaticFiles'.
+    - If mounting StaticFiles, ensure the directory exists first (e.g. `os.makedirs("generated_app/frontend/static", exist_ok=True)`).
 """
 
 from app.core.utils import extract_json
