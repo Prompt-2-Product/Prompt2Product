@@ -163,16 +163,14 @@ export default function OverviewPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mb-16">
               <TeamMemberCard
                 name="Hamza Motiwala"
-                role="Lead Developer"
                 initials="HM"
                 gradientColor="bg-gradient-to-br from-blue-500 to-blue-700"
                 github="https://github.com/moti987"
-                linkedin=""
+                linkedin="https://www.linkedin.com/in/muhammad-hamza-motiwala/"
                 email="hamza@example.com"
               />
               <TeamMemberCard
                 name="Zarish Asim"
-                role="Full Stack Engineer"
                 initials="ZA"
                 gradientColor="bg-gradient-to-br from-purple-500 to-purple-700"
                 github="https://github.com/Zarish166"
@@ -181,7 +179,6 @@ export default function OverviewPage() {
               />
               <TeamMemberCard
                 name="Noor Fatima"
-                role="UI/UX Designer"
                 initials="NF"
                 gradientColor="bg-gradient-to-br from-pink-500 to-rose-700"
                 github="https://github.com/SNoorFatima"
@@ -190,7 +187,6 @@ export default function OverviewPage() {
               />
               <TeamMemberCard
                 name="Ayesha Khan"
-                role="Product Manager"
                 initials="AK"
                 gradientColor="bg-gradient-to-br from-indigo-500 to-indigo-700"
                 github="https://github.com/xKhani"

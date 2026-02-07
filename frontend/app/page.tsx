@@ -37,7 +37,7 @@ export default function LandingPage() {
     },
     {
       step: '02',
-      title: 'Choose language & type',
+      title: 'Choose Preference',
       description: 'Pick Python, JavaScript, or TypeScript and select the kind of application you want to build.',
     },
     {
