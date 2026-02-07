@@ -162,7 +162,7 @@ export default function DescribePage() {
               Describe Your Project
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-slate-700 dark:text-slate-800 max-w-2xl mx-auto">
-              Tell Prompt2Product what you want to build – we&apos;ll handle the stack, structure, and boilerplate.
+              Tell Prompt2Product what you want to build – we&apos;ll handle the stack and structure.
             </p>
           </div>
 
