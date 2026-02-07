@@ -20,6 +20,9 @@ export function Navigation() {
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const isDescribePage = pathname === '/describe'
+  const isGeneratingPage = pathname === '/generating'
+  const isPreviewPage = pathname === '/preview'
+  const isMinimalNav = isDescribePage || isGeneratingPage || isPreviewPage
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -60,19 +63,19 @@ export function Navigation() {
 
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 border-b border-border ${isDescribePage ? 'bg-background/80 backdrop-blur-md' : 'bg-background/80 backdrop-blur-md'}`}>
-      <div className={`mx-auto max-w-7xl ${isDescribePage ? 'px-4 py-2' : 'px-6 py-4'}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 border-b border-border ${isMinimalNav ? 'bg-background/80 backdrop-blur-md' : 'bg-background/80 backdrop-blur-md'}`}>
+      <div className={`mx-auto max-w-7xl ${isMinimalNav ? 'px-4 py-2' : 'px-6 py-4'}`}>
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 sm:gap-3">
-            <div className={`flex items-center justify-center rounded-lg bg-primary text-primary-foreground ${isDescribePage ? 'h-7 w-7' : 'h-8 w-8'}`}>
-              <Code2 className={isDescribePage ? 'h-4 w-4' : 'h-5 w-5'} />
+            <div className={`flex items-center justify-center rounded-lg bg-primary text-primary-foreground ${isMinimalNav ? 'h-7 w-7' : 'h-8 w-8'}`}>
+              <Code2 className={isMinimalNav ? 'h-4 w-4' : 'h-5 w-5'} />
             </div>
-            <span className={`font-semibold text-foreground ${isDescribePage ? 'text-base' : 'text-xl'}`}>Prompt2Product</span>
+            <span className={`font-semibold text-foreground ${isMinimalNav ? 'text-base' : 'text-xl'}`}>Prompt2Product</span>
           </Link>
 
-          {/* Center menu - Hidden on describe page */}
-          {!isDescribePage && (
+          {/* Center menu - Hidden on describe and generating pages */}
+          {!isMinimalNav && (
             <div className="hidden items-center gap-8 md:flex">
               <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium">Home</Link>
               <Link href="/overview" className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium">Overview</Link>
@@ -141,8 +144,8 @@ export function Navigation() {
           />
         </div>
 
-        {/* Mobile menu - Hidden on describe page */}
-        {mobileMenuOpen && !isDescribePage && (
+        {/* Mobile menu - Hidden on describe and generating pages */}
+        {mobileMenuOpen && !isMinimalNav && (
           <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-sm py-4 mt-4 space-y-2">
             <Link href="/" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 text-foreground hover:bg-secondary/50 rounded-lg">
               Home

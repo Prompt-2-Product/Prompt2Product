@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Navigation } from '@/components/navigation'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
+import { Code2, Edit3, Download, Eye, Sparkles } from 'lucide-react'
 
 interface ProjectInfo {
   description: string
@@ -60,11 +61,18 @@ export default function PreviewPage() {
 
   if (!projectInfo) {
     return (
-      <div className="min-h-screen bg-background text-foreground">
+      <div className="min-h-screen text-foreground relative overflow-hidden">
+        <div
+          className="pointer-events-none absolute inset-0 -z-10"
+          aria-hidden="true"
+          style={{
+            background: 'linear-gradient(135deg, rgb(147, 197, 253) 0%, rgb(165, 243, 252) 50%, rgb(191, 219, 254) 100%)',
+          }}
+        />
         <Navigation />
-        <main className="pt-24">
-          <div className="mx-auto max-w-7xl px-6 text-center">
-            <p>Loading...</p>
+        <main className="flex items-center justify-center min-h-[calc(100vh-5rem)] pt-8 sm:pt-16 md:pt-24 pb-8 sm:pb-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+            <p className="text-slate-800 dark:text-slate-900">Loading...</p>
           </div>
         </main>
       </div>
@@ -72,43 +80,51 @@ export default function PreviewPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen text-foreground relative overflow-hidden">
+      {/* Light blue gradient background - matching describe and generating pages */}
+      <div
+        className="pointer-events-none absolute inset-0 -z-10"
+        aria-hidden="true"
+        style={{
+          background: 'linear-gradient(135deg, rgb(147, 197, 253) 0%, rgb(165, 243, 252) 50%, rgb(191, 219, 254) 100%)',
+        }}
+      />
       <Navigation />
 
-      <main className="pt-24 pb-20">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="mb-6 md:mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold mb-2">Project Summary</h1>
-            <p className="text-muted-foreground text-sm md:text-base">Review your generated project</p>
+      <main className="flex items-center justify-center min-h-[calc(100vh-5rem)] pt-8 sm:pt-16 md:pt-24 pb-8 sm:pb-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
+          <div className="mb-6 md:mb-8 text-center">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 text-slate-800 dark:text-slate-900">Project Summary</h1>
+            <p className="text-slate-700 dark:text-slate-800 text-sm md:text-base">Review your generated project</p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12 lg:items-stretch">
             {/* Left: Project Info Card */}
-            <div className="lg:col-span-2">
-              <div className="rounded-xl bg-card border border-border p-8">
-                <h2 className="text-2xl font-semibold mb-6">Generated Project</h2>
+            <div className="lg:col-span-2 flex">
+              <div className="rounded-xl bg-white/80 backdrop-blur-md border border-slate-200/50 shadow-lg p-6 md:p-8 w-full flex flex-col">
+                <h2 className="text-2xl font-semibold mb-6 text-slate-800 dark:text-slate-900">Generated Project</h2>
 
-                <div className="space-y-6">
+                <div className="space-y-6 flex-grow">
                   <div>
-                    <label className="text-sm font-medium text-muted-foreground block mb-2">Project Description</label>
-                    <p className="text-foreground text-base leading-relaxed">{projectInfo.description}</p>
+                    <label className="text-sm font-medium text-slate-600 dark:text-slate-700 block mb-2">Project Description</label>
+                    <p className="text-slate-800 dark:text-slate-900 text-base leading-relaxed">{projectInfo.description}</p>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground block mb-2">Language</label>
-                      <p className="text-foreground font-medium">{projectInfo.language}</p>
+                      <label className="text-sm font-medium text-slate-600 dark:text-slate-700 block mb-2">Language</label>
+                      <p className="text-slate-800 dark:text-slate-900 font-medium">{projectInfo.language}</p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground block mb-2">Project Type</label>
-                      <p className="text-foreground font-medium">{projectInfo.appType}</p>
+                      <label className="text-sm font-medium text-slate-600 dark:text-slate-700 block mb-2">Project Type</label>
+                      <p className="text-slate-800 dark:text-slate-900 font-medium">{projectInfo.appType}</p>
                     </div>
                   </div>
 
                   {projectInfo.additionalInstructions && (
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground block mb-2">Additional Instructions</label>
-                      <p className="text-foreground text-sm">{projectInfo.additionalInstructions}</p>
+                      <label className="text-sm font-medium text-slate-600 dark:text-slate-700 block mb-2">Additional Instructions</label>
+                      <p className="text-slate-800 dark:text-slate-900 text-sm">{projectInfo.additionalInstructions}</p>
                     </div>
                   )}
                 </div>
@@ -116,49 +132,64 @@ export default function PreviewPage() {
             </div>
 
             {/* Right: Action Buttons */}
-            <div className="space-y-4">
-              <Button
-                onClick={() => router.push('/ide')}
-                className="btn-glow w-full bg-primary hover:bg-primary/85 text-primary-foreground font-semibold shadow-lg hover:shadow-xl"
-                size="lg"
-              >
-                View Code (Advanced)
-              </Button>
+            <div className="flex">
+              <div className="rounded-xl bg-white/80 backdrop-blur-md border border-slate-200/50 shadow-lg p-6 md:p-8 w-full flex flex-col">
+                <h3 className="text-2xl font-semibold text-slate-800 dark:text-slate-900 mb-6">Actions</h3>
+                <div className="space-y-3 flex-grow flex flex-col justify-start">
+                  <Button
+                    onClick={() => router.push('/ide')}
+                    className="w-full bg-gradient-to-r from-blue-500 via-blue-400 to-cyan-500 hover:from-blue-600 hover:via-blue-500 hover:to-cyan-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 h-12 group"
+                    size="lg"
+                  >
+                    <Code2 className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                    View Code (Advanced)
+                  </Button>
 
-              <Button
-                onClick={() => setShowRequestChanges(!showRequestChanges)}
-                variant="outline"
-                className="btn-glow w-full border-border/50 text-foreground hover:bg-secondary/40 hover:border-primary/50"
-                size="lg"
-              >
-                Request Changes
-              </Button>
+                  <Button
+                    onClick={() => setShowRequestChanges(!showRequestChanges)}
+                    variant="outline"
+                    className="w-full border border-border bg-secondary/80 backdrop-blur-md text-foreground hover:bg-secondary/70 hover:border-blue-400/50 transition-all duration-300 h-12 font-medium shadow-sm hover:shadow-md group"
+                    size="lg"
+                  >
+                    <Edit3 className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform group-hover:text-blue-400" />
+                    <span className="group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-cyan-500 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                      Request Changes
+                    </span>
+                  </Button>
 
-              <Button
-                onClick={handleDownload}
-                variant="outline"
-                className="btn-glow w-full border-border/50 text-foreground hover:bg-secondary/40 bg-transparent hover:border-primary/50"
-                size="lg"
-              >
-                Download Project
-              </Button>
+                  <Button
+                    onClick={handleDownload}
+                    variant="outline"
+                    className="w-full border border-border bg-secondary/80 backdrop-blur-md text-foreground hover:bg-secondary/70 hover:border-blue-400/50 transition-all duration-300 h-12 font-medium shadow-sm hover:shadow-md group"
+                    size="lg"
+                  >
+                    <Download className="mr-2 h-4 w-4 group-hover:translate-y-0.5 transition-transform group-hover:text-blue-400" />
+                    <span className="group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-cyan-500 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                      Download Project
+                    </span>
+                  </Button>
 
-              <Button
-                onClick={handlePreview}
-                variant="outline"
-                className="btn-glow w-full border-border/50 text-foreground hover:bg-secondary/40 bg-transparent hover:border-primary/50"
-                size="lg"
-              >
-                Preview App
-              </Button>
+                  <Button
+                    onClick={handlePreview}
+                    variant="outline"
+                    className="w-full border border-border bg-secondary/80 backdrop-blur-md text-foreground hover:bg-secondary/70 hover:border-blue-400/50 transition-all duration-300 h-12 font-medium shadow-sm hover:shadow-md group"
+                    size="lg"
+                  >
+                    <Eye className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform group-hover:text-blue-400" />
+                    <span className="group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-cyan-500 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                      Preview Prompt
+                    </span>
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Request Changes Section */}
           {showRequestChanges && (
-            <div className="rounded-xl bg-card border border-border p-8 mb-8">
-              <h3 className="text-xl font-semibold mb-4">Request Changes</h3>
-              <p className="text-muted-foreground text-sm mb-4">
+            <div className="rounded-xl bg-white/80 backdrop-blur-md border border-slate-200/50 shadow-lg p-6 md:p-8 mb-8">
+              <h3 className="text-xl font-semibold mb-4 text-slate-800 dark:text-slate-900">Request Changes</h3>
+              <p className="text-slate-700 dark:text-slate-800 text-sm mb-4">
                 Describe what you'd like to change about the generated project
               </p>
 
@@ -167,15 +198,16 @@ export default function PreviewPage() {
                   value={changes}
                   onChange={(e) => setChanges(e.target.value)}
                   placeholder="E.g., Add authentication, change the color scheme, add more features..."
-                  className="min-h-32 bg-secondary border-border"
+                  className="min-h-32 bg-white/60 border-slate-300/50 text-slate-800 placeholder:text-slate-500"
                 />
 
                 <div className="flex gap-3">
                   <Button
                     onClick={handleRequestChanges}
                     disabled={!changes.trim()}
-                    className="btn-glow bg-primary hover:bg-primary/85 text-primary-foreground font-semibold shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-gradient-to-r from-blue-500 via-blue-400 to-cyan-500 hover:from-blue-600 hover:via-blue-500 hover:to-cyan-600 text-white font-semibold shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 px-6 group"
                   >
+                    <Sparkles className="mr-2 h-4 w-4 group-hover:rotate-180 transition-transform duration-500" />
                     Apply Changes
                   </Button>
                   <Button
@@ -184,7 +216,7 @@ export default function PreviewPage() {
                       setChanges('')
                     }}
                     variant="outline"
-                    className="btn-glow border-border/50 text-foreground hover:bg-secondary/40 hover:border-primary/50"
+                    className="border-2 border-slate-300/60 bg-white/70 backdrop-blur-sm text-slate-800 hover:bg-white/90 hover:border-slate-400/70 transition-all duration-300 px-6 font-medium shadow-sm hover:shadow-md"
                   >
                     Cancel
                   </Button>

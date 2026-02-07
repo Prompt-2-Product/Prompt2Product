@@ -90,14 +90,22 @@ export default function GeneratingPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen text-foreground relative overflow-hidden">
+      {/* Light blue gradient background - matching describe page */}
+      <div
+        className="pointer-events-none absolute inset-0 -z-10"
+        aria-hidden="true"
+        style={{
+          background: 'linear-gradient(135deg, rgb(147, 197, 253) 0%, rgb(165, 243, 252) 50%, rgb(191, 219, 254) 100%)',
+        }}
+      />
       <Navigation />
 
-      <main className="pt-24 pb-20">
-        <div className="mx-auto max-w-5xl px-6">
+      <main className="flex items-center justify-center min-h-[calc(100vh-5rem)] pt-8 sm:pt-16 md:pt-24 pb-8 sm:pb-16">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 w-full">
           {/* Title */}
           <div className="mb-8 md:mb-12 text-center">
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground">Generating Your Project</h1>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-800 dark:text-slate-900">Generating Your Project</h1>
           </div>
 
           {/* Stepper */}
@@ -108,10 +116,10 @@ export default function GeneratingPage() {
                   <div className="flex flex-col items-center flex-1">
                     <div
                       className={`flex h-10 w-10 items-center justify-center rounded-full font-semibold transition-all ${step.number < currentStep
-                        ? 'bg-primary text-primary-foreground'
+                        ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
                         : step.number === currentStep
-                          ? 'bg-primary text-primary-foreground'
-                          : 'bg-secondary text-muted-foreground'
+                          ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
+                          : 'bg-slate-200/80 text-slate-500'
                         }`}
                     >
                       {step.number < currentStep ? (
@@ -122,14 +130,14 @@ export default function GeneratingPage() {
                         step.number
                       )}
                     </div>
-                    <p className={`mt-2 text-sm font-medium ${step.number <= currentStep ? 'text-foreground' : 'text-muted-foreground'
+                    <p className={`mt-2 text-sm font-medium ${step.number <= currentStep ? 'text-slate-800 dark:text-slate-900' : 'text-slate-500'
                       }`}>
                       {step.label}
                     </p>
                   </div>
                   {index < steps.length - 1 && (
                     <div
-                      className={`h-1 flex-1 mx-2 transition-all ${step.number < currentStep ? 'bg-primary' : 'bg-secondary'
+                      className={`h-1 flex-1 mx-2 transition-all ${step.number < currentStep ? 'bg-gradient-to-r from-blue-500 to-cyan-500' : 'bg-slate-200/80'
                         }`}
                     ></div>
                   )}
@@ -140,13 +148,13 @@ export default function GeneratingPage() {
 
           {/* Logs Panel */}
           <div className="mb-8">
-            <div className="rounded-xl bg-card border border-border overflow-hidden">
-              <div className="bg-secondary px-4 py-3 border-b border-border">
-                <p className="text-xs sm:text-sm font-medium text-foreground">Generation Log</p>
+            <div className="rounded-xl bg-white/80 backdrop-blur-md border border-slate-200/50 shadow-lg overflow-hidden">
+              <div className="bg-slate-100/80 px-4 py-3 border-b border-slate-200/50">
+                <p className="text-xs sm:text-sm font-medium text-slate-800">Generation Log</p>
               </div>
-              <div className="bg-background p-3 sm:p-4 h-56 sm:h-64 overflow-y-auto font-mono text-xs sm:text-sm space-y-1">
+              <div className="bg-white/60 p-3 sm:p-4 h-56 sm:h-64 overflow-y-auto font-mono text-xs sm:text-sm space-y-1">
                 {logs.map((log, index) => (
-                  <div key={index} className="text-green-400">
+                  <div key={index} className="text-green-600 dark:text-green-500">
                     {log}
                   </div>
                 ))}
@@ -156,13 +164,13 @@ export default function GeneratingPage() {
 
           {/* Progress Bar */}
           <div className="space-y-2">
-            <div className="flex justify-between text-xs text-muted-foreground">
+            <div className="flex justify-between text-xs text-slate-700 dark:text-slate-800">
               <span>Progress</span>
               <span>{Math.min(Math.round(progress), 100)}%</span>
             </div>
-            <div className="w-full h-2 rounded-full bg-secondary overflow-hidden">
+            <div className="w-full h-2 rounded-full bg-slate-200/80 overflow-hidden">
               <div
-                className="h-full bg-primary transition-all duration-500"
+                className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-500"
                 style={{ width: `${Math.min(progress, 100)}%` }}
               ></div>
             </div>
