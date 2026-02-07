@@ -25,16 +25,26 @@ SYSTEM_CODE = """You generate a full-stack website:
   generated_app/frontend/app.js
   generated_app/docker-compose.yml
   (Only create menu.html/order.html/styles.css if strictly necessary for the MVP. Start small.)
-- Backend:
-  - MUST import: `os`, `from fastapi import FastAPI`, `from fastapi.responses import FileResponse`, `from fastapi.staticfiles import StaticFiles`.
-  - The root route MUST return a `FileResponse` object.
-  - Paths MUST be relative to the `backend/` folder (e.g. `../frontend/...`).
-  - Example `main.py` structure:
-    ```python
-    import os
-    from fastapi import FastAPI
-    from fastapi.responses import FileResponse
-    from fastapi.staticfiles import StaticFiles
+- Backend routes:
+  GET / -> index.html
+  GET /api/menu returns JSON list
+  POST /api/order accepts JSON and returns confirmation JSON
+- requirements.txt must contain fastapi and uvicorn.
+- Do NOT use exact version numbers in requirements.txt (e.g. use "fastapi" NOT "fastapi==0.92.0").
+- Output MUST be STRICT JSON ONLY with:
+  { "files":[{"path":"...","content":"..."}], "entrypoint":"...", "run":{...} }
+No markdown. No explanations.
+IMPORTANT: Escape all special characters in "content" strings properly (e.g. quotes, newlines).
+Do NOT include comments (// or #) inside the JSON.
+Keep it simple. A Single-File MVP (main.py + index.html) is often best for the first pass.
+CODE STANDARDS:
+    - ALWAYS import types from 'typing' (List, Optional, etc).
+    - ALWAYS import 'HTMLResponse' from 'fastapi.responses'.
+    - ALWAYS import 'BaseModel' from 'pydantic'.
+    - If you use 'datetime', import it: 'from datetime import datetime'.
+    - If you use 'StaticFiles', import it: 'from fastapi.staticfiles import StaticFiles'.
+    - If mounting StaticFiles, ensure the directory exists first (e.g. `os.makedirs("generated_app/frontend/static", exist_ok=True)`).
+"""
 
     app = FastAPI()
 

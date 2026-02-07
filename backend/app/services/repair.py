@@ -11,6 +11,13 @@ Rules:
 3. Then output the NEW CONTENT of the file (complete file), prefixed with: +++ REPLACE ENTIRE FILE +++
 4. End output with: *** End Patch
 
+HINTS:
+- If the error is "NameError" or "ImportError", check your imports!
+- 'HTMLResponse' is in 'fastapi.responses' (NOT fastapi).
+- 'BaseModel' is in 'pydantic'.
+- 'from datetime import datetime' is often needed.
+- If "Directory ... does not exist" error: Create the directory with `os.makedirs` OR remove the `app.mount`.
+
 Example:
 *** Begin Patch
 *** Update File: generated_app/backend/main.py
