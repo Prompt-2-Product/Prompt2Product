@@ -148,7 +148,7 @@ export default function PreviewPage() {
                   <Button
                     onClick={() => setShowRequestChanges(!showRequestChanges)}
                     variant="outline"
-                    className="w-full border border-border bg-secondary/80 backdrop-blur-md text-foreground hover:bg-secondary/70 hover:border-blue-400/50 transition-all duration-300 h-12 font-medium shadow-sm hover:shadow-md group"
+                    className="w-full border-b border-border !bg-background/80 backdrop-blur-md text-foreground hover:!bg-background hover:border-blue-400/50 transition-all duration-300 h-12 font-medium shadow-sm hover:shadow-md group"
                     size="lg"
                   >
                     <Edit3 className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform group-hover:text-blue-400" />
@@ -160,7 +160,7 @@ export default function PreviewPage() {
                   <Button
                     onClick={handleDownload}
                     variant="outline"
-                    className="w-full border border-border bg-secondary/80 backdrop-blur-md text-foreground hover:bg-secondary/70 hover:border-blue-400/50 transition-all duration-300 h-12 font-medium shadow-sm hover:shadow-md group"
+                    className="w-full border-b border-border !bg-background/80 backdrop-blur-md text-foreground hover:!bg-background hover:border-blue-400/50 transition-all duration-300 h-12 font-medium shadow-sm hover:shadow-md group"
                     size="lg"
                   >
                     <Download className="mr-2 h-4 w-4 group-hover:translate-y-0.5 transition-transform group-hover:text-blue-400" />
@@ -172,7 +172,7 @@ export default function PreviewPage() {
                   <Button
                     onClick={handlePreview}
                     variant="outline"
-                    className="w-full border border-border bg-secondary/80 backdrop-blur-md text-foreground hover:bg-secondary/70 hover:border-blue-400/50 transition-all duration-300 h-12 font-medium shadow-sm hover:shadow-md group"
+                    className="w-full border-b border-border !bg-background/80 backdrop-blur-md text-foreground hover:!bg-background hover:border-blue-400/50 transition-all duration-300 h-12 font-medium shadow-sm hover:shadow-md group"
                     size="lg"
                   >
                     <Eye className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform group-hover:text-blue-400" />
@@ -198,7 +198,7 @@ export default function PreviewPage() {
                   value={changes}
                   onChange={(e) => setChanges(e.target.value)}
                   placeholder="E.g., Add authentication, change the color scheme, add more features..."
-                  className="min-h-32 bg-white/60 border-slate-300/50 text-slate-800 placeholder:text-slate-500"
+                  className="min-h-32 !bg-background/80 backdrop-blur-md border-b border-border text-foreground placeholder:text-muted-foreground"
                 />
 
                 <div className="flex gap-3">
@@ -216,7 +216,7 @@ export default function PreviewPage() {
                       setChanges('')
                     }}
                     variant="outline"
-                    className="border-2 border-slate-300/60 bg-white/70 backdrop-blur-sm text-slate-800 hover:bg-white/90 hover:border-slate-400/70 transition-all duration-300 px-6 font-medium shadow-sm hover:shadow-md"
+                    className="border-b border-border !bg-background/80 backdrop-blur-md text-foreground hover:!bg-background transition-all duration-300 px-6 font-medium shadow-sm hover:shadow-md"
                   >
                     Cancel
                   </Button>
