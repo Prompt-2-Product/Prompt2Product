@@ -1,6 +1,6 @@
-from __future__ import annotations
 import re
 from pathlib import Path
+from app.core.utils import clean_requirements_text
 
 PATCH_BEGIN = "*** Begin Patch"
 PATCH_END = "*** End Patch"
@@ -10,59 +10,62 @@ def apply_unified_patch(workspace: Path, patch_text: str) -> None:
     Supports patches in the format:
     *** Begin Patch
     *** Update File: path/to/file
-    @@ ...
-    -old
-    +new
+    +++ REPLACE ENTIRE FILE +++
+    new content
     *** End Patch
     """
+    patch_text = patch_text.strip()
+    
+    # Handle markdown code blocks if LLM wraps the patch
+    if "```" in patch_text:
+        # Simple extraction
+        match = re.search(r"```(?:\w+)?\s*([\s\S]*?)\s*```", patch_text)
+        if match:
+            patch_text = match.group(1).strip()
+
     if PATCH_BEGIN not in patch_text or PATCH_END not in patch_text:
         raise ValueError("Patch missing Begin/End markers")
 
     # Split into file blocks
-    blocks = patch_text.split("*** Update File:")
-    if len(blocks) < 2:
-        raise ValueError("No file update blocks found in patch")
-
+    # We use regex to split by '*** Update File:' safely
+    blocks = re.split(r"\*\*\* Update File:\s*", patch_text)
+    
+    # blocks[0] is typically the text before the first '*** Update File:'
+    # which should be '*** Begin Patch\n' or similar.
+    
     for b in blocks[1:]:
-        # first line until newline is the file path
+        if not b.strip():
+            continue
+            
         lines = b.splitlines()
         file_path = lines[0].strip()
+        # End of this block might contain '*** End Patch' - strip it from the last line of the block
+        content_lines = lines[1:]
+        if content_lines and PATCH_END in content_lines[-1]:
+            content_lines[-1] = content_lines[-1].replace(PATCH_END, "").strip()
+            if not content_lines[-1]:
+                content_lines.pop()
+
         file_abs = (workspace / file_path).resolve()
-
         if not file_abs.exists():
-            raise FileNotFoundError(f"Patch refers to missing file: {file_path}")
+            # If it doesn't exist, we might be creating it? 
+            # But the prompt says "Update File". For FYP, we'll allow creation.
+            file_abs.parent.mkdir(parents=True, exist_ok=True)
 
-        original = file_abs.read_text(encoding="utf-8").splitlines(keepends=False)
+        # Full file replacement logic
+        new_content = ""
+        if any(ln.startswith("+++ REPLACE ENTIRE FILE +++") for ln in content_lines):
+            idx = next(i for i, ln in enumerate(content_lines) if ln.startswith("+++ REPLACE ENTIRE FILE +++"))
+            new_content = "\n".join(content_lines[idx+1:]) + "\n"
+        else:
+            # Fallback for LLMs that forget the +++ REPLACE ENTIRE FILE +++ marker 
+            # but followed everything else: treat as full replacement since it's cleaner.
+            # We filter out any remaining markers just in case.
+            clean_lines = [ln for ln in content_lines if not ln.startswith("***")]
+            new_content = "\n".join(clean_lines) + "\n"
 
-        # Very small patcher: only handles simple @@ hunks with + and - lines
-        # For MVP, we do a naive replace by reconstructing based on hunk lines.
-        # (Good enough for your FYP demo; later you can add a full patch lib.)
-        hunk_lines = [ln for ln in lines[1:] if ln and not ln.startswith("***")]
+        # AGGRESSIVE CLEANING FOR REQUIREMENTS
+        if file_path.endswith("requirements.txt"):
+            new_content = clean_requirements_text(new_content)
 
-        # If model returns full file replacement (common), detect marker:
-        if any(ln.startswith("+++ REPLACE ENTIRE FILE +++") for ln in hunk_lines):
-            # everything after that line is the new file
-            idx = next(i for i, ln in enumerate(hunk_lines) if ln.startswith("+++ REPLACE ENTIRE FILE +++"))
-            new_content = "\n".join(hunk_lines[idx+1:]) + "\n"
-            file_abs.write_text(new_content, encoding="utf-8")
-            continue
-
-        # Otherwise: if patch contains no @@, treat plus-lines as new file (fallback)
-        if not any(ln.startswith("@@") for ln in hunk_lines):
-            # fallback: keep original, append comment with error (not ideal)
-            file_abs.write_text("\n".join(original) + "\n", encoding="utf-8")
-            continue
-
-        # Minimal hunk apply: rebuild from + lines, ignoring - lines, ignoring @@ headers
-        rebuilt = []
-        for ln in hunk_lines:
-            if ln.startswith("@@"):
-                continue
-            if ln.startswith("+"):
-                rebuilt.append(ln[1:])
-            elif ln.startswith("-"):
-                continue
-            else:
-                rebuilt.append(ln)
-
-        file_abs.write_text("\n".join(rebuilt) + "\n", encoding="utf-8")
+        file_abs.write_text(new_content, encoding="utf-8")
