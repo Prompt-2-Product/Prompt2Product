@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Navigation } from '@/components/navigation'
 import { Button } from '@/components/ui/button'
-import { Plus, SlidersHorizontal } from 'lucide-react'
+import { SlidersHorizontal } from 'lucide-react'
 
 const APP_TYPES = [
   'Web App',
@@ -17,6 +17,19 @@ const APP_TYPES = [
   'Chatbot',
   'Mobile App UI',
   'Desktop App',
+]
+
+const SIMPLE_PROMPTS = [
+  'Create a simple todo list app',
+  'Build a basic calculator',
+  'Make a weather app',
+  'Create a note-taking app',
+  'Build a simple blog',
+  'Make a contact form',
+  'Create a timer app',
+  'Build a quiz app',
+  'Make a password generator',
+  'Create a color picker tool',
 ]
 
 const detectLanguage = (text: string): string => {
@@ -67,6 +80,18 @@ export default function DescribePage() {
   const [additionalInstructions, setAdditionalInstructions] = useState('')
   const [autoDetect, setAutoDetect] = useState(true)
   const [optionsOpen, setOptionsOpen] = useState(false)
+  const [currentPromptIndex, setCurrentPromptIndex] = useState(0)
+
+  // Rotate through example prompts
+  useEffect(() => {
+    if (description.trim()) return // Don't rotate if user is typing
+
+    const interval = setInterval(() => {
+      setCurrentPromptIndex((prev) => (prev + 1) % SIMPLE_PROMPTS.length)
+    }, 3000) // Change every 3 seconds
+
+    return () => clearInterval(interval)
+  }, [description])
 
   // Keep language & app type in sync when auto-detect is enabled
   useEffect(() => {
@@ -113,92 +138,98 @@ export default function DescribePage() {
     }
   }
 
+  const handlePromptClick = (prompt: string) => {
+    setDescription(prompt)
+  }
+
   return (
     <div className="min-h-screen text-foreground relative overflow-hidden">
-      {/* Background gradient: mix of dark, blue, light blue, and subtle white glow */}
+      {/* Overview gradient background - light pastel blue to cyan-blue */}
       <div
         className="pointer-events-none absolute inset-0 -z-10"
         aria-hidden="true"
         style={{
-          backgroundImage:
-            'radial-gradient(circle at top, rgba(15,23,42,1) 0%, rgba(2,6,23,1) 40%), ' +
-            'radial-gradient(circle at 20% 80%, rgba(59,130,246,0.35) 0%, transparent 55%), ' +
-            'radial-gradient(circle at 80% 20%, rgba(125,211,252,0.35) 0%, transparent 55%), ' +
-            'radial-gradient(circle at center, rgba(255,255,255,0.04) 0%, transparent 60%)',
+          background: 'linear-gradient(135deg, rgb(147, 197, 253) 0%, rgb(165, 243, 252) 50%, rgb(191, 219, 254) 100%)',
         }}
       />
       <Navigation />
 
-      <main className="pt-24 pb-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          {/* Title */}
-          <div className="mb-8 md:mb-12 text-center">
-            <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-3">
+      <main className="flex items-center justify-center min-h-[calc(100vh-5rem)] pt-8 sm:pt-16 md:pt-24 pb-8 sm:pb-16">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 w-full">
+          {/* Title - Centered */}
+          <div className="mb-12 md:mb-14 text-center">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-800 dark:text-slate-900 mb-3">
               Describe Your Project
             </h1>
-            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg text-slate-700 dark:text-slate-800 max-w-2xl mx-auto">
               Tell Prompt2Product what you want to build – we&apos;ll handle the stack, structure, and boilerplate.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,3fr)_minmax(260px,1.2fr)] gap-6 items-start">
-            {/* Main prompt card */}
-            <section className="rounded-2xl bg-card/90 border border-white/10 shadow-2xl backdrop-blur-sm px-4 sm:px-6 py-4 sm:py-5 flex flex-col gap-4">
-              <div className="text-left">
+          {/* Chatbox and options side by side */}
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 items-stretch">
+            {/* Main prompt card - Centered */}
+            <section className="rounded-2xl bg-card/90 border border-white/10 shadow-2xl backdrop-blur-sm px-4 sm:px-6 py-4 sm:py-5 flex flex-col gap-4 h-full">
+              <div className="text-center">
                 <label className="block text-xs sm:text-sm font-medium text-foreground mb-2">
                   What do you want to build?
                 </label>
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Describe your app, API, or tool in natural language..."
-                  className="w-full min-h-[140px] sm:min-h-[160px] rounded-xl bg-black/30 border border-border/60 px-3 sm:px-4 py-3 sm:py-4 text-sm sm:text-base text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-vertical"
+                  placeholder={description.trim() ? "Describe your app, API, or tool in natural language..." : SIMPLE_PROMPTS[currentPromptIndex]}
+                  className="w-full min-h-[120px] sm:min-h-[140px] rounded-xl bg-black/30 border border-border/60 px-3 sm:px-4 py-3 sm:py-4 text-sm sm:text-base text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-vertical text-center"
                 />
               </div>
 
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-1">
-                <button
-                  type="button"
-                  onClick={() => setOptionsOpen((open) => !open)}
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-border/70 bg-black/40 px-3 py-2 text-xs sm:text-sm text-muted-foreground hover:text-foreground hover:border-primary/60 hover:bg-black/60 transition-colors"
-                >
-                  <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
-                  <span>Project options</span>
-                </button>
-
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
-                  <div className="text-[11px] sm:text-xs text-muted-foreground text-left sm:text-right">
-                    {autoDetect
-                      ? 'Auto-detecting language & app type from your description'
-                      : 'Using your custom language & app type settings'}
-                  </div>
-                  <Button
-                    onClick={handleGenerateProject}
-                    disabled={!description.trim()}
-                    size="lg"
-                    className="btn-glow bg-primary hover:bg-primary/85 text-primary-foreground disabled:opacity-50 disabled:cursor-not-allowed font-semibold shadow-lg hover:shadow-xl px-6 sm:px-8"
-                  >
-                    Generate Project
-                  </Button>
+              {/* Example prompts - Simple showcase */}
+              {!description.trim() && (
+                <div className="flex flex-wrap gap-2 justify-center">
+                  {SIMPLE_PROMPTS.slice(0, 4).map((prompt, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => handlePromptClick(prompt)}
+                      className="text-xs sm:text-sm px-3 py-1.5 rounded-full bg-secondary/50 border border-border/50 text-muted-foreground hover:text-foreground hover:border-primary/60 hover:bg-secondary/80 transition-colors"
+                    >
+                      {prompt}
+                    </button>
+                  ))}
                 </div>
+              )}
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-1">
+                <div className="text-[11px] sm:text-xs text-muted-foreground text-center">
+                  {autoDetect
+                    ? 'Auto-detecting language & app type from your description'
+                    : 'Using your custom language & app type settings'}
+                </div>
+                <Button
+                  onClick={handleGenerateProject}
+                  disabled={!description.trim()}
+                  size="lg"
+                  className="btn-glow bg-primary hover:bg-primary/85 text-primary-foreground disabled:opacity-50 disabled:cursor-not-allowed font-semibold shadow-lg hover:shadow-xl px-6 sm:px-8"
+                >
+                  Generate Project
+                </Button>
               </div>
             </section>
 
-            {/* Side options panel, controlled by "+" button */}
-            <aside className="rounded-2xl bg-card/90 border border-border/80 shadow-xl backdrop-blur-sm p-5 sm:p-6">
+            {/* Side options panel - Always visible on right */}
+            <aside className="rounded-2xl bg-card/90 border border-white/10 shadow-2xl backdrop-blur-sm p-5 sm:p-6 flex flex-col h-full">
               <div className="flex items-center justify-between mb-5">
                 <h3 className="text-sm sm:text-base font-semibold text-foreground">Project Options</h3>
                 <button
                   type="button"
                   onClick={() => setOptionsOpen((open) => !open)}
-                  className="inline-flex items-center justify-center rounded-full border border-border/70 bg-black/30 p-1.5 text-muted-foreground hover:text-foreground hover:border-primary/60 hover:bg-black/60 transition-colors"
+                  className="lg:hidden inline-flex items-center justify-center rounded-full border border-border/70 bg-black/30 p-1.5 text-muted-foreground hover:text-foreground hover:border-primary/60 hover:bg-black/60 transition-colors"
                   aria-label="Toggle project options"
                 >
                   <SlidersHorizontal className="w-3.5 h-3.5" />
                 </button>
               </div>
 
-              <div className="space-y-4">
+              <div className={`space-y-4 ${optionsOpen ? 'block' : 'hidden lg:block'}`}>
                 {/* Auto-detect toggle */}
                 <div className="flex items-center justify-between rounded-lg bg-black/30 border border-border/70 px-3 py-2.5">
                   <div className="text-xs sm:text-sm">

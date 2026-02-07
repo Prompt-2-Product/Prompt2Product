@@ -1,16 +1,25 @@
 'use client'
 
 import Link from 'next/link'
-import { Code2, LogOut, Menu, X } from 'lucide-react'
+import { usePathname } from 'next/navigation'
+import { Code2, LogOut, Menu, X, ChevronDown } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { AuthModal } from '@/components/auth-modal'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 export function Navigation() {
+  const pathname = usePathname()
   const [user, setUser] = useState<{ name: string } | null>(null)
   const [authModalOpen, setAuthModalOpen] = useState(false)
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const isDescribePage = pathname === '/describe'
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -51,42 +60,44 @@ export function Navigation() {
 
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
-      <div className="mx-auto max-w-7xl px-6 py-4">
+    <nav className={`fixed top-0 left-0 right-0 z-50 border-b border-border ${isDescribePage ? 'bg-background/80 backdrop-blur-md' : 'bg-background/80 backdrop-blur-md'}`}>
+      <div className={`mx-auto max-w-7xl ${isDescribePage ? 'px-4 py-2' : 'px-6 py-4'}`}>
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <Code2 className="h-5 w-5" />
+          <Link href="/" className="flex items-center gap-2 sm:gap-3">
+            <div className={`flex items-center justify-center rounded-lg bg-primary text-primary-foreground ${isDescribePage ? 'h-7 w-7' : 'h-8 w-8'}`}>
+              <Code2 className={isDescribePage ? 'h-4 w-4' : 'h-5 w-5'} />
             </div>
-            <span className="text-xl font-semibold text-foreground">Prompt2Product</span>
+            <span className={`font-semibold text-foreground ${isDescribePage ? 'text-base' : 'text-xl'}`}>Prompt2Product</span>
           </Link>
 
-          {/* Center menu */}
-          <div className="hidden items-center gap-8 md:flex">
-            <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium">Home</Link>
-            <Link href="/overview" className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium">Overview</Link>
-          </div>
+          {/* Center menu - Hidden on describe page */}
+          {!isDescribePage && (
+            <div className="hidden items-center gap-8 md:flex">
+              <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium">Home</Link>
+              <Link href="/overview" className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium">Overview</Link>
+            </div>
+          )}
 
           {/* Right side - Auth */}
           {user ? (
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 rounded-full bg-secondary/50 px-4 py-2">
-                <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-white">
-                  {user.name.charAt(0).toUpperCase()}
-                </div>
-                <span className="text-sm font-medium text-foreground">{user.name}</span>
-              </div>
-              <Button
-                onClick={handleLogout}
-                variant="ghost"
-                size="sm"
-                className="text-muted-foreground hover:text-foreground hover:bg-secondary/50 gap-2"
-              >
-                <LogOut className="h-4 w-4" />
-                Logout
-              </Button>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-2 rounded-full bg-secondary/50 px-3 sm:px-4 py-1.5 sm:py-2 hover:bg-secondary/70 transition-colors outline-none">
+                  <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-white">
+                    {user.name.charAt(0).toUpperCase()}
+                  </div>
+                  <span className="text-sm font-medium text-foreground hidden sm:inline">{user.name}</span>
+                  <ChevronDown className="h-3 w-3 text-muted-foreground hidden sm:block" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem onClick={handleLogout} variant="destructive" className="cursor-pointer">
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <div className="flex items-center gap-3">
               <Button
@@ -130,8 +141,8 @@ export function Navigation() {
           />
         </div>
 
-        {/* Mobile menu */}
-        {mobileMenuOpen && (
+        {/* Mobile menu - Hidden on describe page */}
+        {mobileMenuOpen && !isDescribePage && (
           <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-sm py-4 mt-4 space-y-2">
             <Link href="/" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 text-foreground hover:bg-secondary/50 rounded-lg">
               Home
