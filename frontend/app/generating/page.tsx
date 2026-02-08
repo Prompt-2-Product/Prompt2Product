@@ -57,18 +57,18 @@ export default function GeneratingPage() {
         logIndex++
       }
 
-      // Update progress and steps - slower increments
+      // Update progress and steps - faster increments
       if (progressValue < 30) {
-        progressValue += 2
+        progressValue += 8
         stepValue = 1
       } else if (progressValue < 60) {
-        progressValue += 2
+        progressValue += 8
         stepValue = 2
       } else if (progressValue < 90) {
-        progressValue += 2
+        progressValue += 8
         stepValue = 3
       } else if (progressValue < 100) {
-        progressValue += 1
+        progressValue += 5
         stepValue = 3
       } else {
         // Complete
@@ -82,8 +82,8 @@ export default function GeneratingPage() {
       setCurrentStep(stepValue)
     }
 
-    // Start simulation - slower progress
-    const intervalId = setInterval(simulateProgress, 2500)
+    // Start simulation - faster progress
+    const intervalId = setInterval(simulateProgress, 800)
 
     return () => clearInterval(intervalId)
   }, [router])
@@ -95,7 +95,7 @@ export default function GeneratingPage() {
   ]
 
   return (
-    <div className="min-h-screen text-foreground relative overflow-hidden">
+    <div className="min-h-screen text-foreground relative overflow-hidden page-transition">
       {/* Light blue gradient background - matching describe page */}
       <div
         className="pointer-events-none absolute inset-0 -z-10"
@@ -182,9 +182,9 @@ export default function GeneratingPage() {
 
         {/* Right: Generating Content - Fixed Layout */}
         <div className="flex-1 overflow-y-auto custom-scrollbar" style={{ background: 'linear-gradient(135deg, rgb(147, 197, 253) 0%, rgb(165, 243, 252) 50%, rgb(191, 219, 254) 100%)' }}>
-          <div className="max-w-4xl mx-auto p-6 lg:p-8">
-              {/* Title */}
-              <div className="mb-8 md:mb-12">
+          <div className="max-w-4xl mx-auto p-6 lg:p-8 pt-12 lg:pt-16">
+              {/* Title - Centered */}
+              <div className="mb-8 md:mb-12 text-center">
                 <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-800 dark:text-slate-900">Generating Your Project</h1>
               </div>
 
@@ -226,11 +226,11 @@ export default function GeneratingPage() {
                 </div>
               </div>
 
-              {/* Logs Panel */}
-              <div className="mb-8">
+              {/* Logs Panel - Centered */}
+              <div className="mb-8 max-w-3xl mx-auto">
                 <div className="rounded-xl bg-background backdrop-blur-md border-b border-border shadow-lg overflow-hidden">
                   <div className="bg-background px-4 py-3 border-b border-border">
-                    <p className="text-xs sm:text-sm font-medium text-foreground">Generation Log</p>
+                    <p className="text-xs sm:text-sm font-medium text-foreground text-center">Generation Log</p>
                   </div>
                   <div className="bg-background/60 p-3 sm:p-4 h-56 sm:h-64 overflow-y-auto font-mono text-xs sm:text-sm space-y-1 custom-scrollbar">
                     {logs.map((log, index) => (
@@ -242,8 +242,8 @@ export default function GeneratingPage() {
                 </div>
               </div>
 
-              {/* Progress Bar */}
-              <div className="space-y-2">
+              {/* Progress Bar - Centered */}
+              <div className="space-y-2 max-w-2xl mx-auto">
                 <div className="flex justify-between text-xs text-slate-700 dark:text-slate-800">
                   <span>Progress</span>
                   <span>{Math.min(Math.round(progress), 100)}%</span>

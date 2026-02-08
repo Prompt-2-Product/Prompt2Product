@@ -58,7 +58,7 @@ export default function LandingPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+    <div className="min-h-screen bg-background text-foreground relative overflow-hidden page-transition">
       <Navigation />
 
       <main className="pt-20 sm:pt-24">
