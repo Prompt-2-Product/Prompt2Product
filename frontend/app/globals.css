@@ -226,4 +226,29 @@
   .team-card-glow:hover {
     box-shadow: 0 0 25px rgba(37, 99, 235, 0.25), 0 0 50px rgba(37, 99, 235, 0.1);
   }
+
+  /* Custom Dark Scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: var(--background);
+    border-radius: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, rgb(147, 197, 253) 0%, rgb(165, 243, 252) 50%, rgb(191, 219, 254) 100%);
+    border-radius: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, rgb(165, 243, 252) 0%, rgb(191, 219, 254) 50%, rgb(147, 197, 253) 100%);
+  }
+
+  /* Firefox scrollbar */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(147, 197, 253) var(--background);
+  }
 }

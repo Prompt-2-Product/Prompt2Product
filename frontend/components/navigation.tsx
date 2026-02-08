@@ -63,7 +63,7 @@ export function Navigation() {
 
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 border-b border-border ${isMinimalNav ? 'bg-background/80 backdrop-blur-md' : 'bg-background/80 backdrop-blur-md'}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 border-b border-border ${isMinimalNav ? 'bg-background backdrop-blur-md' : 'bg-background backdrop-blur-md'}`}>
       <div className={`mx-auto max-w-7xl ${isMinimalNav ? 'px-4 py-2' : 'px-6 py-4'}`}>
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -146,7 +146,7 @@ export function Navigation() {
 
         {/* Mobile menu - Hidden on describe and generating pages */}
         {mobileMenuOpen && !isMinimalNav && (
-          <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-sm py-4 mt-4 space-y-2">
+          <div className="md:hidden border-t border-border bg-background backdrop-blur-sm py-4 mt-4 space-y-2">
             <Link href="/" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 text-foreground hover:bg-secondary/50 rounded-lg">
               Home
             </Link>
