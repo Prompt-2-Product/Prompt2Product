@@ -101,14 +101,41 @@ class Orchestrator:
             spec = asyncio.run(llm_prompt_to_spec(self.llm, spec_model, enhanced_prompt))
             log(session, run.id, "spec", f"LLM TaskSpec: {spec.app_name}")
 
-            # 2) SPEC -> CODE FILES (LLM)
+            # 2) SPEC -> CODE FILES (LLM - Skeleton Generation)
             log(session, run.id, "codegen", "Starting code generation...")
             code_model = self.router.code_model().model
             gen = asyncio.run(llm_spec_to_code(self.llm, code_model, spec))
-            files = [{"path": f.path, "content": f.content} for f in gen.files]
+            log(session, run.id, "codegen", f"LLM generated {len(gen.files)} skeleton files")
 
-            write_files(ws, files)
-            log(session, run.id, "codegen", f"LLM generated {len(files)} files")
+            # 2.5) CONTENT ENRICHMENT (NEW STAGE)
+            log(session, run.id, "enrich", "Enriching content...")
+            from app.services.content_enricher import enrich_html_content
+            
+            enriched_files = []
+            html_count = 0
+            for file in gen.files:
+                if file.path.endswith('.html'):
+                    html_count += 1
+                    try:
+                        # Extract page name from path
+                        page_name = file.path.split('/')[-1].replace('.html', '')
+                        enriched_content = asyncio.run(enrich_html_content(
+                            self.llm, code_model, file.content, spec, page_name
+                        ))
+                        enriched_files.append({"path": file.path, "content": enriched_content})
+                        log(session, run.id, "enrich", f"Enriched {page_name}.html")
+                    except Exception as e:
+                        log(session, run.id, "enrich", f"Enrichment failed for {file.path}: {str(e)}", level="WARN")
+                        # Fall back to original content
+                        enriched_files.append({"path": file.path, "content": file.content})
+                else:
+                    enriched_files.append({"path": file.path, "content": file.content})
+            
+            log(session, run.id, "enrich", f"Enriched {html_count} HTML files")
+            
+            # Write enriched files
+            write_files(ws, enriched_files)
+            log(session, run.id, "codegen", f"Wrote {len(enriched_files)} enriched files")
 
             backend_dir = ws / "generated_app" / "backend"
             req_path = backend_dir / "requirements.txt"

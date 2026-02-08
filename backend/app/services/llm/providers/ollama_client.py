@@ -46,11 +46,16 @@ class OllamaLLM:
                 }
             }
             print(f"DEBUG: Ollama Request URL: {native_url}")
+            print(f"DEBUG: Ollama Model: {model}")
+            # print(f"DEBUG: Ollama Payload: {json.dumps(native_payload)}")
             
             full_content = []
             
             try:
                 async with client.stream("POST", native_url, json=native_payload) as response:
+                    if response.status_code != 200:
+                        body = await response.aread()
+                        print(f"DEBUG: Ollama Error Response ({response.status_code}): {body.decode()}")
                     response.raise_for_status()
                     async for line in response.aiter_lines():
                         if not line:
