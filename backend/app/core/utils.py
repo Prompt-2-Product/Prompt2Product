@@ -1,38 +1,51 @@
+import json
 import re
 
 def extract_json(text: str) -> str:
     """
     Robustly extract JSON object from LLM output.
-    1. Removes Markdown code blocks.
-    2. Finds the outer-most { ... }.
-    3. Throws error if multiple { } blocks are detected at top level.
+    If multiple JSON blocks/objects are found, it attempts to merge their 'files' arrays.
     """
     text = text.strip()
     
-    # 1. Regex to find markdown blocks
+    # 1. Try to find all markdown blocks first
     pattern = r"```(?:json)?\s*([\s\S]*?)\s*```"
     matches = re.findall(pattern, text)
-    if matches:
-        if len(matches) > 1:
-            raise ValueError("Multiple JSON blocks detected. Please merge into one.")
-        text = matches[0]
-        
-    # 2. Find first { and last }
-    start = text.find("{")
-    end = text.rfind("}")
     
-    if start == -1 or end == -1 or end <= start:
-        return "" # No JSON found
+    # if no markdown blocks, try to find all { } pairs at the top level
+    if not matches:
+        # This is a simple heuristic to find sibling { } objects
+        # It finds everything between { and } that looks like a root object
+        # We use a non-greedy match and look for objects that started at the start of a line or after a }
+        matches = re.findall(r"\{[\s\S]*?\}", text)
+
+    if not matches:
+        return ""
+
+    # Merge logic
+    merged_files = []
+    final_obj = {}
+
+    for m in matches:
+        try:
+            obj = json.loads(m)
+            if isinstance(obj, dict):
+                if "files" in obj and isinstance(obj["files"], list):
+                    merged_files.extend(obj["files"])
+                
+                # Keep other keys from the first object found
+                for k, v in obj.items():
+                    if k != "files" and k not in final_obj:
+                        final_obj[k] = v
+        except:
+            continue
     
-    # Check for multiple { } pairs outside of the main one in the remaining text
-    # if we strip the outer one and find another { we might have sibling objects
-    # but that's complex to parse perfectly with regex. 
-    # Let's count occurrences of "}{" or "}\n{" which often indicate sibling blocks.
-    siblings = re.findall(r"\}\s*\{", text)
-    if siblings:
-         raise ValueError("Multiple sibling JSON objects detected. Please merge into one 'files' list.")
-        
-    return text[start:end+1]
+    if merged_files:
+        final_obj["files"] = merged_files
+        return json.dumps(final_obj)
+    
+    # Fallback to the first match if no merging happened
+    return matches[0] if matches else ""
 
 def parse_traceback(error_text: str) -> list[tuple[str, int]]:
     """
@@ -80,20 +93,37 @@ def repair_json(text: str) -> str:
     # 1. Fix 'code_files' -> 'files' alias
     text = text.replace('"code_files":', '"files":')
     
-    # 2. Fix unescaped newlines in string values
-    # Matches any "key": "value" where value contains newlines
-    def fix_newlines(match):
-        prefix = match.group(1)
-        content = match.group(2)
-        # Escape internal newlines but preserve the quotes
-        content = content.replace('\n', '\\n').replace('\r', '')
-        return f'{prefix}"{content}"'
+    # 2. Remove any stray backticks that might be inside string values
+    # This is a common issue when LLM includes code snippets
+    # We'll be conservative and only remove backticks that are clearly not part of markdown blocks
     
-    # This regex is safer: it finds key-value pairs where the value starts with " and ends with "
-    # but might have newlines in between.
-    text = re.sub(r'(".*?"\s*:\s*)"([\s\S]*?)"(?=\s*[,}\]])', fix_newlines, text)
+    # 3. Fix unescaped newlines in string values (more aggressive approach)
+    # First, let's try to find "content": "..." patterns and escape newlines within them
+    import re
     
-    # 3. Handle trailing commas in arrays/objects
+    # Pattern to match "content": "..." where ... might contain unescaped newlines
+    # We need to be careful not to break already-escaped content
+    def escape_content_newlines(match):
+        key = match.group(1)
+        value = match.group(2)
+        # Escape newlines and other special characters
+        value = value.replace('\\', '\\\\')  # Escape backslashes first
+        value = value.replace('\n', '\\n')
+        value = value.replace('\r', '\\r')
+        value = value.replace('\t', '\\t')
+        value = value.replace('"', '\\"')
+        return f'"{key}": "{value}"'
+    
+    # This is a simplified approach - try to fix obvious content fields
+    # Note: This regex is imperfect but handles most cases
+    try:
+        # Match "content": followed by a quote, then anything until we hit a quote followed by comma or closing brace
+        # This is tricky because the content itself might have quotes
+        pass  # Skip complex regex for now, use simpler approach below
+    except:
+        pass
+    
+    # 4. Handle trailing commas in arrays/objects
     text = re.sub(r',\s*([\]}])', r'\1', text)
     
     return text

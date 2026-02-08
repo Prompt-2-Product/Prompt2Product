@@ -73,61 +73,79 @@ class VenvSandboxRunner(SandboxRunner):
         ]
         return self._exec(cmd, cwd=workspace)
 
+    async def _wait_for_port(self, host: str, port: int, timeout: int = 15) -> bool:
+        import socket
+        import time
+        start = time.time()
+        while time.time() - start < timeout:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.settimeout(1)
+                try:
+                    s.connect((host, port))
+                    return True
+                except (socket.timeout, ConnectionRefusedError):
+                    time.sleep(1)
+        return False
+
     def run_uvicorn(self, workspace: Path, app_dir: Path, host: str, port: int) -> ExecResult:
         import time
+        import asyncio
         py = str(self._python_path(workspace))
         cmd = [py, "-m", "uvicorn", "main:app", "--host", host, "--port", str(port)]
-        
-        # Start uvicorn without blocking
-        # We want to wait a bit to see if it crashes (syntax error, etc)
-        # If it runs for 5 seconds, we assume it's good (for the purpose of generation success),
-        # but we must eventually return to the orchestrator to mark 'Success'.
-        # Since the Orchestrator loop expects a return, we cannot keep it running indefinitely in this process.
-        # We will terminate it after verification.
         
         # Prepare log files
         log_dir = workspace / ".logs"
         log_dir.mkdir(exist_ok=True)
-        out_log = open(log_dir / "uvicorn.stdout.log", "w", encoding="utf-8")
-        err_log = open(log_dir / "uvicorn.stderr.log", "w", encoding="utf-8")
+        
+        # Use 'a' append mode to persist logs across attempts
+        with open(log_dir / "uvicorn.stdout.log", "a", encoding="utf-8") as out_log, \
+             open(log_dir / "uvicorn.stderr.log", "a", encoding="utf-8") as err_log:
 
-        try:
-            # Start uvicorn without blocking, redirecting output to files
-            proc = subprocess.Popen(
-                cmd, 
-                cwd=str(app_dir), 
-                stdout=out_log, 
-                stderr=err_log,
-                text=True
-            )
-            
-            # Wait for 5 seconds to catch early startup errors
             try:
-                ret = proc.wait(timeout=5)
-                # If we get here, the process exited within 5 seconds -> Failure (likely)
+                proc = subprocess.Popen(
+                    cmd, 
+                    cwd=str(app_dir), 
+                    stdout=out_log, 
+                    stderr=err_log,
+                    text=True
+                )
                 
-                # Close the handles so we can read them
-                out_log.close()
-                err_log.close()
-                
-                stdout = (log_dir / "uvicorn.stdout.log").read_text(encoding="utf-8")
-                stderr = (log_dir / "uvicorn.stderr.log").read_text(encoding="utf-8")
-                
-                return ExecResult(exit_code=ret, stdout=stdout, stderr=stderr or "Process exited early")
-            except subprocess.TimeoutExpired:
-                # Process is still running after 5 seconds -> Success!
-                # Do NOT kill it. Leave it running.
-                
-                # We should close the handles so they flush, but the subprocess still has them?
-                # Actually, better to keep them open if we want logging to continue.
-                # But we definitely need to flush? out_log.flush()
-                out_log.flush()
-                err_log.flush()
-                # We don't close them here because uvicorn is still running.
-                return ExecResult(exit_code=0, stdout="Uvicorn started successfully (running in background)", stderr="")
-                
-        except Exception as e:
-            return ExecResult(exit_code=1, stdout="", stderr=str(e))
+                # Check for early exit (e.g. invalid arguments, port already in use)
+                time.sleep(2)
+                if proc.poll() is not None:
+                    # Process exited immediately
+                    stdout = (log_dir / "uvicorn.stdout.log").read_text(encoding="utf-8")
+                    stderr = (log_dir / "uvicorn.stderr.log").read_text(encoding="utf-8")
+                    return ExecResult(exit_code=proc.returncode, stdout=stdout, stderr=stderr or "Process failed to start")
+
+                # Wait for port to become active
+                # Since run_uvicorn is sync, we use a simple loop
+                is_up = False
+                import socket
+                start_wait = time.time()
+                while time.time() - start_wait < 10:
+                    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                        s.settimeout(1)
+                        try:
+                            s.connect((host if host != "0.0.0.0" else "127.0.0.1", port))
+                            is_up = True
+                            break
+                        except (socket.timeout, ConnectionRefusedError):
+                            if proc.poll() is not None: break
+                            time.sleep(1)
+
+                if is_up:
+                    return ExecResult(exit_code=0, stdout=f"Uvicorn started and listening on http://{host}:{port}", stderr="")
+                else:
+                    # Check if it crashed during wait
+                    if proc.poll() is not None:
+                        stdout = (log_dir / "uvicorn.stdout.log").read_text(encoding="utf-8")
+                        stderr = (log_dir / "uvicorn.stderr.log").read_text(encoding="utf-8")
+                        return ExecResult(exit_code=proc.returncode, stdout=stdout, stderr=stderr)
+                    return ExecResult(exit_code=1, stdout="Uvicorn started but port timed out", stderr="Health check failed")
+                    
+            except Exception as e:
+                return ExecResult(exit_code=1, stdout="", stderr=str(e))
         # Note: We don't have a 'finally' that closes if it's still running, 
         # because the subprocess owns the duped handles. 
         # But our python file objects should be closed eventually or let GC handle them.
