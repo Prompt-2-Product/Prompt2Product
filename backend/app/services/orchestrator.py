@@ -13,12 +13,80 @@ from app.services.llm.factory import get_llm_client
 from app.services.router import ModelRouter
 from app.services.prompt_enhancer import llm_enhance_prompt
 from app.services.spec_generator import llm_prompt_to_spec
-from app.services.code_generator import llm_spec_to_code
+from app.services.code_generator import llm_spec_to_code, post_process_output, GenOutput, GenFile
 from app.services.repair import llm_repair
 from app.services.patcher import apply_unified_patch
 
 
 from app.core.utils import parse_traceback
+
+def validate_generated_files(files: list) -> list[str]:
+    """
+    Validates generated files for quality issues.
+    Returns list of warning messages (non-blocking).
+    """
+    warnings = []
+    
+    for file in files:
+        path = file["path"]
+        content = file["content"]
+        
+        # Check HTML files
+        if path.endswith(".html"):
+            # Check for empty navigation placeholder
+            if "<!-- Nav content -->" in content:
+                warnings.append(f"{path}: Contains empty navigation placeholder")
+            
+            # Check for empty footer placeholder
+            if "<!-- Footer content -->" in content:
+                warnings.append(f"{path}: Contains empty footer placeholder")
+            
+            # Check for generic placeholders
+            if "Lorem ipsum" in content:
+                warnings.append(f"{path}: Contains 'Lorem ipsum' placeholder")
+            if "Feature 1" in content or "Feature 2" in content:
+                warnings.append(f"{path}: Contains generic 'Feature N' placeholders")
+        
+        # Check CSS files
+        elif path.endswith("main.css"):
+            lines = [line for line in content.split("\n") if line.strip() and not line.strip().startswith("//")]
+            if len(lines) < 50:
+                warnings.append(f"{path}: Only {len(lines)} lines (minimum 50 recommended)")
+        
+        # Check JS files
+        elif path.endswith("app.js"):
+            lines = [line for line in content.split("\n") if line.strip() and not line.strip().startswith("//")]
+            if len(lines) < 30:
+                warnings.append(f"{path}: Only {len(lines)} lines (minimum 30 recommended)")
+        
+        # Check backend main.py
+        elif path.endswith("backend/main.py") or path.endswith("backend\\main.py"):
+            # Check for incorrect HTMLResponse usage
+            if "HTMLResponse(path=" in content:
+                warnings.append(f"{path}: Uses HTMLResponse(path=...) which is invalid. Should be FileResponse.")
+            
+            # Check for Jinja2 usage
+            if "Jinja2Templates" in content or "fastapi.templating" in content:
+                 warnings.append(f"{path}: Uses Jinja2 templates (forbidden). Should be static FileResponse.")
+
+            # Check for Database usage
+            if "sqlalchemy" in content or "sqlite3" in content:
+                 warnings.append(f"{path}: Uses Database (forbidden). Should be static content.")
+
+            # Check for file serving routes
+            if "FileResponse" not in content:
+                warnings.append(f"{path}: Missing FileResponse import - HTML pages won't be served!")
+            
+            if "app.mount" not in content or "StaticFiles" not in content:
+                warnings.append(f"{path}: Critical - static files route missing! CSS/JS won't load.")
+            elif "fastapi.staticfiles" not in content and "starlette.staticfiles" not in content:
+                 warnings.append(f"{path}: Usage of StaticFiles without import detected.")
+            if '@app.get("/")' not in content and "@app.get('/')" not in content:
+                warnings.append(f"{path}: Missing root route (@app.get('/')) - index.html won't be accessible!")
+    
+    return warnings
+
+
 
 def _context_snippets(workspace: Path, error_text: str = "") -> str:
     """
@@ -133,6 +201,16 @@ class Orchestrator:
             
             log(session, run.id, "enrich", f"Enriched {html_count} HTML files")
             
+            # 2.6) VALIDATION (NEW STAGE)
+            log(session, run.id, "validate", "Validating generated files...")
+            validation_warnings = validate_generated_files(enriched_files)
+            if validation_warnings:
+                for warning in validation_warnings:
+                    log(session, run.id, "validate", f"⚠️ {warning}", level="WARN")
+                log(session, run.id, "validate", f"Found {len(validation_warnings)} quality issues (non-blocking)")
+            else:
+                log(session, run.id, "validate", "✅ All validation checks passed")
+            
             # Write enriched files
             write_files(ws, enriched_files)
             log(session, run.id, "codegen", f"Wrote {len(enriched_files)} enriched files")
@@ -209,6 +287,54 @@ class Orchestrator:
                 log(session, run.id, "repair", "Applying patch from repair LLM")
                 apply_unified_patch(ws, patch)
                 log(session, run.id, "repair", "Patch applied, retrying run...")
+
+                # --- NEW HARDENING BLOCK --- #
+                try:
+                    log(session, run.id, "repair", "Running hardening logic on patched files...")
+                    
+                    files_to_harden = []
+                    generated_app_dir = ws / "generated_app"
+                    
+                    # Check main.py
+                    main_py_path = generated_app_dir / "backend" / "main.py"
+                    if main_py_path.exists():
+                        files_to_harden.append(GenFile(path="backend/main.py", content=main_py_path.read_text(encoding="utf-8")))
+                    
+                    # Check requirements.txt
+                    req_txt_path = generated_app_dir / "backend" / "requirements.txt"
+                    if req_txt_path.exists():
+                        files_to_harden.append(GenFile(path="backend/requirements.txt", content=req_txt_path.read_text(encoding="utf-8")))
+
+                    # Check app.js
+                    app_js_path = generated_app_dir / "frontend" / "app.js"
+                    if app_js_path.exists():
+                        files_to_harden.append(GenFile(path="frontend/app.js", content=app_js_path.read_text(encoding="utf-8")))
+
+                    # Check main.css
+                    main_css_path = generated_app_dir / "frontend" / "main.css"
+                    if main_css_path.exists():
+                        files_to_harden.append(GenFile(path="frontend/main.css", content=main_css_path.read_text(encoding="utf-8")))
+
+                    if files_to_harden:
+                        dummy_output = GenOutput(files=files_to_harden)
+                        processed = post_process_output(dummy_output)
+                        
+                        for f in processed.files:
+                            # We assume path is relative to generated_app
+                            # Note: f.path might be absolute if post_process modifies it incorrectly, 
+                            # but GenFile paths are typically relative as created above.
+                            # However, post_process checks endsswith, so it's safe.
+                            
+                            # Handle potential path separators
+                            clean_path = f.path.replace("\\", "/")
+                            full_path = generated_app_dir / clean_path
+                            
+                            full_path.parent.mkdir(parents=True, exist_ok=True)
+                            full_path.write_text(f.content, encoding="utf-8")
+                            
+                        log(session, run.id, "repair", "Hardening complete: Files validated and potential errors fixed.")
+                except Exception as e:
+                     log(session, run.id, "repair", f"Hardening warning: {e}", level="WARN")
 
         except Exception as e:
             log(session, run.id, "fatal", f"{type(e).__name__}: {e}", level="ERROR")

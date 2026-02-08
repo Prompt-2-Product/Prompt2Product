@@ -5,6 +5,59 @@ from app.services.llm.base import LLMClient
 from app.services.prompt_to_spec import TaskSpec
 import re
 
+def extract_primary_theme(spec: TaskSpec) -> str:
+    """
+    Analyzes TaskSpec to determine primary theme/industry.
+    Uses app_name, notes, and page names to infer context.
+    
+    Returns:
+        Theme string like "Botanical/Gardening", "Culinary/Food", etc.
+    """
+    keywords = []
+    
+    # Check app name
+    if spec.app_name:
+        keywords.append(spec.app_name.lower())
+    
+    # Check notes
+    if spec.notes:
+        keywords.append(spec.notes.lower())
+    
+    # Check page names and sections
+    for page in spec.pages:
+        keywords.append(page.name.lower())
+        if hasattr(page, 'sections') and page.sections:
+            keywords.extend([s.lower() for s in page.sections[:3]])  # First 3 sections
+    
+    combined = " ".join(keywords)
+    
+    # Theme detection with keyword matching
+    theme_keywords = {
+        "Botanical/Gardening": ["plant", "garden", "flora", "botanical", "flower", "herb", "succulent", "green", "leaf"],
+        "Culinary/Food": ["recipe", "food", "cooking", "chef", "kitchen", "meal", "dish", "cuisine", "restaurant"],
+        "Health/Fitness": ["fitness", "workout", "gym", "health", "exercise", "yoga", "nutrition", "wellness"],
+        "E-commerce/Shopping": ["shop", "store", "product", "cart", "checkout", "buy", "sell", "marketplace"],
+        "Education/Learning": ["course", "learn", "education", "tutorial", "lesson", "study", "teach", "school"],
+        "Travel/Tourism": ["travel", "trip", "destination", "hotel", "vacation", "tour", "explore", "adventure"],
+        "Finance/Banking": ["finance", "bank", "money", "investment", "payment", "budget", "loan", "credit"],
+        "Real Estate": ["property", "real estate", "house", "apartment", "rent", "buy", "listing", "home"],
+        "Entertainment/Media": ["movie", "music", "video", "entertainment", "stream", "podcast", "media", "show"],
+        "Technology/SaaS": ["software", "app", "platform", "tool", "dashboard", "api", "cloud", "automation"],
+    }
+    
+    # Score each theme
+    theme_scores = {}
+    for theme, theme_words in theme_keywords.items():
+        score = sum(1 for word in theme_words if word in combined)
+        if score > 0:
+            theme_scores[theme] = score
+    
+    # Return highest scoring theme, or default
+    if theme_scores:
+        return max(theme_scores, key=theme_scores.get)
+    else:
+        return "General Business/SaaS"
+
 class Placeholder(BaseModel):
     """Represents a content placeholder in HTML."""
     id: str
@@ -139,15 +192,22 @@ async def enrich_html_content(
         # No placeholders found, try generic enrichment
         return await generic_content_enrichment(llm, model, html_content, spec, page_name)
     
+    # Detect theme for better content relevance
+    detected_theme = extract_primary_theme(spec)
+    
     # Build context for the LLM
     context = f"""
 APP CONTEXT:
 - Name: {spec.app_name}
-- Industry: {spec.notes or 'General SaaS'}
+- Industry/Theme: {detected_theme}
 - Page: {page_name}
-- Theme: {spec.styling.theme}
+- Design Theme: {spec.styling.theme}
+- Notes: {spec.notes or 'N/A'}
 
 PLACEHOLDERS FOUND: {len(placeholders)}
+
+🎯 CRITICAL: All content MUST be relevant to the "{detected_theme}" industry.
+Do NOT generate generic business/SaaS content unless the theme is "General Business/SaaS".
 """
     
     user_prompt = f"""{context}
@@ -183,10 +243,16 @@ async def generic_content_enrichment(
     Fallback: Enrich HTML even without explicit placeholders.
     Replaces generic content like "Lorem ipsum" and "Feature 1".
     """
+    # Detect theme for better content relevance
+    detected_theme = extract_primary_theme(spec)
+    
     context = f"""
 APP: {spec.app_name}
 PAGE: {page_name}
+INDUSTRY/THEME: {detected_theme}
 PURPOSE: {spec.notes or 'Professional web application'}
+
+🎯 CRITICAL: All content MUST be relevant to the "{detected_theme}" industry.
 """
     
     user_prompt = f"""{context}
