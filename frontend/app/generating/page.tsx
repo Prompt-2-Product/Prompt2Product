@@ -101,7 +101,7 @@ export default function GeneratingPage() {
         className="pointer-events-none absolute inset-0 -z-10"
         aria-hidden="true"
         style={{
-          background: 'linear-gradient(135deg, rgb(147, 197, 253) 0%, rgb(165, 243, 252) 50%, rgb(191, 219, 254) 100%)',
+          background: 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(0, 0, 139) 33.33%, rgb(135, 206, 250) 66.66%, rgb(255, 255, 255) 100%)',
         }}
       />
       <Navigation />
@@ -181,11 +181,11 @@ export default function GeneratingPage() {
         </aside>
 
         {/* Right: Generating Content - Fixed Layout */}
-        <div className="flex-1 overflow-y-auto custom-scrollbar" style={{ background: 'linear-gradient(135deg, rgb(147, 197, 253) 0%, rgb(165, 243, 252) 50%, rgb(191, 219, 254) 100%)' }}>
+        <div className="flex-1 overflow-y-auto custom-scrollbar" style={{ background: 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(0, 0, 139) 33.33%, rgb(135, 206, 250) 66.66%, rgb(255, 255, 255) 100%)' }}>
           <div className="max-w-4xl mx-auto p-6 lg:p-8 pt-12 lg:pt-16">
               {/* Title - Centered */}
               <div className="mb-8 md:mb-12 text-center">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-800 dark:text-slate-900">Generating Your Project</h1>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">Generating Your Project</h1>
               </div>
 
               {/* Stepper - Equal Spacing */}

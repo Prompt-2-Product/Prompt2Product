@@ -75,7 +75,7 @@ export default function PreviewPage() {
           className="pointer-events-none absolute inset-0 -z-10"
           aria-hidden="true"
           style={{
-            background: 'linear-gradient(135deg, rgb(147, 197, 253) 0%, rgb(165, 243, 252) 50%, rgb(191, 219, 254) 100%)',
+            background: 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(0, 0, 139) 33.33%, rgb(135, 206, 250) 66.66%, rgb(255, 255, 255) 100%)',
           }}
         />
         <Navigation />
@@ -95,7 +95,7 @@ export default function PreviewPage() {
         className="pointer-events-none absolute inset-0 -z-10"
         aria-hidden="true"
         style={{
-          background: 'linear-gradient(135deg, rgb(147, 197, 253) 0%, rgb(165, 243, 252) 50%, rgb(191, 219, 254) 100%)',
+          background: 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(0, 0, 139) 33.33%, rgb(135, 206, 250) 66.66%, rgb(255, 255, 255) 100%)',
         }}
       />
       <Navigation />
@@ -225,11 +225,11 @@ export default function PreviewPage() {
         )}
 
         {/* Right: Main Content */}
-        <div className="flex-1 overflow-y-auto custom-scrollbar" style={{ background: 'linear-gradient(135deg, rgb(147, 197, 253) 0%, rgb(165, 243, 252) 50%, rgb(191, 219, 254) 100%)' }}>
-          <div className={`p-6 lg:p-8 ${!showChat ? 'max-w-7xl mx-auto page-content' : ''}`}>
+        <div className="flex-1 overflow-y-auto custom-scrollbar" style={{ background: 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(0, 0, 139) 33.33%, rgb(135, 206, 250) 66.66%, rgb(255, 255, 255) 100%)' }}>
+          <div className="p-6 lg:p-8 max-w-7xl mx-auto page-content">
             <div className="mb-6 md:mb-8 text-center">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 text-slate-800 dark:text-slate-900">Project Summary</h1>
-              <p className="text-slate-700 dark:text-slate-800 text-sm md:text-base">Review your generated project</p>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 text-white">Project Summary</h1>
+              <p className="text-white text-sm md:text-base">Review your generated project</p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12 lg:items-stretch">
@@ -272,7 +272,7 @@ export default function PreviewPage() {
                 <div className="space-y-2.5 sm:space-y-3 flex-grow flex flex-col justify-start">
                   <Button
                     onClick={() => router.push('/ide')}
-                    className="w-full bg-gradient-to-r from-blue-500 via-blue-400 to-cyan-500 hover:from-blue-600 hover:via-blue-500 hover:to-cyan-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 h-12 group"
+                    className="w-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-600 hover:from-blue-600 hover:via-blue-500 hover:to-cyan-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 h-12 group"
                     size="lg"
                   >
                     <Code2 className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />

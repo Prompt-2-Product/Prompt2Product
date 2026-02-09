@@ -8,14 +8,7 @@ import { SlidersHorizontal } from 'lucide-react'
 
 const APP_TYPES = [
   'Web App',
-  'API Backend',
-  'CLI Tool',
-  'Data Analysis Script',
-  'ML Pipeline',
-  'Automation Script',
-  'Scraper',
-  'Chatbot',
-  'Mobile App UI',
+  'Mobile App',
   'Desktop App',
 ]
 
@@ -45,29 +38,11 @@ const detectLanguage = (text: string): string => {
 
 const detectAppType = (text: string): string => {
   const lowerText = text.toLowerCase()
-  if (lowerText.includes('api') || lowerText.includes('backend') || lowerText.includes('server')) {
-    return 'API Backend'
+  if (lowerText.includes('mobile') || lowerText.includes('ios') || lowerText.includes('android') || lowerText.includes('phone') || lowerText.includes('tablet')) {
+    return 'Mobile App'
   }
-  if (lowerText.includes('cli') || lowerText.includes('command line')) {
-    return 'CLI Tool'
-  }
-  if (lowerText.includes('data') || lowerText.includes('analysis')) {
-    return 'Data Analysis Script'
-  }
-  if (lowerText.includes('ml') || lowerText.includes('machine learning') || lowerText.includes('model')) {
-    return 'ML Pipeline'
-  }
-  if (lowerText.includes('automation') || lowerText.includes('task')) {
-    return 'Automation Script'
-  }
-  if (lowerText.includes('scrape') || lowerText.includes('crawler')) {
-    return 'Scraper'
-  }
-  if (lowerText.includes('chat') || lowerText.includes('bot')) {
-    return 'Chatbot'
-  }
-  if (lowerText.includes('web') || lowerText.includes('app') || lowerText.includes('site')) {
-    return 'Web App'
+  if (lowerText.includes('desktop') || lowerText.includes('windows') || lowerText.includes('macos') || lowerText.includes('linux app')) {
+    return 'Desktop App'
   }
   return 'Web App'
 }
@@ -149,7 +124,7 @@ export default function DescribePage() {
         className="pointer-events-none absolute inset-0 -z-10"
         aria-hidden="true"
         style={{
-          background: 'linear-gradient(135deg, rgb(147, 197, 253) 0%, rgb(165, 243, 252) 50%, rgb(191, 219, 254) 100%)',
+          background: 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(0, 0, 139) 33.33%, rgb(135, 206, 250) 66.66%, rgb(255, 255, 255) 100%)',
         }}
       />
       <Navigation />
@@ -158,11 +133,11 @@ export default function DescribePage() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 w-full page-content">
           {/* Title - Centered */}
           <div className="mb-12 md:mb-14 text-center">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-800 dark:text-slate-900 mb-3">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3">
               Describe Your Project
             </h1>
-            <p className="text-sm sm:text-base md:text-lg text-slate-700 dark:text-slate-800 max-w-2xl mx-auto">
-              Tell Prompt2Product what you want to build ΓÇô we&apos;ll handle the stack and structure.
+            <p className="text-sm sm:text-base md:text-lg text-white max-w-2xl mx-auto">
+              Tell Prompt2Product what you want to build, we&apos;ll handle the stack and structure.
             </p>
           </div>
 
@@ -231,17 +206,17 @@ export default function DescribePage() {
 
               <div className={`space-y-4 ${optionsOpen ? 'block' : 'hidden lg:block'}`}>
                 {/* Auto-detect toggle */}
-                <div className="flex items-center justify-between rounded-lg bg-black/30 border border-border/70 px-3 py-2.5">
-                  <div className="text-xs sm:text-sm">
+                <div className="flex items-start gap-3 rounded-lg bg-black/30 border border-border/70 px-3 py-2.5">
+                  <div className="flex-1 min-w-0 text-xs sm:text-sm">
                     <p className="font-medium text-foreground">Auto-detect settings</p>
-                    <p className="text-[11px] sm:text-xs text-muted-foreground">
+                    <p className="text-[11px] sm:text-xs text-muted-foreground break-words">
                       Let Prompt2Product choose language & app type from your description.
                     </p>
                   </div>
                   <button
                     type="button"
                     onClick={() => setAutoDetect((v) => !v)}
-                    className={`relative inline-flex h-6 w-10 items-center rounded-full border transition-colors ${
+                    className={`relative inline-flex h-6 w-10 flex-shrink-0 items-center rounded-full border transition-colors ${
                       autoDetect ? 'bg-primary/80 border-primary' : 'bg-black/40 border-border'
                     }`}
                     role="switch"
