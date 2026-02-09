@@ -56,6 +56,9 @@ class VenvSandboxRunner(SandboxRunner):
         venv_dir = self._venv_dir(workspace)
         if not venv_dir.exists():
             subprocess.run([sys.executable, "-m", "venv", str(venv_dir)], check=True)
+            # Pre-install core dependencies as a safety baseline
+            cmd = self._pip_cmd(workspace) + ["install", "fastapi", "uvicorn", "aiofiles"]
+            subprocess.run(cmd, check=True)
 
     def install_deps(self, workspace: Path, requirements_path: Path) -> ExecResult:
         if (not requirements_path.exists()) or requirements_path.read_text(encoding="utf-8").strip() == "":
@@ -70,20 +73,90 @@ class VenvSandboxRunner(SandboxRunner):
         ]
         return self._exec(cmd, cwd=workspace)
 
+    async def _wait_for_port(self, host: str, port: int, timeout: int = 15) -> bool:
+        import socket
+        import time
+        start = time.time()
+        while time.time() - start < timeout:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.settimeout(1)
+                try:
+                    s.connect((host, port))
+                    return True
+                except (socket.timeout, ConnectionRefusedError):
+                    time.sleep(1)
+        return False
+
     def run_uvicorn(self, workspace: Path, app_dir: Path, host: str, port: int) -> ExecResult:
+        import time
+        import asyncio
         py = str(self._python_path(workspace))
         cmd = [py, "-m", "uvicorn", "main:app", "--host", host, "--port", str(port)]
-        return self._exec(cmd, cwd=app_dir)
+        
+        # Prepare log files
+        log_dir = workspace / ".logs"
+        log_dir.mkdir(exist_ok=True)
+        
+        # Use 'a' append mode to persist logs across attempts
+        with open(log_dir / "uvicorn.stdout.log", "a", encoding="utf-8") as out_log, \
+             open(log_dir / "uvicorn.stderr.log", "a", encoding="utf-8") as err_log:
+
+            try:
+                proc = subprocess.Popen(
+                    cmd, 
+                    cwd=str(app_dir), 
+                    stdout=out_log, 
+                    stderr=err_log,
+                    text=True
+                )
+                
+                # Check for early exit (e.g. invalid arguments, port already in use)
+                time.sleep(2)
+                if proc.poll() is not None:
+                    # Process exited immediately
+                    stdout = (log_dir / "uvicorn.stdout.log").read_text(encoding="utf-8")
+                    stderr = (log_dir / "uvicorn.stderr.log").read_text(encoding="utf-8")
+                    return ExecResult(exit_code=proc.returncode, stdout=stdout, stderr=stderr or "Process failed to start")
+
+                # Wait for port to become active
+                # Since run_uvicorn is sync, we use a simple loop
+                is_up = False
+                import socket
+                start_wait = time.time()
+                while time.time() - start_wait < 10:
+                    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                        s.settimeout(1)
+                        try:
+                            s.connect((host if host != "0.0.0.0" else "127.0.0.1", port))
+                            is_up = True
+                            break
+                        except (socket.timeout, ConnectionRefusedError):
+                            if proc.poll() is not None: break
+                            time.sleep(1)
+
+                if is_up:
+                    return ExecResult(exit_code=0, stdout=f"Uvicorn started and listening on http://{host}:{port}", stderr="")
+                else:
+                    # Check if it crashed during wait
+                    if proc.poll() is not None:
+                        stdout = (log_dir / "uvicorn.stdout.log").read_text(encoding="utf-8")
+                        stderr = (log_dir / "uvicorn.stderr.log").read_text(encoding="utf-8")
+                        return ExecResult(exit_code=proc.returncode, stdout=stdout, stderr=stderr)
+                    return ExecResult(exit_code=1, stdout="Uvicorn started but port timed out", stderr="Health check failed")
+                    
+            except Exception as e:
+                return ExecResult(exit_code=1, stdout="", stderr=str(e))
+        # Note: We don't have a 'finally' that closes if it's still running, 
+        # because the subprocess owns the duped handles. 
+        # But our python file objects should be closed eventually or let GC handle them.
+        # However, if we return Success, we don't want to close them if it kills the stream? 
+        # Actually it won't on Windows/Linux Popen.
+
 
     def _exec(self, cmd: list[str], cwd: Path) -> ExecResult:
         p = subprocess.run(cmd, cwd=str(cwd), capture_output=True, text=True)
         return ExecResult(exit_code=p.returncode, stdout=p.stdout, stderr=p.stderr)
 
-    def run(self, workspace: Path, entrypoint: str) -> ExecResult:
-        py = str(self._python_path(workspace))
-        cmd = [py, entrypoint]
-        return self._exec(cmd, cwd=workspace)
-    
     def run(self, workspace: Path, entrypoint: str) -> ExecResult:
         """
         Generic runner: executes a python file inside the venv.
