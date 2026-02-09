@@ -8,14 +8,7 @@ import { SlidersHorizontal } from 'lucide-react'
 
 const APP_TYPES = [
   'Web App',
-  'API Backend',
-  'CLI Tool',
-  'Data Analysis Script',
-  'ML Pipeline',
-  'Automation Script',
-  'Scraper',
-  'Chatbot',
-  'Mobile App UI',
+  'Mobile App',
   'Desktop App',
 ]
 
@@ -45,28 +38,14 @@ const detectLanguage = (text: string): string => {
 
 const detectAppType = (text: string): string => {
   const lowerText = text.toLowerCase()
-  if (lowerText.includes('api') || lowerText.includes('backend') || lowerText.includes('server')) {
-    return 'API Backend'
+  if (lowerText.includes('mobile') || lowerText.includes('ios') || lowerText.includes('android') || lowerText.includes('phone') || lowerText.includes('tablet')) {
+    return 'Mobile App'
   }
-  if (lowerText.includes('cli') || lowerText.includes('command line')) {
-    return 'CLI Tool'
+  if (lowerText.includes('desktop') || lowerText.includes('windows') || lowerText.includes('macos') || lowerText.includes('linux app')) {
+    return 'Desktop App'
   }
-  if (lowerText.includes('data') || lowerText.includes('analysis')) {
-    return 'Data Analysis Script'
-  }
-  if (lowerText.includes('ml') || lowerText.includes('machine learning') || lowerText.includes('model')) {
-    return 'ML Pipeline'
-  }
-  if (lowerText.includes('automation') || lowerText.includes('task')) {
-    return 'Automation Script'
-  }
-  if (lowerText.includes('scrape') || lowerText.includes('crawler')) {
-    return 'Scraper'
-  }
-  if (lowerText.includes('chat') || lowerText.includes('bot')) {
-    return 'Chatbot'
-  }
-  if (lowerText.includes('web') || lowerText.includes('app') || lowerText.includes('site')) {
+  // Default to Web App for web-related terms or if no specific platform is mentioned
+  if (lowerText.includes('web') || lowerText.includes('app') || lowerText.includes('site') || lowerText.includes('browser')) {
     return 'Web App'
   }
   return 'Web App'
@@ -143,13 +122,18 @@ export default function DescribePage() {
   }
 
   return (
+<<<<<<< Updated upstream
     <div className="min-h-screen text-foreground relative overflow-hidden">
       {/* Overview gradient background - light pastel blue to cyan-blue */}
+=======
+    <div className="min-h-screen text-foreground relative overflow-hidden page-transition">
+      {/* Multi-color vertical gradient background */}
+>>>>>>> Stashed changes
       <div
         className="pointer-events-none absolute inset-0 -z-10"
         aria-hidden="true"
         style={{
-          background: 'linear-gradient(135deg, rgb(147, 197, 253) 0%, rgb(165, 243, 252) 50%, rgb(191, 219, 254) 100%)',
+          background: 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(30, 58, 138) 33%, rgb(59, 130, 246) 66%, rgb(255, 255, 255) 100%)',
         }}
       />
       <Navigation />
@@ -158,11 +142,16 @@ export default function DescribePage() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 w-full">
           {/* Title - Centered */}
           <div className="mb-12 md:mb-14 text-center">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-800 dark:text-slate-900 mb-3">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3">
               Describe Your Project
             </h1>
+<<<<<<< Updated upstream
             <p className="text-sm sm:text-base md:text-lg text-slate-700 dark:text-slate-800 max-w-2xl mx-auto">
               Tell Prompt2Product what you want to build – we&apos;ll handle the stack, structure, and boilerplate.
+=======
+            <p className="text-sm sm:text-base md:text-lg text-white max-w-2xl mx-auto">
+              Tell Prompt2Product what you want to build – we&apos;ll handle the stack and structure.
+>>>>>>> Stashed changes
             </p>
           </div>
 

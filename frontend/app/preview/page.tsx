@@ -60,7 +60,18 @@ export default function PreviewPage() {
 
   if (!projectInfo) {
     return (
+<<<<<<< Updated upstream
       <div className="min-h-screen bg-background text-foreground">
+=======
+      <div className="min-h-screen text-foreground relative overflow-hidden">
+        <div
+          className="pointer-events-none absolute inset-0 -z-10"
+          aria-hidden="true"
+          style={{
+            background: 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(30, 58, 138) 33%, rgb(59, 130, 246) 66%, rgb(255, 255, 255) 100%)',
+          }}
+        />
+>>>>>>> Stashed changes
         <Navigation />
         <main className="pt-24">
           <div className="mx-auto max-w-7xl px-6 text-center">
@@ -72,7 +83,19 @@ export default function PreviewPage() {
   }
 
   return (
+<<<<<<< Updated upstream
     <div className="min-h-screen bg-background text-foreground">
+=======
+    <div className="min-h-screen text-foreground relative overflow-hidden page-transition">
+      {/* Multi-color vertical gradient background */}
+      <div
+        className="pointer-events-none absolute inset-0 -z-10"
+        aria-hidden="true"
+        style={{
+          background: 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(30, 58, 138) 33%, rgb(59, 130, 246) 66%, rgb(255, 255, 255) 100%)',
+        }}
+      />
+>>>>>>> Stashed changes
       <Navigation />
 
       <main className="pt-24 pb-20">
@@ -88,6 +111,7 @@ export default function PreviewPage() {
               <div className="rounded-xl bg-card border border-border p-8">
                 <h2 className="text-2xl font-semibold mb-6">Generated Project</h2>
 
+<<<<<<< Updated upstream
                 <div className="space-y-6">
                   <div>
                     <label className="text-sm font-medium text-muted-foreground block mb-2">Project Description</label>
@@ -102,19 +126,119 @@ export default function PreviewPage() {
                     <div>
                       <label className="text-sm font-medium text-muted-foreground block mb-2">Project Type</label>
                       <p className="text-foreground font-medium">{projectInfo.appType}</p>
+=======
+              {/* System Response */}
+              <div className="flex flex-col gap-2.5">
+                <div className="flex items-center gap-2">
+                  <div className="h-6 w-6 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center">
+                    <span className="text-xs font-semibold text-white">P</span>
+                  </div>
+                  <span className="text-xs font-medium text-muted-foreground">Prompt2Product</span>
+                </div>
+                <div className="ml-8 rounded-xl bg-primary/15 border border-primary/30 p-4 text-sm leading-relaxed text-foreground shadow-sm">
+                  <p>How would you like to modify this project?</p>
+                </div>
+              </div>
+
+              {/* User's change request messages */}
+              {chatHistory.map((msg, index) => (
+                <div key={index} className="flex flex-col gap-2.5">
+                  <div className="flex items-center gap-2">
+                    <div className="h-6 w-6 rounded-full bg-primary/20 flex items-center justify-center">
+                      <span className="text-xs font-semibold text-primary">U</span>
+                    </div>
+                    <span className="text-xs font-medium text-muted-foreground">You</span>
+                  </div>
+                  <div className="ml-8 rounded-xl bg-secondary/60 border border-border/60 p-4 text-sm leading-relaxed text-foreground whitespace-pre-wrap break-words shadow-sm">
+                    {msg.content}
+                  </div>
+                </div>
+              ))}
+
+              {isRegenerating && (
+                <div className="flex flex-col gap-2.5">
+                  <div className="flex items-center gap-2">
+                    <div className="h-6 w-6 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center">
+                      <span className="text-xs font-semibold text-white">P</span>
+                    </div>
+                    <span className="text-xs font-medium text-muted-foreground">Prompt2Product</span>
+                  </div>
+                  <div className="ml-8 rounded-xl bg-primary/15 border border-primary/30 p-4 text-sm leading-relaxed text-foreground shadow-sm">
+                    <div className="flex items-center gap-2">
+                      <Loader className="h-4 w-4 animate-spin text-primary" />
+                      <span className="font-medium">Processing your request...</span>
                     </div>
                   </div>
+                </div>
+              )}
+            </div>
 
-                  {projectInfo.additionalInstructions && (
-                    <div>
-                      <label className="text-sm font-medium text-muted-foreground block mb-2">Additional Instructions</label>
-                      <p className="text-foreground text-sm">{projectInfo.additionalInstructions}</p>
+            {/* Chat Input Area */}
+            <div className="px-5 py-4 border-t border-border/50 flex-shrink-0 bg-background">
+              <div className="flex gap-3">
+                <textarea
+                  value={changeMessage}
+                  onChange={(e) => setChangeMessage(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault()
+                      handleChatSubmit(changeMessage)
+                    }
+                  }}
+                  placeholder="Describe the changes you want..."
+                  disabled={isRegenerating}
+                  className="flex-1 min-h-[90px] rounded-xl bg-secondary/40 border border-border/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:cursor-not-allowed disabled:opacity-70"
+                  rows={3}
+                />
+                <div className="flex flex-col gap-2">
+                  <Button
+                    onClick={() => handleChatSubmit(changeMessage)}
+                    disabled={!changeMessage.trim() || isRegenerating}
+                    className="bg-gradient-to-r from-blue-500 via-blue-400 to-cyan-500 hover:from-blue-600 hover:via-blue-500 hover:to-cyan-600 text-white font-semibold shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 px-6 h-full"
+                  >
+                    {isRegenerating ? (
+                      <Loader className="h-4 w-4 animate-spin" />
+                    ) : (
+                      'Send'
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </aside>
+        )}
+
+        {/* Right: Main Content */}
+        <div className="flex-1 overflow-y-auto custom-scrollbar flex items-center justify-center" style={{ background: 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(30, 58, 138) 33%, rgb(59, 130, 246) 66%, rgb(255, 255, 255) 100%)' }}>
+          <div className={`p-6 lg:p-8 w-full ${!showChat ? 'max-w-7xl mx-auto page-content' : 'mx-auto'} flex flex-col items-center justify-center`}>
+            <div className="mb-6 md:mb-8 text-center">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 text-white">Project Summary</h1>
+              <p className="text-white text-sm md:text-base">Review your generated project</p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12 lg:items-stretch w-full">
+            {/* Left: Project Info Card - Matching describe page style */}
+            <div className="lg:col-span-2 flex">
+              <div className="rounded-2xl bg-card/90 border border-white/10 shadow-2xl backdrop-blur-sm p-5 sm:p-6 md:p-8 w-full flex flex-col">
+                <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-foreground">Generated Project</h2>
+
+                <div className="space-y-4 sm:space-y-6 flex-grow">
+                  <div>
+                    <label className="text-xs sm:text-sm font-medium text-muted-foreground block mb-2">Installation Steps</label>
+                    <div className="space-y-3 text-foreground text-sm sm:text-base leading-relaxed">
+                      <p><strong>1. Download:</strong> Click &quot;Download Project&quot; to get the ZIP file.</p>
+                      <p><strong>2. Extract:</strong> Extract the ZIP file to your desired location.</p>
+                      <p><strong>3. Install:</strong> Navigate to the project directory and run <code className="px-1.5 py-0.5 rounded bg-secondary/50 text-primary font-mono text-xs">pip install -r requirements.txt</code> or <code className="px-1.5 py-0.5 rounded bg-secondary/50 text-primary font-mono text-xs">npm install</code></p>
+                      <p><strong>4. Run:</strong> Execute <code className="px-1.5 py-0.5 rounded bg-secondary/50 text-primary font-mono text-xs">python main.py</code> or <code className="px-1.5 py-0.5 rounded bg-secondary/50 text-primary font-mono text-xs">npm start</code> to start the application.</p>
+                      <p><strong>5. Access:</strong> Open <code className="px-1.5 py-0.5 rounded bg-secondary/50 text-primary font-mono text-xs">http://localhost:8000</code> in your browser.</p>
+>>>>>>> Stashed changes
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
             </div>
 
+<<<<<<< Updated upstream
             {/* Right: Action Buttons */}
             <div className="space-y-4">
               <Button
@@ -124,6 +248,21 @@ export default function PreviewPage() {
               >
                 View Code (Advanced)
               </Button>
+=======
+            {/* Right: Action Buttons - Matching describe page style */}
+            <div className="flex">
+              <div className="rounded-2xl bg-card/90 border border-white/10 shadow-2xl backdrop-blur-sm p-5 sm:p-6 md:p-8 w-full flex flex-col">
+                <h3 className="text-xl sm:text-2xl font-semibold text-foreground mb-4 sm:mb-6">Actions</h3>
+                <div className="space-y-2.5 sm:space-y-3 flex-grow flex flex-col justify-start">
+                  <Button
+                    onClick={() => router.push('/ide')}
+                    className="w-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-600 hover:from-blue-700 hover:via-blue-600 hover:to-cyan-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 h-12 group"
+                    size="lg"
+                  >
+                    <Code2 className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                    View Code (Advanced)
+                  </Button>
+>>>>>>> Stashed changes
 
               <Button
                 onClick={() => setShowRequestChanges(!showRequestChanges)}

@@ -20,6 +20,13 @@ export function Navigation() {
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const isDescribePage = pathname === '/describe'
+<<<<<<< Updated upstream
+=======
+  const isGeneratingPage = pathname === '/generating'
+  const isPreviewPage = pathname === '/preview'
+  const isIDEPage = pathname === '/ide'
+  const isMinimalNav = isDescribePage || isGeneratingPage || isPreviewPage || isIDEPage
+>>>>>>> Stashed changes
 
   useEffect(() => {
     if (typeof window === 'undefined') return
