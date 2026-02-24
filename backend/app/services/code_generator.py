@@ -1,6 +1,6 @@
 from __future__ import annotations
-from typing import List, Dict, Any, Optional
-from pydantic import BaseModel, Field
+from typing import List, Dict, Any
+from pydantic import BaseModel, Field, model_validator
 from app.services.llm.base import LLMClient
 from app.services.prompt_to_spec import TaskSpec
 from app.core.utils import extract_json, repair_json
@@ -26,15 +26,125 @@ class PagePlan(BaseModel):
 class GenFile(BaseModel):
     path: str
     content: str
-    
+
+    @model_validator(mode='before')
+    @classmethod
+    def fix_path_and_name(cls, data: Any) -> Any:
+        if isinstance(data, dict):
+            # FIX: LLM often outputs 'name' instead of 'path'
+            if 'path' not in data and 'name' in data:
+                data['path'] = data['name']
+            
+            # FIX: Ensure full paths if LLM outputs bare filenames
+            if 'path' in data:
+                path = data['path']
+                if '/' not in path and '\\' not in path:
+                    if path.endswith(('.html', '.css', '.js')):
+                        data['path'] = f"generated_app/frontend/{path}"
+                    elif path.endswith(('.py', '.txt', '.sql', '.env')):
+                        data['path'] = f"generated_app/backend/{path}"
+        return data
+
 class GenOutput(BaseModel):
     files: List[GenFile] = Field(default_factory=list)
     entrypoint: str = "generated_app/backend/main.py"
     run: Dict[str, Any] = Field(default_factory=dict)
 
-# --- Updated System Prompt ---
-SYSTEM_CODE = """You are a UI/UX expert planning a website structure.
-You do NOT write HTML or Python code. You output a JSON 'Page Plan'.
+    @model_validator(mode='before')
+    @classmethod
+    def normalize_files(cls, data: Any) -> Any:
+        # DEBUG: Print raw LLM output to understand structure
+        try:
+             print(f"DEBUG: GenOutput raw data: {json_lib.dumps(data, indent=2)}")
+        except:
+             print(f"DEBUG: GenOutput raw data (non-json): {data}")
+
+        # FIX: DeepSeek often outputs a dict of {filename: content} instead of a list
+        # Case 1: The root object is just the dict of files
+        if isinstance(data, dict):
+            # If it has keys that look like files and NO 'files' key
+            if 'files' not in data and any('.' in k for k in data.keys()):
+                # Convert dict to list of GenFile dicts
+                new_files = []
+                for path, content in data.items():
+                    if isinstance(content, str):
+                        new_files.append({"path": path, "content": content})
+                if new_files:
+                    return {"files": new_files}
+
+            # Case 2: 'files' key exists but is a dict {filename: content} instead of list
+            # OR a dict of categories {category: [file_objects]}
+            if 'files' in data and isinstance(data['files'], dict):
+                file_dict = data['files']
+                new_files_list = []
+                for key, value in file_dict.items():
+                     # Simple key: value (filename: content)
+                     if isinstance(value, str):
+                        new_files_list.append({"path": key, "content": value})
+                     # Nested category: [file_objects]
+                     elif isinstance(value, list):
+                        for item in value:
+                            if isinstance(item, dict):
+                                # Extract path/name and content
+                                # DeepSeek uses 'file_name' sometimes, or 'name', or 'path'
+                                fpath = item.get('file_name', item.get('path', item.get('name')))
+                                fcontent = item.get('content')
+                                if fpath and fcontent:
+                                    new_files_list.append({"path": fpath, "content": fcontent})
+                
+                # Only replace if we found files
+                if new_files_list:
+                    data['files'] = new_files_list
+        
+        return data
+
+SYSTEM_CODE = """You generate a COMPLETE, WORKING, premium full-stack website from a TaskSpec JSON.
+- Backend: FastAPI
+- Frontend: HTML/CSS/JS with Tailwind CSS (CDN)
+
+═══════════════════════════════════════════════════════════════════
+🚨 STEP-BY-STEP GENERATION PROCESS (FOLLOW EXACTLY)
+═══════════════════════════════════════════════════════════════════
+
+STEP 1: START WITH THIS EXACT main.py TEMPLATE
+───────────────────────────────────────────────────────────────────
+Copy this template EXACTLY and fill in the {PLACEHOLDERS}:
+
+```python
+import os
+from fastapi import FastAPI, Request
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel
+from typing import List, Dict, Optional
+
+app = FastAPI()
+
+# Get the parent directory (generated_app/) from backend/
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
+
+# Ensure directories exist
+os.makedirs(FRONTEND_DIR, exist_ok=True)
+
+# Mount static files
+app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
+
+# ═══════════════════════════════════════════════════════════════════
+# FILE SERVING ROUTES (REQUIRED FOR EVERY HTML PAGE)
+# ═══════════════════════════════════════════════════════════════════
+
+@app.get("/")
+def read_root(request: Request):
+    return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))
+
+@app.get("/about")
+def read_about(request: Request):
+    return FileResponse(os.path.join(FRONTEND_DIR, "about.html"))
+
+@app.get("/contact")
+def read_contact(request: Request):
+    return FileResponse(os.path.join(FRONTEND_DIR, "contact.html"))
 
 Your goal is to design a high-converting, professional website using standard Bootstrap 5 components.
 Available Section Types: 'hero', 'features', 'pricing', 'testimonials', 'faq', 'contact'.
