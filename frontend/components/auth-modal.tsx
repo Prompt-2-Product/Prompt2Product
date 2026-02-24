@@ -10,9 +10,10 @@ interface AuthModalProps {
   isOpen: boolean
   onClose: () => void
   mode: 'login' | 'signup'
+  onToggleMode?: (mode: 'login' | 'signup') => void
 }
 
-export function AuthModal({ isOpen, onClose, mode }: AuthModalProps) {
+export function AuthModal({ isOpen, onClose, mode, onToggleMode }: AuthModalProps) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
@@ -48,14 +49,28 @@ export function AuthModal({ isOpen, onClose, mode }: AuthModalProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+
+    const completeAuth = (userData: { name: string; email?: string }) => {
+      // Persist user
+      localStorage.setItem('user', JSON.stringify(userData))
+
+      // Check if we have a post-auth redirect path
+      const redirectPath = sessionStorage.getItem('postAuthRedirect')
+      if (redirectPath) {
+        sessionStorage.removeItem('postAuthRedirect')
+        window.location.href = redirectPath
+        return
+      }
+
+      // Default: close modal and refresh to update UI
+      onClose()
+      window.location.reload()
+    }
+
     if (mode === 'signup' && name && email && password) {
-      const userData = { name, email }
-      localStorage.setItem('user', JSON.stringify(userData))
-      window.location.reload()
+      completeAuth({ name, email })
     } else if (mode === 'login' && email && password) {
-      const userData = { name: email.split('@')[0] }
-      localStorage.setItem('user', JSON.stringify(userData))
-      window.location.reload()
+      completeAuth({ name: email.split('@')[0] })
     }
   }
 
@@ -196,7 +211,10 @@ export function AuthModal({ isOpen, onClose, mode }: AuthModalProps) {
               {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
               <button
                 onClick={() => {
-                  console.log('Toggle auth mode')
+                  const nextMode = mode === 'login' ? 'signup' : 'login'
+                  if (onToggleMode) {
+                    onToggleMode(nextMode)
+                  }
                 }}
                 className="text-primary hover:text-primary/80 font-semibold transition-colors"
               >

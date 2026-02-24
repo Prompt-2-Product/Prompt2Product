@@ -123,7 +123,17 @@ def repair_json(text: str) -> str:
     except:
         pass
     
-    # 4. Handle trailing commas in arrays/objects
+    # 4. Handle trailing commas (Fix: remove them)
     text = re.sub(r',\s*([\]}])', r'\1', text)
-    
+
+    # 5. Handle MISSING commas (Fix: insert them)
+    # Case A: "value" "next_key" -> "value", "next_key"
+    text = re.sub(r'"\s*"\s*(\w+)"\s*:', r'", "\1":', text)
+    # Case B: } { -> }, { (Objects in array)
+    text = re.sub(r'}\s*{', '}, {', text)
+    # Case C: ] { -> ], { (Array then Object)
+    text = re.sub(r']\s*{', '], {', text)
+    # Case D: "value" { -> "value", {
+    text = re.sub(r'"\s*{', '", {', text)
+
     return text
