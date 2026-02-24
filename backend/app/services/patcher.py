@@ -17,14 +17,15 @@ def apply_unified_patch(workspace: Path, patch_text: str) -> None:
     patch_text = patch_text.strip()
     
     # Handle markdown code blocks if LLM wraps the patch
-    if "```" in patch_text:
-        # Simple extraction
-        match = re.search(r"```(?:\w+)?\s*([\s\S]*?)\s*```", patch_text)
-        if match:
-            patch_text = match.group(1).strip()
+    # Robustly remove ``` from start/end
+    patch_text = re.sub(r"^```(?:\w+)?\s*", "", patch_text)
+    patch_text = re.sub(r"\s*```$", "", patch_text)
+    patch_text = patch_text.strip()
 
-    if PATCH_BEGIN not in patch_text or PATCH_END not in patch_text:
-        raise ValueError("Patch missing Begin/End markers")
+    # Lenient check: If we have "Update File:", we can probably proceed even if markers are missing
+    if "*** Update File:" not in patch_text:
+        if PATCH_BEGIN not in patch_text:
+             raise ValueError("Patch missing Begin/End markers and no file updates found")
 
     # Split into file blocks
     # We use regex to split by '*** Update File:' safely
