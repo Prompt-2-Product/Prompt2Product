@@ -100,3 +100,56 @@ def download_project(project_id: int, run_id: int, session: Session = Depends(ge
         media_type='application/zip', 
         filename=f"project_{project_id}_run_{run_id}.zip"
     )
+
+@app.get("/projects/{project_id}/runs/{run_id}/files")
+def list_files(project_id: int, run_id: int, session: Session = Depends(get_session)):
+    ws = project_workspace(project_id, run_id)
+    if not ws.exists():
+        raise HTTPException(status_code=404, detail="Workspace not found")
+    
+    target = ws / "generated_app"
+    if not target.exists():
+        target = ws
+
+    def build_tree(path: Path, base_path: Path):
+        name = path.name
+        rel_path = str(path.relative_to(base_path)).replace("\\", "/")
+        if path.is_dir():
+            children = [build_tree(child, base_path) for child in path.iterdir() if child.name != "__pycache__" and not child.name.endswith(".zip")]
+            return {"id": rel_path, "name": name, "type": "folder", "children": children}
+        else:
+            return {"id": rel_path, "name": name, "type": "file"}
+
+    # If target is generated_app, we want the tree INSIDE it
+    tree = []
+    for item in target.iterdir():
+        if item.name == "__pycache__" or item.name.endswith(".zip"):
+            continue
+        tree.append(build_tree(item, target))
+    
+    return tree
+
+@app.get("/projects/{project_id}/runs/{run_id}/files/{file_path:path}")
+def get_file_content(project_id: int, run_id: int, file_path: str, session: Session = Depends(get_session)):
+    ws = project_workspace(project_id, run_id)
+    if not ws.exists():
+        raise HTTPException(status_code=404, detail="Workspace not found")
+    
+    target = ws / "generated_app"
+    if not target.exists():
+        target = ws
+        
+    full_path = (target / file_path).resolve()
+    
+    # Security check: ensure the resolved path is within the target directory
+    if not str(full_path).startswith(str(target.resolve())):
+        raise HTTPException(status_code=403, detail="Forbidden: Path traversal detected")
+        
+    if not full_path.exists() or not full_path.is_file():
+        raise HTTPException(status_code=404, detail="File not found")
+        
+    try:
+        content = full_path.read_text(encoding="utf-8")
+        return {"content": content}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error reading file: {str(e)}")
