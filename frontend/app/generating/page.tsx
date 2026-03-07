@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Navigation } from '@/components/navigation'
 import { Check, Loader } from 'lucide-react'
+import { api } from '@/lib/api'
 
 export default function GeneratingPage() {
   const router = useRouter()
@@ -17,7 +18,6 @@ export default function GeneratingPage() {
   useEffect(() => {
     const stored = sessionStorage.getItem('projectInfo')
     if (!stored) {
-      // If no project info, redirect to describe page
       router.push('/describe')
       return
     }
@@ -29,63 +29,59 @@ export default function GeneratingPage() {
       return
     }
 
-    // Store project info for display
     setProjectInfo({ description, language, appType })
 
-    // Mock implementation - simulate generation progress
-    const mockLogs = [
-      '[INFO] Starting project generation...',
-      '[INFO] Analyzing prompt and extracting requirements...',
-      '[INFO] Building project specification...',
-      '[INFO] Generating code structure...',
-      '[INFO] Creating main application files...',
-      '[INFO] Setting up dependencies...',
-      '[INFO] Writing configuration files...',
-      '[INFO] Validating generated code...',
-      '[INFO] Running tests...',
-      '[INFO] Project generation completed successfully!',
-    ]
+    let pollInterval: NodeJS.Timeout
+    let logInterval: NodeJS.Timeout
 
-    let logIndex = 0
-    let progressValue = 0
-    let stepValue = 1
+    const fetchStatus = async () => {
+      try {
+        const run = await api.runs.get(runId)
 
-    const simulateProgress = () => {
-      // Add logs progressively
-      if (logIndex < mockLogs.length) {
-        setLogs(prev => [...prev, mockLogs[logIndex]])
-        logIndex++
+        // Update progress based on status
+        if (run.status === 'COMPLETED') {
+          setProgress(100)
+          setCurrentStep(3)
+          clearInterval(pollInterval)
+          clearInterval(logInterval)
+          setTimeout(() => router.push('/preview'), 1500)
+        } else if (run.status === 'FAILED') {
+          setLogs(prev => [...prev, '[ERROR] Project generation failed.'])
+          clearInterval(pollInterval)
+          clearInterval(logInterval)
+        } else if (run.status === 'RUNNING') {
+          // Increment progress slowly while running
+          setProgress(prev => Math.min(prev + 2, 95))
+          setCurrentStep(2)
+        }
+      } catch (error) {
+        console.error('Failed to fetch run status:', error)
       }
-
-      // Update progress and steps - faster increments
-      if (progressValue < 30) {
-        progressValue += 8
-        stepValue = 1
-      } else if (progressValue < 60) {
-        progressValue += 8
-        stepValue = 2
-      } else if (progressValue < 90) {
-        progressValue += 8
-        stepValue = 3
-      } else if (progressValue < 100) {
-        progressValue += 5
-        stepValue = 3
-      } else {
-        // Complete
-        setProgress(100)
-        setCurrentStep(3)
-        setTimeout(() => router.push('/preview'), 1000)
-        return
-      }
-
-      setProgress(progressValue)
-      setCurrentStep(stepValue)
     }
 
-    // Start simulation - faster progress
-    const intervalId = setInterval(simulateProgress, 800)
+    const fetchLogs = async () => {
+      try {
+        const realLogs = await api.runs.getLogs(runId)
+        if (realLogs && Array.isArray(realLogs)) {
+          setLogs(realLogs.map((l: any) => `[${l.level}] ${l.message}`))
+        }
+      } catch (error) {
+        console.error('Failed to fetch logs:', error)
+      }
+    }
 
-    return () => clearInterval(intervalId)
+    // Initial fetch
+    fetchStatus()
+    fetchLogs()
+
+    // Setup polling
+    pollInterval = setInterval(fetchStatus, 3000)
+    logInterval = setInterval(fetchLogs, 2000)
+
+    return () => {
+      clearInterval(pollInterval)
+      clearInterval(logInterval)
+    }
   }, [router])
 
   const steps = [
@@ -183,78 +179,78 @@ export default function GeneratingPage() {
         {/* Right: Generating Content - Fixed Layout */}
         <div className="flex-1 overflow-y-auto custom-scrollbar" style={{ background: 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(0, 0, 139) 33.33%, rgb(135, 206, 250) 66.66%, rgb(255, 255, 255) 100%)' }}>
           <div className="max-w-4xl mx-auto p-6 lg:p-8 pt-12 lg:pt-16">
-              {/* Title - Centered */}
-              <div className="mb-8 md:mb-12 text-center">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">Generating Your Project</h1>
-              </div>
+            {/* Title - Centered */}
+            <div className="mb-8 md:mb-12 text-center">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">Generating Your Project</h1>
+            </div>
 
-              {/* Stepper - Equal Spacing */}
-              <div className="mb-8 md:mb-12">
-                <div className="flex flex-col sm:flex-row sm:items-center items-start sm:justify-center gap-8 sm:gap-12">
-                  {steps.map((step, index) => (
-                    <div key={step.number} className="flex items-center">
-                      <div className="flex flex-col items-center">
-                        <div
-                          className={`flex h-12 w-12 items-center justify-center rounded-full font-semibold transition-all ${step.number < currentStep
+            {/* Stepper - Equal Spacing */}
+            <div className="mb-8 md:mb-12">
+              <div className="flex flex-col sm:flex-row sm:items-center items-start sm:justify-center gap-8 sm:gap-12">
+                {steps.map((step, index) => (
+                  <div key={step.number} className="flex items-center">
+                    <div className="flex flex-col items-center">
+                      <div
+                        className={`flex h-12 w-12 items-center justify-center rounded-full font-semibold transition-all ${step.number < currentStep
+                          ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
+                          : step.number === currentStep
                             ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
-                            : step.number === currentStep
-                              ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
-                              : 'bg-slate-200/80 text-slate-500'
-                            }`}
-                        >
-                          {step.number < currentStep ? (
-                            <Check className="h-6 w-6" />
-                          ) : step.number === currentStep ? (
-                            <Loader className="h-6 w-6 animate-spin" />
-                          ) : (
-                            step.number
-                          )}
-                        </div>
-                        <p className={`mt-3 text-sm font-medium text-center ${step.number <= currentStep ? 'text-slate-800 dark:text-slate-900' : 'text-slate-500'
-                          }`}>
-                          {step.label}
-                        </p>
+                            : 'bg-slate-200/80 text-slate-500'
+                          }`}
+                      >
+                        {step.number < currentStep ? (
+                          <Check className="h-6 w-6" />
+                        ) : step.number === currentStep ? (
+                          <Loader className="h-6 w-6 animate-spin" />
+                        ) : (
+                          step.number
+                        )}
                       </div>
-                      {index < steps.length - 1 && (
-                        <div
-                          className={`hidden sm:block w-16 h-1 mx-4 transition-all ${step.number < currentStep ? 'bg-gradient-to-r from-blue-500 to-cyan-500' : 'bg-slate-200/80'
-                            }`}
-                        ></div>
-                      )}
+                      <p className={`mt-3 text-sm font-medium text-center ${step.number <= currentStep ? 'text-slate-800 dark:text-slate-900' : 'text-slate-500'
+                        }`}>
+                        {step.label}
+                      </p>
+                    </div>
+                    {index < steps.length - 1 && (
+                      <div
+                        className={`hidden sm:block w-16 h-1 mx-4 transition-all ${step.number < currentStep ? 'bg-gradient-to-r from-blue-500 to-cyan-500' : 'bg-slate-200/80'
+                          }`}
+                      ></div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Logs Panel - Centered */}
+            <div className="mb-8 max-w-3xl mx-auto">
+              <div className="rounded-xl bg-background backdrop-blur-md border-b border-border shadow-lg overflow-hidden">
+                <div className="bg-background px-4 py-3 border-b border-border">
+                  <p className="text-xs sm:text-sm font-medium text-foreground text-center">Generation Log</p>
+                </div>
+                <div className="bg-background/60 p-3 sm:p-4 h-56 sm:h-64 overflow-y-auto font-mono text-xs sm:text-sm space-y-1 custom-scrollbar">
+                  {logs.map((log, index) => (
+                    <div key={index} className="text-green-400">
+                      {log}
                     </div>
                   ))}
                 </div>
               </div>
+            </div>
 
-              {/* Logs Panel - Centered */}
-              <div className="mb-8 max-w-3xl mx-auto">
-                <div className="rounded-xl bg-background backdrop-blur-md border-b border-border shadow-lg overflow-hidden">
-                  <div className="bg-background px-4 py-3 border-b border-border">
-                    <p className="text-xs sm:text-sm font-medium text-foreground text-center">Generation Log</p>
-                  </div>
-                  <div className="bg-background/60 p-3 sm:p-4 h-56 sm:h-64 overflow-y-auto font-mono text-xs sm:text-sm space-y-1 custom-scrollbar">
-                    {logs.map((log, index) => (
-                      <div key={index} className="text-green-400">
-                        {log}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+            {/* Progress Bar - Centered */}
+            <div className="space-y-2 max-w-2xl mx-auto">
+              <div className="flex justify-between text-xs text-slate-700 dark:text-slate-800">
+                <span>Progress</span>
+                <span>{Math.min(Math.round(progress), 100)}%</span>
               </div>
-
-              {/* Progress Bar - Centered */}
-              <div className="space-y-2 max-w-2xl mx-auto">
-                <div className="flex justify-between text-xs text-slate-700 dark:text-slate-800">
-                  <span>Progress</span>
-                  <span>{Math.min(Math.round(progress), 100)}%</span>
-                </div>
-                <div className="w-full h-2 rounded-full bg-slate-200/80 overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-500"
-                    style={{ width: `${Math.min(progress, 100)}%` }}
-                  ></div>
-                </div>
+              <div className="w-full h-2 rounded-full bg-slate-200/80 overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-500"
+                  style={{ width: `${Math.min(progress, 100)}%` }}
+                ></div>
               </div>
+            </div>
           </div>
         </div>
       </main>

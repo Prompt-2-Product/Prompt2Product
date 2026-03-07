@@ -16,6 +16,8 @@ interface ProjectInfo {
   runId?: number
 }
 
+import { api } from '@/lib/api'
+
 export default function PreviewPage() {
   const router = useRouter()
   const [projectInfo, setProjectInfo] = useState<ProjectInfo | null>(null)
@@ -33,14 +35,11 @@ export default function PreviewPage() {
 
   const handleChatSubmit = (message: string) => {
     if (message.trim()) {
-      // Add to chat history
       setChatHistory(prev => [...prev, { role: 'user', content: message }])
       setChangeMessage('')
-      
-      // Store the changes request and navigate to generating page
+
       sessionStorage.setItem('changeRequest', message)
       setIsRegenerating(true)
-      // Small delay to show processing state
       setTimeout(() => {
         router.push('/generating')
       }, 1000)
@@ -48,23 +47,20 @@ export default function PreviewPage() {
   }
 
   const handleDownload = () => {
-    // Mock implementation - simulate download
     if (projectInfo?.projectId && projectInfo?.runId) {
-      // Create a dummy download (you can enhance this to create an actual zip file)
-      const fileName = `project-${projectInfo.projectId}-${Date.now()}.zip`
-      alert(`Mock download: ${fileName}\n\nIn production, this would download the generated project.`)
-      console.log('Mock download triggered for project:', projectInfo.projectId, 'run:', projectInfo.runId)
+      const url = api.projects.downloadUrl(projectInfo.projectId, projectInfo.runId)
+      window.open(url, '_blank')
+    } else {
+      alert('Project information missing. Cannot download.')
     }
   }
 
   const handlePreview = () => {
-    // Mock implementation - simulate preview
     if (projectInfo?.runId) {
-      alert(`Mock preview: Opening preview for run ${projectInfo.runId}\n\nIn production, this would open the running application.`)
-      console.log('Mock preview triggered for run:', projectInfo.runId)
-      // Uncomment below to actually try opening (will fail without backend, but shows intent)
-      // const port = 8000 + projectInfo.runId
-      // window.open(`http://127.0.0.1:${port}`, '_blank')
+      // In a real scenario, we might have a port mapping or a proxy
+      // For now, we'll try to follow the intent of the original mock
+      const port = 8000 + projectInfo.runId
+      window.open(`http://127.0.0.1:${port}`, '_blank')
     }
   }
 
@@ -233,90 +229,90 @@ export default function PreviewPage() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12 lg:items-stretch">
-            {/* Left: Project Info Card - Matching describe page style */}
-            <div className="lg:col-span-2 flex">
-              <div className="rounded-2xl bg-card/90 border border-white/10 shadow-2xl backdrop-blur-sm p-5 sm:p-6 md:p-8 w-full flex flex-col">
-                <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-foreground">Generated Project</h2>
+              {/* Left: Project Info Card - Matching describe page style */}
+              <div className="lg:col-span-2 flex">
+                <div className="rounded-2xl bg-card/90 border border-white/10 shadow-2xl backdrop-blur-sm p-5 sm:p-6 md:p-8 w-full flex flex-col">
+                  <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-foreground">Generated Project</h2>
 
-                <div className="space-y-4 sm:space-y-6 flex-grow">
-                  <div>
-                    <label className="text-xs sm:text-sm font-medium text-muted-foreground block mb-2">Project Description</label>
-                    <p className="text-foreground text-sm sm:text-base leading-relaxed">{projectInfo.description}</p>
+                  <div className="space-y-4 sm:space-y-6 flex-grow">
+                    <div>
+                      <label className="text-xs sm:text-sm font-medium text-muted-foreground block mb-2">Project Description</label>
+                      <p className="text-foreground text-sm sm:text-base leading-relaxed">{projectInfo.description}</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground block mb-2">Language</label>
+                        <p className="text-foreground font-medium">{projectInfo.language}</p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground block mb-2">Project Type</label>
+                        <p className="text-foreground font-medium">{projectInfo.appType}</p>
+                      </div>
+                    </div>
+
+                    {projectInfo.additionalInstructions && (
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground block mb-2">Additional Instructions</label>
+                        <p className="text-foreground text-sm">{projectInfo.additionalInstructions}</p>
+                      </div>
+                    )}
                   </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium text-muted-foreground block mb-2">Language</label>
-                      <p className="text-foreground font-medium">{projectInfo.language}</p>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium text-muted-foreground block mb-2">Project Type</label>
-                      <p className="text-foreground font-medium">{projectInfo.appType}</p>
-                    </div>
-                  </div>
-
-                  {projectInfo.additionalInstructions && (
-                    <div>
-                      <label className="text-sm font-medium text-muted-foreground block mb-2">Additional Instructions</label>
-                      <p className="text-foreground text-sm">{projectInfo.additionalInstructions}</p>
-                    </div>
-                  )}
                 </div>
               </div>
-            </div>
 
-            {/* Right: Action Buttons - Matching describe page style */}
-            <div className="flex">
-              <div className="rounded-2xl bg-card/90 border border-white/10 shadow-2xl backdrop-blur-sm p-5 sm:p-6 md:p-8 w-full flex flex-col">
-                <h3 className="text-xl sm:text-2xl font-semibold text-foreground mb-4 sm:mb-6">Actions</h3>
-                <div className="space-y-2.5 sm:space-y-3 flex-grow flex flex-col justify-start">
-                  <Button
-                    onClick={() => router.push('/ide')}
-                    className="w-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-600 hover:from-blue-600 hover:via-blue-500 hover:to-cyan-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 h-12 group"
-                    size="lg"
-                  >
-                    <Code2 className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
-                    View Code (Advanced)
-                  </Button>
+              {/* Right: Action Buttons - Matching describe page style */}
+              <div className="flex">
+                <div className="rounded-2xl bg-card/90 border border-white/10 shadow-2xl backdrop-blur-sm p-5 sm:p-6 md:p-8 w-full flex flex-col">
+                  <h3 className="text-xl sm:text-2xl font-semibold text-foreground mb-4 sm:mb-6">Actions</h3>
+                  <div className="space-y-2.5 sm:space-y-3 flex-grow flex flex-col justify-start">
+                    <Button
+                      onClick={() => router.push('/ide')}
+                      className="w-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-600 hover:from-blue-600 hover:via-blue-500 hover:to-cyan-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 h-12 group"
+                      size="lg"
+                    >
+                      <Code2 className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                      View Code (Advanced)
+                    </Button>
 
-                  <Button
-                    onClick={() => setShowChat(true)}
-                    variant="outline"
-                    className="w-full border-b border-border !bg-background backdrop-blur-md text-foreground hover:!bg-background/90 hover:border-blue-400/50 transition-all duration-300 h-12 font-medium shadow-sm hover:shadow-md group"
-                    size="lg"
-                  >
-                    <Edit3 className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform group-hover:text-blue-400" />
-                    <span className="group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-cyan-500 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
-                      Request Changes
-                    </span>
-                  </Button>
+                    <Button
+                      onClick={() => setShowChat(true)}
+                      variant="outline"
+                      className="w-full border-b border-border !bg-background backdrop-blur-md text-foreground hover:!bg-background/90 hover:border-blue-400/50 transition-all duration-300 h-12 font-medium shadow-sm hover:shadow-md group"
+                      size="lg"
+                    >
+                      <Edit3 className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform group-hover:text-blue-400" />
+                      <span className="group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-cyan-500 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                        Request Changes
+                      </span>
+                    </Button>
 
-                  <Button
-                    onClick={handleDownload}
-                    variant="outline"
-                    className="w-full border-b border-border !bg-background backdrop-blur-md text-foreground hover:!bg-background/90 hover:border-blue-400/50 transition-all duration-300 h-12 font-medium shadow-sm hover:shadow-md group"
-                    size="lg"
-                  >
-                    <Download className="mr-2 h-4 w-4 group-hover:translate-y-0.5 transition-transform group-hover:text-blue-400" />
-                    <span className="group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-cyan-500 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
-                      Download Project
-                    </span>
-                  </Button>
+                    <Button
+                      onClick={handleDownload}
+                      variant="outline"
+                      className="w-full border-b border-border !bg-background backdrop-blur-md text-foreground hover:!bg-background/90 hover:border-blue-400/50 transition-all duration-300 h-12 font-medium shadow-sm hover:shadow-md group"
+                      size="lg"
+                    >
+                      <Download className="mr-2 h-4 w-4 group-hover:translate-y-0.5 transition-transform group-hover:text-blue-400" />
+                      <span className="group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-cyan-500 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                        Download Project
+                      </span>
+                    </Button>
 
-                  <Button
-                    onClick={handlePreview}
-                    variant="outline"
-                    className="w-full border-b border-border !bg-background backdrop-blur-md text-foreground hover:!bg-background/90 hover:border-blue-400/50 transition-all duration-300 h-12 font-medium shadow-sm hover:shadow-md group"
-                    size="lg"
-                  >
-                    <Eye className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform group-hover:text-blue-400" />
-                    <span className="group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-cyan-500 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
-                      Preview Prompt
-                    </span>
-                  </Button>
+                    <Button
+                      onClick={handlePreview}
+                      variant="outline"
+                      className="w-full border-b border-border !bg-background backdrop-blur-md text-foreground hover:!bg-background/90 hover:border-blue-400/50 transition-all duration-300 h-12 font-medium shadow-sm hover:shadow-md group"
+                      size="lg"
+                    >
+                      <Eye className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform group-hover:text-blue-400" />
+                      <span className="group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-cyan-500 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                        Preview Prompt
+                      </span>
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </div>
             </div>
           </div>
         </div>

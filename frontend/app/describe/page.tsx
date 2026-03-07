@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Navigation } from '@/components/navigation'
 import { Button } from '@/components/ui/button'
 import { SlidersHorizontal } from 'lucide-react'
+import { api } from '@/lib/api'
 
 const APP_TYPES = [
   'Web App',
@@ -81,35 +82,39 @@ export default function DescribePage() {
 
   const handleGenerateProject = async () => {
     if (description.trim()) {
-      // Decide final language/appType based on auto-detect setting
-      let finalLanguage = language
-      let finalAppType = appType
+      try {
+        // Decide final language/appType based on auto-detect setting
+        let finalLanguage = language
+        let finalAppType = appType
 
-      if (autoDetect) {
-        finalLanguage = detectLanguage(description)
-        finalAppType = detectAppType(description)
-        setLanguage(finalLanguage)
-        setAppType(finalAppType)
+        if (autoDetect) {
+          finalLanguage = detectLanguage(description)
+          finalAppType = detectAppType(description)
+          setLanguage(finalLanguage)
+          setAppType(finalAppType)
+        }
+
+        // 1. Create the project
+        const project = await api.projects.create(description.slice(0, 30) || 'New Project')
+
+        // 2. Start the run
+        const run = await api.projects.startRun(project.id, description)
+
+        // Store project info for the generating page
+        sessionStorage.setItem('projectInfo', JSON.stringify({
+          description,
+          language: finalLanguage,
+          appType: finalAppType,
+          additionalInstructions,
+          projectId: project.id,
+          runId: run.run_id
+        }))
+
+        router.push('/generating')
+      } catch (error) {
+        console.error('Failed to generate project:', error)
+        alert('Failed to connect to backend. Please make sure the backend is running.')
       }
-
-      // Mock implementation - no backend calls
-      // Generate dummy project and run IDs
-      const mockProjectId = Math.floor(Math.random() * 1000) + 1
-      const mockRunId = Math.floor(Math.random() * 10000) + 1
-
-      // Store project info for the generating page
-      sessionStorage.setItem('projectInfo', JSON.stringify({
-        description,
-        language: finalLanguage,
-        appType: finalAppType,
-        additionalInstructions,
-        projectId: mockProjectId,
-        runId: mockRunId
-      }))
-      
-      // Small delay to simulate API call
-      await new Promise(resolve => setTimeout(resolve, 300))
-      router.push('/generating')
     }
   }
 
@@ -216,16 +221,14 @@ export default function DescribePage() {
                   <button
                     type="button"
                     onClick={() => setAutoDetect((v) => !v)}
-                    className={`relative inline-flex h-6 w-10 flex-shrink-0 items-center rounded-full border transition-colors ${
-                      autoDetect ? 'bg-primary/80 border-primary' : 'bg-black/40 border-border'
-                    }`}
+                    className={`relative inline-flex h-6 w-10 flex-shrink-0 items-center rounded-full border transition-colors ${autoDetect ? 'bg-primary/80 border-primary' : 'bg-black/40 border-border'
+                      }`}
                     role="switch"
                     aria-checked={autoDetect}
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
-                        autoDetect ? 'translate-x-4' : 'translate-x-1'
-                      }`}
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${autoDetect ? 'translate-x-4' : 'translate-x-1'
+                        }`}
                     />
                   </button>
                 </div>
