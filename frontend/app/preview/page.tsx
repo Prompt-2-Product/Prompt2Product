@@ -59,7 +59,7 @@ export default function PreviewPage() {
     if (projectInfo?.runId) {
       // In a real scenario, we might have a port mapping or a proxy
       // For now, we'll try to follow the intent of the original mock
-      const port = 8000 + projectInfo.runId
+      const port = 8010 + projectInfo.runId
       window.open(`http://127.0.0.1:${port}`, '_blank')
     }
   }

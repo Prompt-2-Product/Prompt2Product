@@ -11,3 +11,6 @@ class RunStatusResponse(BaseModel):
     run_id: int
     status: str
     attempts: int
+
+class ModifyRunRequest(BaseModel):
+    prompt: str
