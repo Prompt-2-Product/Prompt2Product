@@ -13,7 +13,7 @@ except Exception:
 
 class Settings(BaseModel):
     DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./app.db")
-    WORKSPACE_ROOT: Path = Path(__file__).resolve().parents[1] / "storage" / "workspaces"
+    WORKSPACE_ROOT: Path = Path(__file__).resolve().parents[3] / "storage" / "workspaces"
 
     # LLM mode
     LLM_MODE: str = os.getenv("LLM_MODE", "ollama").strip().lower()

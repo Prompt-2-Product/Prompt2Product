@@ -10,6 +10,8 @@ export default function GeneratingPage() {
   const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1)
   const [progress, setProgress] = useState(0)
+  const [status, setStatus] = useState<'pending' | 'running' | 'success' | 'failed'>('pending')
+  const [error, setError] = useState<string | null>(null)
   const [logs, setLogs] = useState<string[]>([
     '[INFO] Initializing project generation...',
   ])
@@ -22,8 +24,9 @@ export default function GeneratingPage() {
       return
     }
 
-    const parsed = JSON.parse(stored)
-    const { projectId, runId, description, language, appType } = parsed
+    const { projectId, runId, description, language, appType } = JSON.parse(stored)
+    console.log(`[GENERATING] Start polling for Project: ${projectId}, Run: ${runId}`)
+
     if (!projectId || !runId) {
       router.push('/describe')
       return
@@ -31,68 +34,86 @@ export default function GeneratingPage() {
 
     setProjectInfo({ description, language, appType })
 
-    let pollInterval: NodeJS.Timeout
-    let logInterval: NodeJS.Timeout
+    let intervalId: NodeJS.Timeout
+    let retryCount = 0
 
-    const fetchStatus = async () => {
+    const poll = async () => {
       try {
-        const run = await api.runs.get(runId)
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+        
+        // Fetch Status
+        const statusRes = await fetch(`${apiUrl}/runs/${runId}`)
+        if (statusRes.ok) {
+          retryCount = 0 
+          const run = await statusRes.json()
+          setStatus(run.status)
 
-        // Update progress based on status
-        if (run.status === 'COMPLETED') {
-          setProgress(100)
-          setCurrentStep(3)
-          clearInterval(pollInterval)
-          clearInterval(logInterval)
-          setTimeout(() => router.push('/preview'), 1500)
-        } else if (run.status === 'FAILED') {
-          setLogs(prev => [...prev, '[ERROR] Project generation failed.'])
-          clearInterval(pollInterval)
-          clearInterval(logInterval)
-        } else if (run.status === 'RUNNING') {
-          // Increment progress slowly while running
-          setProgress(prev => Math.min(prev + 2, 95))
-          setCurrentStep(2)
+          if (run.status === 'success') {
+            setProgress(100)
+            setCurrentStep(3)
+            setTimeout(() => router.push('/preview'), 1500)
+            clearInterval(intervalId)
+            return
+          } else if (run.status === 'failed') {
+            setError('The generation process encountered an error.')
+            clearInterval(intervalId)
+            return
+          }
         }
-      } catch (error) {
-        console.error('Failed to fetch run status:', error)
+
+        // Fetch Logs
+        const logsRes = await fetch(`${apiUrl}/runs/${runId}/logs`)
+        if (logsRes.ok) {
+          const logEvents = await logsRes.json()
+          const logStrings = logEvents.map((e: any) => `[${e.level}] ${e.message}`)
+          setLogs(logStrings)
+
+          // Auto-detect failure from logs if status hasn't updated yet
+          const fatalLog = logEvents.find((e: any) => e.level === 'ERROR' || e.stage === 'fatal')
+          if (fatalLog) {
+              setStatus('failed')
+              setError(fatalLog.message)
+              clearInterval(intervalId)
+              return
+          }
+
+          // derive step from logs
+          const lastLog = logEvents[logEvents.length - 1]
+          if (lastLog) {
+            if (lastLog.stage === 'enhance') {
+              setProgress(10)
+            } else if (lastLog.stage === 'spec') {
+              setCurrentStep(1)
+              setProgress(30)
+            } else if (['codegen', 'enrich', 'validate'].includes(lastLog.stage)) {
+              setCurrentStep(2)
+              setProgress(60)
+            } else if (['sandbox', 'deps', 'run', 'repair'].includes(lastLog.stage)) {
+              setCurrentStep(3)
+              setProgress(90)
+            }
+          }
+        }
+      } catch (err) {
+        retryCount++
+        console.error(`[GENERATING] Polling error (attempt ${retryCount}):`, err)
       }
     }
 
-    const fetchLogs = async () => {
-      try {
-        const realLogs = await api.runs.getLogs(runId)
-        if (realLogs && Array.isArray(realLogs)) {
-          setLogs(realLogs.map((l: any) => `[${l.level}] ${l.message}`))
-        }
-      } catch (error) {
-        console.error('Failed to fetch logs:', error)
-      }
-    }
+    intervalId = setInterval(poll, 3000)
+    poll()
 
-    // Initial fetch
-    fetchStatus()
-    fetchLogs()
-
-    // Setup polling
-    pollInterval = setInterval(fetchStatus, 3000)
-    logInterval = setInterval(fetchLogs, 2000)
-
-    return () => {
-      clearInterval(pollInterval)
-      clearInterval(logInterval)
-    }
+    return () => clearInterval(intervalId)
   }, [router])
 
   const steps = [
     { number: 1, label: 'Understanding Prompt' },
     { number: 2, label: 'Generating Skeleton' },
-    { number: 3, label: 'Validating' },
+    { number: 3, label: 'Validating & Starting' },
   ]
 
   return (
     <div className="min-h-screen text-foreground relative overflow-hidden page-transition">
-      {/* Light blue gradient background - matching describe page */}
       <div
         className="pointer-events-none absolute inset-0 -z-10"
         aria-hidden="true"
@@ -103,9 +124,7 @@ export default function GeneratingPage() {
       <Navigation />
 
       <main className="absolute inset-x-0 top-[3rem] bottom-0 flex flex-col lg:flex-row">
-        {/* Left: Chat Interface - Fixed Size */}
         <aside className="w-full lg:w-[380px] border-r border-border/50 bg-background flex flex-col flex-shrink-0 h-full">
-          {/* Chat Header - Enhanced */}
           <div className="px-5 py-4 border-b border-border/50 flex-shrink-0 bg-background backdrop-blur-sm">
             <div className="flex items-center justify-between">
               <div className="flex-1">
@@ -124,9 +143,7 @@ export default function GeneratingPage() {
             </div>
           </div>
 
-          {/* Chat Messages Area - Enhanced with better spacing */}
           <div className="flex-1 overflow-y-auto px-5 py-4 space-y-5 custom-scrollbar min-h-0">
-            {/* User Message - Improved styling */}
             {projectInfo && (
               <div className="flex flex-col gap-2.5">
                 <div className="flex items-center gap-2">
@@ -141,7 +158,6 @@ export default function GeneratingPage() {
               </div>
             )}
 
-            {/* System Response - Enhanced styling */}
             <div className="flex flex-col gap-2.5">
               <div className="flex items-center gap-2">
                 <div className="h-6 w-6 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center">
@@ -149,88 +165,126 @@ export default function GeneratingPage() {
                 </div>
                 <span className="text-xs font-medium text-muted-foreground">Prompt2Product</span>
               </div>
-              <div className="ml-8 rounded-xl bg-primary/15 border border-primary/30 p-4 text-sm leading-relaxed text-foreground shadow-sm">
-                <div className="flex items-center gap-2 mb-2">
-                  <Loader className="h-4 w-4 animate-spin text-primary" />
-                  <span className="font-medium">Generating your project...</span>
-                </div>
-                <p className="text-muted-foreground text-xs">This may take a few moments. Please wait while we build your project.</p>
+              <div className={`ml-8 rounded-xl border p-4 text-sm leading-relaxed shadow-sm ${status === 'failed' ? 'bg-red-500/10 border-red-500/50 text-red-700' : 'bg-primary/15 border-primary/30 text-foreground'}`}>
+                {status === 'failed' ? (
+                  <>
+                    <div className="flex items-center gap-2 mb-2 font-bold text-red-600">
+                      <X className="h-4 w-4" />
+                      <span>Generation Failed</span>
+                    </div>
+                    <p className="text-xs mb-3">{error || 'An unexpected error occurred during generation.'}</p>
+                    <button 
+                      onClick={() => router.push('/describe')}
+                      className="px-3 py-1.5 bg-red-600 text-white rounded-lg text-xs font-semibold hover:bg-red-700 transition-colors"
+                    >
+                      Try Again
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex items-center gap-2 mb-2 text-foreground">
+                      {status === 'success' ? <Check className="h-4 w-4 text-green-500" /> : <Loader className="h-4 w-4 animate-spin text-primary" />}
+                      <span className="font-medium">{status === 'success' ? 'Generation Complete!' : 'Generating your project...'}</span>
+                    </div>
+                    <p className="text-muted-foreground text-xs">
+                      {status === 'pending' ? 'Initializing...' : 'This may take a few moments. Please wait while we build your project.'}
+                    </p>
+                  </>
+                )}
               </div>
             </div>
           </div>
 
-          {/* Chat Input Area - Enhanced */}
           <div className="px-5 py-4 border-t border-border/50 flex-shrink-0 bg-background backdrop-blur-sm">
             <div className="relative">
               <textarea
                 disabled
-                placeholder="Generation in progress... Please wait."
+                placeholder={status === 'failed' ? "Generation failed." : "Generation in progress..."}
                 className="w-full min-h-[90px] rounded-xl bg-secondary/40 border border-border/60 px-4 py-3 text-sm text-muted-foreground resize-none focus:outline-none disabled:cursor-not-allowed disabled:opacity-70 placeholder:text-muted-foreground/60"
                 rows={3}
               />
-              <div className="absolute bottom-3 right-3 flex items-center gap-1.5 text-xs text-muted-foreground/60">
-                <Loader className="h-3 w-3 animate-spin" />
-                <span>Processing...</span>
-              </div>
             </div>
           </div>
         </aside>
 
-        {/* Right: Generating Content - Fixed Layout */}
         <div className="flex-1 overflow-y-auto custom-scrollbar" style={{ background: 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(0, 0, 139) 33.33%, rgb(135, 206, 250) 66.66%, rgb(255, 255, 255) 100%)' }}>
           <div className="max-w-4xl mx-auto p-6 lg:p-8 pt-12 lg:pt-16">
-            {/* Title - Centered */}
-            <div className="mb-8 md:mb-12 text-center">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">Generating Your Project</h1>
+            <div className="mb-8 md:mb-12 text-center text-white">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">
+                {status === 'failed' ? 'Generation Error' : 'Generating Your Project'}
+              </h1>
             </div>
 
-            {/* Stepper - Equal Spacing */}
-            <div className="mb-8 md:mb-12">
-              <div className="flex flex-col sm:flex-row sm:items-center items-start sm:justify-center gap-8 sm:gap-12">
-                {steps.map((step, index) => (
-                  <div key={step.number} className="flex items-center">
-                    <div className="flex flex-col items-center">
-                      <div
-                        className={`flex h-12 w-12 items-center justify-center rounded-full font-semibold transition-all ${step.number < currentStep
-                          ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
-                          : step.number === currentStep
-                            ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
-                            : 'bg-slate-200/80 text-slate-500'
-                          }`}
-                      >
-                        {step.number < currentStep ? (
-                          <Check className="h-6 w-6" />
-                        ) : step.number === currentStep ? (
-                          <Loader className="h-6 w-6 animate-spin" />
-                        ) : (
-                          step.number
-                        )}
-                      </div>
-                      <p className={`mt-3 text-sm font-medium text-center ${step.number <= currentStep ? 'text-slate-800 dark:text-slate-900' : 'text-slate-500'
-                        }`}>
-                        {step.label}
-                      </p>
-                    </div>
-                    {index < steps.length - 1 && (
-                      <div
-                        className={`hidden sm:block w-16 h-1 mx-4 transition-all ${step.number < currentStep ? 'bg-gradient-to-r from-blue-500 to-cyan-500' : 'bg-slate-200/80'
-                          }`}
-                      ></div>
-                    )}
-                  </div>
-                ))}
+            {status === 'failed' ? (
+              <div className="max-w-2xl mx-auto mb-12 p-6 rounded-2xl bg-white/10 backdrop-blur-xl border border-red-500/30 text-center">
+                <div className="h-16 w-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <X className="h-8 w-8 text-red-500" />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">Something went wrong</h3>
+                <p className="text-slate-200 text-sm mb-6 leading-relaxed">
+                  The LLM failed to respond. This is often caused by an unstable connection to Ollama (SSH tunnel timeout) or the model taking too long to generate.
+                </p>
+                <div className="flex justify-center gap-4">
+                  <button 
+                    onClick={() => router.push('/describe')}
+                    className="px-6 py-2.5 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/25"
+                  >
+                    Modify Prompt
+                  </button>
+                  <button 
+                    onClick={() => window.location.reload()}
+                    className="px-6 py-2.5 bg-white/10 text-white border border-white/20 rounded-xl font-semibold hover:bg-white/20 transition-all"
+                  >
+                    Retry Connection
+                  </button>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="mb-8 md:mb-12">
+                <div className="flex flex-col sm:flex-row sm:items-center items-start sm:justify-center gap-8 sm:gap-12">
+                  {steps.map((step, index) => (
+                    <div key={step.number} className="flex items-center">
+                      <div className="flex flex-col items-center">
+                        <div
+                          className={`flex h-12 w-12 items-center justify-center rounded-full font-semibold transition-all ${step.number < currentStep
+                            ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
+                            : step.number === currentStep
+                              ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
+                              : 'bg-slate-200/80 text-slate-500'
+                            }`}
+                        >
+                          {step.number < currentStep ? (
+                            <Check className="h-6 w-6" />
+                          ) : step.number === currentStep ? (
+                            <Loader className="h-6 w-6 animate-spin" />
+                          ) : (
+                            step.number
+                          )}
+                        </div>
+                        <p className={`mt-3 text-sm font-medium text-center ${step.number <= currentStep ? 'text-white' : 'text-slate-400'}`}>
+                          {step.label}
+                        </p>
+                      </div>
+                      {index < steps.length - 1 && (
+                        <div
+                          className={`hidden sm:block w-16 h-1 mx-4 transition-all ${step.number < currentStep ? 'bg-gradient-to-r from-blue-500 to-cyan-500' : 'bg-slate-200/80'}`}
+                        ></div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
-            {/* Logs Panel - Centered */}
             <div className="mb-8 max-w-3xl mx-auto">
-              <div className="rounded-xl bg-background backdrop-blur-md border-b border-border shadow-lg overflow-hidden">
-                <div className="bg-background px-4 py-3 border-b border-border">
-                  <p className="text-xs sm:text-sm font-medium text-foreground text-center">Generation Log</p>
+              <div className="rounded-xl bg-background backdrop-blur-md border border-border shadow-lg overflow-hidden">
+                <div className="bg-background px-4 py-3 border-b border-border flex justify-between items-center">
+                  <p className="text-xs sm:text-sm font-medium text-foreground">Generation Log</p>
+                  {status === 'failed' && <span className="text-[10px] bg-red-500/20 text-red-500 px-2 py-0.5 rounded font-bold uppercase tracking-wider">Failed</span>}
                 </div>
                 <div className="bg-background/60 p-3 sm:p-4 h-56 sm:h-64 overflow-y-auto font-mono text-xs sm:text-sm space-y-1 custom-scrollbar">
                   {logs.map((log, index) => (
-                    <div key={index} className="text-green-400">
+                    <div key={index} className={log.includes('[ERROR]') || log.includes('[fatal]') ? 'text-red-400' : 'text-green-400'}>
                       {log}
                     </div>
                   ))}
@@ -238,22 +292,43 @@ export default function GeneratingPage() {
               </div>
             </div>
 
-            {/* Progress Bar - Centered */}
-            <div className="space-y-2 max-w-2xl mx-auto">
-              <div className="flex justify-between text-xs text-slate-700 dark:text-slate-800">
-                <span>Progress</span>
-                <span>{Math.min(Math.round(progress), 100)}%</span>
+            {status !== 'failed' && (
+              <div className="space-y-2 max-w-2xl mx-auto">
+                <div className="flex justify-between text-xs text-white">
+                  <span>Progress</span>
+                  <span>{Math.min(Math.round(progress), 100)}%</span>
+                </div>
+                <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-500"
+                    style={{ width: `${Math.min(progress, 100)}%` }}
+                  ></div>
+                </div>
               </div>
-              <div className="w-full h-2 rounded-full bg-slate-200/80 overflow-hidden">
-                <div
-                  className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-500"
-                  style={{ width: `${Math.min(progress, 100)}%` }}
-                ></div>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </main>
     </div>
+  )
+}
+
+function X(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg>
   )
 }

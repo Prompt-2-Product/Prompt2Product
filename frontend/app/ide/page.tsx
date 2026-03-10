@@ -1,60 +1,106 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { Navigation } from '@/components/navigation'
 import { Button } from '@/components/ui/button'
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable'
-import { ChevronRight, ChevronDown, File, Folder, ArrowLeft, Download, MessageSquare, X, Minimize2, Maximize2 } from 'lucide-react'
+import { ChevronRight, ChevronDown, File, Folder, ArrowLeft, Download, MessageSquare, Minimize2, Maximize2, Loader2 } from 'lucide-react'
 
-const PYTHON_CODE = `def hello_world():
-    print("Hello, World!")
-
-def greet(name):
-    return f"Hello, {name}!"
-
-class Calculator:
-    @staticmethod
-    def add(a, b):
-        return a + b
-    
-    @staticmethod
-    def multiply(a, b):
-        return a * b
-
-if __name__ == "__main__":
-    print(greet("Prompt2Product"))
-    calc = Calculator()
-    print(calc.add(10, 5))
-    print(calc.multiply(3, 4))`
+interface FileNode {
+  id: string
+  name: string
+  type: 'file' | 'folder'
+  children?: FileNode[]
+}
 
 export default function IDEPage() {
   const router = useRouter()
-  const [expandedFolders, setExpandedFolders] = useState<string[]>(['src', 'config'])
-  const [selectedFile, setSelectedFile] = useState<string>('main.py')
+  const [expandedFolders, setExpandedFolders] = useState<string[]>([])
+  const [selectedFile, setSelectedFile] = useState<string | null>(null)
+  const [fileContent, setFileContent] = useState<string>('')
+  const [fileTree, setFileTree] = useState<FileNode[]>([])
+  const [isLoadingTree, setIsLoadingTree] = useState(true)
+  const [isLoadingContent, setIsLoadingContent] = useState(false)
+  
   const [chatCollapsed, setChatCollapsed] = useState(false)
   const [explorerCollapsed, setExplorerCollapsed] = useState(false)
   const [consoleCollapsed, setConsoleCollapsed] = useState(false)
-  const [projectInfo, setProjectInfo] = useState<{ description: string; language: string; appType: string } | null>(null)
+  const [projectInfo, setProjectInfo] = useState<{ projectId: number; runId: number; description: string; language: string; appType: string } | null>(null)
   const [chatMessage, setChatMessage] = useState('')
   const [chatHistory, setChatHistory] = useState<Array<{ role: 'user' | 'system'; content: string }>>([])
 
-  useEffect(() => {
-    // Load project info from sessionStorage
-    const stored = sessionStorage.getItem('projectInfo')
-    if (stored) {
-      const parsed = JSON.parse(stored)
-      setProjectInfo({ description: parsed.description, language: parsed.language, appType: parsed.appType })
-      setChatHistory([
-        { role: 'user', content: parsed.description },
-        { role: 'system', content: 'Your project is ready! How can I help you modify it?' }
-      ])
+  const fetchFileTree = useCallback(async (projectId: number, runId: number) => {
+    setIsLoadingTree(true)
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const res = await fetch(`${apiUrl}/projects/${projectId}/runs/${runId}/files`)
+      if (res.ok) {
+        const data = await res.json()
+        setFileTree(data)
+        // Auto-expand first folder if exists
+        if (data.length > 0 && data[0].type === 'folder') {
+          setExpandedFolders([data[0].id])
+        }
+      }
+    } catch (err) {
+      console.error('Failed to fetch file tree:', err)
+    } finally {
+      setIsLoadingTree(false)
     }
   }, [])
 
-  const toggleFolder = (folderName: string) => {
+  const fetchFileContent = async (projectId: number, runId: number, filePath: string) => {
+    setIsLoadingContent(true)
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const res = await fetch(`${apiUrl}/projects/${projectId}/runs/${runId}/files/${filePath}`)
+      if (res.ok) {
+        const data = await res.json()
+        setFileContent(data.content)
+      } else {
+        setFileContent('// Error loading file content')
+      }
+    } catch (err) {
+      console.error('Failed to fetch file content:', err)
+      setFileContent('// Error connecting to backend')
+    } finally {
+      setIsLoadingContent(false)
+    }
+  }
+
+  useEffect(() => {
+    const stored = sessionStorage.getItem('projectInfo')
+    if (stored) {
+      const parsed = JSON.parse(stored)
+      const { projectId, runId, description, language, appType } = parsed
+      
+      if (!projectId || !runId) {
+        router.push('/describe')
+        return
+      }
+
+      setProjectInfo({ projectId, runId, description, language, appType })
+      setChatHistory([
+        { role: 'user', content: description },
+        { role: 'system', content: 'Your project is ready! How can I help you modify it?' }
+      ])
+
+      fetchFileTree(projectId, runId)
+    } else {
+      router.push('/describe')
+    }
+  }, [router, fetchFileTree])
+
+  useEffect(() => {
+    if (selectedFile && projectInfo) {
+      fetchFileContent(projectInfo.projectId, projectInfo.runId, selectedFile)
+    }
+  }, [selectedFile, projectInfo])
+
+  const toggleFolder = (folderId: string) => {
     setExpandedFolders((prev) =>
-      prev.includes(folderName) ? prev.filter((f) => f !== folderName) : [...prev, folderName],
+      prev.includes(folderId) ? prev.filter((f) => f !== folderId) : [...prev, folderId],
     )
   }
 
@@ -62,7 +108,6 @@ export default function IDEPage() {
     if (chatMessage.trim()) {
       setChatHistory(prev => [...prev, { role: 'user', content: chatMessage }])
       setChatMessage('')
-      // In production, this would send to backend
       setTimeout(() => {
         setChatHistory(prev => [...prev, { role: 'system', content: 'I understand. Let me help you with that change.' }])
       }, 1000)
@@ -70,34 +115,52 @@ export default function IDEPage() {
   }
 
   const handleDownload = () => {
-    // Mock download - in production, this would call the backend API
     if (projectInfo) {
-      alert('Downloading project...\n\nIn production, this would download the generated project as a ZIP file.')
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      window.open(`${apiUrl}/projects/${projectInfo.projectId}/runs/${projectInfo.runId}/download`, '_blank')
     }
   }
 
-  const fileTree = [
-    {
-      id: 'src',
-      name: 'src',
-      type: 'folder' as const,
-      children: [
-        { id: 'main.py', name: 'main.py', type: 'file' as const },
-        { id: 'utils.py', name: 'utils.py', type: 'file' as const },
-        { id: 'config.py', name: 'config.py', type: 'file' as const },
-      ],
-    },
-    {
-      id: 'config',
-      name: 'config',
-      type: 'folder' as const,
-      children: [
-        { id: 'settings.json', name: 'settings.json', type: 'file' as const },
-        { id: 'requirements.txt', name: 'requirements.txt', type: 'file' as const },
-      ],
-    },
-    { id: 'README.md', name: 'README.md', type: 'file' as const },
-  ]
+  const renderTree = (nodes: FileNode[]) => {
+    return nodes.map((node) => (
+      <div key={node.id}>
+        {node.type === 'folder' ? (
+          <div>
+            <button
+              onClick={() => toggleFolder(node.id)}
+              className="flex w-full items-center gap-1.5 rounded px-2 py-1.5 text-xs text-foreground hover:bg-secondary transition-colors"
+            >
+              {expandedFolders.includes(node.id) ? (
+                <ChevronDown className="h-3.5 w-3.5" />
+              ) : (
+                <ChevronRight className="h-3.5 w-3.5" />
+              )}
+              <Folder className="h-3.5 w-3.5 text-blue-400" />
+              <span className="text-xs">{node.name}</span>
+            </button>
+
+            {expandedFolders.includes(node.id) && node.children && (
+              <div className="ml-4 border-l border-border/50 ml-3.5 pl-1">
+                {renderTree(node.children)}
+              </div>
+            )}
+          </div>
+        ) : (
+          <button
+            onClick={() => setSelectedFile(node.id)}
+            className={`flex w-full items-center gap-2 rounded px-2 py-1 text-xs transition-colors ${
+              selectedFile === node.id
+                ? 'bg-primary/20 text-primary'
+                : 'text-muted-foreground hover:bg-secondary'
+            }`}
+          >
+            <File className="h-3.5 w-3.5" />
+            <span className="text-xs">{node.name}</span>
+          </button>
+        )}
+      </div>
+    ))
+  }
 
   return (
     <div className="h-screen bg-background text-foreground flex flex-col overflow-hidden">
@@ -114,7 +177,7 @@ export default function IDEPage() {
           <ArrowLeft className="h-4 w-4" />
           <span className="hidden sm:inline">Back to Project summary</span>
         </Button>
-        <span className="text-xs md:text-sm text-foreground font-medium">Prompt2Product - Advanced Mode</span>
+        <span className="text-xs md:text-sm text-foreground font-medium">Prompt2Product - IDE</span>
         <Button
           onClick={handleDownload}
           variant="ghost"
@@ -229,55 +292,19 @@ export default function IDEPage() {
 
                 {/* File Tree */}
                 <div className="flex-1 overflow-y-auto p-2 custom-scrollbar">
-                  {fileTree.map((item) => (
-                    <div key={item.id}>
-                      {item.type === 'folder' ? (
-                        <div>
-                          <button
-                            onClick={() => toggleFolder(item.id)}
-                            className="flex w-full items-center gap-1.5 rounded px-2 py-1.5 text-xs text-foreground hover:bg-secondary transition-colors"
-                          >
-                            {expandedFolders.includes(item.id) ? (
-                              <ChevronDown className="h-3.5 w-3.5" />
-                            ) : (
-                              <ChevronRight className="h-3.5 w-3.5" />
-                            )}
-                            <Folder className="h-3.5 w-3.5 text-blue-400" />
-                            <span className="text-xs">{item.name}</span>
-                          </button>
-
-                          {expandedFolders.includes(item.id) && item.children && (
-                            <div className="ml-4">
-                              {item.children.map((child) => (
-                                <button
-                                  key={child.id}
-                                  onClick={() => setSelectedFile(child.id)}
-                                  className={`flex w-full items-center gap-2 rounded px-2 py-1 text-xs transition-colors ${
-                                    selectedFile === child.id
-                                      ? 'bg-primary/20 text-primary'
-                                      : 'text-muted-foreground hover:bg-secondary'
-                                  }`}
-                                >
-                                  <File className="h-3.5 w-3.5" />
-                                  <span className="text-xs">{child.name}</span>
-                                </button>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      ) : (
-                        <button
-                          onClick={() => setSelectedFile(item.id)}
-                          className={`flex w-full items-center gap-2 rounded px-2 py-1 text-xs transition-colors ${
-                            selectedFile === item.id ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:bg-secondary'
-                          }`}
-                        >
-                          <File className="h-3.5 w-3.5" />
-                          <span className="text-xs">{item.name}</span>
-                        </button>
-                      )}
+                  {isLoadingTree ? (
+                    <div className="flex flex-col items-center justify-center p-4 gap-2 text-muted-foreground">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <span className="text-[10px]">Loading files...</span>
                     </div>
-                  ))}
+                  ) : (
+                    renderTree(fileTree)
+                  )}
+                  {!isLoadingTree && fileTree.length === 0 && (
+                    <div className="p-4 text-center text-muted-foreground text-[10px]">
+                      No files generated yet.
+                    </div>
+                  )}
                 </div>
               </ResizablePanel>
               <ResizableHandle withHandle />
@@ -292,21 +319,31 @@ export default function IDEPage() {
                 {/* Editor Header */}
                 <div className="border-b border-border px-4 py-2 flex items-center gap-2 bg-background flex-shrink-0">
                   <File className="h-3.5 w-3.5 text-blue-400" />
-                  <span className="text-xs font-medium text-foreground">{selectedFile}</span>
+                  <span className="text-xs font-medium text-foreground">{selectedFile || 'Select a file'}</span>
+                  {isLoadingContent && <Loader2 className="h-3 w-3 animate-spin text-muted-foreground ml-auto" />}
                 </div>
 
                 {/* Code Content */}
-                <div className="flex-1 overflow-auto font-mono text-xs min-h-0">
-                  <div className="flex h-full min-h-0">
-                    <div className="w-10 bg-secondary/50 text-muted-foreground py-3 px-2 text-right select-none border-r border-border text-[10px] flex-shrink-0">
-                      {PYTHON_CODE.split('\n').map((_, i) => (
-                        <div key={i} className="leading-5">{i + 1}</div>
-                      ))}
+                <div className="flex-1 overflow-auto font-mono text-xs min-h-0 relative">
+                  {!selectedFile ? (
+                    <div className="h-full flex items-center justify-center text-muted-foreground/40">
+                      <div className="text-center">
+                        <Code2 className="h-12 w-12 mx-auto mb-2 opacity-10" />
+                        <p className="text-sm">Select a file to view code</p>
+                      </div>
                     </div>
-                    <div className="flex-1 py-3 px-4 text-foreground bg-background overflow-auto min-w-0">
-                      <pre className="whitespace-pre-wrap break-words leading-5">{PYTHON_CODE}</pre>
+                  ) : (
+                    <div className="flex h-full min-h-0">
+                      <div className="w-10 bg-secondary/50 text-muted-foreground py-3 px-2 text-right select-none border-r border-border text-[10px] flex-shrink-0">
+                        {fileContent.split('\n').map((_, i) => (
+                          <div key={i} className="leading-5">{i + 1}</div>
+                        ))}
+                      </div>
+                      <div className="flex-1 py-3 px-4 text-foreground bg-background overflow-auto min-w-0">
+                        <pre className="whitespace-pre-wrap break-words leading-5">{fileContent || (isLoadingContent ? '' : '// No content')}</pre>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </ResizablePanel>
 
@@ -321,7 +358,7 @@ export default function IDEPage() {
                       <span className="text-xs font-semibold text-foreground uppercase tracking-wider">Console</span>
                       <div className="flex items-center gap-1.5">
                         <div className="h-1.5 w-1.5 rounded-full bg-green-500"></div>
-                        <span className="text-[10px] text-green-400 font-medium">Running</span>
+                        <span className="text-[10px] text-green-400 font-medium">System Ready</span>
                       </div>
                     </div>
                     <button
@@ -335,15 +372,13 @@ export default function IDEPage() {
 
                   {/* Console Content */}
                   <div className="flex-1 overflow-y-auto font-mono text-[10px] p-4 space-y-1 custom-scrollbar">
-                    <div className="text-green-400">[INFO] Project loaded successfully</div>
-                    <div className="text-green-400">[INFO] Dependencies installed</div>
-                    <div className="text-green-400">[INFO] Starting development server on port 3000</div>
-                    <div className="text-green-400">[INFO] Hot reload enabled</div>
-                    <div className="text-green-400">[INFO] Watching for file changes...</div>
-                    <div className="text-green-400 mt-2">&gt; python main.py</div>
-                    <div className="text-foreground">Hello, Prompt2Product!</div>
-                    <div className="text-foreground">15</div>
-                    <div className="text-foreground">12</div>
+                    <div className="text-blue-400">[SYSTEM] IDE initialized</div>
+                    <div className="text-green-400">[INFO] Successfully connected to workspace storage</div>
+                    {projectInfo && (
+                      <div className="text-muted-foreground">[DEBUG] Loaded Project ID: {projectInfo.projectId}, Run ID: {projectInfo.runId}</div>
+                    )}
+                    <div className="text-green-400">[SUCCESS] File system synchronization complete</div>
+                    <div className="mt-2 text-foreground opacity-50">Watching for changes...</div>
                   </div>
                 </ResizablePanel>
               )}
@@ -385,5 +420,26 @@ export default function IDEPage() {
         </button>
       )}
     </div>
+  )
+}
+
+function Code2(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m18 16 4-4-4-4" />
+      <path d="m6 8-4 4 4 4" />
+      <path d="m14.5 4-5 16" />
+    </svg>
   )
 }

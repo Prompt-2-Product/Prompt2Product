@@ -4,10 +4,11 @@ from fastapi.responses import FileResponse
 from sqlmodel import Session
 import shutil
 import os
+from pathlib import Path
 
 from app.db.database import init_db, get_session, engine
 from app.db import repo
-from app.core.schemas import CreateProjectRequest, CreateRunRequest, RunStatusResponse
+from app.core.schemas import CreateProjectRequest, CreateRunRequest, RunStatusResponse, ModifyRunRequest
 from app.services.orchestrator import Orchestrator
 from app.services.workspace import project_workspace
 
@@ -153,3 +154,28 @@ def get_file_content(project_id: int, run_id: int, file_path: str, session: Sess
         return {"content": content}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error reading file: {str(e)}")
+def run_modification(run_id: int, prompt: str):
+    """
+    Background task for applying manual changes.
+    """
+    with Session(engine) as session:
+        run = repo.get_run(session, run_id)
+        if run:
+            orch.execute_modification(session, run, prompt)
+
+@app.post("/projects/{project_id}/runs/{run_id}/modify")
+def modify_run(
+    project_id: int,
+    run_id: int,
+    payload: ModifyRunRequest,
+    background_tasks: BackgroundTasks,
+    session: Session = Depends(get_session)
+):
+    run = repo.get_run(session, run_id)
+    if not run:
+        raise HTTPException(status_code=404, detail="Run not found")
+    
+    # Trigger background modification
+    background_tasks.add_task(run_modification, run.id, payload.prompt)
+    
+    return {"message": "Modification started"}
