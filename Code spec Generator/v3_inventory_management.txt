@@ -1,0 +1,152 @@
+Prompt Category: inventory_management
+Model: D:\Prompt2Product\finetune\outputs\qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Inventory Management System", "app_type": "web_app", "description": "A business tool to manage stock levels, suppliers, generate invoices, and receive low inventory alerts.", "target_users": ["business_admin", "suppliers", "stock_manager"], "frontend": {"pages": [{"name": "Dashboard", "route": "/", "components": ["Navbar", "StockSummaryCards", "SupplierActivityChart", "LowStockAlerts"]}, {"name": "Suppliers", "route": "/suppliers", "components": ["Navbar", "SupplierTable", "AddSupplierForm", "SupplierDetailsModal"]}, {"name": "Stock Levels", "route": "/stock-levels", "components": ["Navbar", "ProductTable", "CategoryFilter", "StockAlertBadge"]}, {"name": "Invoices", "route": "/invoices", "components": ["Navbar", "InvoiceListTable", "InvoicePreviewCard", "DownloadButton"]}], "shared_components": ["Navbar", "Button", "Card", "Table", "Chart", "Modal"], "features": ["supplier management", "stock level tracking", "low inventory alerts", "invoice generation", "reporting"]}, "backend": {"endpoints": [{"method": "GET", "path": "/api/suppliers", "purpose": "Fetch supplier list"}, {"method": "POST", "path": "/api/suppliers", "purpose": "Create new supplier"}, {"method": "GET", "path": "/api/stock-levels", "purpose": "Fetch stock level data"}, {"method": "POST", "path": "/api/invoices", "purpose": "Create invoice"}, {"method": "GET", "path": "/api/invoices", "purpose": "Fetch invoice list"}]}, "database": {"tables": [{"name": "suppliers", "columns": ["id", "name", "email", "phone", "address"]}, {"name": "stock_levels", "columns": ["id", "product_name", "category", "quantity", "alert_threshold", "last_updated"]}, {"name": "invoices", "columns": ["id", "supplier_id", "invoice_number", "total_amount", "status", "created_at"]}]}, "auth_required": true}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Inventory Management System", "app_type": "web_app", "description": "A business tool to manage stock levels, suppliers, generate invoices, and receive low inventory alerts.", "target_users": ["business_admin", "suppliers", "stock_manager"], "frontend": {"pages": [{"name": "Dashboard", "route": "/", "components": ["Navbar", "StockSummaryCards", "SupplierActivityChart", "LowStockAlerts"]}, {"name": "Suppliers", "route": "/suppliers", "components": ["Navbar", "SupplierTable", "AddSupplierForm", "SupplierDetailsModal"]}, {"name": "Stock Levels", "route": "/stock-levels", "components": ["Navbar", "ProductTable", "CategoryFilter", "StockAlertBadge"]}, {"name": "Invoices", "route": "/invoices", "components": ["Navbar", "InvoiceListTable", "InvoicePreviewCard", "DownloadButton"]}], "shared_components": ["Navbar", "Button", "Card", "Table", "Chart", "Modal"], "features": ["supplier management", "stock level tracking", "low inventory alerts", "invoice generation", "reporting"]}, "backend": {"endpoints": [{"method": "GET", "path": "/api/suppliers", "purpose": "Fetch supplier list"}, {"method": "POST", "path": "/api/suppliers", "purpose": "Create new supplier"}, {"method": "GET", "path": "/api/stock-levels", "purpose": "Fetch stock level data"}, {"method": "POST", "path": "/api/invoices", "purpose": "Create invoice"}, {"method": "GET", "path": "/api/invoices", "purpose": "Fetch invoice list"}]}, "database": {"tables": [{"name": "suppliers", "columns": ["id", "name", "email", "phone", "address"]}, {"name": "stock_levels", "columns": ["id", "product_name", "category", "quantity", "alert_threshold", "last_updated"]}, {"name": "invoices", "columns": ["id", "supplier_id", "invoice_number", "total_amount", "status", "created_at"]}]}, "auth_required": true}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Inventory Management System",
+  "app_type": "web_app",
+  "description": "A business tool to manage stock levels, suppliers, generate invoices, and receive low inventory alerts.",
+  "target_users": [
+    "business_admin",
+    "suppliers",
+    "stock_manager"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Dashboard",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "StockSummaryCards",
+          "SupplierActivityChart",
+          "LowStockAlerts"
+        ]
+      },
+      {
+        "name": "Suppliers",
+        "route": "/suppliers",
+        "components": [
+          "Navbar",
+          "SupplierTable",
+          "AddSupplierForm",
+          "SupplierDetailsModal"
+        ]
+      },
+      {
+        "name": "Stock Levels",
+        "route": "/stock-levels",
+        "components": [
+          "Navbar",
+          "ProductTable",
+          "CategoryFilter",
+          "StockAlertBadge"
+        ]
+      },
+      {
+        "name": "Invoices",
+        "route": "/invoices",
+        "components": [
+          "Navbar",
+          "InvoiceListTable",
+          "InvoicePreviewCard",
+          "DownloadButton"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Button",
+      "Card",
+      "Table",
+      "Chart",
+      "Modal"
+    ],
+    "features": [
+      "supplier management",
+      "stock level tracking",
+      "low inventory alerts",
+      "invoice generation",
+      "reporting"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/suppliers",
+        "purpose": "Fetch supplier list"
+      },
+      {
+        "method": "POST",
+        "path": "/api/suppliers",
+        "purpose": "Create new supplier"
+      },
+      {
+        "method": "GET",
+        "path": "/api/stock-levels",
+        "purpose": "Fetch stock level data"
+      },
+      {
+        "method": "POST",
+        "path": "/api/invoices",
+        "purpose": "Create invoice"
+      },
+      {
+        "method": "GET",
+        "path": "/api/invoices",
+        "purpose": "Fetch invoice list"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "suppliers",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "phone",
+          "address"
+        ]
+      },
+      {
+        "name": "stock_levels",
+        "columns": [
+          "id",
+          "product_name",
+          "category",
+          "quantity",
+          "alert_threshold",
+          "last_updated"
+        ]
+      },
+      {
+        "name": "invoices",
+        "columns": [
+          "id",
+          "supplier_id",
+          "invoice_number",
+          "total_amount",
+          "status",
+          "created_at"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

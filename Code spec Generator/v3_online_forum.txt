@@ -1,0 +1,155 @@
+Prompt Category: online_forum
+Model: D:\Prompt2Product\finetune\outputs\qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Online Discussion Forum", "app_type": "web_app", "description": "A platform for users to create threads, post replies, upvote content, and have moderators manage discussions.", "target_users": ["students", "teachers", "moderators"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "FeaturedThreads", "Footer"]}, {"name": "Threads", "route": "/threads", "components": ["Navbar", "ThreadList", "SearchBar", "CategoryFilter"]}, {"name": "Create Thread", "route": "/threads/create", "components": ["Navbar", "ThreadForm", "UploadImageField"]}, {"name": "Thread Details", "route": "/threads/:id", "components": ["Navbar", "ThreadCard", "RepliesList", "UpvoteButton", "ReplyForm"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "Badge"], "features": ["thread creation", "thread listing", "search threads", "category filtering", "thread details", "reply posting", "upvoting", "moderator management"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/threads", "purpose": "Create a new thread"}, {"method": "GET", "path": "/api/threads", "purpose": "Fetch threads"}, {"method": "POST", "path": "/api/replies", "purpose": "Post a reply"}, {"method": "PATCH", "path": "/api/threads/:id", "purpose": "Update thread visibility"}, {"method": "POST", "path": "/api/users/login", "purpose": "User login"}]}, "database": {"tables": [{"name": "users", "columns": ["id", "name", "email", "password", "role"]}, {"name": "threads", "columns": ["id", "title", "content", "created_at", "category", "upvotes_count", "is_visible"]}, {"name": "replies", "columns": ["id", "thread_id", "content", "created_at", "user_id"]}]}, "auth_required": true}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Online Discussion Forum", "app_type": "web_app", "description": "A platform for users to create threads, post replies, upvote content, and have moderators manage discussions.", "target_users": ["students", "teachers", "moderators"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "FeaturedThreads", "Footer"]}, {"name": "Threads", "route": "/threads", "components": ["Navbar", "ThreadList", "SearchBar", "CategoryFilter"]}, {"name": "Create Thread", "route": "/threads/create", "components": ["Navbar", "ThreadForm", "UploadImageField"]}, {"name": "Thread Details", "route": "/threads/:id", "components": ["Navbar", "ThreadCard", "RepliesList", "UpvoteButton", "ReplyForm"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "Badge"], "features": ["thread creation", "thread listing", "search threads", "category filtering", "thread details", "reply posting", "upvoting", "moderator management"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/threads", "purpose": "Create a new thread"}, {"method": "GET", "path": "/api/threads", "purpose": "Fetch threads"}, {"method": "POST", "path": "/api/replies", "purpose": "Post a reply"}, {"method": "PATCH", "path": "/api/threads/:id", "purpose": "Update thread visibility"}, {"method": "POST", "path": "/api/users/login", "purpose": "User login"}]}, "database": {"tables": [{"name": "users", "columns": ["id", "name", "email", "password", "role"]}, {"name": "threads", "columns": ["id", "title", "content", "created_at", "category", "upvotes_count", "is_visible"]}, {"name": "replies", "columns": ["id", "thread_id", "content", "created_at", "user_id"]}]}, "auth_required": true}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Online Discussion Forum",
+  "app_type": "web_app",
+  "description": "A platform for users to create threads, post replies, upvote content, and have moderators manage discussions.",
+  "target_users": [
+    "students",
+    "teachers",
+    "moderators"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "FeaturedThreads",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Threads",
+        "route": "/threads",
+        "components": [
+          "Navbar",
+          "ThreadList",
+          "SearchBar",
+          "CategoryFilter"
+        ]
+      },
+      {
+        "name": "Create Thread",
+        "route": "/threads/create",
+        "components": [
+          "Navbar",
+          "ThreadForm",
+          "UploadImageField"
+        ]
+      },
+      {
+        "name": "Thread Details",
+        "route": "/threads/:id",
+        "components": [
+          "Navbar",
+          "ThreadCard",
+          "RepliesList",
+          "UpvoteButton",
+          "ReplyForm"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Table",
+      "Badge"
+    ],
+    "features": [
+      "thread creation",
+      "thread listing",
+      "search threads",
+      "category filtering",
+      "thread details",
+      "reply posting",
+      "upvoting",
+      "moderator management"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/threads",
+        "purpose": "Create a new thread"
+      },
+      {
+        "method": "GET",
+        "path": "/api/threads",
+        "purpose": "Fetch threads"
+      },
+      {
+        "method": "POST",
+        "path": "/api/replies",
+        "purpose": "Post a reply"
+      },
+      {
+        "method": "PATCH",
+        "path": "/api/threads/:id",
+        "purpose": "Update thread visibility"
+      },
+      {
+        "method": "POST",
+        "path": "/api/users/login",
+        "purpose": "User login"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "users",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "password",
+          "role"
+        ]
+      },
+      {
+        "name": "threads",
+        "columns": [
+          "id",
+          "title",
+          "content",
+          "created_at",
+          "category",
+          "upvotes_count",
+          "is_visible"
+        ]
+      },
+      {
+        "name": "replies",
+        "columns": [
+          "id",
+          "thread_id",
+          "content",
+          "created_at",
+          "user_id"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

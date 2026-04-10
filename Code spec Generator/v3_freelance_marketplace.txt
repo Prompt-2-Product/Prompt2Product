@@ -1,0 +1,242 @@
+Prompt Category: freelance_marketplace
+Model: D:\Prompt2Product\finetune\outputs\qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Freelance Marketplace", "app_type": "web_app", "description": "A freelance marketplace for clients to post projects and freelancers to bid on them, with communication, progress tracking, and payment handling.", "target_users": [{"role": "client", "tasks": ["post project", "bid on freelancers", "communicate via chat", "track project progress", "confirm payment"]}, {"role": "freelancer", "tasks": ["view client projects", "place bids", "accept client offers", "communicate via chat", "track project progress", "submit invoices"]}, {"role": "admin", "tasks": ["manage clients", "manage freelancers", "view project activity", "approve payments"]}], "features": ["project posting", "freelancer bidding", "chat integration", "progress tracking", "payment processing", "client management", "freelancer management"], "database": {"tables": [{"name": "clients", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "name", "type": "varchar"}, {"name": "email", "type": "varchar", "unique": true}, {"name": "phone_number", "type": "varchar"}, {"name": "company_name", "type": "varchar"}]}, {"name": "freelancers", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "name", "type": "varchar"}, {"name": "email", "type": "varchar", "unique": true}, {"name": "specialization", "type": "varchar"}, {"name": "portfolio_link", "type": "varchar"}]}, {"name": "projects", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "client_id", "type": "integer", "references": "clients(id)", "on_delete": "cascade"}, {"name": "title", "type": "varchar"}, {"name": "description", "type": "text"}, {"name": "budget", "type": "decimal"}, {"name": "status", "type": "varchar"}]}, {"name": "bids", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "project_id", "type": "integer", "references": "projects(id)", "on_delete": "cascade"}, {"name": "freelancer_id", "type": "integer", "references": "freelancers(id)", "on_delete": "cascade"}, {"name": "bid_amount", "type": "decimal"}, {"name": "message", "type": "text"}]}, {"name": "messages", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "sender_id", "type": "integer", "references": "clients(id)", "on_delete": "cascade"}, {"name": "receiver_id", "type": "integer", "references": "freelancers(id)", "on_delete": "cascade"}, {"name": "content", "type": "text"}, {"name": "sent_at", "type": "timestamp"}]}, {"name": "payments", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "transaction_id", "type": "varchar"}, {"name": "client_id", "type": "integer", "references": "clients(id)", "on_delete": "cascade"}, {"name": "amount", "type": "decimal"}, {"name": "status", "type": "varchar"}]}]}, "auth_required": true}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Freelance Marketplace", "app_type": "web_app", "description": "A freelance marketplace for clients to post projects and freelancers to bid on them, with communication, progress tracking, and payment handling.", "target_users": [{"role": "client", "tasks": ["post project", "bid on freelancers", "communicate via chat", "track project progress", "confirm payment"]}, {"role": "freelancer", "tasks": ["view client projects", "place bids", "accept client offers", "communicate via chat", "track project progress", "submit invoices"]}, {"role": "admin", "tasks": ["manage clients", "manage freelancers", "view project activity", "approve payments"]}], "features": ["project posting", "freelancer bidding", "chat integration", "progress tracking", "payment processing", "client management", "freelancer management"], "database": {"tables": [{"name": "clients", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "name", "type": "varchar"}, {"name": "email", "type": "varchar", "unique": true}, {"name": "phone_number", "type": "varchar"}, {"name": "company_name", "type": "varchar"}]}, {"name": "freelancers", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "name", "type": "varchar"}, {"name": "email", "type": "varchar", "unique": true}, {"name": "specialization", "type": "varchar"}, {"name": "portfolio_link", "type": "varchar"}]}, {"name": "projects", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "client_id", "type": "integer", "references": "clients(id)", "on_delete": "cascade"}, {"name": "title", "type": "varchar"}, {"name": "description", "type": "text"}, {"name": "budget", "type": "decimal"}, {"name": "status", "type": "varchar"}]}, {"name": "bids", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "project_id", "type": "integer", "references": "projects(id)", "on_delete": "cascade"}, {"name": "freelancer_id", "type": "integer", "references": "freelancers(id)", "on_delete": "cascade"}, {"name": "bid_amount", "type": "decimal"}, {"name": "message", "type": "text"}]}, {"name": "messages", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "sender_id", "type": "integer", "references": "clients(id)", "on_delete": "cascade"}, {"name": "receiver_id", "type": "integer", "references": "freelancers(id)", "on_delete": "cascade"}, {"name": "content", "type": "text"}, {"name": "sent_at", "type": "timestamp"}]}, {"name": "payments", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "transaction_id", "type": "varchar"}, {"name": "client_id", "type": "integer", "references": "clients(id)", "on_delete": "cascade"}, {"name": "amount", "type": "decimal"}, {"name": "status", "type": "varchar"}]}]}, "auth_required": true}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Freelance Marketplace",
+  "app_type": "web_app",
+  "description": "A freelance marketplace for clients to post projects and freelancers to bid on them, with communication, progress tracking, and payment handling.",
+  "target_users": [
+    {
+      "role": "client",
+      "tasks": [
+        "post project",
+        "bid on freelancers",
+        "communicate via chat",
+        "track project progress",
+        "confirm payment"
+      ]
+    },
+    {
+      "role": "freelancer",
+      "tasks": [
+        "view client projects",
+        "place bids",
+        "accept client offers",
+        "communicate via chat",
+        "track project progress",
+        "submit invoices"
+      ]
+    },
+    {
+      "role": "admin",
+      "tasks": [
+        "manage clients",
+        "manage freelancers",
+        "view project activity",
+        "approve payments"
+      ]
+    }
+  ],
+  "features": [
+    "project posting",
+    "freelancer bidding",
+    "chat integration",
+    "progress tracking",
+    "payment processing",
+    "client management",
+    "freelancer management"
+  ],
+  "database": {
+    "tables": [
+      {
+        "name": "clients",
+        "columns": [
+          {
+            "name": "id",
+            "type": "serial",
+            "is_primary": true
+          },
+          {
+            "name": "name",
+            "type": "varchar"
+          },
+          {
+            "name": "email",
+            "type": "varchar",
+            "unique": true
+          },
+          {
+            "name": "phone_number",
+            "type": "varchar"
+          },
+          {
+            "name": "company_name",
+            "type": "varchar"
+          }
+        ]
+      },
+      {
+        "name": "freelancers",
+        "columns": [
+          {
+            "name": "id",
+            "type": "serial",
+            "is_primary": true
+          },
+          {
+            "name": "name",
+            "type": "varchar"
+          },
+          {
+            "name": "email",
+            "type": "varchar",
+            "unique": true
+          },
+          {
+            "name": "specialization",
+            "type": "varchar"
+          },
+          {
+            "name": "portfolio_link",
+            "type": "varchar"
+          }
+        ]
+      },
+      {
+        "name": "projects",
+        "columns": [
+          {
+            "name": "id",
+            "type": "serial",
+            "is_primary": true
+          },
+          {
+            "name": "client_id",
+            "type": "integer",
+            "references": "clients(id)",
+            "on_delete": "cascade"
+          },
+          {
+            "name": "title",
+            "type": "varchar"
+          },
+          {
+            "name": "description",
+            "type": "text"
+          },
+          {
+            "name": "budget",
+            "type": "decimal"
+          },
+          {
+            "name": "status",
+            "type": "varchar"
+          }
+        ]
+      },
+      {
+        "name": "bids",
+        "columns": [
+          {
+            "name": "id",
+            "type": "serial",
+            "is_primary": true
+          },
+          {
+            "name": "project_id",
+            "type": "integer",
+            "references": "projects(id)",
+            "on_delete": "cascade"
+          },
+          {
+            "name": "freelancer_id",
+            "type": "integer",
+            "references": "freelancers(id)",
+            "on_delete": "cascade"
+          },
+          {
+            "name": "bid_amount",
+            "type": "decimal"
+          },
+          {
+            "name": "message",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "name": "messages",
+        "columns": [
+          {
+            "name": "id",
+            "type": "serial",
+            "is_primary": true
+          },
+          {
+            "name": "sender_id",
+            "type": "integer",
+            "references": "clients(id)",
+            "on_delete": "cascade"
+          },
+          {
+            "name": "receiver_id",
+            "type": "integer",
+            "references": "freelancers(id)",
+            "on_delete": "cascade"
+          },
+          {
+            "name": "content",
+            "type": "text"
+          },
+          {
+            "name": "sent_at",
+            "type": "timestamp"
+          }
+        ]
+      },
+      {
+        "name": "payments",
+        "columns": [
+          {
+            "name": "id",
+            "type": "serial",
+            "is_primary": true
+          },
+          {
+            "name": "transaction_id",
+            "type": "varchar"
+          },
+          {
+            "name": "client_id",
+            "type": "integer",
+            "references": "clients(id)",
+            "on_delete": "cascade"
+          },
+          {
+            "name": "amount",
+            "type": "decimal"
+          },
+          {
+            "name": "status",
+            "type": "varchar"
+          }
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

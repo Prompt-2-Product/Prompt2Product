@@ -1,0 +1,166 @@
+Prompt Category: online_exam
+Model: D:\Prompt2Product\finetune\outputs\qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Online Examination System", "app_type": "web_app", "description": "An online examination system for instructors to create exams, set time limits, and evaluate submissions, and for students to take tests and view results.", "target_users": ["instructors", "students"], "frontend": {"pages": [{"name": "Login", "route": "/login", "components": ["Navbar", "LoginForm"]}, {"name": "Dashboard", "route": "/", "components": ["Navbar", "ExamSummaryCard", "SubmissionStatusCard"]}, {"name": "Exams", "route": "/exams", "components": ["Navbar", "ExamListTable", "ExamDetailsCard"]}, {"name": "Take Exam", "route": "/exams/:examId/take", "components": ["Navbar", "ExamTimer", "QuestionCard", "SubmitButton"]}, {"name": "Results", "route": "/results", "components": ["Navbar", "StudentListTable", "ScoreCard"]}], "shared_components": ["Navbar", "Card", "Button", "Table", "Badge"], "features": ["exam creation", "exam scheduling", "submission evaluation", "student exam taking", "result viewing"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/login", "purpose": "Authenticate user"}, {"method": "GET", "path": "/api/exams", "purpose": "Fetch available exams"}, {"method": "GET", "path": "/api/exams/:examId", "purpose": "Fetch exam details"}, {"method": "POST", "path": "/api/submissions", "purpose": "Save student submission"}, {"method": "GET", "path": "/api/results", "purpose": "Fetch student results"}]}, "database": {"tables": [{"name": "users", "columns": ["id", "name", "email", "password", "role"]}, {"name": "exams", "columns": ["id", "title", "description", "start_time", "duration_minutes"]}, {"name": "submissions", "columns": ["id", "exam_id", "student_id", "score", "submission_date"]}, {"name": "questions", "columns": ["id", "exam_id", "question_text", "option1", "option2", "option3", "option4", "correct_answer"]}]}, "auth_required": true}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Online Examination System", "app_type": "web_app", "description": "An online examination system for instructors to create exams, set time limits, and evaluate submissions, and for students to take tests and view results.", "target_users": ["instructors", "students"], "frontend": {"pages": [{"name": "Login", "route": "/login", "components": ["Navbar", "LoginForm"]}, {"name": "Dashboard", "route": "/", "components": ["Navbar", "ExamSummaryCard", "SubmissionStatusCard"]}, {"name": "Exams", "route": "/exams", "components": ["Navbar", "ExamListTable", "ExamDetailsCard"]}, {"name": "Take Exam", "route": "/exams/:examId/take", "components": ["Navbar", "ExamTimer", "QuestionCard", "SubmitButton"]}, {"name": "Results", "route": "/results", "components": ["Navbar", "StudentListTable", "ScoreCard"]}], "shared_components": ["Navbar", "Card", "Button", "Table", "Badge"], "features": ["exam creation", "exam scheduling", "submission evaluation", "student exam taking", "result viewing"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/login", "purpose": "Authenticate user"}, {"method": "GET", "path": "/api/exams", "purpose": "Fetch available exams"}, {"method": "GET", "path": "/api/exams/:examId", "purpose": "Fetch exam details"}, {"method": "POST", "path": "/api/submissions", "purpose": "Save student submission"}, {"method": "GET", "path": "/api/results", "purpose": "Fetch student results"}]}, "database": {"tables": [{"name": "users", "columns": ["id", "name", "email", "password", "role"]}, {"name": "exams", "columns": ["id", "title", "description", "start_time", "duration_minutes"]}, {"name": "submissions", "columns": ["id", "exam_id", "student_id", "score", "submission_date"]}, {"name": "questions", "columns": ["id", "exam_id", "question_text", "option1", "option2", "option3", "option4", "correct_answer"]}]}, "auth_required": true}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Online Examination System",
+  "app_type": "web_app",
+  "description": "An online examination system for instructors to create exams, set time limits, and evaluate submissions, and for students to take tests and view results.",
+  "target_users": [
+    "instructors",
+    "students"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Login",
+        "route": "/login",
+        "components": [
+          "Navbar",
+          "LoginForm"
+        ]
+      },
+      {
+        "name": "Dashboard",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "ExamSummaryCard",
+          "SubmissionStatusCard"
+        ]
+      },
+      {
+        "name": "Exams",
+        "route": "/exams",
+        "components": [
+          "Navbar",
+          "ExamListTable",
+          "ExamDetailsCard"
+        ]
+      },
+      {
+        "name": "Take Exam",
+        "route": "/exams/:examId/take",
+        "components": [
+          "Navbar",
+          "ExamTimer",
+          "QuestionCard",
+          "SubmitButton"
+        ]
+      },
+      {
+        "name": "Results",
+        "route": "/results",
+        "components": [
+          "Navbar",
+          "StudentListTable",
+          "ScoreCard"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Card",
+      "Button",
+      "Table",
+      "Badge"
+    ],
+    "features": [
+      "exam creation",
+      "exam scheduling",
+      "submission evaluation",
+      "student exam taking",
+      "result viewing"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/login",
+        "purpose": "Authenticate user"
+      },
+      {
+        "method": "GET",
+        "path": "/api/exams",
+        "purpose": "Fetch available exams"
+      },
+      {
+        "method": "GET",
+        "path": "/api/exams/:examId",
+        "purpose": "Fetch exam details"
+      },
+      {
+        "method": "POST",
+        "path": "/api/submissions",
+        "purpose": "Save student submission"
+      },
+      {
+        "method": "GET",
+        "path": "/api/results",
+        "purpose": "Fetch student results"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "users",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "password",
+          "role"
+        ]
+      },
+      {
+        "name": "exams",
+        "columns": [
+          "id",
+          "title",
+          "description",
+          "start_time",
+          "duration_minutes"
+        ]
+      },
+      {
+        "name": "submissions",
+        "columns": [
+          "id",
+          "exam_id",
+          "student_id",
+          "score",
+          "submission_date"
+        ]
+      },
+      {
+        "name": "questions",
+        "columns": [
+          "id",
+          "exam_id",
+          "question_text",
+          "option1",
+          "option2",
+          "option3",
+          "option4",
+          "correct_answer"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

@@ -1,0 +1,8 @@
+Prompt Category: school_management
+Model: D:\Prompt2Product\finetune\outputs\qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "School Management System", "app_type": "web_app", "description": "A school management system for administrators to manage students and staff, teachers to manage classes and grades, and students to view schedules and results.", "target_users": ["administrators", "teachers", "students"], "frontend": {"pages": [{"name": "Dashboard", "route": "/", "components": ["Navbar", "WelcomeCard", "RecentActivityCards", "Footer"]}, {"name": "Administrators", "route": "/administrators", "components": ["Navbar", "StudentsTable", "StaffTable", "AddStudentForm", "AddStaffForm"]}, {"name": "Teachers", "route": "/teachers", "components": ["Navbar", "ClassScheduleTable", "GradesTable", "AddGradeForm"]}, {"name": "Students", "route": "/students", "components": ["Navbar", "CourseScheduleCard", "ExamResultsCard", "AttendanceBadge"]}], "shared_components": ["Navbar", "Footer", "Card", "Button", "Table", "FormInput"], "features": ["student administration", "staff administration", "teacher class management", "student schedule viewing", "exam results checking"]}
+
+No JSON object could be extracted

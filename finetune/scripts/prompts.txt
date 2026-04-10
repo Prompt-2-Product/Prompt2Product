@@ -1,5 +1,3 @@
-
-
 "event_management": """<|system|>
 Generate valid TaskSpec JSON only. Do not output markdown, comments, or explanation.
 <|user|>
