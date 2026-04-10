@@ -1,0 +1,36 @@
+{
+    "files": [
+        {
+            "path": "frontend/src/App.jsx",
+            "content": "import React from 'react';\nimport { BrowserRouter, Routes, Route } from 'react-router-dom';\nimport Navbar from './components/Navbar';\nimport Home from './pages/Home';\nimport Courses from './pages/Courses';\nimport Attendance from './pages/Attendance';\nimport Grades from './pages/Grades';\n\nexport default function App() {\n  return (\n    <BrowserRouter>\n      <Navbar />\n      <Routes>\n        <Route path='/' element={<Home />} />\n        <Route path='/courses' element={<Courses />} />\n        <Route path='/attendance' element={<Attendance />} />\n        <Route path='/grades' element={<Grades />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/components/Navbar.jsx",
+            "content": "import React from 'react';\nimport { NavLink } from 'react-router-dom';\n\nexport default function Navbar() {\n  const style = ({ isActive }) => ({\n    textDecoration: 'none',\n    color: isActive ? '#0f172a' : '#64748b',\n    fontWeight: isActive ? 700 : 500\n  });\n\n  return (\n    <nav style={{ borderBottom: '1px solid #e2e8f0', background: '#fff' }}>\n      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '16px 24px', display: 'flex', justifyContent: 'space-between' }}>\n        <h2 style={{ margin: 0 }}>Student Portal</h2>\n        <div style={{ display: 'flex', gap: '18px' }}>\n          <NavLink to='/' style={style}>Home</NavLink>\n          <NavLink to='/courses' style={style}>Courses</NavLink>\n          <NavLink to='/attendance' style={style}>Attendance</NavLink>\n          <NavLink to='/grades' style={style}>Grades</NavLink>\n        </div>\n      </div>\n    </nav>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/components/StatsCard.jsx",
+            "content": "import React from 'react';\n\nexport default function StatsCard({ title, value }) {\n  return (\n    <div style={{ border: '1px solid #e2e8f0', borderRadius: '14px', padding: '18px', background: '#fff' }}>\n      <p style={{ margin: '0 0 8px 0', color: '#64748b' }}>{title}</p>\n      <h3 style={{ margin: 0 }}>{value}</h3>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/pages/Home.jsx",
+            "content": "import React from 'react';\nimport StatsCard from '../components/StatsCard';\n\nexport default function Home() {\n  return (\n    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 24px' }}>\n      <h1>Welcome back</h1>\n      <p style={{ color: '#64748b' }}>Track courses, attendance, and academic performance from one place.</p>\n      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '18px', marginTop: '24px' }}>\n        <StatsCard title='Enrolled Courses' value='5' />\n        <StatsCard title='Attendance' value='88%' />\n        <StatsCard title='Current GPA' value='3.52' />\n      </div>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/pages/Courses.jsx",
+            "content": "import React from 'react';\n\nconst courses = [\n  { id: 1, code: 'CS101', name: 'Programming Fundamentals' },\n  { id: 2, code: 'CS205', name: 'Database Systems' },\n  { id: 3, code: 'AI301', name: 'Artificial Intelligence' }\n];\n\nexport default function Courses() {\n  return (\n    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 24px' }}>\n      <h1>Courses</h1>\n      <div style={{ display: 'grid', gap: '14px' }}>\n        {courses.map(course => (\n          <div key={course.id} style={{ border: '1px solid #e2e8f0', borderRadius: '12px', padding: '16px' }}>\n            <strong>{course.code}</strong>\n            <p style={{ margin: '6px 0 0 0' }}>{course.name}</p>\n          </div>\n        ))}\n      </div>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/pages/Attendance.jsx",
+            "content": "import React from 'react';\n\nconst records = [\n  { id: 1, course: 'Programming Fundamentals', percentage: 92 },\n  { id: 2, course: 'Database Systems', percentage: 85 },\n  { id: 3, course: 'Artificial Intelligence', percentage: 88 }\n];\n\nexport default function Attendance() {\n  return (\n    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 24px' }}>\n      <h1>Attendance</h1>\n      <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #e2e8f0' }}>\n        <thead style={{ background: '#f8fafc' }}>\n          <tr>\n            <th style={{ padding: '12px', textAlign: 'left' }}>Course</th>\n            <th style={{ padding: '12px', textAlign: 'left' }}>Attendance %</th>\n          </tr>\n        </thead>\n        <tbody>\n          {records.map(record => (\n            <tr key={record.id}>\n              <td style={{ padding: '12px', borderTop: '1px solid #e2e8f0' }}>{record.course}</td>\n              <td style={{ padding: '12px', borderTop: '1px solid #e2e8f0' }}>{record.percentage}%</td>\n            </tr>\n          ))}\n        </tbody>\n      </table>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/pages/Grades.jsx",
+            "content": "import React from 'react';\n\nconst grades = [\n  { id: 1, course: 'Programming Fundamentals', grade: 'A' },\n  { id: 2, course: 'Database Systems', grade: 'B+' },\n  { id: 3, course: 'Artificial Intelligence', grade: 'A-' }\n];\n\nexport default function Grades() {\n  return (\n    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 24px' }}>\n      <h1>Grades</h1>\n      <div style={{ display: 'grid', gap: '14px' }}>\n        {grades.map(item => (\n          <div key={item.id} style={{ border: '1px solid #e2e8f0', borderRadius: '12px', padding: '16px', display: 'flex', justifyContent: 'space-between' }}>\n            <span>{item.course}</span>\n            <strong>{item.grade}</strong>\n          </div>\n        ))}\n      </div>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "backend/app.py",
+            "content": "from flask import Flask, jsonify\n\napp = Flask(__name__)\n\n@app.route('/api/courses')\ndef get_courses():\n    return jsonify({\n        'courses': [\n            {'id': 1, 'course_code': 'CS101', 'course_name': 'Programming Fundamentals'},\n            {'id': 2, 'course_code': 'CS205', 'course_name': 'Database Systems'},\n            {'id': 3, 'course_code': 'AI301', 'course_name': 'Artificial Intelligence'}\n        ]\n    })\n\n@app.route('/api/attendance')\ndef get_attendance():\n    return jsonify({\n        'attendance': [\n            {'id': 1, 'course_name': 'Programming Fundamentals', 'attendance_percentage': 92},\n            {'id': 2, 'course_name': 'Database Systems', 'attendance_percentage': 85},\n            {'id': 3, 'course_name': 'Artificial Intelligence', 'attendance_percentage': 88}\n        ]\n    })\n\n@app.route('/api/grades')\ndef get_grades():\n    return jsonify({\n        'grades': [\n            {'id': 1, 'course_name': 'Programming Fundamentals', 'grade': 'A'},\n            {'id': 2, 'course_name': 'Database Systems', 'grade': 'B+'},\n            {'id': 3, 'course_name': 'Artificial Intelligence', 'grade': 'A-'}\n        ]\n    })\n\nif __name__ == '__main__':\n    app.run(debug=True)"
+        }
+    ]
+}

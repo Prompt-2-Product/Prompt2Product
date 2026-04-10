@@ -1,0 +1,1 @@
+Build a student portal where students can log in, view courses, see attendance, and check grades. Use React for frontend and Flask for backend.

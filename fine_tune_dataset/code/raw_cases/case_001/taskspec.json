@@ -1,0 +1,97 @@
+{
+    "app_name": "Campus Cafeteria Ordering System",
+    "app_type": "web_app",
+    "description": "A web application for university students to browse food items, add them to cart, place orders, and track their order status.",
+    "target_users": [
+        "students",
+        "cafeteria_staff"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "FeaturedMenu",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Menu",
+                "route": "/menu",
+                "components": [
+                    "Navbar",
+                    "FoodCardGrid",
+                    "CategoryFilter"
+                ]
+            },
+            {
+                "name": "Cart",
+                "route": "/cart",
+                "components": [
+                    "Navbar",
+                    "CartItemList",
+                    "OrderSummary"
+                ]
+            },
+            {
+                "name": "Orders",
+                "route": "/orders",
+                "components": [
+                    "Navbar",
+                    "OrderHistoryTable",
+                    "OrderStatusBadge"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Layout",
+            "FoodCard"
+        ],
+        "features": [
+            "menu browsing",
+            "cart management",
+            "order tracking"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/menu",
+                "purpose": "Fetch all food items"
+            },
+            {
+                "method": "GET",
+                "path": "/api/orders",
+                "purpose": "Fetch order history"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "menu_items",
+                "columns": [
+                    "id",
+                    "name",
+                    "category",
+                    "price"
+                ]
+            },
+            {
+                "name": "orders",
+                "columns": [
+                    "id",
+                    "item_count",
+                    "total_amount",
+                    "status"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

@@ -1,0 +1,11 @@
+{
+    "app_name": "Cafeteria App",
+    "frontend": {
+        "pages": [
+            {
+                "name": "Menu",
+                "route": "/menu"
+            }
+        ]
+    }
+}

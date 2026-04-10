@@ -1,0 +1,8 @@
+{
+    "files": [
+        {
+            "path": "frontend/src/pages/Assignments.jsx",
+            "content": "import React from 'react';\n\nconst assignments = [\n  { id: 1, title: 'DB Lab', status: 'Pending' },\n  { id: 2, title: 'AI Quiz', status: 'Completed' }\n];\n\nexport default function Assignments() {\n  return (\n    <div>\n      {assignments.map(item => (\n        <div key={item.id} style={{ border: '1px solid #ccc', marginBottom: '10px', padding: '10px' }}>\n          <h3>{item.title}</h3>\n          <p>{item.status}</p>\n        </div>\n      ))}\n    </div>\n  );\n}"
+        }
+    ]
+}

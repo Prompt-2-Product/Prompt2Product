@@ -1,0 +1,107 @@
+{
+    "app_name": "College Fest Event Portal",
+    "app_type": "web_app",
+    "description": "A portal for college festival events including schedules, competition registration, and announcements.",
+    "target_users": [
+        "students",
+        "event_organizers"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "FestHighlights"
+                ]
+            },
+            {
+                "name": "Events",
+                "route": "/events",
+                "components": [
+                    "Navbar",
+                    "EventCardGrid"
+                ]
+            },
+            {
+                "name": "Register",
+                "route": "/register",
+                "components": [
+                    "Navbar",
+                    "CompetitionRegistrationForm"
+                ]
+            },
+            {
+                "name": "Announcements",
+                "route": "/announcements",
+                "components": [
+                    "Navbar",
+                    "AnnouncementList"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Card",
+            "Button"
+        ],
+        "features": [
+            "event schedule",
+            "competition registration",
+            "announcements"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/events",
+                "purpose": "Fetch festival events"
+            },
+            {
+                "method": "POST",
+                "path": "/api/register",
+                "purpose": "Register for competition"
+            },
+            {
+                "method": "GET",
+                "path": "/api/announcements",
+                "purpose": "Fetch announcements"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "events",
+                "columns": [
+                    "id",
+                    "event_name",
+                    "date",
+                    "venue"
+                ]
+            },
+            {
+                "name": "registrations",
+                "columns": [
+                    "id",
+                    "event_id",
+                    "student_name",
+                    "email"
+                ]
+            },
+            {
+                "name": "announcements",
+                "columns": [
+                    "id",
+                    "title",
+                    "content",
+                    "published_at"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

@@ -1,0 +1,1 @@
+UI issue: assignment cards touch the screen edges, there is no page heading, and completed/pending statuses are visually indistinguishable

@@ -1,0 +1,132 @@
+{
+    "app_name": "Store Admin Dashboard",
+    "app_type": "web_app",
+    "description": "An admin dashboard for monitoring store inventory, supplier information, and purchase transactions.",
+    "target_users": [
+        "store_admin"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Dashboard",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "StatsCards",
+                    "InventorySummaryChart",
+                    "RecentPurchasesTable"
+                ]
+            },
+            {
+                "name": "Inventory",
+                "route": "/inventory",
+                "components": [
+                    "Navbar",
+                    "InventoryTable",
+                    "CategoryFilter",
+                    "SearchBar"
+                ]
+            },
+            {
+                "name": "Suppliers",
+                "route": "/suppliers",
+                "components": [
+                    "Navbar",
+                    "SupplierTable",
+                    "AddSupplierForm"
+                ]
+            },
+            {
+                "name": "Purchases",
+                "route": "/purchases",
+                "components": [
+                    "Navbar",
+                    "PurchaseTable",
+                    "PurchaseForm",
+                    "StatusBadge"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Button",
+            "Card",
+            "Table",
+            "Chart",
+            "Badge"
+        ],
+        "features": [
+            "inventory overview",
+            "supplier management",
+            "purchase management",
+            "search inventory",
+            "dashboard analytics"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/inventory",
+                "purpose": "Fetch inventory items"
+            },
+            {
+                "method": "GET",
+                "path": "/api/suppliers",
+                "purpose": "Fetch supplier records"
+            },
+            {
+                "method": "POST",
+                "path": "/api/suppliers",
+                "purpose": "Add supplier"
+            },
+            {
+                "method": "GET",
+                "path": "/api/purchases",
+                "purpose": "Fetch purchase transactions"
+            },
+            {
+                "method": "POST",
+                "path": "/api/purchases",
+                "purpose": "Create purchase entry"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "inventory_items",
+                "columns": [
+                    "id",
+                    "item_name",
+                    "category",
+                    "stock_quantity",
+                    "unit_price",
+                    "supplier_id"
+                ]
+            },
+            {
+                "name": "suppliers",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "phone",
+                    "address"
+                ]
+            },
+            {
+                "name": "purchases",
+                "columns": [
+                    "id",
+                    "supplier_id",
+                    "item_id",
+                    "quantity",
+                    "purchase_date",
+                    "status"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

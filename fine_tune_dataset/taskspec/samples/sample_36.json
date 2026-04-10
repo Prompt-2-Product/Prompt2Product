@@ -1,0 +1,120 @@
+{
+    "app_name": "Hotel Booking Website",
+    "app_type": "web_app",
+    "description": "A hotel booking website where users can browse rooms, make reservations, and view booking history.",
+    "target_users": [
+        "guests",
+        "hotel_staff"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "FeaturedRooms",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Rooms",
+                "route": "/rooms",
+                "components": [
+                    "Navbar",
+                    "RoomCardGrid",
+                    "PriceFilter",
+                    "AvailabilityFilter"
+                ]
+            },
+            {
+                "name": "Book Room",
+                "route": "/book-room",
+                "components": [
+                    "Navbar",
+                    "BookingForm",
+                    "DatePicker",
+                    "GuestDetailsForm"
+                ]
+            },
+            {
+                "name": "Reservations",
+                "route": "/reservations",
+                "components": [
+                    "Navbar",
+                    "ReservationTable",
+                    "StatusBadge"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card",
+            "Table",
+            "Badge"
+        ],
+        "features": [
+            "room browsing",
+            "availability filtering",
+            "room booking",
+            "reservation history"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/rooms",
+                "purpose": "Fetch hotel room listings"
+            },
+            {
+                "method": "POST",
+                "path": "/api/bookings",
+                "purpose": "Create hotel room booking"
+            },
+            {
+                "method": "GET",
+                "path": "/api/reservations",
+                "purpose": "Fetch guest reservation history"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "rooms",
+                "columns": [
+                    "id",
+                    "room_number",
+                    "room_type",
+                    "price_per_night",
+                    "availability_status"
+                ]
+            },
+            {
+                "name": "guests",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "phone"
+                ]
+            },
+            {
+                "name": "reservations",
+                "columns": [
+                    "id",
+                    "guest_id",
+                    "room_id",
+                    "check_in_date",
+                    "check_out_date",
+                    "status"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

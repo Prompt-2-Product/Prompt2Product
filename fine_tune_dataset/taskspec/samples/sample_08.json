@@ -1,0 +1,152 @@
+{
+    "app_name": "BookNest E-commerce Website",
+    "app_type": "web_app",
+    "description": "An online bookstore for searching books, filtering by category, adding books to cart, and managing customer orders.",
+    "target_users": [
+        "customers",
+        "admin"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "FeaturedBooks",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Books",
+                "route": "/books",
+                "components": [
+                    "Navbar",
+                    "SearchBar",
+                    "CategoryFilter",
+                    "BookGrid"
+                ]
+            },
+            {
+                "name": "Book Details",
+                "route": "/books/:id",
+                "components": [
+                    "Navbar",
+                    "BookInfoCard",
+                    "ReviewSection",
+                    "AddToCartButton"
+                ]
+            },
+            {
+                "name": "Cart",
+                "route": "/cart",
+                "components": [
+                    "Navbar",
+                    "CartList",
+                    "PriceSummary",
+                    "CheckoutButton"
+                ]
+            },
+            {
+                "name": "Orders",
+                "route": "/orders",
+                "components": [
+                    "Navbar",
+                    "OrderHistoryTable",
+                    "OrderStatusBadge"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card",
+            "Badge"
+        ],
+        "features": [
+            "book search",
+            "category filtering",
+            "book details",
+            "cart management",
+            "checkout",
+            "customer orders"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/books",
+                "purpose": "Fetch books with search and filters"
+            },
+            {
+                "method": "GET",
+                "path": "/api/books/:id",
+                "purpose": "Fetch selected book details"
+            },
+            {
+                "method": "POST",
+                "path": "/api/cart",
+                "purpose": "Add book to cart"
+            },
+            {
+                "method": "POST",
+                "path": "/api/orders",
+                "purpose": "Create customer book order"
+            },
+            {
+                "method": "GET",
+                "path": "/api/orders",
+                "purpose": "Fetch customer order history"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "books",
+                "columns": [
+                    "id",
+                    "title",
+                    "author",
+                    "category",
+                    "price",
+                    "description",
+                    "cover_image",
+                    "stock"
+                ]
+            },
+            {
+                "name": "customers",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "password"
+                ]
+            },
+            {
+                "name": "cart_items",
+                "columns": [
+                    "id",
+                    "customer_id",
+                    "book_id",
+                    "quantity"
+                ]
+            },
+            {
+                "name": "orders",
+                "columns": [
+                    "id",
+                    "customer_id",
+                    "total_amount",
+                    "status",
+                    "created_at"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

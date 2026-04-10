@@ -1,0 +1,157 @@
+{
+    "app_name": "SweetCrumbs Bakery Ordering System",
+    "app_type": "web_app",
+    "description": "An online bakery platform for browsing baked goods, managing a cart, placing orders, and allowing admins to manage products.",
+    "target_users": [
+        "customers",
+        "admin"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "FeaturedProducts",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Products",
+                "route": "/products",
+                "components": [
+                    "Navbar",
+                    "ProductGrid",
+                    "CategoryFilter",
+                    "SearchBar"
+                ]
+            },
+            {
+                "name": "Cart",
+                "route": "/cart",
+                "components": [
+                    "Navbar",
+                    "CartItemList",
+                    "OrderSummary",
+                    "CheckoutButton"
+                ]
+            },
+            {
+                "name": "Orders",
+                "route": "/orders",
+                "components": [
+                    "Navbar",
+                    "OrderTable",
+                    "StatusBadge"
+                ]
+            },
+            {
+                "name": "Admin",
+                "route": "/admin",
+                "components": [
+                    "Navbar",
+                    "AdminSidebar",
+                    "ProductForm",
+                    "ProductTable"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card",
+            "Modal"
+        ],
+        "features": [
+            "browse bakery products",
+            "search and filter products",
+            "add to cart",
+            "place orders",
+            "view order history",
+            "admin product management"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/products",
+                "purpose": "Fetch all bakery products"
+            },
+            {
+                "method": "POST",
+                "path": "/api/cart",
+                "purpose": "Add bakery item to cart"
+            },
+            {
+                "method": "POST",
+                "path": "/api/orders",
+                "purpose": "Create customer order"
+            },
+            {
+                "method": "GET",
+                "path": "/api/orders",
+                "purpose": "Fetch order history"
+            },
+            {
+                "method": "POST",
+                "path": "/api/admin/products",
+                "purpose": "Create new product"
+            },
+            {
+                "method": "PUT",
+                "path": "/api/admin/products/:id",
+                "purpose": "Update bakery product"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "users",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "password",
+                    "role"
+                ]
+            },
+            {
+                "name": "products",
+                "columns": [
+                    "id",
+                    "name",
+                    "category",
+                    "price",
+                    "description",
+                    "image_url",
+                    "stock"
+                ]
+            },
+            {
+                "name": "cart_items",
+                "columns": [
+                    "id",
+                    "user_id",
+                    "product_id",
+                    "quantity"
+                ]
+            },
+            {
+                "name": "orders",
+                "columns": [
+                    "id",
+                    "user_id",
+                    "total_amount",
+                    "status",
+                    "created_at"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

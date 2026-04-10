@@ -1,0 +1,23 @@
+{
+    "app_name": "GlowCart Cosmetics Shopping App",
+    "frontend": {
+        "pages": [
+            {
+                "name": "Login",
+                "route": "/login"
+            },
+            {
+                "name": "Products",
+                "route": "/products"
+            },
+            {
+                "name": "Cart",
+                "route": "/cart"
+            },
+            {
+                "name": "Wishlist",
+                "route": "/wishlist"
+            }
+        ]
+    }
+}

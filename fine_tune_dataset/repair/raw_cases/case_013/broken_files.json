@@ -1,0 +1,8 @@
+{
+    "files": [
+        {
+            "path": "backend/app.py",
+            "content": "from flask import Flask, jsonify\nfrom datetime import datetime\n\napp = Flask(__name__)\n\n@app.route('/api/reports')\ndef reports():\n    return jsonify({'generated_at': datetime.now()})"
+        }
+    ]
+}

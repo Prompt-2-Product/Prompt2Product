@@ -1,0 +1,121 @@
+{
+    "app_name": "Student Library Dashboard",
+    "app_type": "web_app",
+    "description": "A student dashboard for managing library activities such as viewing issued books, checking fines, and submitting return requests.",
+    "target_users": [
+        "students",
+        "librarians"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Dashboard",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "StatsCards",
+                    "IssuedBooksPreview"
+                ]
+            },
+            {
+                "name": "Issued Books",
+                "route": "/issued-books",
+                "components": [
+                    "Navbar",
+                    "IssuedBooksTable",
+                    "DueDateBadge"
+                ]
+            },
+            {
+                "name": "Fines",
+                "route": "/fines",
+                "components": [
+                    "Navbar",
+                    "FineTable",
+                    "OutstandingFineCard"
+                ]
+            },
+            {
+                "name": "Return Requests",
+                "route": "/return-requests",
+                "components": [
+                    "Navbar",
+                    "ReturnRequestForm",
+                    "RequestHistoryTable"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Button",
+            "Card",
+            "Table",
+            "Badge"
+        ],
+        "features": [
+            "issued books view",
+            "fine tracking",
+            "return requests",
+            "dashboard summaries"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/issued-books",
+                "purpose": "Fetch issued books"
+            },
+            {
+                "method": "GET",
+                "path": "/api/fines",
+                "purpose": "Fetch student fines"
+            },
+            {
+                "method": "POST",
+                "path": "/api/return-requests",
+                "purpose": "Submit return request"
+            },
+            {
+                "method": "GET",
+                "path": "/api/return-requests",
+                "purpose": "Fetch return request history"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "issued_books",
+                "columns": [
+                    "id",
+                    "student_id",
+                    "book_id",
+                    "issue_date",
+                    "due_date"
+                ]
+            },
+            {
+                "name": "fines",
+                "columns": [
+                    "id",
+                    "student_id",
+                    "book_id",
+                    "fine_amount",
+                    "status"
+                ]
+            },
+            {
+                "name": "return_requests",
+                "columns": [
+                    "id",
+                    "student_id",
+                    "book_id",
+                    "request_date",
+                    "status"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

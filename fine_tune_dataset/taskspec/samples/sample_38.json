@@ -1,0 +1,94 @@
+{
+    "app_name": "Hostel Room Allocation Portal",
+    "app_type": "web_app",
+    "description": "A portal for students to view hostel room availability, room status, and submit room allocation requests.",
+    "target_users": [
+        "students",
+        "hostel_admin"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "HostelOverview",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Room Status",
+                "route": "/room-status",
+                "components": [
+                    "Navbar",
+                    "RoomStatusTable",
+                    "BlockFilter"
+                ]
+            },
+            {
+                "name": "Request Room",
+                "route": "/request-room",
+                "components": [
+                    "Navbar",
+                    "RoomRequestForm",
+                    "PreferenceSelector",
+                    "SubmitButton"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card",
+            "Table"
+        ],
+        "features": [
+            "room status view",
+            "block filtering",
+            "room request submission"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/rooms",
+                "purpose": "Fetch hostel room status"
+            },
+            {
+                "method": "POST",
+                "path": "/api/room-requests",
+                "purpose": "Submit hostel room allocation request"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "rooms",
+                "columns": [
+                    "id",
+                    "block_name",
+                    "room_number",
+                    "capacity",
+                    "occupancy_status"
+                ]
+            },
+            {
+                "name": "room_requests",
+                "columns": [
+                    "id",
+                    "student_name",
+                    "student_email",
+                    "preferred_block",
+                    "request_date",
+                    "status"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

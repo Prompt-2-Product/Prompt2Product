@@ -1,0 +1,15 @@
+{
+    "app_name": "E-commerce Dashboard",
+    "app_type": "dashboard_app",
+    "frontend": {
+        "pages": [
+            {
+                "name": "Dashboard",
+                "route": "/"
+            }
+        ],
+        "shared_components": [
+            "SalesChart"
+        ]
+    }
+}

@@ -1,0 +1,97 @@
+{
+    "app_name": "BookNest E-commerce Website",
+    "app_type": "web_app",
+    "description": "An online bookstore for searching books, filtering by category, adding books to cart, and managing customer orders.",
+    "target_users": [
+        "customers",
+        "admin"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "FeaturedBooks"
+                ]
+            },
+            {
+                "name": "Books",
+                "route": "/books",
+                "components": [
+                    "Navbar",
+                    "SearchBar",
+                    "CategoryFilter",
+                    "BookGrid"
+                ]
+            },
+            {
+                "name": "Cart",
+                "route": "/cart",
+                "components": [
+                    "Navbar",
+                    "CartList",
+                    "SummaryCard"
+                ]
+            },
+            {
+                "name": "Orders",
+                "route": "/orders",
+                "components": [
+                    "Navbar",
+                    "OrderHistoryTable"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "BookCard"
+        ],
+        "features": [
+            "book search",
+            "category filtering",
+            "cart management",
+            "customer orders"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/books",
+                "purpose": "Fetch books"
+            },
+            {
+                "method": "GET",
+                "path": "/api/orders",
+                "purpose": "Fetch orders"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "books",
+                "columns": [
+                    "id",
+                    "title",
+                    "author",
+                    "category",
+                    "price"
+                ]
+            },
+            {
+                "name": "orders",
+                "columns": [
+                    "id",
+                    "book_count",
+                    "total_amount",
+                    "status"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

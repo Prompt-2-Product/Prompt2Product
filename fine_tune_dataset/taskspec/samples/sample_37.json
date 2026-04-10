@@ -1,0 +1,93 @@
+{
+    "app_name": "Guest House Reservation System",
+    "app_type": "web_app",
+    "description": "An online reservation system for guest houses with room category browsing and booking submission.",
+    "target_users": [
+        "guests",
+        "guest_house_admin"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "RoomCategoryHighlights",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Room Categories",
+                "route": "/categories",
+                "components": [
+                    "Navbar",
+                    "CategoryCardGrid",
+                    "AmenitiesSection"
+                ]
+            },
+            {
+                "name": "Reserve",
+                "route": "/reserve",
+                "components": [
+                    "Navbar",
+                    "ReservationForm",
+                    "DateSelector",
+                    "SubmitButton"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card"
+        ],
+        "features": [
+            "room category listing",
+            "amenities overview",
+            "online reservation"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/categories",
+                "purpose": "Fetch guest house room categories"
+            },
+            {
+                "method": "POST",
+                "path": "/api/reservations",
+                "purpose": "Submit reservation request"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "room_categories",
+                "columns": [
+                    "id",
+                    "category_name",
+                    "price_per_night",
+                    "amenities",
+                    "availability"
+                ]
+            },
+            {
+                "name": "reservations",
+                "columns": [
+                    "id",
+                    "guest_name",
+                    "email",
+                    "category_id",
+                    "check_in_date",
+                    "check_out_date"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

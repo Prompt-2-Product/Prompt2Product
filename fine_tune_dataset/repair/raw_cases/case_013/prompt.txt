@@ -1,0 +1,1 @@
+Build a sales analytics dashboard with charts and reports using React frontend and Flask backend.

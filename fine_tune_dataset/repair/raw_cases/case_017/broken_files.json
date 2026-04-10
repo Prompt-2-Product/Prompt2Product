@@ -1,0 +1,8 @@
+{
+    "files": [
+        {
+            "path": "frontend/src/pages/Cart.jsx",
+            "content": "import React, { useState } from 'react';\n\nexport default function Cart() {\n  const cartItems = [\n    { id: 1, name: 'Burger', quantity: 1 }\n  ];\n\n  const increaseQty = (id) => {\n    setCartItems(cartItems.map(item =>\n      item.id === id ? { ...item, quantity: item.quantity + 1 } : item\n    ));\n  };\n\n  return (\n    <div>\n      {cartItems.map(item => (\n        <div key={item.id}>\n          <span>{item.name}</span>\n          <button onClick={() => increaseQty(item.id)}>+</button>\n        </div>\n      ))}\n    </div>\n  );\n}"
+        }
+    ]
+}

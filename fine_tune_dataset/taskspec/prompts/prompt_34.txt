@@ -1,0 +1,1 @@
+Create a digital library app with login, search, bookmarks, and downloads.

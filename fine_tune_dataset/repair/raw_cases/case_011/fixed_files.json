@@ -1,0 +1,8 @@
+{
+    "fixes": [
+        {
+            "path": "backend/app.py",
+            "content": "from flask import Flask, jsonify\n\napp = Flask(__name__)\n\n@app.route('/api/dues')\ndef get_dues():\n    return jsonify({'dues': []})"
+        }
+    ]
+}

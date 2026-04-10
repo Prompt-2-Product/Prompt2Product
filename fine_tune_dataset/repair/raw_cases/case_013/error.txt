@@ -1,0 +1,1 @@
+TypeError: Object of type datetime is not JSON serializable

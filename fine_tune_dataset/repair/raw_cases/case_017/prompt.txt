@@ -1,0 +1,1 @@
+Build a shopping cart page that lets users increase item quantities and shows totals using React frontend.

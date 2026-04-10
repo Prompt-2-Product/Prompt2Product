@@ -1,0 +1,103 @@
+{
+    "app_name": "Gym Administration System",
+    "app_type": "web_app",
+    "description": "An admin system to manage gym members, track attendance, and maintain subscription records.",
+    "target_users": [
+        "gym_admin"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Dashboard",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "StatsCards",
+                    "AttendanceChart"
+                ]
+            },
+            {
+                "name": "Members",
+                "route": "/members",
+                "components": [
+                    "Navbar",
+                    "MemberTable",
+                    "AddMemberForm"
+                ]
+            },
+            {
+                "name": "Subscriptions",
+                "route": "/subscriptions",
+                "components": [
+                    "Navbar",
+                    "SubscriptionTable",
+                    "RenewButton"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Button",
+            "Card",
+            "Table"
+        ],
+        "features": [
+            "member management",
+            "attendance tracking",
+            "subscription management"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/members",
+                "purpose": "Fetch gym members"
+            },
+            {
+                "method": "POST",
+                "path": "/api/members",
+                "purpose": "Add new gym member"
+            },
+            {
+                "method": "GET",
+                "path": "/api/subscriptions",
+                "purpose": "Fetch subscription details"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "members",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "phone",
+                    "membership_type"
+                ]
+            },
+            {
+                "name": "attendance",
+                "columns": [
+                    "id",
+                    "member_id",
+                    "check_in_time",
+                    "date"
+                ]
+            },
+            {
+                "name": "subscriptions",
+                "columns": [
+                    "id",
+                    "member_id",
+                    "plan_name",
+                    "start_date",
+                    "end_date"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

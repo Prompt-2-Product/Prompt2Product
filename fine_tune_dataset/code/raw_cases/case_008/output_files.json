@@ -1,0 +1,36 @@
+{
+    "files": [
+        {
+            "path": "frontend/src/App.jsx",
+            "content": "import React from 'react';\nimport { BrowserRouter, Routes, Route } from 'react-router-dom';\nimport Navbar from './components/Navbar';\nimport Dashboard from './pages/Dashboard';\nimport Products from './pages/Products';\nimport StockUpdates from './pages/StockUpdates';\nimport SalesRecords from './pages/SalesRecords';\n\nexport default function App() {\n  return (\n    <BrowserRouter>\n      <Navbar />\n      <Routes>\n        <Route path='/' element={<Dashboard />} />\n        <Route path='/products' element={<Products />} />\n        <Route path='/stock-updates' element={<StockUpdates />} />\n        <Route path='/sales-records' element={<SalesRecords />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/components/Navbar.jsx",
+            "content": "import React from 'react';\nimport { NavLink } from 'react-router-dom';\n\nexport default function Navbar() {\n  const style = ({ isActive }) => ({\n    textDecoration: 'none',\n    color: isActive ? '#0f172a' : '#64748b',\n    fontWeight: isActive ? 700 : 500\n  });\n\n  return (\n    <nav style={{ borderBottom: '1px solid #e2e8f0', background: '#fff' }}>\n      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '16px 24px', display: 'flex', justifyContent: 'space-between' }}>\n        <h2 style={{ margin: 0 }}>ShopStock</h2>\n        <div style={{ display: 'flex', gap: '18px' }}>\n          <NavLink to='/' style={style}>Dashboard</NavLink>\n          <NavLink to='/products' style={style}>Products</NavLink>\n          <NavLink to='/stock-updates' style={style}>Stock Updates</NavLink>\n          <NavLink to='/sales-records' style={style}>Sales Records</NavLink>\n        </div>\n      </div>\n    </nav>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/components/MetricCard.jsx",
+            "content": "import React from 'react';\n\nexport default function MetricCard({ label, value }) {\n  return (\n    <div style={{ border: '1px solid #e2e8f0', borderRadius: '14px', padding: '18px', background: '#fff' }}>\n      <p style={{ margin: '0 0 8px 0', color: '#64748b' }}>{label}</p>\n      <h3 style={{ margin: 0 }}>{value}</h3>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/pages/Dashboard.jsx",
+            "content": "import React from 'react';\nimport MetricCard from '../components/MetricCard';\n\nexport default function Dashboard() {\n  return (\n    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 24px' }}>\n      <h1>Inventory Dashboard</h1>\n      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '18px', marginTop: '24px' }}>\n        <MetricCard label='Total Products' value='54' />\n        <MetricCard label='Low Stock Items' value='7' />\n        <MetricCard label='Today Sales' value='$420' />\n      </div>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/pages/Products.jsx",
+            "content": "import React from 'react';\n\nconst products = [\n  { id: 1, name: 'Rice Pack', category: 'Groceries', price: 12, stock_quantity: 25 },\n  { id: 2, name: 'Shampoo', category: 'Personal Care', price: 8, stock_quantity: 14 }\n];\n\nexport default function Products() {\n  return (\n    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 24px' }}>\n      <h1>Products</h1>\n      <div style={{ display: 'grid', gap: '14px' }}>\n        {products.map(product => (\n          <div key={product.id} style={{ border: '1px solid #e2e8f0', borderRadius: '12px', padding: '16px' }}>\n            <strong>{product.name}</strong>\n            <p style={{ margin: '6px 0', color: '#64748b' }}>{product.category}</p>\n            <p style={{ margin: '6px 0' }}>Price: ${product.price}</p>\n            <p style={{ margin: '6px 0' }}>Stock: {product.stock_quantity}</p>\n          </div>\n        ))}\n      </div>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/pages/StockUpdates.jsx",
+            "content": "import React from 'react';\n\nexport default function StockUpdates() {\n  return (\n    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '32px 24px' }}>\n      <h1>Stock Updates</h1>\n      <div style={{ border: '1px solid #e2e8f0', borderRadius: '14px', padding: '20px', display: 'grid', gap: '14px', background: '#fff' }}>\n        <input placeholder='Product Name' style={{ padding: '12px', borderRadius: '10px', border: '1px solid #cbd5e1' }} />\n        <input placeholder='Quantity Change' style={{ padding: '12px', borderRadius: '10px', border: '1px solid #cbd5e1' }} />\n        <select style={{ padding: '12px', borderRadius: '10px', border: '1px solid #cbd5e1' }}>\n          <option>Increase Stock</option>\n          <option>Decrease Stock</option>\n        </select>\n        <button style={{ padding: '12px', borderRadius: '10px', border: 'none', background: '#0f172a', color: '#fff' }}>Save Update</button>\n      </div>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/pages/SalesRecords.jsx",
+            "content": "import React from 'react';\n\nconst sales = [\n  { id: 1, product_name: 'Rice Pack', quantity_sold: 3, total_amount: 36 },\n  { id: 2, product_name: 'Shampoo', quantity_sold: 2, total_amount: 16 }\n];\n\nexport default function SalesRecords() {\n  return (\n    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 24px' }}>\n      <h1>Sales Records</h1>\n      <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #e2e8f0' }}>\n        <thead style={{ background: '#f8fafc' }}>\n          <tr>\n            <th style={{ padding: '12px', textAlign: 'left' }}>Product</th>\n            <th style={{ padding: '12px', textAlign: 'left' }}>Quantity</th>\n            <th style={{ padding: '12px', textAlign: 'left' }}>Total</th>\n          </tr>\n        </thead>\n        <tbody>\n          {sales.map(item => (\n            <tr key={item.id}>\n              <td style={{ padding: '12px', borderTop: '1px solid #e2e8f0' }}>{item.product_name}</td>\n              <td style={{ padding: '12px', borderTop: '1px solid #e2e8f0' }}>{item.quantity_sold}</td>\n              <td style={{ padding: '12px', borderTop: '1px solid #e2e8f0' }}>${item.total_amount}</td>\n            </tr>\n          ))}\n        </tbody>\n      </table>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "backend/app.py",
+            "content": "from flask import Flask, jsonify\n\napp = Flask(__name__)\n\n@app.route('/api/products')\ndef get_products():\n    return jsonify({\n        'products': [\n            {'id': 1, 'name': 'Rice Pack', 'category': 'Groceries', 'price': 12, 'stock_quantity': 25},\n            {'id': 2, 'name': 'Shampoo', 'category': 'Personal Care', 'price': 8, 'stock_quantity': 14}\n        ]\n    })\n\n@app.route('/api/sales')\ndef get_sales():\n    return jsonify({\n        'sales_records': [\n            {'id': 1, 'product_name': 'Rice Pack', 'quantity_sold': 3, 'total_amount': 36},\n            {'id': 2, 'product_name': 'Shampoo', 'quantity_sold': 2, 'total_amount': 16}\n        ]\n    })\n\nif __name__ == '__main__':\n    app.run(debug=True)"
+        }
+    ]
+}

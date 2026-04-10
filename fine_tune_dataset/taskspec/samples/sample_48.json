@@ -1,0 +1,108 @@
+{
+    "app_name": "Hospital Analytics Dashboard",
+    "app_type": "dashboard_app",
+    "description": "A healthcare analytics dashboard for analyzing appointment trends, doctor utilization, and patient statistics.",
+    "target_users": [
+        "hospital_admin",
+        "department_heads"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Dashboard",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "KpiCards",
+                    "AppointmentsTrendChart",
+                    "DoctorLoadChart",
+                    "DateFilter"
+                ]
+            },
+            {
+                "name": "Doctors",
+                "route": "/doctors",
+                "components": [
+                    "Navbar",
+                    "DoctorPerformanceTable",
+                    "DepartmentFilter"
+                ]
+            },
+            {
+                "name": "Patients",
+                "route": "/patients",
+                "components": [
+                    "Navbar",
+                    "PatientTrendChart",
+                    "AgeGroupChart"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Card",
+            "Chart",
+            "Table",
+            "FilterBar"
+        ],
+        "features": [
+            "appointment analytics",
+            "doctor utilization",
+            "patient trends",
+            "department filtering"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/appointments-analytics",
+                "purpose": "Fetch appointment trend data"
+            },
+            {
+                "method": "GET",
+                "path": "/api/doctors-analytics",
+                "purpose": "Fetch doctor performance data"
+            },
+            {
+                "method": "GET",
+                "path": "/api/patients-analytics",
+                "purpose": "Fetch patient trend data"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "appointments",
+                "columns": [
+                    "id",
+                    "doctor_id",
+                    "patient_id",
+                    "appointment_date",
+                    "status"
+                ]
+            },
+            {
+                "name": "doctors",
+                "columns": [
+                    "id",
+                    "name",
+                    "department",
+                    "appointments_count"
+                ]
+            },
+            {
+                "name": "patients",
+                "columns": [
+                    "id",
+                    "name",
+                    "age",
+                    "gender",
+                    "registration_date"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

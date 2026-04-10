@@ -1,0 +1,1 @@
+Build a cafeteria ordering website with pages for Home, Menu, Cart, and Orders. Use React for frontend and Flask for backend.

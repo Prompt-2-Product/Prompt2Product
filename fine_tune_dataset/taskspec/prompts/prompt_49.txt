@@ -1,0 +1,1 @@
+Create a restaurant admin dashboard with orders, revenue, and best-selling items.

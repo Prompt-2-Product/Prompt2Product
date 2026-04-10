@@ -1,0 +1,72 @@
+{
+    "app_name": "Library Management Website",
+    "app_type": "web_app",
+    "description": "A web application for library users to search books, issue available books, and check return due dates.",
+    "target_users": [
+        "students",
+        "librarians"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/"
+            },
+            {
+                "name": "Books",
+                "route": "/books"
+            },
+            {
+                "name": "Issued Books",
+                "route": "/issued-books"
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "BookCard"
+        ],
+        "features": [
+            "book search",
+            "issue books",
+            "view due dates"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/books",
+                "purpose": "Fetch library books"
+            },
+            {
+                "method": "GET",
+                "path": "/api/issued-books",
+                "purpose": "Fetch issued book records"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "books",
+                "columns": [
+                    "id",
+                    "title",
+                    "author",
+                    "category",
+                    "availability_status"
+                ]
+            },
+            {
+                "name": "issued_books",
+                "columns": [
+                    "id",
+                    "title",
+                    "issue_date",
+                    "due_date"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

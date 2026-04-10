@@ -1,0 +1,32 @@
+{
+    "files": [
+        {
+            "path": "frontend/src/App.jsx",
+            "content": "import React from 'react';\nimport { BrowserRouter, Routes, Route } from 'react-router-dom';\nimport Navbar from './components/Navbar';\nimport Dashboard from './pages/Dashboard';\nimport Reports from './pages/Reports';\n\nexport default function App() {\n  return (\n    <BrowserRouter>\n      <Navbar />\n      <Routes>\n        <Route path='/' element={<Dashboard />} />\n        <Route path='/reports' element={<Reports />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/components/Navbar.jsx",
+            "content": "import React from 'react';\nimport { NavLink } from 'react-router-dom';\n\nexport default function Navbar() {\n  const style = ({ isActive }) => ({ textDecoration: 'none', color: isActive ? '#0f172a' : '#64748b', fontWeight: isActive ? 700 : 500 });\n\n  return (\n    <nav style={{ borderBottom: '1px solid #e2e8f0', background: '#fff' }}>\n      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '16px 24px', display: 'flex', justifyContent: 'space-between' }}>\n        <h2 style={{ margin: 0 }}>SalesScope</h2>\n        <div style={{ display: 'flex', gap: '18px' }}>\n          <NavLink to='/' style={style}>Dashboard</NavLink>\n          <NavLink to='/reports' style={style}>Reports</NavLink>\n        </div>\n      </div>\n    </nav>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/components/KpiCard.jsx",
+            "content": "import React from 'react';\n\nexport default function KpiCard({ label, value }) {\n  return (\n    <div style={{ border: '1px solid #e2e8f0', borderRadius: '14px', padding: '18px', background: '#fff' }}>\n      <p style={{ margin: '0 0 8px 0', color: '#64748b' }}>{label}</p>\n      <h3 style={{ margin: 0 }}>{value}</h3>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/components/ChartCard.jsx",
+            "content": "import React from 'react';\n\nexport default function ChartCard({ title, children }) {\n  return (\n    <div style={{ border: '1px solid #e2e8f0', borderRadius: '14px', padding: '18px', background: '#fff' }}>\n      <h3 style={{ marginTop: 0 }}>{title}</h3>\n      <div style={{ height: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', background: '#f8fafc', borderRadius: '12px' }}>\n        {children}\n      </div>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/pages/Dashboard.jsx",
+            "content": "import React from 'react';\nimport KpiCard from '../components/KpiCard';\nimport ChartCard from '../components/ChartCard';\n\nexport default function Dashboard() {\n  return (\n    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 24px' }}>\n      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>\n        <div>\n          <h1 style={{ marginBottom: '6px' }}>Sales Dashboard</h1>\n          <p style={{ color: '#64748b' }}>Track sales performance and business KPIs.</p>\n        </div>\n        <input type='date' style={{ padding: '10px 12px', borderRadius: '10px', border: '1px solid #cbd5e1' }} />\n      </div>\n      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '18px', marginBottom: '24px' }}>\n        <KpiCard label='Total Sales' value='$12,400' />\n        <KpiCard label='Orders' value='328' />\n        <KpiCard label='Profit' value='$3,280' />\n      </div>\n      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '18px' }}>\n        <ChartCard title='Sales Trend'>Sales Trend Chart Placeholder</ChartCard>\n        <ChartCard title='Revenue by Category'>Category Revenue Chart Placeholder</ChartCard>\n      </div>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/pages/Reports.jsx",
+            "content": "import React from 'react';\n\nconst reports = [\n  { id: 1, report_name: 'Weekly Sales Summary', generated_at: '2026-03-20' },\n  { id: 2, report_name: 'Monthly Revenue Report', generated_at: '2026-03-24' }\n];\n\nexport default function Reports() {\n  return (\n    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 24px' }}>\n      <h1>Reports</h1>\n      <div style={{ display: 'grid', gap: '14px' }}>\n        {reports.map(report => (\n          <div key={report.id} style={{ border: '1px solid #e2e8f0', borderRadius: '12px', padding: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>\n            <div>\n              <strong>{report.report_name}</strong>\n              <p style={{ margin: '6px 0 0 0', color: '#64748b' }}>Generated on {report.generated_at}</p>\n            </div>\n            <button style={{ padding: '10px 14px', borderRadius: '10px', border: 'none', background: '#0f172a', color: '#fff' }}>Download</button>\n          </div>\n        ))}\n      </div>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "backend/app.py",
+            "content": "from flask import Flask, jsonify\n\napp = Flask(__name__)\n\n@app.route('/api/kpis')\ndef get_kpis():\n    return jsonify({\n        'total_sales': 12400,\n        'orders': 328,\n        'profit': 3280\n    })\n\n@app.route('/api/reports')\ndef get_reports():\n    return jsonify({\n        'reports': [\n            {'id': 1, 'report_name': 'Weekly Sales Summary', 'generated_at': '2026-03-20'},\n            {'id': 2, 'report_name': 'Monthly Revenue Report', 'generated_at': '2026-03-24'}\n        ]\n    })\n\nif __name__ == '__main__':\n    app.run(debug=True)"
+        }
+    ]
+}

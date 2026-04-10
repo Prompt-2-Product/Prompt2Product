@@ -1,0 +1,8 @@
+{
+    "files": [
+        {
+            "path": "backend/app.py",
+            "content": "from flask import Flask, jsonify\n\napp = Flask(__name__)\n\n@app.route('/api/room-requests')\ndef room_requests():\n    return jsonify({'message': 'Room requests endpoint'})"
+        }
+    ]
+}

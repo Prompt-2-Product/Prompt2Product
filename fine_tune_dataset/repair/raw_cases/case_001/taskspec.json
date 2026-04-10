@@ -1,0 +1,16 @@
+{
+    "app_name": "Student Portal",
+    "app_type": "web_app",
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/"
+            },
+            {
+                "name": "Courses",
+                "route": "/courses"
+            }
+        ]
+    }
+}

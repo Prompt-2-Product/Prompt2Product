@@ -1,0 +1,8 @@
+{
+    "files": [
+        {
+            "path": "backend/app.py",
+            "content": "from flask import Flask, jsonify\n\napp = Flask(__name__)\n\n@app.route('/api/login', methods=['POST'])\ndef login():\n    data = request.get_json()\n    return jsonify({'email': data.get('email')})"
+        }
+    ]
+}

@@ -1,0 +1,129 @@
+{
+    "app_name": "University Student Dashboard",
+    "app_type": "web_app",
+    "description": "A dashboard for university students to access their timetable, academic notices, and assignment information in one place.",
+    "target_users": [
+        "students",
+        "department_admin"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "QuickStats",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Timetable",
+                "route": "/timetable",
+                "components": [
+                    "Navbar",
+                    "WeeklyScheduleTable",
+                    "DayTabs"
+                ]
+            },
+            {
+                "name": "Notices",
+                "route": "/notices",
+                "components": [
+                    "Navbar",
+                    "NoticeList",
+                    "CategoryFilter"
+                ]
+            },
+            {
+                "name": "Assignments",
+                "route": "/assignments",
+                "components": [
+                    "Navbar",
+                    "AssignmentTable",
+                    "DeadlineBadge"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card",
+            "Table"
+        ],
+        "features": [
+            "view class timetable",
+            "view notices",
+            "assignment listing",
+            "notice filtering",
+            "deadline tracking"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/timetable",
+                "purpose": "Fetch weekly class timetable"
+            },
+            {
+                "method": "GET",
+                "path": "/api/notices",
+                "purpose": "Fetch university notices"
+            },
+            {
+                "method": "GET",
+                "path": "/api/assignments",
+                "purpose": "Fetch assignment records"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "students",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "department",
+                    "semester"
+                ]
+            },
+            {
+                "name": "timetable_entries",
+                "columns": [
+                    "id",
+                    "day",
+                    "course_name",
+                    "start_time",
+                    "end_time",
+                    "room"
+                ]
+            },
+            {
+                "name": "notices",
+                "columns": [
+                    "id",
+                    "title",
+                    "category",
+                    "content",
+                    "published_at"
+                ]
+            },
+            {
+                "name": "assignments",
+                "columns": [
+                    "id",
+                    "course_name",
+                    "title",
+                    "deadline",
+                    "status"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

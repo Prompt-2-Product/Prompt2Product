@@ -1,0 +1,8 @@
+{
+    "files": [
+        {
+            "path": "frontend/src/pages/Login.jsx",
+            "content": "import React from 'react';\n\nexport default function Login() {\n  const handleSubmit = async (e) => {\n    e.preventDefault();\n    await fetch('http://localhost:5000/api/login', {\n      method: 'POST',\n      body: JSON.stringify({ email: 'test@example.com', password: '123456' })\n    });\n  };\n\n  return <form onSubmit={handleSubmit}><button type='submit'>Login</button></form>;\n}"
+        }
+    ]
+}

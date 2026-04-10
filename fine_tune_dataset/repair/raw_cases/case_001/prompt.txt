@@ -1,0 +1,1 @@
+Build a student portal where students can view courses and grades.

@@ -1,0 +1,76 @@
+{
+    "app_name": "GlowCart Cosmetics Shopping App",
+    "app_type": "web_app",
+    "description": "A cosmetics shopping application that allows users to browse featured beauty products, manage a cart, and save products to a wishlist.",
+    "target_users": [
+        "customers",
+        "admin"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/"
+            },
+            {
+                "name": "Products",
+                "route": "/products"
+            },
+            {
+                "name": "Cart",
+                "route": "/cart"
+            },
+            {
+                "name": "Wishlist",
+                "route": "/wishlist"
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "ProductCard"
+        ],
+        "features": [
+            "featured products",
+            "product listing",
+            "wishlist",
+            "cart management"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/products",
+                "purpose": "Fetch products"
+            },
+            {
+                "method": "GET",
+                "path": "/api/wishlist",
+                "purpose": "Fetch wishlist"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "products",
+                "columns": [
+                    "id",
+                    "name",
+                    "brand",
+                    "price",
+                    "category"
+                ]
+            },
+            {
+                "name": "wishlist_items",
+                "columns": [
+                    "id",
+                    "product_name",
+                    "brand"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

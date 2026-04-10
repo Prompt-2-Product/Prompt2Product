@@ -1,0 +1,1 @@
+Build a course registration system where students can enroll in courses and see registered subjects.

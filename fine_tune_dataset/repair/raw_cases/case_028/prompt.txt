@@ -1,0 +1,1 @@
+Build a Flask backend for a cosmetics shopping app with a login endpoint that reads JSON request data.

@@ -1,0 +1,16 @@
+{
+    "app_name": "Sales Analytics Dashboard",
+    "app_type": "dashboard_app",
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/charts"
+            },
+            {
+                "method": "GET",
+                "path": "/api/reports"
+            }
+        ]
+    }
+}

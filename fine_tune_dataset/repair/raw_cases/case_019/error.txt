@@ -1,0 +1,1 @@
+UI issue: product cards render in a single unstyled vertical column and overflow the container on small screens

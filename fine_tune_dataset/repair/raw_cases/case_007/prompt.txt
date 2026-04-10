@@ -1,0 +1,1 @@
+Build a gym dashboard with workout logging form and progress page using React frontend and Flask backend.

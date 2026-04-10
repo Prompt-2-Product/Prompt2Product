@@ -1,0 +1,12 @@
+{
+    "app_name": "Cosmetics Shop Backend",
+    "app_type": "web_app",
+    "backend": {
+        "endpoints": [
+            {
+                "method": "POST",
+                "path": "/api/login"
+            }
+        ]
+    }
+}

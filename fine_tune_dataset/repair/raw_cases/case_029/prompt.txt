@@ -1,0 +1,1 @@
+Build an e-commerce dashboard with charts using a separate SalesChart component in React.

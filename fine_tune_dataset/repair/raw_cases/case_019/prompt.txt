@@ -1,0 +1,1 @@
+Build a product grid page for an e-commerce site with a clean card layout using React.

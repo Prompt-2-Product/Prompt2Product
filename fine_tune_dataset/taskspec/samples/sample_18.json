@@ -1,0 +1,119 @@
+{
+    "app_name": "Dental Clinic Appointment Website",
+    "app_type": "web_app",
+    "description": "A dental clinic website where visitors can explore services, book appointments, and contact the clinic.",
+    "target_users": [
+        "patients",
+        "clinic_staff"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "ClinicHighlights",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Services",
+                "route": "/services",
+                "components": [
+                    "Navbar",
+                    "ServiceCardGrid",
+                    "TreatmentInfoSection"
+                ]
+            },
+            {
+                "name": "Book Appointment",
+                "route": "/book",
+                "components": [
+                    "Navbar",
+                    "AppointmentForm",
+                    "DatePicker",
+                    "SubmitButton"
+                ]
+            },
+            {
+                "name": "Contact",
+                "route": "/contact",
+                "components": [
+                    "Navbar",
+                    "ContactInfoCard",
+                    "ContactForm",
+                    "MapSection"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card",
+            "FormInput"
+        ],
+        "features": [
+            "service listing",
+            "appointment booking",
+            "contact form",
+            "clinic information"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/services",
+                "purpose": "Fetch dental clinic services"
+            },
+            {
+                "method": "POST",
+                "path": "/api/appointments",
+                "purpose": "Create dental appointment booking"
+            },
+            {
+                "method": "POST",
+                "path": "/api/contact",
+                "purpose": "Submit contact message"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "services",
+                "columns": [
+                    "id",
+                    "service_name",
+                    "description",
+                    "price_range"
+                ]
+            },
+            {
+                "name": "appointments",
+                "columns": [
+                    "id",
+                    "patient_name",
+                    "phone",
+                    "appointment_date",
+                    "service_type",
+                    "status"
+                ]
+            },
+            {
+                "name": "contact_messages",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "message",
+                    "submitted_at"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

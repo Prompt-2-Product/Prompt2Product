@@ -1,0 +1,36 @@
+{
+    "app_name": "Restaurant Ordering Website",
+    "app_type": "web_app",
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/"
+            },
+            {
+                "name": "Menu",
+                "route": "/menu"
+            },
+            {
+                "name": "Cart",
+                "route": "/cart"
+            },
+            {
+                "name": "Checkout",
+                "route": "/checkout"
+            }
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/menu"
+            },
+            {
+                "method": "POST",
+                "path": "/api/orders"
+            }
+        ]
+    }
+}

@@ -1,0 +1,1 @@
+TypeError: notices.map is not a function

@@ -1,0 +1,86 @@
+{
+    "app_name": "Student Academic Portal",
+    "app_type": "web_app",
+    "description": "A portal for students to access academic information such as courses, attendance, and grades.",
+    "target_users": [
+        "students",
+        "faculty_admin"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/"
+            },
+            {
+                "name": "Courses",
+                "route": "/courses"
+            },
+            {
+                "name": "Attendance",
+                "route": "/attendance"
+            },
+            {
+                "name": "Grades",
+                "route": "/grades"
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "StatsCard"
+        ],
+        "features": [
+            "course listing",
+            "attendance tracking",
+            "grade overview"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/courses",
+                "purpose": "Fetch courses"
+            },
+            {
+                "method": "GET",
+                "path": "/api/attendance",
+                "purpose": "Fetch attendance"
+            },
+            {
+                "method": "GET",
+                "path": "/api/grades",
+                "purpose": "Fetch grades"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "courses",
+                "columns": [
+                    "id",
+                    "course_code",
+                    "course_name"
+                ]
+            },
+            {
+                "name": "attendance",
+                "columns": [
+                    "id",
+                    "course_name",
+                    "attendance_percentage"
+                ]
+            },
+            {
+                "name": "grades",
+                "columns": [
+                    "id",
+                    "course_name",
+                    "grade"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

@@ -1,0 +1,19 @@
+{
+    "app_name": "Fitness Dashboard",
+    "frontend": {
+        "pages": [
+            {
+                "name": "Dashboard",
+                "route": "/"
+            },
+            {
+                "name": "Log Workout",
+                "route": "/log-workout"
+            },
+            {
+                "name": "Progress",
+                "route": "/progress"
+            }
+        ]
+    }
+}

@@ -1,0 +1,1 @@
+Build a shoe store website with user registration, product listing, cart, checkout, and order tracking.

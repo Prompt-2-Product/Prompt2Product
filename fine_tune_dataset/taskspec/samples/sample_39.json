@@ -1,0 +1,126 @@
+{
+    "app_name": "Travel Stay Booking App",
+    "app_type": "web_app",
+    "description": "A travel stay booking application for browsing properties, viewing stay details, and managing bookings.",
+    "target_users": [
+        "travelers",
+        "property_hosts"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "FeaturedProperties",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Properties",
+                "route": "/properties",
+                "components": [
+                    "Navbar",
+                    "PropertyGrid",
+                    "LocationFilter",
+                    "PriceFilter"
+                ]
+            },
+            {
+                "name": "Property Details",
+                "route": "/properties/:id",
+                "components": [
+                    "Navbar",
+                    "ImageGallery",
+                    "PropertyInfoCard",
+                    "BookNowButton"
+                ]
+            },
+            {
+                "name": "Bookings",
+                "route": "/bookings",
+                "components": [
+                    "Navbar",
+                    "BookingTable",
+                    "StatusBadge"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card",
+            "Table",
+            "Badge"
+        ],
+        "features": [
+            "property browsing",
+            "location filtering",
+            "booking management",
+            "property details"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/properties",
+                "purpose": "Fetch stay properties"
+            },
+            {
+                "method": "GET",
+                "path": "/api/properties/:id",
+                "purpose": "Fetch selected property details"
+            },
+            {
+                "method": "POST",
+                "path": "/api/bookings",
+                "purpose": "Create property booking"
+            },
+            {
+                "method": "GET",
+                "path": "/api/bookings",
+                "purpose": "Fetch traveler booking history"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "properties",
+                "columns": [
+                    "id",
+                    "title",
+                    "location",
+                    "price_per_night",
+                    "rating",
+                    "availability_status"
+                ]
+            },
+            {
+                "name": "travelers",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "phone"
+                ]
+            },
+            {
+                "name": "bookings",
+                "columns": [
+                    "id",
+                    "traveler_id",
+                    "property_id",
+                    "check_in_date",
+                    "check_out_date",
+                    "status"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

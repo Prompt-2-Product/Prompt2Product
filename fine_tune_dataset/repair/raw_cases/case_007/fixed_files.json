@@ -1,0 +1,8 @@
+{
+    "fixes": [
+        {
+            "path": "frontend/src/pages/Progress.jsx",
+            "content": "import React from 'react';\n\nexport default function Progress({ workouts = [] }) {\n  return (\n    <div>\n      <h1>Progress</h1>\n      {workouts.map((workout, index) => (\n        <div key={index}>{workout.name}</div>\n      ))}\n    </div>\n  );\n}"
+        }
+    ]
+}

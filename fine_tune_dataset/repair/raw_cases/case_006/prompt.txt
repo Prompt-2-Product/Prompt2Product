@@ -1,0 +1,1 @@
+Build a bookstore e-commerce website with a Books page and Book Details page. Use Flask API to fetch books.

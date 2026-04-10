@@ -1,0 +1,84 @@
+{
+    "app_name": "Gym Membership Dashboard",
+    "app_type": "web_app",
+    "description": "A gym dashboard where users can explore plans, view trainers, and track progress.",
+    "target_users": [
+        "gym_members",
+        "gym_admin"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/"
+            },
+            {
+                "name": "Plans",
+                "route": "/plans"
+            },
+            {
+                "name": "Trainers",
+                "route": "/trainers"
+            },
+            {
+                "name": "Progress",
+                "route": "/progress"
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "PlanCard",
+            "TrainerCard"
+        ],
+        "features": [
+            "plan listing",
+            "trainer profiles",
+            "progress tracking"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/plans",
+                "purpose": "Fetch gym plans"
+            },
+            {
+                "method": "GET",
+                "path": "/api/trainers",
+                "purpose": "Fetch trainers"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "plans",
+                "columns": [
+                    "id",
+                    "plan_name",
+                    "duration",
+                    "price"
+                ]
+            },
+            {
+                "name": "trainers",
+                "columns": [
+                    "id",
+                    "name",
+                    "specialization",
+                    "experience"
+                ]
+            },
+            {
+                "name": "progress_records",
+                "columns": [
+                    "id",
+                    "metric",
+                    "value"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

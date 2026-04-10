@@ -1,0 +1,130 @@
+{
+    "app_name": "Diagnostic Lab Booking Website",
+    "app_type": "web_app",
+    "description": "A diagnostic laboratory booking website for browsing medical tests, placing bookings, and tracking report status.",
+    "target_users": [
+        "patients",
+        "lab_staff"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "PopularTests",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Tests",
+                "route": "/tests",
+                "components": [
+                    "Navbar",
+                    "TestCardGrid",
+                    "CategoryFilter",
+                    "SearchBar"
+                ]
+            },
+            {
+                "name": "Book Test",
+                "route": "/book-test",
+                "components": [
+                    "Navbar",
+                    "BookingForm",
+                    "TestSelectionCard",
+                    "ConfirmButton"
+                ]
+            },
+            {
+                "name": "Reports",
+                "route": "/reports",
+                "components": [
+                    "Navbar",
+                    "ReportStatusTable",
+                    "StatusBadge"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card",
+            "Badge"
+        ],
+        "features": [
+            "test listing",
+            "category filtering",
+            "lab test booking",
+            "report status tracking",
+            "test search"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/tests",
+                "purpose": "Fetch available lab tests"
+            },
+            {
+                "method": "POST",
+                "path": "/api/bookings",
+                "purpose": "Create lab test booking"
+            },
+            {
+                "method": "GET",
+                "path": "/api/reports",
+                "purpose": "Fetch report status for patient"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "patients",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "phone",
+                    "gender"
+                ]
+            },
+            {
+                "name": "lab_tests",
+                "columns": [
+                    "id",
+                    "test_name",
+                    "category",
+                    "price",
+                    "description"
+                ]
+            },
+            {
+                "name": "bookings",
+                "columns": [
+                    "id",
+                    "patient_id",
+                    "test_id",
+                    "booking_date",
+                    "status"
+                ]
+            },
+            {
+                "name": "reports",
+                "columns": [
+                    "id",
+                    "booking_id",
+                    "report_status",
+                    "file_url",
+                    "generated_at"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

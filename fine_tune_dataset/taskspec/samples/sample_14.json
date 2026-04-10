@@ -1,0 +1,141 @@
+{
+    "app_name": "Student Fee Management Portal",
+    "app_type": "web_app",
+    "description": "A fee portal that allows students to view outstanding dues, payment records, and download invoice documents.",
+    "target_users": [
+        "students",
+        "finance_office"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "FeeSummaryCard",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Login",
+                "route": "/login",
+                "components": [
+                    "Navbar",
+                    "LoginForm"
+                ]
+            },
+            {
+                "name": "Dues",
+                "route": "/dues",
+                "components": [
+                    "Navbar",
+                    "DueTable",
+                    "OutstandingAmountCard"
+                ]
+            },
+            {
+                "name": "Payment History",
+                "route": "/payments",
+                "components": [
+                    "Navbar",
+                    "PaymentTable",
+                    "DateFilter"
+                ]
+            },
+            {
+                "name": "Invoices",
+                "route": "/invoices",
+                "components": [
+                    "Navbar",
+                    "InvoiceList",
+                    "DownloadButton"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card",
+            "Table"
+        ],
+        "features": [
+            "student login",
+            "view fee dues",
+            "payment history",
+            "download invoices",
+            "date filtering"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "POST",
+                "path": "/api/login",
+                "purpose": "Authenticate student"
+            },
+            {
+                "method": "GET",
+                "path": "/api/dues",
+                "purpose": "Fetch outstanding student dues"
+            },
+            {
+                "method": "GET",
+                "path": "/api/payments",
+                "purpose": "Fetch payment history"
+            },
+            {
+                "method": "GET",
+                "path": "/api/invoices",
+                "purpose": "Fetch invoice list and download links"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "students",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "password",
+                    "registration_number"
+                ]
+            },
+            {
+                "name": "fee_dues",
+                "columns": [
+                    "id",
+                    "student_id",
+                    "amount",
+                    "due_date",
+                    "status"
+                ]
+            },
+            {
+                "name": "payments",
+                "columns": [
+                    "id",
+                    "student_id",
+                    "amount_paid",
+                    "payment_date",
+                    "payment_method"
+                ]
+            },
+            {
+                "name": "invoices",
+                "columns": [
+                    "id",
+                    "student_id",
+                    "invoice_number",
+                    "invoice_date",
+                    "file_url"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

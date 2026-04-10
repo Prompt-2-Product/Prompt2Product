@@ -1,0 +1,11 @@
+{
+    "app_name": "Fitness Dashboard",
+    "frontend": {
+        "pages": [
+            {
+                "name": "Progress",
+                "route": "/progress"
+            }
+        ]
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "app_name": "Library Website",
+    "app_type": "web_app",
+    "frontend": {
+        "pages": [
+            {
+                "name": "Books",
+                "route": "/books"
+            },
+            {
+                "name": "Book Details",
+                "route": "/books/:id"
+            }
+        ]
+    }
+}

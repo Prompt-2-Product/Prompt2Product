@@ -1,0 +1,92 @@
+{
+    "app_name": "Sales Analytics Dashboard",
+    "app_type": "dashboard_app",
+    "description": "A sales analytics dashboard for monitoring KPIs, visualizing charts, applying date filters, and viewing reports.",
+    "target_users": [
+        "business_analysts",
+        "sales_managers"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Dashboard",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "KpiCards",
+                    "SalesTrendChart",
+                    "RevenueByCategoryChart",
+                    "DateFilter"
+                ]
+            },
+            {
+                "name": "Reports",
+                "route": "/reports",
+                "components": [
+                    "Navbar",
+                    "ReportTable",
+                    "DownloadButton",
+                    "SummaryCards"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Card",
+            "Chart",
+            "Button",
+            "Table",
+            "FilterBar"
+        ],
+        "features": [
+            "sales KPIs",
+            "date filtering",
+            "sales charts",
+            "downloadable reports"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/kpis",
+                "purpose": "Fetch sales KPI metrics"
+            },
+            {
+                "method": "GET",
+                "path": "/api/charts",
+                "purpose": "Fetch chart data"
+            },
+            {
+                "method": "GET",
+                "path": "/api/reports",
+                "purpose": "Fetch generated reports"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "sales_data",
+                "columns": [
+                    "id",
+                    "order_date",
+                    "category",
+                    "region",
+                    "sales_amount",
+                    "profit"
+                ]
+            },
+            {
+                "name": "reports",
+                "columns": [
+                    "id",
+                    "report_name",
+                    "generated_at",
+                    "file_url"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

@@ -1,0 +1,8 @@
+{
+    "fixes": [
+        {
+            "path": "frontend/src/pages/Menu.jsx",
+            "content": "import React from 'react';\nimport FoodCard from '../shared/FoodCard';\n\nconst items = [\n  { id: 1, name: 'Burger', price: 10 },\n  { id: 2, name: 'Fries', price: 5 }\n];\n\nexport default function Menu() {\n  return (\n    <div>\n      <h1>Menu</h1>\n      {items.map(item => (\n        <FoodCard key={item.id} item={item} />\n      ))}\n    </div>\n  );\n}"
+        }
+    ]
+}

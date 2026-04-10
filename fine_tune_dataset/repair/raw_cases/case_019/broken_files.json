@@ -1,0 +1,8 @@
+{
+    "files": [
+        {
+            "path": "frontend/src/pages/Products.jsx",
+            "content": "import React from 'react';\n\nconst products = [\n  { id: 1, name: 'Shirt', price: 25 },\n  { id: 2, name: 'Shoes', price: 60 },\n  { id: 3, name: 'Bag', price: 40 }\n];\n\nexport default function Products() {\n  return (\n    <div>\n      {products.map(product => (\n        <div key={product.id}>\n          <h3>{product.name}</h3>\n          <p>${product.price}</p>\n        </div>\n      ))}\n    </div>\n  );\n}"
+        }
+    ]
+}

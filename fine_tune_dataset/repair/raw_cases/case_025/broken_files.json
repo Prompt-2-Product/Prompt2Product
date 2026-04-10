@@ -1,0 +1,12 @@
+{
+    "files": [
+        {
+            "path": "frontend/src/pages/Menu.jsx",
+            "content": "import React from 'react';\nimport FoodCard from '../components/FoodCard';\n\nconst items = [\n  { id: 1, name: 'Burger', price: 10 },\n  { id: 2, name: 'Fries', price: 5 }\n];\n\nexport default function Menu() {\n  return (\n    <div>\n      <h1>Menu</h1>\n      {items.map(item => (\n        <FoodCard key={item.id} item={item} />\n      ))}\n    </div>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/shared/FoodCard.jsx",
+            "content": "import React from 'react';\n\nexport default function FoodCard({ item }) {\n  return (\n    <div>\n      <h3>{item.name}</h3>\n      <p>${item.price}</p>\n    </div>\n  );\n}"
+        }
+    ]
+}

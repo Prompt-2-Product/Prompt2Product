@@ -1,0 +1,12 @@
+{
+    "app_name": "Book Catalog Backend",
+    "app_type": "web_app",
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/books"
+            }
+        ]
+    }
+}

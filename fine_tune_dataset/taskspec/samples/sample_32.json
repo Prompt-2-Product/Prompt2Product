@@ -1,0 +1,123 @@
+{
+    "app_name": "Online Library Catalog",
+    "app_type": "web_app",
+    "description": "An online library catalog for browsing books by category, viewing detailed information, and checking borrowing history.",
+    "target_users": [
+        "students",
+        "faculty",
+        "librarians"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "CategoryHighlights",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Catalog",
+                "route": "/catalog",
+                "components": [
+                    "Navbar",
+                    "CategorySidebar",
+                    "BookCardGrid",
+                    "SearchBar"
+                ]
+            },
+            {
+                "name": "Book Details",
+                "route": "/catalog/:id",
+                "components": [
+                    "Navbar",
+                    "BookInfoCard",
+                    "AuthorInfo",
+                    "BorrowButton"
+                ]
+            },
+            {
+                "name": "Borrowing History",
+                "route": "/history",
+                "components": [
+                    "Navbar",
+                    "HistoryTable",
+                    "StatusBadge"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card",
+            "Table",
+            "Badge"
+        ],
+        "features": [
+            "book catalog browsing",
+            "book categories",
+            "book details",
+            "borrowing history",
+            "search books"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/catalog",
+                "purpose": "Fetch catalog books"
+            },
+            {
+                "method": "GET",
+                "path": "/api/catalog/:id",
+                "purpose": "Fetch detailed book data"
+            },
+            {
+                "method": "GET",
+                "path": "/api/history",
+                "purpose": "Fetch borrowing history"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "books",
+                "columns": [
+                    "id",
+                    "title",
+                    "author",
+                    "category",
+                    "publisher",
+                    "description"
+                ]
+            },
+            {
+                "name": "users",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "role"
+                ]
+            },
+            {
+                "name": "borrowing_history",
+                "columns": [
+                    "id",
+                    "user_id",
+                    "book_id",
+                    "borrow_date",
+                    "return_date",
+                    "status"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

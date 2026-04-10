@@ -1,0 +1,107 @@
+{
+    "app_name": "Conference Management System",
+    "app_type": "web_app",
+    "description": "A system to manage conference agendas, speakers, and attendee registrations.",
+    "target_users": [
+        "conference_attendees",
+        "organizers",
+        "speakers"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "EventOverview"
+                ]
+            },
+            {
+                "name": "Agenda",
+                "route": "/agenda",
+                "components": [
+                    "Navbar",
+                    "AgendaTable"
+                ]
+            },
+            {
+                "name": "Speakers",
+                "route": "/speakers",
+                "components": [
+                    "Navbar",
+                    "SpeakerGrid"
+                ]
+            },
+            {
+                "name": "Register",
+                "route": "/register",
+                "components": [
+                    "Navbar",
+                    "RegistrationForm"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Card",
+            "Button"
+        ],
+        "features": [
+            "agenda viewing",
+            "speaker profiles",
+            "conference registration"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/agenda",
+                "purpose": "Fetch conference agenda"
+            },
+            {
+                "method": "GET",
+                "path": "/api/speakers",
+                "purpose": "Fetch speaker profiles"
+            },
+            {
+                "method": "POST",
+                "path": "/api/register",
+                "purpose": "Register attendee"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "agenda_items",
+                "columns": [
+                    "id",
+                    "title",
+                    "speaker_id",
+                    "time_slot"
+                ]
+            },
+            {
+                "name": "speakers",
+                "columns": [
+                    "id",
+                    "name",
+                    "topic",
+                    "bio"
+                ]
+            },
+            {
+                "name": "registrations",
+                "columns": [
+                    "id",
+                    "name",
+                    "email"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

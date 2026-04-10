@@ -1,0 +1,8 @@
+{
+    "files": [
+        {
+            "path": "frontend/src/pages/BookDetails.jsx",
+            "content": "import React from 'react';\n\nexport default function BookDetails() {\n  return (\n    <h1>Book Details</h1>\n    <p>Author information and summary here.</p>\n  );\n}"
+        }
+    ]
+}

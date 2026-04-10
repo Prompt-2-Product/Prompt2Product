@@ -1,0 +1,16 @@
+{
+    "app_name": "Course Registration Frontend",
+    "app_type": "web_app",
+    "frontend": {
+        "pages": [
+            {
+                "name": "Offered Courses",
+                "route": "/offered-courses"
+            },
+            {
+                "name": "Registered Courses",
+                "route": "/registered-courses"
+            }
+        ]
+    }
+}

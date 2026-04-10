@@ -1,0 +1,117 @@
+{
+    "app_name": "FitLife Gym Membership Portal",
+    "app_type": "web_app",
+    "description": "A gym membership portal where users can browse available fitness plans, view trainer profiles, and register for memberships.",
+    "target_users": [
+        "gym_members",
+        "gym_admin",
+        "trainers"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "MembershipHighlights",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Plans",
+                "route": "/plans",
+                "components": [
+                    "Navbar",
+                    "PlanCardGrid",
+                    "PricingTable"
+                ]
+            },
+            {
+                "name": "Trainers",
+                "route": "/trainers",
+                "components": [
+                    "Navbar",
+                    "TrainerProfileGrid",
+                    "SpecializationFilter"
+                ]
+            },
+            {
+                "name": "Register",
+                "route": "/register",
+                "components": [
+                    "Navbar",
+                    "RegistrationForm"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card"
+        ],
+        "features": [
+            "browse gym plans",
+            "trainer profiles",
+            "membership registration",
+            "plan comparison"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/plans",
+                "purpose": "Fetch available gym plans"
+            },
+            {
+                "method": "GET",
+                "path": "/api/trainers",
+                "purpose": "Fetch trainer profiles"
+            },
+            {
+                "method": "POST",
+                "path": "/api/register",
+                "purpose": "Register new gym member"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "members",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "phone",
+                    "membership_plan",
+                    "join_date"
+                ]
+            },
+            {
+                "name": "plans",
+                "columns": [
+                    "id",
+                    "plan_name",
+                    "duration_months",
+                    "price",
+                    "description"
+                ]
+            },
+            {
+                "name": "trainers",
+                "columns": [
+                    "id",
+                    "name",
+                    "specialization",
+                    "experience_years",
+                    "profile_image"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

@@ -1,0 +1,36 @@
+{
+    "app_name": "Campus Cafeteria Ordering System",
+    "app_type": "web_app",
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/"
+            },
+            {
+                "name": "Menu",
+                "route": "/menu"
+            },
+            {
+                "name": "Cart",
+                "route": "/cart"
+            },
+            {
+                "name": "Orders",
+                "route": "/orders"
+            }
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/menu"
+            },
+            {
+                "method": "GET",
+                "path": "/api/orders"
+            }
+        ]
+    }
+}

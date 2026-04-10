@@ -1,0 +1,8 @@
+{
+    "fixes": [
+        {
+            "path": "backend/app.py",
+            "content": "from flask import Flask\nfrom routes.books import books_bp\n\napp = Flask(__name__)\napp.register_blueprint(books_bp)\n\nif __name__ == '__main__':\n    app.run(debug=True)"
+        }
+    ]
+}

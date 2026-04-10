@@ -1,0 +1,15 @@
+{
+    "app_name": "Hotel Booking Website",
+    "frontend": {
+        "pages": [
+            {
+                "name": "Rooms",
+                "route": "/rooms"
+            },
+            {
+                "name": "Reservations",
+                "route": "/reservations"
+            }
+        ]
+    }
+}

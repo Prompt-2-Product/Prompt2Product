@@ -1,0 +1,20 @@
+{
+    "files": [
+        {
+            "path": "frontend/src/App.jsx",
+            "content": "import React from 'react';\nimport { BrowserRouter, Routes, Route } from 'react-router-dom';\nimport Home from './pages/Home';\nimport Menu from './pages/Menu';\nimport Cart from './pages/Cart';\nimport Orders from './pages/Orders';\n\nexport default function App() {\n  return (\n    <BrowserRouter>\n      <Routes>\n        <Route path='/' element={<Home />} />\n        <Route path='/menu' element={<Menu />} />\n        <Route path='/cart' element={<Cart />} />\n        <Route path='/orders' element={<Orders />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/pages/Home.jsx",
+            "content": "import React from 'react';\nexport default function Home(){ return <div>Home</div>; }"
+        },
+        {
+            "path": "frontend/src/pages/Menu.jsx",
+            "content": "import React from 'react';\nexport default function Menu(){ return <div>Menu</div>; }"
+        },
+        {
+            "path": "frontend/src/pages/Cart.jsx",
+            "content": "import React from 'react';\nexport default function Cart(){ return <div>Cart</div>; }"
+        }
+    ]
+}

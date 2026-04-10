@@ -1,0 +1,1 @@
+Build an online clothing store with product browsing, filtering, cart, checkout, and order history.

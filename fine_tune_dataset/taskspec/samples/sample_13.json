@@ -1,0 +1,123 @@
+{
+    "app_name": "Course Registration System",
+    "app_type": "web_app",
+    "description": "A web application for students to browse offered courses, enroll in available subjects, and review their registered courses.",
+    "target_users": [
+        "students",
+        "academic_admin"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "RegistrationInfo",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Login",
+                "route": "/login",
+                "components": [
+                    "Navbar",
+                    "LoginForm"
+                ]
+            },
+            {
+                "name": "Offered Courses",
+                "route": "/offered-courses",
+                "components": [
+                    "Navbar",
+                    "CourseTable",
+                    "DepartmentFilter",
+                    "EnrollButton"
+                ]
+            },
+            {
+                "name": "Registered Courses",
+                "route": "/registered-courses",
+                "components": [
+                    "Navbar",
+                    "RegisteredCourseTable",
+                    "CreditSummaryCard"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card",
+            "Table"
+        ],
+        "features": [
+            "student login",
+            "browse offered courses",
+            "course enrollment",
+            "view registered courses",
+            "credit summary"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "POST",
+                "path": "/api/login",
+                "purpose": "Authenticate student"
+            },
+            {
+                "method": "GET",
+                "path": "/api/offered-courses",
+                "purpose": "Fetch offered courses for registration"
+            },
+            {
+                "method": "POST",
+                "path": "/api/register-course",
+                "purpose": "Enroll student in selected course"
+            },
+            {
+                "method": "GET",
+                "path": "/api/registered-courses",
+                "purpose": "Fetch student registered courses"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "students",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "password",
+                    "department",
+                    "semester"
+                ]
+            },
+            {
+                "name": "courses",
+                "columns": [
+                    "id",
+                    "course_code",
+                    "course_name",
+                    "credit_hours",
+                    "department"
+                ]
+            },
+            {
+                "name": "registrations",
+                "columns": [
+                    "id",
+                    "student_id",
+                    "course_id",
+                    "registered_at"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

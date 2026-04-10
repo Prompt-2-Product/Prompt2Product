@@ -1,0 +1,1 @@
+Build an inventory management system for a small shop with products, stock updates, and sales records.

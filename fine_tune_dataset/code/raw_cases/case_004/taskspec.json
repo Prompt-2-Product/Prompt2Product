@@ -1,0 +1,76 @@
+{
+    "app_name": "Clinic Appointment Booking System",
+    "app_type": "web_app",
+    "description": "A web application for patients to browse available doctors, book appointment slots, and review appointment history.",
+    "target_users": [
+        "patients",
+        "clinic_staff",
+        "doctors"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/"
+            },
+            {
+                "name": "Doctors",
+                "route": "/doctors"
+            },
+            {
+                "name": "Book Appointment",
+                "route": "/book"
+            },
+            {
+                "name": "Appointments",
+                "route": "/appointments"
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "DoctorCard"
+        ],
+        "features": [
+            "doctor listing",
+            "slot booking",
+            "appointment history"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/doctors",
+                "purpose": "Fetch doctor list"
+            },
+            {
+                "method": "GET",
+                "path": "/api/appointments",
+                "purpose": "Fetch appointment history"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "doctors",
+                "columns": [
+                    "id",
+                    "name",
+                    "specialization",
+                    "fee"
+                ]
+            },
+            {
+                "name": "appointments",
+                "columns": [
+                    "id",
+                    "doctor_name",
+                    "appointment_date",
+                    "status"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

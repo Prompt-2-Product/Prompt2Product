@@ -1,0 +1,149 @@
+{
+    "app_name": "GlowCart Cosmetics Shopping App",
+    "app_type": "web_app",
+    "description": "A cosmetics shopping application that allows users to browse featured beauty products, log in, manage a cart, and save products to a wishlist.",
+    "target_users": [
+        "customers",
+        "admin"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "FeaturedProducts",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Login",
+                "route": "/login",
+                "components": [
+                    "Navbar",
+                    "LoginForm"
+                ]
+            },
+            {
+                "name": "Products",
+                "route": "/products",
+                "components": [
+                    "Navbar",
+                    "ProductGrid",
+                    "BrandFilter",
+                    "SearchBar"
+                ]
+            },
+            {
+                "name": "Cart",
+                "route": "/cart",
+                "components": [
+                    "Navbar",
+                    "CartItemsList",
+                    "OrderSummary",
+                    "CheckoutButton"
+                ]
+            },
+            {
+                "name": "Wishlist",
+                "route": "/wishlist",
+                "components": [
+                    "Navbar",
+                    "WishlistGrid",
+                    "MoveToCartButton"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card",
+            "Badge"
+        ],
+        "features": [
+            "user login",
+            "featured products",
+            "brand filtering",
+            "wishlist",
+            "cart management",
+            "checkout"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "POST",
+                "path": "/api/login",
+                "purpose": "Authenticate customer login"
+            },
+            {
+                "method": "GET",
+                "path": "/api/products",
+                "purpose": "Fetch cosmetics products"
+            },
+            {
+                "method": "POST",
+                "path": "/api/cart",
+                "purpose": "Add cosmetics product to cart"
+            },
+            {
+                "method": "POST",
+                "path": "/api/wishlist",
+                "purpose": "Add product to wishlist"
+            },
+            {
+                "method": "GET",
+                "path": "/api/wishlist",
+                "purpose": "Fetch customer wishlist"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "customers",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "password"
+                ]
+            },
+            {
+                "name": "products",
+                "columns": [
+                    "id",
+                    "name",
+                    "brand",
+                    "category",
+                    "price",
+                    "description",
+                    "image_url",
+                    "stock"
+                ]
+            },
+            {
+                "name": "cart_items",
+                "columns": [
+                    "id",
+                    "customer_id",
+                    "product_id",
+                    "quantity"
+                ]
+            },
+            {
+                "name": "wishlists",
+                "columns": [
+                    "id",
+                    "customer_id",
+                    "product_id",
+                    "created_at"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

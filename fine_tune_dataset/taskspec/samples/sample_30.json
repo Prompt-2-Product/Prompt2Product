@@ -1,0 +1,88 @@
+{
+    "app_name": "Online Webinar Platform",
+    "app_type": "web_app",
+    "description": "A webinar platform for browsing online events and joining webinars using event links.",
+    "target_users": [
+        "students",
+        "professionals",
+        "organizers"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "UpcomingWebinars"
+                ]
+            },
+            {
+                "name": "Webinars",
+                "route": "/webinars",
+                "components": [
+                    "Navbar",
+                    "WebinarCardGrid"
+                ]
+            },
+            {
+                "name": "Webinar Details",
+                "route": "/webinar/:id",
+                "components": [
+                    "Navbar",
+                    "WebinarInfoCard",
+                    "JoinButton"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Card",
+            "Button"
+        ],
+        "features": [
+            "webinar listing",
+            "webinar details",
+            "join link access"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/webinars",
+                "purpose": "Fetch webinar events"
+            },
+            {
+                "method": "GET",
+                "path": "/api/webinars/:id",
+                "purpose": "Fetch webinar details"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "webinars",
+                "columns": [
+                    "id",
+                    "title",
+                    "speaker",
+                    "date",
+                    "join_link"
+                ]
+            },
+            {
+                "name": "participants",
+                "columns": [
+                    "id",
+                    "webinar_id",
+                    "name",
+                    "email"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

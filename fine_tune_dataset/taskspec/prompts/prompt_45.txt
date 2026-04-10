@@ -1,0 +1,1 @@
+Build a retail management portal with products, billing, and stock overview.

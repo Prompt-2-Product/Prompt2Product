@@ -1,0 +1,1 @@
+Build an e-commerce analytics dashboard with sales, customers, orders, and category performance.

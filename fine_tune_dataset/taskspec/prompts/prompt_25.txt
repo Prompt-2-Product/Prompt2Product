@@ -1,0 +1,1 @@
+Build a diet and fitness planning app with user profile, goals, and meal plan suggestions.

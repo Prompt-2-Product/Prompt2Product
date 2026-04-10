@@ -1,0 +1,87 @@
+{
+    "app_name": "Workshop Booking Platform",
+    "app_type": "web_app",
+    "description": "A platform where users can browse workshops and register for upcoming training sessions.",
+    "target_users": [
+        "students",
+        "professionals",
+        "event_organizers"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "FeaturedWorkshops"
+                ]
+            },
+            {
+                "name": "Workshops",
+                "route": "/workshops",
+                "components": [
+                    "Navbar",
+                    "WorkshopCardGrid"
+                ]
+            },
+            {
+                "name": "Register",
+                "route": "/register",
+                "components": [
+                    "Navbar",
+                    "WorkshopRegistrationForm"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Card",
+            "Button"
+        ],
+        "features": [
+            "workshop listing",
+            "registration",
+            "event information"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/workshops",
+                "purpose": "Fetch workshop events"
+            },
+            {
+                "method": "POST",
+                "path": "/api/registrations",
+                "purpose": "Register workshop participant"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "workshops",
+                "columns": [
+                    "id",
+                    "title",
+                    "date",
+                    "speaker",
+                    "location"
+                ]
+            },
+            {
+                "name": "registrations",
+                "columns": [
+                    "id",
+                    "workshop_id",
+                    "participant_name",
+                    "email"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

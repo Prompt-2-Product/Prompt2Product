@@ -1,0 +1,128 @@
+{
+    "app_name": "Warehouse Inventory Application",
+    "app_type": "web_app",
+    "description": "A warehouse application for managing stored items, tracking stock movement, and generating reports.",
+    "target_users": [
+        "warehouse_manager",
+        "warehouse_staff"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Dashboard",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "WarehouseStatsCards",
+                    "MovementSummaryChart",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Items",
+                "route": "/items",
+                "components": [
+                    "Navbar",
+                    "ItemTable",
+                    "SearchBar",
+                    "CategoryFilter"
+                ]
+            },
+            {
+                "name": "Stock Movement",
+                "route": "/stock-movement",
+                "components": [
+                    "Navbar",
+                    "MovementTable",
+                    "MovementForm",
+                    "StatusBadge"
+                ]
+            },
+            {
+                "name": "Reports",
+                "route": "/reports",
+                "components": [
+                    "Navbar",
+                    "ReportCards",
+                    "DownloadReportButton",
+                    "DateFilter"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card",
+            "Table",
+            "Chart",
+            "Badge"
+        ],
+        "features": [
+            "item listing",
+            "stock movement tracking",
+            "report generation",
+            "date filtering",
+            "search items"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/items",
+                "purpose": "Fetch warehouse items"
+            },
+            {
+                "method": "GET",
+                "path": "/api/stock-movement",
+                "purpose": "Fetch stock movement records"
+            },
+            {
+                "method": "POST",
+                "path": "/api/stock-movement",
+                "purpose": "Create stock movement entry"
+            },
+            {
+                "method": "GET",
+                "path": "/api/reports",
+                "purpose": "Fetch warehouse reports"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "items",
+                "columns": [
+                    "id",
+                    "item_name",
+                    "category",
+                    "stock_quantity",
+                    "storage_location"
+                ]
+            },
+            {
+                "name": "stock_movements",
+                "columns": [
+                    "id",
+                    "item_id",
+                    "movement_type",
+                    "quantity",
+                    "movement_date",
+                    "remarks"
+                ]
+            },
+            {
+                "name": "reports",
+                "columns": [
+                    "id",
+                    "report_name",
+                    "generated_at",
+                    "file_url"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

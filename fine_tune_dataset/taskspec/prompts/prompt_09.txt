@@ -1,0 +1,1 @@
+Create a cosmetics shopping app with featured products, cart, login, and wishlist.

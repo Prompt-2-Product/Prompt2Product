@@ -1,0 +1,1 @@
+Build a university portal with a shared Layout component wrapping Home, Courses, and Grades pages using React frontend and Flask backend.

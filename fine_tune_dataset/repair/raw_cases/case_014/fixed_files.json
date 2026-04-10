@@ -1,0 +1,8 @@
+{
+    "fixes": [
+        {
+            "path": "frontend/src/components/Navbar.jsx",
+            "content": "import React from 'react';\nimport { Link } from 'react-router-dom';\n\nexport default function Navbar() {\n  return (\n    <nav className='navbar'>\n      <Link to='/'>Home</Link>\n      <Link to='/menu'>Menu</Link>\n      <Link to='/cart'>Cart</Link>\n      <Link to='/checkout'>Checkout</Link>\n    </nav>\n  );\n}"
+        }
+    ]
+}

@@ -1,0 +1,1 @@
+Build a student portal with a navigation bar linking to Home, Courses, and Grades pages using React and Flask.

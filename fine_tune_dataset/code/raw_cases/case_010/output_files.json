@@ -1,0 +1,36 @@
+{
+    "files": [
+        {
+            "path": "frontend/src/App.jsx",
+            "content": "import React from 'react';\nimport { BrowserRouter, Routes, Route } from 'react-router-dom';\nimport Navbar from './components/Navbar';\nimport Home from './pages/Home';\nimport Products from './pages/Products';\nimport Cart from './pages/Cart';\nimport Wishlist from './pages/Wishlist';\n\nexport default function App() {\n  return (\n    <BrowserRouter>\n      <Navbar />\n      <Routes>\n        <Route path='/' element={<Home />} />\n        <Route path='/products' element={<Products />} />\n        <Route path='/cart' element={<Cart />} />\n        <Route path='/wishlist' element={<Wishlist />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/components/Navbar.jsx",
+            "content": "import React from 'react';\nimport { NavLink } from 'react-router-dom';\n\nexport default function Navbar() {\n  const linkStyle = ({ isActive }) => ({\n    textDecoration: 'none',\n    color: isActive ? '#7c3aed' : '#64748b',\n    fontWeight: isActive ? 700 : 500\n  });\n\n  return (\n    <nav style={{ borderBottom: '1px solid #e9d5ff', background: '#fff' }}>\n      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '16px 24px', display: 'flex', justifyContent: 'space-between' }}>\n        <h2 style={{ margin: 0, color: '#7c3aed' }}>GlowCart</h2>\n        <div style={{ display: 'flex', gap: '18px' }}>\n          <NavLink to='/' style={linkStyle}>Home</NavLink>\n          <NavLink to='/products' style={linkStyle}>Products</NavLink>\n          <NavLink to='/cart' style={linkStyle}>Cart</NavLink>\n          <NavLink to='/wishlist' style={linkStyle}>Wishlist</NavLink>\n        </div>\n      </div>\n    </nav>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/components/ProductCard.jsx",
+            "content": "import React from 'react';\n\nexport default function ProductCard({ product }) {\n  return (\n    <div style={{ border: '1px solid #e9d5ff', borderRadius: '14px', padding: '16px', background: '#fff', boxShadow: '0 2px 8px rgba(124,58,237,0.05)' }}>\n      <h3 style={{ marginTop: 0 }}>{product.name}</h3>\n      <p style={{ color: '#6b7280', margin: '6px 0' }}>{product.brand}</p>\n      <p style={{ color: '#6b7280', margin: '6px 0' }}>Category: {product.category}</p>\n      <p style={{ fontWeight: 700 }}>${product.price}</p>\n      <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>\n        <button style={{ padding: '10px 12px', border: 'none', borderRadius: '10px', background: '#7c3aed', color: '#fff' }}>Add to Cart</button>\n        <button style={{ padding: '10px 12px', border: '1px solid #ddd6fe', borderRadius: '10px', background: '#f5f3ff', color: '#7c3aed' }}>Wishlist</button>\n      </div>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/pages/Home.jsx",
+            "content": "import React from 'react';\n\nexport default function Home() {\n  return (\n    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 24px' }}>\n      <div style={{ background: '#faf5ff', border: '1px solid #e9d5ff', borderRadius: '18px', padding: '32px' }}>\n        <h1 style={{ marginTop: 0 }}>Beauty picks curated for you</h1>\n        <p style={{ maxWidth: '700px', color: '#6b7280' }}>\n          Explore featured cosmetics, save products to your wishlist, and build your perfect beauty cart with ease.\n        </p>\n      </div>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/pages/Products.jsx",
+            "content": "import React from 'react';\nimport ProductCard from '../components/ProductCard';\n\nconst products = [\n  { id: 1, name: 'Matte Lipstick', brand: 'GlowPro', category: 'Makeup', price: 14 },\n  { id: 2, name: 'Vitamin C Serum', brand: 'SkinAura', category: 'Skincare', price: 22 },\n  { id: 3, name: 'Rose Blush', brand: 'LunaBeauty', category: 'Makeup', price: 16 }\n];\n\nexport default function Products() {\n  return (\n    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 24px' }}>\n      <h1>Products</h1>\n      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '18px' }}>\n        {products.map(product => <ProductCard key={product.id} product={product} />)}\n      </div>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/pages/Cart.jsx",
+            "content": "import React from 'react';\n\nconst cartItems = [\n  { id: 1, name: 'Matte Lipstick', quantity: 1, price: 14 },\n  { id: 2, name: 'Vitamin C Serum', quantity: 1, price: 22 }\n];\n\nexport default function Cart() {\n  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);\n\n  return (\n    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 24px' }}>\n      <h1>Cart</h1>\n      {cartItems.map(item => (\n        <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '14px 0', borderBottom: '1px solid #ede9fe' }}>\n          <span>{item.name}</span>\n          <span>${item.price}</span>\n        </div>\n      ))}\n      <div style={{ marginTop: '18px', fontWeight: 700 }}>Total: ${total}</div>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/pages/Wishlist.jsx",
+            "content": "import React from 'react';\n\nconst wishlist = [\n  { id: 1, name: 'Rose Blush', brand: 'LunaBeauty' },\n  { id: 2, name: 'Hydrating Mist', brand: 'SkinAura' }\n];\n\nexport default function Wishlist() {\n  return (\n    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 24px' }}>\n      <h1>Wishlist</h1>\n      <div style={{ display: 'grid', gap: '14px' }}>\n        {wishlist.map(item => (\n          <div key={item.id} style={{ border: '1px solid #e9d5ff', borderRadius: '12px', padding: '16px', background: '#fff' }}>\n            <strong>{item.name}</strong>\n            <p style={{ margin: '6px 0 0 0', color: '#6b7280' }}>{item.brand}</p>\n          </div>\n        ))}\n      </div>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "backend/app.py",
+            "content": "from flask import Flask, jsonify\n\napp = Flask(__name__)\n\n@app.route('/api/products')\ndef get_products():\n    return jsonify({\n        'products': [\n            {'id': 1, 'name': 'Matte Lipstick', 'brand': 'GlowPro', 'category': 'Makeup', 'price': 14},\n            {'id': 2, 'name': 'Vitamin C Serum', 'brand': 'SkinAura', 'category': 'Skincare', 'price': 22},\n            {'id': 3, 'name': 'Rose Blush', 'brand': 'LunaBeauty', 'category': 'Makeup', 'price': 16}\n        ]\n    })\n\n@app.route('/api/wishlist')\ndef get_wishlist():\n    return jsonify({\n        'wishlist_items': [\n            {'id': 1, 'product_name': 'Rose Blush', 'brand': 'LunaBeauty'},\n            {'id': 2, 'product_name': 'Hydrating Mist', 'brand': 'SkinAura'}\n        ]\n    })\n\nif __name__ == '__main__':\n    app.run(debug=True)"
+        }
+    ]
+}

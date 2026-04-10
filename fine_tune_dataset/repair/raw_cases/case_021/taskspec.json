@@ -1,0 +1,12 @@
+{
+    "app_name": "Order History Page",
+    "app_type": "web_app",
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/orders"
+            }
+        ]
+    }
+}
