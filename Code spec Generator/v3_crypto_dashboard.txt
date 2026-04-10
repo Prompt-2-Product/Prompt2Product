@@ -1,0 +1,137 @@
+Prompt Category: crypto_dashboard
+Model: D:\Prompt2Product\finetune\outputs\qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Cryptocurrency Portfolio Dashboard", "app_type": "web_app", "description": "A dashboard for tracking cryptocurrency portfolio performance, viewing live prices, setting alerts, and analyzing trends.", "target_users": ["crypto_investors", "financial_advisors"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "PortfolioHighlights", "Footer"]}, {"name": "Portfolio", "route": "/portfolio", "components": ["Navbar", "PortfolioTable", "PerformanceChart", "AlertsCard"]}, {"name": "Prices", "route": "/prices", "components": ["Navbar", "PriceGrid", "MarketCapChart"]}, {"name": "Alerts", "route": "/alerts", "components": ["Navbar", "AlertList", "NotificationBadge"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Chart", "Table", "Badge"], "features": ["portfolio tracking", "price monitoring", "alerts", "trend analysis", "market cap visualization"]}, "backend": {"endpoints": [{"method": "GET", "path": "/api/portfolios", "purpose": "Fetch user portfolio data"}, {"method": "GET", "path": "/api/prices", "purpose": "Fetch cryptocurrency price data"}, {"method": "POST", "path": "/api/alerts", "purpose": "Create price alert"}]}, "database": {"tables": [{"name": "users", "columns": ["id", "name", "email", "password_hash"]}, {"name": "portfolios", "columns": ["id", "user_id", "crypto_symbol", "quantity", "purchase_price"]}, {"name": "alerts", "columns": ["id", "user_id", "crypto_symbol", "threshold_price", "alert_status"]}]}, "auth_required": true}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Cryptocurrency Portfolio Dashboard", "app_type": "web_app", "description": "A dashboard for tracking cryptocurrency portfolio performance, viewing live prices, setting alerts, and analyzing trends.", "target_users": ["crypto_investors", "financial_advisors"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "PortfolioHighlights", "Footer"]}, {"name": "Portfolio", "route": "/portfolio", "components": ["Navbar", "PortfolioTable", "PerformanceChart", "AlertsCard"]}, {"name": "Prices", "route": "/prices", "components": ["Navbar", "PriceGrid", "MarketCapChart"]}, {"name": "Alerts", "route": "/alerts", "components": ["Navbar", "AlertList", "NotificationBadge"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Chart", "Table", "Badge"], "features": ["portfolio tracking", "price monitoring", "alerts", "trend analysis", "market cap visualization"]}, "backend": {"endpoints": [{"method": "GET", "path": "/api/portfolios", "purpose": "Fetch user portfolio data"}, {"method": "GET", "path": "/api/prices", "purpose": "Fetch cryptocurrency price data"}, {"method": "POST", "path": "/api/alerts", "purpose": "Create price alert"}]}, "database": {"tables": [{"name": "users", "columns": ["id", "name", "email", "password_hash"]}, {"name": "portfolios", "columns": ["id", "user_id", "crypto_symbol", "quantity", "purchase_price"]}, {"name": "alerts", "columns": ["id", "user_id", "crypto_symbol", "threshold_price", "alert_status"]}]}, "auth_required": true}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Cryptocurrency Portfolio Dashboard",
+  "app_type": "web_app",
+  "description": "A dashboard for tracking cryptocurrency portfolio performance, viewing live prices, setting alerts, and analyzing trends.",
+  "target_users": [
+    "crypto_investors",
+    "financial_advisors"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "PortfolioHighlights",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Portfolio",
+        "route": "/portfolio",
+        "components": [
+          "Navbar",
+          "PortfolioTable",
+          "PerformanceChart",
+          "AlertsCard"
+        ]
+      },
+      {
+        "name": "Prices",
+        "route": "/prices",
+        "components": [
+          "Navbar",
+          "PriceGrid",
+          "MarketCapChart"
+        ]
+      },
+      {
+        "name": "Alerts",
+        "route": "/alerts",
+        "components": [
+          "Navbar",
+          "AlertList",
+          "NotificationBadge"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Chart",
+      "Table",
+      "Badge"
+    ],
+    "features": [
+      "portfolio tracking",
+      "price monitoring",
+      "alerts",
+      "trend analysis",
+      "market cap visualization"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/portfolios",
+        "purpose": "Fetch user portfolio data"
+      },
+      {
+        "method": "GET",
+        "path": "/api/prices",
+        "purpose": "Fetch cryptocurrency price data"
+      },
+      {
+        "method": "POST",
+        "path": "/api/alerts",
+        "purpose": "Create price alert"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "users",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "password_hash"
+        ]
+      },
+      {
+        "name": "portfolios",
+        "columns": [
+          "id",
+          "user_id",
+          "crypto_symbol",
+          "quantity",
+          "purchase_price"
+        ]
+      },
+      {
+        "name": "alerts",
+        "columns": [
+          "id",
+          "user_id",
+          "crypto_symbol",
+          "threshold_price",
+          "alert_status"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

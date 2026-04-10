@@ -1,0 +1,160 @@
+Prompt Category: travel_planner
+Model: D:\Prompt2Product\finetune\outputs\qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Travel Planning Application", "app_type": "web_app", "description": "A platform for users to plan and share travel itineraries by booking flights, hotels, and exploring destinations.", "target_users": ["travelers", "travel_planners"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "DestinationHighlights", "BookNowButton"]}, {"name": "Explore Destinations", "route": "/destinations", "components": ["Navbar", "DestinationCards", "LocationFilter", "RatingStars"]}, {"name": "Create Itinerary", "route": "/itineraries/create", "components": ["Navbar", "ItineraryForm", "FlightBookingCard", "HotelBookingCard"]}, {"name": "Shared Itineraries", "route": "/shared-itineraries", "components": ["Navbar", "ItineraryList", "UserCard", "ShareButton"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Image"], "features": ["destination exploration", "flight booking", "hotel booking", "itinerary creation", "sharing itineraries", "destination filtering"]}, "backend": {"endpoints": [{"method": "GET", "path": "/api/destinations", "purpose": "Fetch destination cards"}, {"method": "POST", "path": "/api/itineraries", "purpose": "Create shared itinerary"}, {"method": "GET", "path": "/api/itineraries/shared", "purpose": "Fetch shared itinerary list"}, {"method": "POST", "path": "/api/flights", "purpose": "Book flight"}, {"method": "POST", "path": "/api/hotels", "purpose": "Book hotel"}]}, "database": {"tables": [{"name": "destinations", "columns": ["id", "name", "location", "image_url", "rating"]}, {"name": "itineraries", "columns": ["id", "title", "created_at", "shared_with", "destination_id"]}, {"name": "flights", "columns": ["id", "itinerary_id", "airline", "departure_date", "arrival_date", "price"]}, {"name": "hotels", "columns": ["id", "itinerary_id", "hotel_name", "room_type", "price"]}]}, "auth_required": false}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Travel Planning Application", "app_type": "web_app", "description": "A platform for users to plan and share travel itineraries by booking flights, hotels, and exploring destinations.", "target_users": ["travelers", "travel_planners"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "DestinationHighlights", "BookNowButton"]}, {"name": "Explore Destinations", "route": "/destinations", "components": ["Navbar", "DestinationCards", "LocationFilter", "RatingStars"]}, {"name": "Create Itinerary", "route": "/itineraries/create", "components": ["Navbar", "ItineraryForm", "FlightBookingCard", "HotelBookingCard"]}, {"name": "Shared Itineraries", "route": "/shared-itineraries", "components": ["Navbar", "ItineraryList", "UserCard", "ShareButton"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Image"], "features": ["destination exploration", "flight booking", "hotel booking", "itinerary creation", "sharing itineraries", "destination filtering"]}, "backend": {"endpoints": [{"method": "GET", "path": "/api/destinations", "purpose": "Fetch destination cards"}, {"method": "POST", "path": "/api/itineraries", "purpose": "Create shared itinerary"}, {"method": "GET", "path": "/api/itineraries/shared", "purpose": "Fetch shared itinerary list"}, {"method": "POST", "path": "/api/flights", "purpose": "Book flight"}, {"method": "POST", "path": "/api/hotels", "purpose": "Book hotel"}]}, "database": {"tables": [{"name": "destinations", "columns": ["id", "name", "location", "image_url", "rating"]}, {"name": "itineraries", "columns": ["id", "title", "created_at", "shared_with", "destination_id"]}, {"name": "flights", "columns": ["id", "itinerary_id", "airline", "departure_date", "arrival_date", "price"]}, {"name": "hotels", "columns": ["id", "itinerary_id", "hotel_name", "room_type", "price"]}]}, "auth_required": false}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Travel Planning Application",
+  "app_type": "web_app",
+  "description": "A platform for users to plan and share travel itineraries by booking flights, hotels, and exploring destinations.",
+  "target_users": [
+    "travelers",
+    "travel_planners"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "DestinationHighlights",
+          "BookNowButton"
+        ]
+      },
+      {
+        "name": "Explore Destinations",
+        "route": "/destinations",
+        "components": [
+          "Navbar",
+          "DestinationCards",
+          "LocationFilter",
+          "RatingStars"
+        ]
+      },
+      {
+        "name": "Create Itinerary",
+        "route": "/itineraries/create",
+        "components": [
+          "Navbar",
+          "ItineraryForm",
+          "FlightBookingCard",
+          "HotelBookingCard"
+        ]
+      },
+      {
+        "name": "Shared Itineraries",
+        "route": "/shared-itineraries",
+        "components": [
+          "Navbar",
+          "ItineraryList",
+          "UserCard",
+          "ShareButton"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Image"
+    ],
+    "features": [
+      "destination exploration",
+      "flight booking",
+      "hotel booking",
+      "itinerary creation",
+      "sharing itineraries",
+      "destination filtering"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/destinations",
+        "purpose": "Fetch destination cards"
+      },
+      {
+        "method": "POST",
+        "path": "/api/itineraries",
+        "purpose": "Create shared itinerary"
+      },
+      {
+        "method": "GET",
+        "path": "/api/itineraries/shared",
+        "purpose": "Fetch shared itinerary list"
+      },
+      {
+        "method": "POST",
+        "path": "/api/flights",
+        "purpose": "Book flight"
+      },
+      {
+        "method": "POST",
+        "path": "/api/hotels",
+        "purpose": "Book hotel"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "destinations",
+        "columns": [
+          "id",
+          "name",
+          "location",
+          "image_url",
+          "rating"
+        ]
+      },
+      {
+        "name": "itineraries",
+        "columns": [
+          "id",
+          "title",
+          "created_at",
+          "shared_with",
+          "destination_id"
+        ]
+      },
+      {
+        "name": "flights",
+        "columns": [
+          "id",
+          "itinerary_id",
+          "airline",
+          "departure_date",
+          "arrival_date",
+          "price"
+        ]
+      },
+      {
+        "name": "hotels",
+        "columns": [
+          "id",
+          "itinerary_id",
+          "hotel_name",
+          "room_type",
+          "price"
+        ]
+      }
+    ]
+  },
+  "auth_required": false
+}

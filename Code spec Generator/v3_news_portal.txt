@@ -1,0 +1,178 @@
+Prompt Category: news_portal
+Model: D:\Prompt2Product\finetune\outputs\qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "News Portal", "app_type": "web_app", "description": "A news portal for editors to publish articles, categorize content, manage comments, and for readers to browse, bookmark, and share news.", "target_users": ["editors", "readers"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "FeaturedArticles", "Categories"]}, {"name": "Editor Dashboard", "route": "/dashboard", "components": ["Navbar", "ArticleForm", "CategorySelector", "PublishStatus"]}, {"name": "News Categories", "route": "/categories", "components": ["Navbar", "CategoryCards", "SearchBar"]}, {"name": "News Articles", "route": "/articles", "components": ["Navbar", "ArticleCards", "BookmarkButton", "ShareButton"]}, {"name": "Comments", "route": "/comments", "components": ["Navbar", "CommentList", "ReplyForm"]}], "shared_components": ["Navbar", "Card", "Button", "Badge", "FormInput", "SearchBar"], "features": ["editor article publishing", "category management", "commenting", "news browsing", "bookmarking", "sharing"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/articles", "purpose": "Create news article"}, {"method": "GET", "path": "/api/categories", "purpose": "Fetch news categories"}, {"method": "POST", "path": "/api/comments", "purpose": "Submit comment"}, {"method": "GET", "path": "/api/articles", "purpose": "Fetch news articles"}, {"method": "POST", "path": "/api/bookmarks", "purpose": "Add article to bookmarks"}, {"method": "POST", "path": "/api/share", "purpose": "Share news article"}]}, "database": {"tables": [{"name": "articles", "columns": ["id", "title", "content", "category_id", "published_at", "author_name"]}, {"name": "categories", "columns": ["id", "name", "slug"]}, {"name": "comments", "columns": ["id", "article_id", "comment_text", "user_name", "created_at"]}, {"name": "bookmarks", "columns": ["id", "user_id", "article_id"]}, {"name": "shares", "columns": ["id", "article_id", "shared_by"]}]}, "auth_required": true}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "News Portal", "app_type": "web_app", "description": "A news portal for editors to publish articles, categorize content, manage comments, and for readers to browse, bookmark, and share news.", "target_users": ["editors", "readers"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "FeaturedArticles", "Categories"]}, {"name": "Editor Dashboard", "route": "/dashboard", "components": ["Navbar", "ArticleForm", "CategorySelector", "PublishStatus"]}, {"name": "News Categories", "route": "/categories", "components": ["Navbar", "CategoryCards", "SearchBar"]}, {"name": "News Articles", "route": "/articles", "components": ["Navbar", "ArticleCards", "BookmarkButton", "ShareButton"]}, {"name": "Comments", "route": "/comments", "components": ["Navbar", "CommentList", "ReplyForm"]}], "shared_components": ["Navbar", "Card", "Button", "Badge", "FormInput", "SearchBar"], "features": ["editor article publishing", "category management", "commenting", "news browsing", "bookmarking", "sharing"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/articles", "purpose": "Create news article"}, {"method": "GET", "path": "/api/categories", "purpose": "Fetch news categories"}, {"method": "POST", "path": "/api/comments", "purpose": "Submit comment"}, {"method": "GET", "path": "/api/articles", "purpose": "Fetch news articles"}, {"method": "POST", "path": "/api/bookmarks", "purpose": "Add article to bookmarks"}, {"method": "POST", "path": "/api/share", "purpose": "Share news article"}]}, "database": {"tables": [{"name": "articles", "columns": ["id", "title", "content", "category_id", "published_at", "author_name"]}, {"name": "categories", "columns": ["id", "name", "slug"]}, {"name": "comments", "columns": ["id", "article_id", "comment_text", "user_name", "created_at"]}, {"name": "bookmarks", "columns": ["id", "user_id", "article_id"]}, {"name": "shares", "columns": ["id", "article_id", "shared_by"]}]}, "auth_required": true}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "News Portal",
+  "app_type": "web_app",
+  "description": "A news portal for editors to publish articles, categorize content, manage comments, and for readers to browse, bookmark, and share news.",
+  "target_users": [
+    "editors",
+    "readers"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "FeaturedArticles",
+          "Categories"
+        ]
+      },
+      {
+        "name": "Editor Dashboard",
+        "route": "/dashboard",
+        "components": [
+          "Navbar",
+          "ArticleForm",
+          "CategorySelector",
+          "PublishStatus"
+        ]
+      },
+      {
+        "name": "News Categories",
+        "route": "/categories",
+        "components": [
+          "Navbar",
+          "CategoryCards",
+          "SearchBar"
+        ]
+      },
+      {
+        "name": "News Articles",
+        "route": "/articles",
+        "components": [
+          "Navbar",
+          "ArticleCards",
+          "BookmarkButton",
+          "ShareButton"
+        ]
+      },
+      {
+        "name": "Comments",
+        "route": "/comments",
+        "components": [
+          "Navbar",
+          "CommentList",
+          "ReplyForm"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Card",
+      "Button",
+      "Badge",
+      "FormInput",
+      "SearchBar"
+    ],
+    "features": [
+      "editor article publishing",
+      "category management",
+      "commenting",
+      "news browsing",
+      "bookmarking",
+      "sharing"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/articles",
+        "purpose": "Create news article"
+      },
+      {
+        "method": "GET",
+        "path": "/api/categories",
+        "purpose": "Fetch news categories"
+      },
+      {
+        "method": "POST",
+        "path": "/api/comments",
+        "purpose": "Submit comment"
+      },
+      {
+        "method": "GET",
+        "path": "/api/articles",
+        "purpose": "Fetch news articles"
+      },
+      {
+        "method": "POST",
+        "path": "/api/bookmarks",
+        "purpose": "Add article to bookmarks"
+      },
+      {
+        "method": "POST",
+        "path": "/api/share",
+        "purpose": "Share news article"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "articles",
+        "columns": [
+          "id",
+          "title",
+          "content",
+          "category_id",
+          "published_at",
+          "author_name"
+        ]
+      },
+      {
+        "name": "categories",
+        "columns": [
+          "id",
+          "name",
+          "slug"
+        ]
+      },
+      {
+        "name": "comments",
+        "columns": [
+          "id",
+          "article_id",
+          "comment_text",
+          "user_name",
+          "created_at"
+        ]
+      },
+      {
+        "name": "bookmarks",
+        "columns": [
+          "id",
+          "user_id",
+          "article_id"
+        ]
+      },
+      {
+        "name": "shares",
+        "columns": [
+          "id",
+          "article_id",
+          "shared_by"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

@@ -1,0 +1,196 @@
+Prompt Category: car_rental
+Model: D:\Prompt2Product\finetune\outputs\qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Car Rental System", "app_type": "web_app", "description": "A car rental platform for browsing available vehicles, booking rentals, making payments, and tracking reservations.", "target_users": ["customers", "admins"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "FeaturedCars", "Footer"]}, {"name": "Browse Cars", "route": "/browse-cars", "components": ["Navbar", "CarGrid", "BrandFilter", "YearFilter"]}, {"name": "Book Rental", "route": "/book-rental", "components": ["Navbar", "RentalForm", "PaymentCard", "ConfirmButton"]}, {"name": "Reservations", "route": "/reservations", "components": ["Navbar", "ReservationTable", "StatusBadge"]}, {"name": "Admin Dashboard", "route": "/admin-dashboard", "components": ["Navbar", "FleetOverview", "PricingTable", "BookingStats"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "Badge"], "features": ["car browsing", "rental booking", "payment processing", "reservation tracking", "fleet management", "pricing management"]}, "backend": {"endpoints": [{"method": "GET", "path": "/api/cars", "purpose": "Fetch available cars"}, {"method": "POST", "path": "/api/bookings", "purpose": "Create rental booking"}, {"method": "POST", "path": "/api/payments", "purpose": "Process payment"}, {"method": "GET", "path": "/api/reservations", "purpose": "Fetch reservation history"}, {"method": "GET", "path": "/api/fleet", "purpose": "Fetch fleet overview"}, {"method": "POST", "path": "/api/pricing", "purpose": "Update pricing"}]}, "database": {"tables": [{"name": "cars", "columns": ["id", "make", "model", "year", "price_per_day", "available"]}, {"name": "bookings", "columns": ["id", "customer_id", "car_id", "start_date", "end_date", "total_amount", "status"]}, {"name": "payments", "columns": ["id", "booking_id", "amount", "payment_method"]}, {"name": "reservations", "columns": ["id", "customer_id", "car_id", "status", "created_at"]}, {"name": "fleet", "columns": ["id", "make", "model", "year", "availability_status"]}, {"name": "pricing", "columns": ["id", "car_id", "price_per_day", "valid_from", "valid_to"]}]}, "auth_required": true}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Car Rental System", "app_type": "web_app", "description": "A car rental platform for browsing available vehicles, booking rentals, making payments, and tracking reservations.", "target_users": ["customers", "admins"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "FeaturedCars", "Footer"]}, {"name": "Browse Cars", "route": "/browse-cars", "components": ["Navbar", "CarGrid", "BrandFilter", "YearFilter"]}, {"name": "Book Rental", "route": "/book-rental", "components": ["Navbar", "RentalForm", "PaymentCard", "ConfirmButton"]}, {"name": "Reservations", "route": "/reservations", "components": ["Navbar", "ReservationTable", "StatusBadge"]}, {"name": "Admin Dashboard", "route": "/admin-dashboard", "components": ["Navbar", "FleetOverview", "PricingTable", "BookingStats"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "Badge"], "features": ["car browsing", "rental booking", "payment processing", "reservation tracking", "fleet management", "pricing management"]}, "backend": {"endpoints": [{"method": "GET", "path": "/api/cars", "purpose": "Fetch available cars"}, {"method": "POST", "path": "/api/bookings", "purpose": "Create rental booking"}, {"method": "POST", "path": "/api/payments", "purpose": "Process payment"}, {"method": "GET", "path": "/api/reservations", "purpose": "Fetch reservation history"}, {"method": "GET", "path": "/api/fleet", "purpose": "Fetch fleet overview"}, {"method": "POST", "path": "/api/pricing", "purpose": "Update pricing"}]}, "database": {"tables": [{"name": "cars", "columns": ["id", "make", "model", "year", "price_per_day", "available"]}, {"name": "bookings", "columns": ["id", "customer_id", "car_id", "start_date", "end_date", "total_amount", "status"]}, {"name": "payments", "columns": ["id", "booking_id", "amount", "payment_method"]}, {"name": "reservations", "columns": ["id", "customer_id", "car_id", "status", "created_at"]}, {"name": "fleet", "columns": ["id", "make", "model", "year", "availability_status"]}, {"name": "pricing", "columns": ["id", "car_id", "price_per_day", "valid_from", "valid_to"]}]}, "auth_required": true}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Car Rental System",
+  "app_type": "web_app",
+  "description": "A car rental platform for browsing available vehicles, booking rentals, making payments, and tracking reservations.",
+  "target_users": [
+    "customers",
+    "admins"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "FeaturedCars",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Browse Cars",
+        "route": "/browse-cars",
+        "components": [
+          "Navbar",
+          "CarGrid",
+          "BrandFilter",
+          "YearFilter"
+        ]
+      },
+      {
+        "name": "Book Rental",
+        "route": "/book-rental",
+        "components": [
+          "Navbar",
+          "RentalForm",
+          "PaymentCard",
+          "ConfirmButton"
+        ]
+      },
+      {
+        "name": "Reservations",
+        "route": "/reservations",
+        "components": [
+          "Navbar",
+          "ReservationTable",
+          "StatusBadge"
+        ]
+      },
+      {
+        "name": "Admin Dashboard",
+        "route": "/admin-dashboard",
+        "components": [
+          "Navbar",
+          "FleetOverview",
+          "PricingTable",
+          "BookingStats"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Table",
+      "Badge"
+    ],
+    "features": [
+      "car browsing",
+      "rental booking",
+      "payment processing",
+      "reservation tracking",
+      "fleet management",
+      "pricing management"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/cars",
+        "purpose": "Fetch available cars"
+      },
+      {
+        "method": "POST",
+        "path": "/api/bookings",
+        "purpose": "Create rental booking"
+      },
+      {
+        "method": "POST",
+        "path": "/api/payments",
+        "purpose": "Process payment"
+      },
+      {
+        "method": "GET",
+        "path": "/api/reservations",
+        "purpose": "Fetch reservation history"
+      },
+      {
+        "method": "GET",
+        "path": "/api/fleet",
+        "purpose": "Fetch fleet overview"
+      },
+      {
+        "method": "POST",
+        "path": "/api/pricing",
+        "purpose": "Update pricing"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "cars",
+        "columns": [
+          "id",
+          "make",
+          "model",
+          "year",
+          "price_per_day",
+          "available"
+        ]
+      },
+      {
+        "name": "bookings",
+        "columns": [
+          "id",
+          "customer_id",
+          "car_id",
+          "start_date",
+          "end_date",
+          "total_amount",
+          "status"
+        ]
+      },
+      {
+        "name": "payments",
+        "columns": [
+          "id",
+          "booking_id",
+          "amount",
+          "payment_method"
+        ]
+      },
+      {
+        "name": "reservations",
+        "columns": [
+          "id",
+          "customer_id",
+          "car_id",
+          "status",
+          "created_at"
+        ]
+      },
+      {
+        "name": "fleet",
+        "columns": [
+          "id",
+          "make",
+          "model",
+          "year",
+          "availability_status"
+        ]
+      },
+      {
+        "name": "pricing",
+        "columns": [
+          "id",
+          "car_id",
+          "price_per_day",
+          "valid_from",
+          "valid_to"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

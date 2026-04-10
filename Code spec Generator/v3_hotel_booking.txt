@@ -1,0 +1,213 @@
+Prompt Category: hotel_booking
+Model: D:\Prompt2Product\finetune\outputs\qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Hotel Booking Platform", "app_type": "web_app", "description": "A hotel booking platform for users to search, filter, book rooms, and review hotels, and for hotel managers to manage hotel listings, pricing, and availability.", "target_users": [{"role": "User", "tasks": ["search hotels", "filter by amenities", "book rooms", "leave reviews"]}, {"role": "Hotel Manager", "tasks": ["manage hotel listings", "update pricing", "check room availability", "approve bookings"]}], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "FeaturedHotels", "BookNowButton"]}, {"name": "Search Hotels", "route": "/hotels/search", "components": ["Navbar", "SearchBar", "AmenitiesFilter", "LocationFilter", "PriceRangeSlider", "HotelCardGrid"]}, {"name": "Hotel Details", "route": "/hotels/:id", "components": ["Navbar", "HotelImageGallery", "RoomCards", "AmenitiesList", "BookingForm"]}, {"name": "Reviews", "route": "/reviews", "components": ["Navbar", "ReviewCardGrid", "RatingStars"]}, {"name": "Manage Listings", "route": "/admin/listings", "components": ["Navbar", "HotelListingTable", "PriceUpdateForm", "AvailabilityToggle"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "FormInput"], "features": ["hotel search", "amenity filtering", "room booking", "user reviews", "hotel management", "listing updates", "availability tracking"]}, "backend": {"endpoints": [{"method": "GET", "path": "/api/hotels", "purpose": "Fetch hotel listings"}, {"method": "POST", "path": "/api/bookings", "purpose": "Create user booking"}, {"method": "GET", "path": "/api/hotels/:id", "purpose": "Fetch hotel details"}, {"method": "POST", "path": "/api/reviews", "purpose": "Submit user review"}, {"method": "GET", "path": "/api/admin/listings", "purpose": "Fetch hotel listings for admin"}, {"method": "PATCH", "path": "/api/admin/listings/:id", "purpose": "Update hotel listing"}, {"method": "PUT", "path": "/api/admin/listings/:id", "purpose": "Update hotel availability"}]}, "database": {"tables": [{"name": "users", "columns": ["id", "name", "email", "password", "phone_number"]}, {"name": "hotels", "columns": ["id", "name", "location", "rating", "featured_image_url"]}, {"name": "rooms", "columns": ["id", "hotel_id", "room_type", "price_per_night", "bed_count", "amenities"]}, {"name": "bookings", "columns": ["id", "user_id", "hotel_id", "room_id", "booking_date", "check_in_date", "check_out_date"]}, {"name": "reviews", "columns": ["id", "user_id", "hotel_id", "rating", "comment", "created_at"]}]}, "auth_required": true}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Hotel Booking Platform", "app_type": "web_app", "description": "A hotel booking platform for users to search, filter, book rooms, and review hotels, and for hotel managers to manage hotel listings, pricing, and availability.", "target_users": [{"role": "User", "tasks": ["search hotels", "filter by amenities", "book rooms", "leave reviews"]}, {"role": "Hotel Manager", "tasks": ["manage hotel listings", "update pricing", "check room availability", "approve bookings"]}], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "FeaturedHotels", "BookNowButton"]}, {"name": "Search Hotels", "route": "/hotels/search", "components": ["Navbar", "SearchBar", "AmenitiesFilter", "LocationFilter", "PriceRangeSlider", "HotelCardGrid"]}, {"name": "Hotel Details", "route": "/hotels/:id", "components": ["Navbar", "HotelImageGallery", "RoomCards", "AmenitiesList", "BookingForm"]}, {"name": "Reviews", "route": "/reviews", "components": ["Navbar", "ReviewCardGrid", "RatingStars"]}, {"name": "Manage Listings", "route": "/admin/listings", "components": ["Navbar", "HotelListingTable", "PriceUpdateForm", "AvailabilityToggle"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "FormInput"], "features": ["hotel search", "amenity filtering", "room booking", "user reviews", "hotel management", "listing updates", "availability tracking"]}, "backend": {"endpoints": [{"method": "GET", "path": "/api/hotels", "purpose": "Fetch hotel listings"}, {"method": "POST", "path": "/api/bookings", "purpose": "Create user booking"}, {"method": "GET", "path": "/api/hotels/:id", "purpose": "Fetch hotel details"}, {"method": "POST", "path": "/api/reviews", "purpose": "Submit user review"}, {"method": "GET", "path": "/api/admin/listings", "purpose": "Fetch hotel listings for admin"}, {"method": "PATCH", "path": "/api/admin/listings/:id", "purpose": "Update hotel listing"}, {"method": "PUT", "path": "/api/admin/listings/:id", "purpose": "Update hotel availability"}]}, "database": {"tables": [{"name": "users", "columns": ["id", "name", "email", "password", "phone_number"]}, {"name": "hotels", "columns": ["id", "name", "location", "rating", "featured_image_url"]}, {"name": "rooms", "columns": ["id", "hotel_id", "room_type", "price_per_night", "bed_count", "amenities"]}, {"name": "bookings", "columns": ["id", "user_id", "hotel_id", "room_id", "booking_date", "check_in_date", "check_out_date"]}, {"name": "reviews", "columns": ["id", "user_id", "hotel_id", "rating", "comment", "created_at"]}]}, "auth_required": true}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Hotel Booking Platform",
+  "app_type": "web_app",
+  "description": "A hotel booking platform for users to search, filter, book rooms, and review hotels, and for hotel managers to manage hotel listings, pricing, and availability.",
+  "target_users": [
+    {
+      "role": "User",
+      "tasks": [
+        "search hotels",
+        "filter by amenities",
+        "book rooms",
+        "leave reviews"
+      ]
+    },
+    {
+      "role": "Hotel Manager",
+      "tasks": [
+        "manage hotel listings",
+        "update pricing",
+        "check room availability",
+        "approve bookings"
+      ]
+    }
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "FeaturedHotels",
+          "BookNowButton"
+        ]
+      },
+      {
+        "name": "Search Hotels",
+        "route": "/hotels/search",
+        "components": [
+          "Navbar",
+          "SearchBar",
+          "AmenitiesFilter",
+          "LocationFilter",
+          "PriceRangeSlider",
+          "HotelCardGrid"
+        ]
+      },
+      {
+        "name": "Hotel Details",
+        "route": "/hotels/:id",
+        "components": [
+          "Navbar",
+          "HotelImageGallery",
+          "RoomCards",
+          "AmenitiesList",
+          "BookingForm"
+        ]
+      },
+      {
+        "name": "Reviews",
+        "route": "/reviews",
+        "components": [
+          "Navbar",
+          "ReviewCardGrid",
+          "RatingStars"
+        ]
+      },
+      {
+        "name": "Manage Listings",
+        "route": "/admin/listings",
+        "components": [
+          "Navbar",
+          "HotelListingTable",
+          "PriceUpdateForm",
+          "AvailabilityToggle"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Table",
+      "FormInput"
+    ],
+    "features": [
+      "hotel search",
+      "amenity filtering",
+      "room booking",
+      "user reviews",
+      "hotel management",
+      "listing updates",
+      "availability tracking"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/hotels",
+        "purpose": "Fetch hotel listings"
+      },
+      {
+        "method": "POST",
+        "path": "/api/bookings",
+        "purpose": "Create user booking"
+      },
+      {
+        "method": "GET",
+        "path": "/api/hotels/:id",
+        "purpose": "Fetch hotel details"
+      },
+      {
+        "method": "POST",
+        "path": "/api/reviews",
+        "purpose": "Submit user review"
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/listings",
+        "purpose": "Fetch hotel listings for admin"
+      },
+      {
+        "method": "PATCH",
+        "path": "/api/admin/listings/:id",
+        "purpose": "Update hotel listing"
+      },
+      {
+        "method": "PUT",
+        "path": "/api/admin/listings/:id",
+        "purpose": "Update hotel availability"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "users",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "password",
+          "phone_number"
+        ]
+      },
+      {
+        "name": "hotels",
+        "columns": [
+          "id",
+          "name",
+          "location",
+          "rating",
+          "featured_image_url"
+        ]
+      },
+      {
+        "name": "rooms",
+        "columns": [
+          "id",
+          "hotel_id",
+          "room_type",
+          "price_per_night",
+          "bed_count",
+          "amenities"
+        ]
+      },
+      {
+        "name": "bookings",
+        "columns": [
+          "id",
+          "user_id",
+          "hotel_id",
+          "room_id",
+          "booking_date",
+          "check_in_date",
+          "check_out_date"
+        ]
+      },
+      {
+        "name": "reviews",
+        "columns": [
+          "id",
+          "user_id",
+          "hotel_id",
+          "rating",
+          "comment",
+          "created_at"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

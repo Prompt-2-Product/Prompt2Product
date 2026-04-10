@@ -1,0 +1,145 @@
+Prompt Category: telemedicine
+Model: D:\Prompt2Product\finetune\outputs\qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Telemedicine Platform", "app_type": "web_app", "description": "A telemedicine platform for patients to book appointments, consult doctors via video calls, access prescriptions, and doctors to manage availability and patient records.", "target_users": ["patients", "doctors"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "ServicesCards", "Footer"]}, {"name": "Doctors", "route": "/doctors", "components": ["Navbar", "DoctorList", "SpecializationFilter"]}, {"name": "Appointments", "route": "/appointments", "components": ["Navbar", "AppointmentForm", "DateSlotsTable", "StatusBadge"]}, {"name": "Prescriptions", "route": "/prescriptions", "components": ["Navbar", "PrescriptionList", "DownloadButton"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Badge"], "features": ["doctor browsing", "video consultation", "appointment booking", "prescription access", "doctor availability"]}, "backend": {"endpoints": [{"method": "GET", "path": "/api/doctors", "purpose": "Fetch doctor list"}, {"method": "GET", "path": "/api/doctors/:id/specializations", "purpose": "Fetch doctor specializations"}, {"method": "POST", "path": "/api/appointments", "purpose": "Create appointment"}, {"method": "GET", "path": "/api/prescriptions", "purpose": "Fetch prescription list"}, {"method": "GET", "path": "/api/availability", "purpose": "Fetch doctor availability"}]}, "database": {"tables": [{"name": "doctors", "columns": ["id", "name", "specialization", "department", "availability_time"]}, {"name": "appointments", "columns": ["id", "patient_id", "doctor_id", "appointment_date", "status"]}, {"name": "prescriptions", "columns": ["id", "appointment_id", "patient_id", "prescription_details"]}]}, "auth_required": true}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Telemedicine Platform", "app_type": "web_app", "description": "A telemedicine platform for patients to book appointments, consult doctors via video calls, access prescriptions, and doctors to manage availability and patient records.", "target_users": ["patients", "doctors"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "ServicesCards", "Footer"]}, {"name": "Doctors", "route": "/doctors", "components": ["Navbar", "DoctorList", "SpecializationFilter"]}, {"name": "Appointments", "route": "/appointments", "components": ["Navbar", "AppointmentForm", "DateSlotsTable", "StatusBadge"]}, {"name": "Prescriptions", "route": "/prescriptions", "components": ["Navbar", "PrescriptionList", "DownloadButton"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Badge"], "features": ["doctor browsing", "video consultation", "appointment booking", "prescription access", "doctor availability"]}, "backend": {"endpoints": [{"method": "GET", "path": "/api/doctors", "purpose": "Fetch doctor list"}, {"method": "GET", "path": "/api/doctors/:id/specializations", "purpose": "Fetch doctor specializations"}, {"method": "POST", "path": "/api/appointments", "purpose": "Create appointment"}, {"method": "GET", "path": "/api/prescriptions", "purpose": "Fetch prescription list"}, {"method": "GET", "path": "/api/availability", "purpose": "Fetch doctor availability"}]}, "database": {"tables": [{"name": "doctors", "columns": ["id", "name", "specialization", "department", "availability_time"]}, {"name": "appointments", "columns": ["id", "patient_id", "doctor_id", "appointment_date", "status"]}, {"name": "prescriptions", "columns": ["id", "appointment_id", "patient_id", "prescription_details"]}]}, "auth_required": true}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Telemedicine Platform",
+  "app_type": "web_app",
+  "description": "A telemedicine platform for patients to book appointments, consult doctors via video calls, access prescriptions, and doctors to manage availability and patient records.",
+  "target_users": [
+    "patients",
+    "doctors"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "ServicesCards",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Doctors",
+        "route": "/doctors",
+        "components": [
+          "Navbar",
+          "DoctorList",
+          "SpecializationFilter"
+        ]
+      },
+      {
+        "name": "Appointments",
+        "route": "/appointments",
+        "components": [
+          "Navbar",
+          "AppointmentForm",
+          "DateSlotsTable",
+          "StatusBadge"
+        ]
+      },
+      {
+        "name": "Prescriptions",
+        "route": "/prescriptions",
+        "components": [
+          "Navbar",
+          "PrescriptionList",
+          "DownloadButton"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Badge"
+    ],
+    "features": [
+      "doctor browsing",
+      "video consultation",
+      "appointment booking",
+      "prescription access",
+      "doctor availability"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/doctors",
+        "purpose": "Fetch doctor list"
+      },
+      {
+        "method": "GET",
+        "path": "/api/doctors/:id/specializations",
+        "purpose": "Fetch doctor specializations"
+      },
+      {
+        "method": "POST",
+        "path": "/api/appointments",
+        "purpose": "Create appointment"
+      },
+      {
+        "method": "GET",
+        "path": "/api/prescriptions",
+        "purpose": "Fetch prescription list"
+      },
+      {
+        "method": "GET",
+        "path": "/api/availability",
+        "purpose": "Fetch doctor availability"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "doctors",
+        "columns": [
+          "id",
+          "name",
+          "specialization",
+          "department",
+          "availability_time"
+        ]
+      },
+      {
+        "name": "appointments",
+        "columns": [
+          "id",
+          "patient_id",
+          "doctor_id",
+          "appointment_date",
+          "status"
+        ]
+      },
+      {
+        "name": "prescriptions",
+        "columns": [
+          "id",
+          "appointment_id",
+          "patient_id",
+          "prescription_details"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

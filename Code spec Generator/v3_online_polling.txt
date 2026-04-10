@@ -1,0 +1,162 @@
+Prompt Category: online_polling
+Model: D:\Prompt2Product\finetune\outputs\qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Online Polling System", "app_type": "web_app", "description": "An online platform for creating, voting on, and viewing polls with real-time results, managed by administrators.", "target_users": ["users", "admins"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "PollCardGrid", "Footer"]}, {"name": "Create Poll", "route": "/create-poll", "components": ["Navbar", "PollForm", "QuestionInput", "OptionInput", "CreateButton"]}, {"name": "Polls", "route": "/polls", "components": ["Navbar", "PollCardGrid", "PollStatusBadge", "DateFilter"]}, {"name": "Results", "route": "/results/:pollId", "components": ["Navbar", "ResultChart", "VoteCountTable", "PollDescription"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Badge", "Table", "Chart"], "features": ["create polls", "vote on polls", "view poll results", "admin monitoring", "poll status tracking", "real-time results"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/polls", "purpose": "Create a new poll"}, {"method": "POST", "path": "/api/votes", "purpose": "Record user vote"}, {"method": "GET", "path": "/api/polls", "purpose": "Fetch polls for viewing"}, {"method": "GET", "path": "/api/results/:pollId", "purpose": "Fetch poll results"}, {"method": "GET", "path": "/api/admin-stats", "purpose": "Fetch admin usage statistics"}]}, "database": {"tables": [{"name": "users", "columns": ["id", "name", "email", "password_hash", "role"]}, {"name": "polls", "columns": ["id", "title", "description", "start_date", "end_date", "creator_id", "status"]}, {"name": "votes", "columns": ["id", "poll_id", "user_id", "option_id", "vote_time"]}, {"name": "poll_results", "columns": ["poll_id", "option_id", "vote_count"]}]}, "auth_required": true}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Online Polling System", "app_type": "web_app", "description": "An online platform for creating, voting on, and viewing polls with real-time results, managed by administrators.", "target_users": ["users", "admins"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "PollCardGrid", "Footer"]}, {"name": "Create Poll", "route": "/create-poll", "components": ["Navbar", "PollForm", "QuestionInput", "OptionInput", "CreateButton"]}, {"name": "Polls", "route": "/polls", "components": ["Navbar", "PollCardGrid", "PollStatusBadge", "DateFilter"]}, {"name": "Results", "route": "/results/:pollId", "components": ["Navbar", "ResultChart", "VoteCountTable", "PollDescription"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Badge", "Table", "Chart"], "features": ["create polls", "vote on polls", "view poll results", "admin monitoring", "poll status tracking", "real-time results"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/polls", "purpose": "Create a new poll"}, {"method": "POST", "path": "/api/votes", "purpose": "Record user vote"}, {"method": "GET", "path": "/api/polls", "purpose": "Fetch polls for viewing"}, {"method": "GET", "path": "/api/results/:pollId", "purpose": "Fetch poll results"}, {"method": "GET", "path": "/api/admin-stats", "purpose": "Fetch admin usage statistics"}]}, "database": {"tables": [{"name": "users", "columns": ["id", "name", "email", "password_hash", "role"]}, {"name": "polls", "columns": ["id", "title", "description", "start_date", "end_date", "creator_id", "status"]}, {"name": "votes", "columns": ["id", "poll_id", "user_id", "option_id", "vote_time"]}, {"name": "poll_results", "columns": ["poll_id", "option_id", "vote_count"]}]}, "auth_required": true}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Online Polling System",
+  "app_type": "web_app",
+  "description": "An online platform for creating, voting on, and viewing polls with real-time results, managed by administrators.",
+  "target_users": [
+    "users",
+    "admins"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "PollCardGrid",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Create Poll",
+        "route": "/create-poll",
+        "components": [
+          "Navbar",
+          "PollForm",
+          "QuestionInput",
+          "OptionInput",
+          "CreateButton"
+        ]
+      },
+      {
+        "name": "Polls",
+        "route": "/polls",
+        "components": [
+          "Navbar",
+          "PollCardGrid",
+          "PollStatusBadge",
+          "DateFilter"
+        ]
+      },
+      {
+        "name": "Results",
+        "route": "/results/:pollId",
+        "components": [
+          "Navbar",
+          "ResultChart",
+          "VoteCountTable",
+          "PollDescription"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Badge",
+      "Table",
+      "Chart"
+    ],
+    "features": [
+      "create polls",
+      "vote on polls",
+      "view poll results",
+      "admin monitoring",
+      "poll status tracking",
+      "real-time results"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/polls",
+        "purpose": "Create a new poll"
+      },
+      {
+        "method": "POST",
+        "path": "/api/votes",
+        "purpose": "Record user vote"
+      },
+      {
+        "method": "GET",
+        "path": "/api/polls",
+        "purpose": "Fetch polls for viewing"
+      },
+      {
+        "method": "GET",
+        "path": "/api/results/:pollId",
+        "purpose": "Fetch poll results"
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin-stats",
+        "purpose": "Fetch admin usage statistics"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "users",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "password_hash",
+          "role"
+        ]
+      },
+      {
+        "name": "polls",
+        "columns": [
+          "id",
+          "title",
+          "description",
+          "start_date",
+          "end_date",
+          "creator_id",
+          "status"
+        ]
+      },
+      {
+        "name": "votes",
+        "columns": [
+          "id",
+          "poll_id",
+          "user_id",
+          "option_id",
+          "vote_time"
+        ]
+      },
+      {
+        "name": "poll_results",
+        "columns": [
+          "poll_id",
+          "option_id",
+          "vote_count"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

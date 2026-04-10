@@ -1,0 +1,177 @@
+Prompt Category: customer_support
+Model: D:\Prompt2Product\finetune\outputs\qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Customer Support Ticketing System", "app_type": "web_app", "description": "A platform for customers to create support tickets, track issues, chat with support agents, and view admin assignments.", "target_users": ["customers", "support_agents", "admins"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "FeaturesCards", "Footer"]}, {"name": "Tickets", "route": "/tickets", "components": ["Navbar", "TicketListTable", "StatusBadge", "CreateTicketButton"]}, {"name": "Create Ticket", "route": "/tickets/create", "components": ["Navbar", "TicketForm", "PrioritySelect", "SubmitButton"]}, {"name": "Chat", "route": "/chat/:ticketId", "components": ["Navbar", "MessageArea", "InputField", "ChatHistory"]}, {"name": "Admin Dashboard", "route": "/admin-dashboard", "components": ["Navbar", "AssignedTicketsTable", "ResponseTimeChart", "AgentStatsCard"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "Badge", "FormInput"], "features": ["create support tickets", "track ticket status", "chat with support agents", "view assigned tickets", "admin ticket assignment", "response time monitoring"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/tickets", "purpose": "Create customer support ticket"}, {"method": "GET", "path": "/api/tickets", "purpose": "Fetch customer tickets"}, {"method": "GET", "path": "/api/tickets/:id/chat-history", "purpose": "Fetch chat history for a ticket"}, {"method": "POST", "path": "/api/chat", "purpose": "Send message in chat"}, {"method": "POST", "path": "/api/admin-assignment", "purpose": "Assign ticket to support agent"}, {"method": "GET", "path": "/api/admin-dashboard/stats", "purpose": "Fetch admin dashboard statistics"}]}, "database": {"tables": [{"name": "customers", "columns": ["id", "name", "email", "phone_number"]}, {"name": "tickets", "columns": ["id", "customer_id", "subject", "priority", "status", "created_at", "assigned_agent_id"]}, {"name": "chat_messages", "columns": ["id", "ticket_id", "sender_type", "message_content", "sent_at"]}, {"name": "support_agents", "columns": ["id", "name", "email", "role"]}]}, "auth_required": true}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Customer Support Ticketing System", "app_type": "web_app", "description": "A platform for customers to create support tickets, track issues, chat with support agents, and view admin assignments.", "target_users": ["customers", "support_agents", "admins"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "FeaturesCards", "Footer"]}, {"name": "Tickets", "route": "/tickets", "components": ["Navbar", "TicketListTable", "StatusBadge", "CreateTicketButton"]}, {"name": "Create Ticket", "route": "/tickets/create", "components": ["Navbar", "TicketForm", "PrioritySelect", "SubmitButton"]}, {"name": "Chat", "route": "/chat/:ticketId", "components": ["Navbar", "MessageArea", "InputField", "ChatHistory"]}, {"name": "Admin Dashboard", "route": "/admin-dashboard", "components": ["Navbar", "AssignedTicketsTable", "ResponseTimeChart", "AgentStatsCard"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "Badge", "FormInput"], "features": ["create support tickets", "track ticket status", "chat with support agents", "view assigned tickets", "admin ticket assignment", "response time monitoring"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/tickets", "purpose": "Create customer support ticket"}, {"method": "GET", "path": "/api/tickets", "purpose": "Fetch customer tickets"}, {"method": "GET", "path": "/api/tickets/:id/chat-history", "purpose": "Fetch chat history for a ticket"}, {"method": "POST", "path": "/api/chat", "purpose": "Send message in chat"}, {"method": "POST", "path": "/api/admin-assignment", "purpose": "Assign ticket to support agent"}, {"method": "GET", "path": "/api/admin-dashboard/stats", "purpose": "Fetch admin dashboard statistics"}]}, "database": {"tables": [{"name": "customers", "columns": ["id", "name", "email", "phone_number"]}, {"name": "tickets", "columns": ["id", "customer_id", "subject", "priority", "status", "created_at", "assigned_agent_id"]}, {"name": "chat_messages", "columns": ["id", "ticket_id", "sender_type", "message_content", "sent_at"]}, {"name": "support_agents", "columns": ["id", "name", "email", "role"]}]}, "auth_required": true}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Customer Support Ticketing System",
+  "app_type": "web_app",
+  "description": "A platform for customers to create support tickets, track issues, chat with support agents, and view admin assignments.",
+  "target_users": [
+    "customers",
+    "support_agents",
+    "admins"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "FeaturesCards",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Tickets",
+        "route": "/tickets",
+        "components": [
+          "Navbar",
+          "TicketListTable",
+          "StatusBadge",
+          "CreateTicketButton"
+        ]
+      },
+      {
+        "name": "Create Ticket",
+        "route": "/tickets/create",
+        "components": [
+          "Navbar",
+          "TicketForm",
+          "PrioritySelect",
+          "SubmitButton"
+        ]
+      },
+      {
+        "name": "Chat",
+        "route": "/chat/:ticketId",
+        "components": [
+          "Navbar",
+          "MessageArea",
+          "InputField",
+          "ChatHistory"
+        ]
+      },
+      {
+        "name": "Admin Dashboard",
+        "route": "/admin-dashboard",
+        "components": [
+          "Navbar",
+          "AssignedTicketsTable",
+          "ResponseTimeChart",
+          "AgentStatsCard"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Table",
+      "Badge",
+      "FormInput"
+    ],
+    "features": [
+      "create support tickets",
+      "track ticket status",
+      "chat with support agents",
+      "view assigned tickets",
+      "admin ticket assignment",
+      "response time monitoring"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/tickets",
+        "purpose": "Create customer support ticket"
+      },
+      {
+        "method": "GET",
+        "path": "/api/tickets",
+        "purpose": "Fetch customer tickets"
+      },
+      {
+        "method": "GET",
+        "path": "/api/tickets/:id/chat-history",
+        "purpose": "Fetch chat history for a ticket"
+      },
+      {
+        "method": "POST",
+        "path": "/api/chat",
+        "purpose": "Send message in chat"
+      },
+      {
+        "method": "POST",
+        "path": "/api/admin-assignment",
+        "purpose": "Assign ticket to support agent"
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin-dashboard/stats",
+        "purpose": "Fetch admin dashboard statistics"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "customers",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "phone_number"
+        ]
+      },
+      {
+        "name": "tickets",
+        "columns": [
+          "id",
+          "customer_id",
+          "subject",
+          "priority",
+          "status",
+          "created_at",
+          "assigned_agent_id"
+        ]
+      },
+      {
+        "name": "chat_messages",
+        "columns": [
+          "id",
+          "ticket_id",
+          "sender_type",
+          "message_content",
+          "sent_at"
+        ]
+      },
+      {
+        "name": "support_agents",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "role"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

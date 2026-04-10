@@ -1,0 +1,161 @@
+Prompt Category: event_management
+Model: D:\Prompt2Product\finetune\outputs\qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Event Management System", "app_type": "web_app", "description": "An event management platform for organizers to create events, sell tickets, and manage attendees, and for users to browse events, register, and receive notifications.", "target_users": ["organizers", "attendees"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "FeaturedEvents", "Footer"]}, {"name": "Organizer Dashboard", "route": "/organizer-dashboard", "components": ["Navbar", "DashboardCards", "EventListTable", "TicketSalesChart"]}, {"name": "Create Event", "route": "/organizer-dashboard/events/new", "components": ["Navbar", "EventForm", "VenuePicker", "TicketTypeForm"]}, {"name": "Attendee Dashboard", "route": "/attendee-dashboard", "components": ["Navbar", "EventBrowseGrid", "RegistrationForm", "NotificationBadge"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "Chart", "Badge"], "features": ["event creation", "ticket sales", "attendee registration", "event browsing", "notifications", "venue selection", "ticket types"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/organizer/events", "purpose": "Create new event"}, {"method": "POST", "path": "/api/organizer/tickets", "purpose": "Sell tickets"}, {"method": "POST", "path": "/api/attendee/register", "purpose": "Register attendee"}, {"method": "GET", "path": "/api/events", "purpose": "Fetch event list"}, {"method": "POST", "path": "/api/notifications", "purpose": "Send notification"}]}, "database": {"tables": [{"name": "events", "columns": ["id", "title", "organizer_id", "venue", "start_date", "end_date"]}, {"name": "tickets", "columns": ["id", "event_id", "price", "quantity_sold", "status"]}, {"name": "attendees", "columns": ["id", "name", "email", "registration_status"]}, {"name": "registrations", "columns": ["id", "attendee_id", "event_id", "registration_date"]}]}, "auth_required": true}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Event Management System", "app_type": "web_app", "description": "An event management platform for organizers to create events, sell tickets, and manage attendees, and for users to browse events, register, and receive notifications.", "target_users": ["organizers", "attendees"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "FeaturedEvents", "Footer"]}, {"name": "Organizer Dashboard", "route": "/organizer-dashboard", "components": ["Navbar", "DashboardCards", "EventListTable", "TicketSalesChart"]}, {"name": "Create Event", "route": "/organizer-dashboard/events/new", "components": ["Navbar", "EventForm", "VenuePicker", "TicketTypeForm"]}, {"name": "Attendee Dashboard", "route": "/attendee-dashboard", "components": ["Navbar", "EventBrowseGrid", "RegistrationForm", "NotificationBadge"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "Chart", "Badge"], "features": ["event creation", "ticket sales", "attendee registration", "event browsing", "notifications", "venue selection", "ticket types"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/organizer/events", "purpose": "Create new event"}, {"method": "POST", "path": "/api/organizer/tickets", "purpose": "Sell tickets"}, {"method": "POST", "path": "/api/attendee/register", "purpose": "Register attendee"}, {"method": "GET", "path": "/api/events", "purpose": "Fetch event list"}, {"method": "POST", "path": "/api/notifications", "purpose": "Send notification"}]}, "database": {"tables": [{"name": "events", "columns": ["id", "title", "organizer_id", "venue", "start_date", "end_date"]}, {"name": "tickets", "columns": ["id", "event_id", "price", "quantity_sold", "status"]}, {"name": "attendees", "columns": ["id", "name", "email", "registration_status"]}, {"name": "registrations", "columns": ["id", "attendee_id", "event_id", "registration_date"]}]}, "auth_required": true}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Event Management System",
+  "app_type": "web_app",
+  "description": "An event management platform for organizers to create events, sell tickets, and manage attendees, and for users to browse events, register, and receive notifications.",
+  "target_users": [
+    "organizers",
+    "attendees"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "FeaturedEvents",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Organizer Dashboard",
+        "route": "/organizer-dashboard",
+        "components": [
+          "Navbar",
+          "DashboardCards",
+          "EventListTable",
+          "TicketSalesChart"
+        ]
+      },
+      {
+        "name": "Create Event",
+        "route": "/organizer-dashboard/events/new",
+        "components": [
+          "Navbar",
+          "EventForm",
+          "VenuePicker",
+          "TicketTypeForm"
+        ]
+      },
+      {
+        "name": "Attendee Dashboard",
+        "route": "/attendee-dashboard",
+        "components": [
+          "Navbar",
+          "EventBrowseGrid",
+          "RegistrationForm",
+          "NotificationBadge"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Table",
+      "Chart",
+      "Badge"
+    ],
+    "features": [
+      "event creation",
+      "ticket sales",
+      "attendee registration",
+      "event browsing",
+      "notifications",
+      "venue selection",
+      "ticket types"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/organizer/events",
+        "purpose": "Create new event"
+      },
+      {
+        "method": "POST",
+        "path": "/api/organizer/tickets",
+        "purpose": "Sell tickets"
+      },
+      {
+        "method": "POST",
+        "path": "/api/attendee/register",
+        "purpose": "Register attendee"
+      },
+      {
+        "method": "GET",
+        "path": "/api/events",
+        "purpose": "Fetch event list"
+      },
+      {
+        "method": "POST",
+        "path": "/api/notifications",
+        "purpose": "Send notification"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "events",
+        "columns": [
+          "id",
+          "title",
+          "organizer_id",
+          "venue",
+          "start_date",
+          "end_date"
+        ]
+      },
+      {
+        "name": "tickets",
+        "columns": [
+          "id",
+          "event_id",
+          "price",
+          "quantity_sold",
+          "status"
+        ]
+      },
+      {
+        "name": "attendees",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "registration_status"
+        ]
+      },
+      {
+        "name": "registrations",
+        "columns": [
+          "id",
+          "attendee_id",
+          "event_id",
+          "registration_date"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}
