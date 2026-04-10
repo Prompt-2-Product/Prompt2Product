@@ -1,0 +1,142 @@
+Prompt Category: fintech
+Model: D:\Prompt2Product\finetune\outputs\qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Personal Finance Tracker", "app_type": "web_app", "description": "A personal finance management app to track expenses, categorize transactions, set budgets, and analyze financial trends.", "target_users": ["individuals"], "frontend": {"pages": [{"name": "Dashboard", "route": "/", "components": ["Navbar", "BudgetSummaryCard", "ExpenseChart", "AlertBadge"]}, {"name": "Transactions", "route": "/transactions", "components": ["Navbar", "TransactionTable", "CategoryFilter", "BankIntegrationButton"]}, {"name": "Categories", "route": "/categories", "components": ["Navbar", "CategoryBarChart", "ExpenseBreakdownTable"]}, {"name": "Budgets", "route": "/budgets", "components": ["Navbar", "BudgetList", "TargetVsActualChart"]}], "shared_components": ["Navbar", "Card", "Table", "Chart", "Button", "Badge"], "features": ["expense tracking", "bank integration", "category categorization", "budget setting", "analytics charts", "alerts"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/transactions", "purpose": "Create transaction record"}, {"method": "GET", "path": "/api/transactions", "purpose": "Fetch transaction history"}, {"method": "POST", "path": "/api/budgets", "purpose": "Create budget plan"}, {"method": "GET", "path": "/api/budgets", "purpose": "Fetch budget plans"}]}, "database": {"tables": [{"name": "transactions", "columns": ["id", "transaction_date", "amount", "category", "bank_transaction_id", "note"]}, {"name": "budgets", "columns": ["id", "budget_name", "target_amount", "actual_spent", "status"]}, {"name": "alerts", "columns": ["id", "alert_type", "message", "trigger_time"]}]}, "auth_required": true}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Personal Finance Tracker", "app_type": "web_app", "description": "A personal finance management app to track expenses, categorize transactions, set budgets, and analyze financial trends.", "target_users": ["individuals"], "frontend": {"pages": [{"name": "Dashboard", "route": "/", "components": ["Navbar", "BudgetSummaryCard", "ExpenseChart", "AlertBadge"]}, {"name": "Transactions", "route": "/transactions", "components": ["Navbar", "TransactionTable", "CategoryFilter", "BankIntegrationButton"]}, {"name": "Categories", "route": "/categories", "components": ["Navbar", "CategoryBarChart", "ExpenseBreakdownTable"]}, {"name": "Budgets", "route": "/budgets", "components": ["Navbar", "BudgetList", "TargetVsActualChart"]}], "shared_components": ["Navbar", "Card", "Table", "Chart", "Button", "Badge"], "features": ["expense tracking", "bank integration", "category categorization", "budget setting", "analytics charts", "alerts"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/transactions", "purpose": "Create transaction record"}, {"method": "GET", "path": "/api/transactions", "purpose": "Fetch transaction history"}, {"method": "POST", "path": "/api/budgets", "purpose": "Create budget plan"}, {"method": "GET", "path": "/api/budgets", "purpose": "Fetch budget plans"}]}, "database": {"tables": [{"name": "transactions", "columns": ["id", "transaction_date", "amount", "category", "bank_transaction_id", "note"]}, {"name": "budgets", "columns": ["id", "budget_name", "target_amount", "actual_spent", "status"]}, {"name": "alerts", "columns": ["id", "alert_type", "message", "trigger_time"]}]}, "auth_required": true}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Personal Finance Tracker",
+  "app_type": "web_app",
+  "description": "A personal finance management app to track expenses, categorize transactions, set budgets, and analyze financial trends.",
+  "target_users": [
+    "individuals"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Dashboard",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "BudgetSummaryCard",
+          "ExpenseChart",
+          "AlertBadge"
+        ]
+      },
+      {
+        "name": "Transactions",
+        "route": "/transactions",
+        "components": [
+          "Navbar",
+          "TransactionTable",
+          "CategoryFilter",
+          "BankIntegrationButton"
+        ]
+      },
+      {
+        "name": "Categories",
+        "route": "/categories",
+        "components": [
+          "Navbar",
+          "CategoryBarChart",
+          "ExpenseBreakdownTable"
+        ]
+      },
+      {
+        "name": "Budgets",
+        "route": "/budgets",
+        "components": [
+          "Navbar",
+          "BudgetList",
+          "TargetVsActualChart"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Card",
+      "Table",
+      "Chart",
+      "Button",
+      "Badge"
+    ],
+    "features": [
+      "expense tracking",
+      "bank integration",
+      "category categorization",
+      "budget setting",
+      "analytics charts",
+      "alerts"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/transactions",
+        "purpose": "Create transaction record"
+      },
+      {
+        "method": "GET",
+        "path": "/api/transactions",
+        "purpose": "Fetch transaction history"
+      },
+      {
+        "method": "POST",
+        "path": "/api/budgets",
+        "purpose": "Create budget plan"
+      },
+      {
+        "method": "GET",
+        "path": "/api/budgets",
+        "purpose": "Fetch budget plans"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "transactions",
+        "columns": [
+          "id",
+          "transaction_date",
+          "amount",
+          "category",
+          "bank_transaction_id",
+          "note"
+        ]
+      },
+      {
+        "name": "budgets",
+        "columns": [
+          "id",
+          "budget_name",
+          "target_amount",
+          "actual_spent",
+          "status"
+        ]
+      },
+      {
+        "name": "alerts",
+        "columns": [
+          "id",
+          "alert_type",
+          "message",
+          "trigger_time"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

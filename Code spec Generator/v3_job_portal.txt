@@ -1,0 +1,197 @@
+Prompt Category: job_portal
+Model: D:\Prompt2Product\finetune\outputs\qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Job Portal", "app_type": "web_app", "description": "A job portal for companies to post job listings and candidates to apply with resumes.", "target_users": ["companies", "candidates", "admins"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "FeaturedJobs", "Footer"]}, {"name": "Companies", "route": "/companies", "components": ["Navbar", "CompanyCardGrid", "IndustryFilter"]}, {"name": "Jobs", "route": "/jobs", "components": ["Navbar", "JobListingTable", "LocationFilter", "CategoryFilter"]}, {"name": "Apply", "route": "/apply", "components": ["Navbar", "ResumeUploadForm", "JobApplicationForm"]}, {"name": "Admin", "route": "/admin", "components": ["Navbar", "UserListTable", "ListingApprovalTable", "DashboardStats"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "Form", "CardGrid"], "features": ["company job posting", "candidate resume upload", "job filtering", "application form", "listing moderation", "admin dashboard"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/companies", "purpose": "Create company profile"}, {"method": "POST", "path": "/api/jobs", "purpose": "Create job listing"}, {"method": "POST", "path": "/api/resumes", "purpose": "Upload candidate resume"}, {"method": "POST", "path": "/api/applications", "purpose": "Submit job application"}, {"method": "GET", "path": "/api/companies", "purpose": "Fetch company list"}, {"method": "GET", "path": "/api/jobs", "purpose": "Fetch job listings"}, {"method": "GET", "path": "/api/users", "purpose": "Fetch admin users"}, {"method": "PATCH", "path": "/api/listings", "purpose": "Approve job listing"}]}, "database": {"tables": [{"name": "companies", "columns": ["id", "name", "industry", "location", "website_url"]}, {"name": "jobs", "columns": ["id", "title", "description", "location", "category", "company_id", "created_at"]}, {"name": "resumes", "columns": ["id", "candidate_name", "email", "file_path", "upload_date"]}, {"name": "applications", "columns": ["id", "candidate_name", "resume_id", "job_id", "status", "submitted_at"]}, {"name": "users", "columns": ["id", "username", "email", "role"]}]}, "auth_required": true}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Job Portal", "app_type": "web_app", "description": "A job portal for companies to post job listings and candidates to apply with resumes.", "target_users": ["companies", "candidates", "admins"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "FeaturedJobs", "Footer"]}, {"name": "Companies", "route": "/companies", "components": ["Navbar", "CompanyCardGrid", "IndustryFilter"]}, {"name": "Jobs", "route": "/jobs", "components": ["Navbar", "JobListingTable", "LocationFilter", "CategoryFilter"]}, {"name": "Apply", "route": "/apply", "components": ["Navbar", "ResumeUploadForm", "JobApplicationForm"]}, {"name": "Admin", "route": "/admin", "components": ["Navbar", "UserListTable", "ListingApprovalTable", "DashboardStats"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "Form", "CardGrid"], "features": ["company job posting", "candidate resume upload", "job filtering", "application form", "listing moderation", "admin dashboard"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/companies", "purpose": "Create company profile"}, {"method": "POST", "path": "/api/jobs", "purpose": "Create job listing"}, {"method": "POST", "path": "/api/resumes", "purpose": "Upload candidate resume"}, {"method": "POST", "path": "/api/applications", "purpose": "Submit job application"}, {"method": "GET", "path": "/api/companies", "purpose": "Fetch company list"}, {"method": "GET", "path": "/api/jobs", "purpose": "Fetch job listings"}, {"method": "GET", "path": "/api/users", "purpose": "Fetch admin users"}, {"method": "PATCH", "path": "/api/listings", "purpose": "Approve job listing"}]}, "database": {"tables": [{"name": "companies", "columns": ["id", "name", "industry", "location", "website_url"]}, {"name": "jobs", "columns": ["id", "title", "description", "location", "category", "company_id", "created_at"]}, {"name": "resumes", "columns": ["id", "candidate_name", "email", "file_path", "upload_date"]}, {"name": "applications", "columns": ["id", "candidate_name", "resume_id", "job_id", "status", "submitted_at"]}, {"name": "users", "columns": ["id", "username", "email", "role"]}]}, "auth_required": true}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Job Portal",
+  "app_type": "web_app",
+  "description": "A job portal for companies to post job listings and candidates to apply with resumes.",
+  "target_users": [
+    "companies",
+    "candidates",
+    "admins"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "FeaturedJobs",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Companies",
+        "route": "/companies",
+        "components": [
+          "Navbar",
+          "CompanyCardGrid",
+          "IndustryFilter"
+        ]
+      },
+      {
+        "name": "Jobs",
+        "route": "/jobs",
+        "components": [
+          "Navbar",
+          "JobListingTable",
+          "LocationFilter",
+          "CategoryFilter"
+        ]
+      },
+      {
+        "name": "Apply",
+        "route": "/apply",
+        "components": [
+          "Navbar",
+          "ResumeUploadForm",
+          "JobApplicationForm"
+        ]
+      },
+      {
+        "name": "Admin",
+        "route": "/admin",
+        "components": [
+          "Navbar",
+          "UserListTable",
+          "ListingApprovalTable",
+          "DashboardStats"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Table",
+      "Form",
+      "CardGrid"
+    ],
+    "features": [
+      "company job posting",
+      "candidate resume upload",
+      "job filtering",
+      "application form",
+      "listing moderation",
+      "admin dashboard"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/companies",
+        "purpose": "Create company profile"
+      },
+      {
+        "method": "POST",
+        "path": "/api/jobs",
+        "purpose": "Create job listing"
+      },
+      {
+        "method": "POST",
+        "path": "/api/resumes",
+        "purpose": "Upload candidate resume"
+      },
+      {
+        "method": "POST",
+        "path": "/api/applications",
+        "purpose": "Submit job application"
+      },
+      {
+        "method": "GET",
+        "path": "/api/companies",
+        "purpose": "Fetch company list"
+      },
+      {
+        "method": "GET",
+        "path": "/api/jobs",
+        "purpose": "Fetch job listings"
+      },
+      {
+        "method": "GET",
+        "path": "/api/users",
+        "purpose": "Fetch admin users"
+      },
+      {
+        "method": "PATCH",
+        "path": "/api/listings",
+        "purpose": "Approve job listing"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "companies",
+        "columns": [
+          "id",
+          "name",
+          "industry",
+          "location",
+          "website_url"
+        ]
+      },
+      {
+        "name": "jobs",
+        "columns": [
+          "id",
+          "title",
+          "description",
+          "location",
+          "category",
+          "company_id",
+          "created_at"
+        ]
+      },
+      {
+        "name": "resumes",
+        "columns": [
+          "id",
+          "candidate_name",
+          "email",
+          "file_path",
+          "upload_date"
+        ]
+      },
+      {
+        "name": "applications",
+        "columns": [
+          "id",
+          "candidate_name",
+          "resume_id",
+          "job_id",
+          "status",
+          "submitted_at"
+        ]
+      },
+      {
+        "name": "users",
+        "columns": [
+          "id",
+          "username",
+          "email",
+          "role"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

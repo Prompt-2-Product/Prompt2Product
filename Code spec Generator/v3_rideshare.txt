@@ -1,0 +1,166 @@
+Prompt Category: rideshare
+Model: D:\Prompt2Product\finetune\outputs\qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Ride Sharing Platform", "app_type": "web_app", "description": "A ride-sharing platform for passengers to book rides and drivers to accept requests, with real-time tracking and admin monitoring.", "target_users": ["passengers", "drivers", "admins"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "ServicesCards", "Footer"]}, {"name": "Login", "route": "/login", "components": ["Navbar", "LoginForm"]}, {"name": "Book Ride", "route": "/book-ride", "components": ["Navbar", "DestinationForm", "VehicleOptions", "BookButton"]}, {"name": "Driver Map", "route": "/driver-map", "components": ["Navbar", "DriverMap", "DriverMarkers"]}, {"name": "Admin Dashboard", "route": "/admin-dashboard", "components": ["Navbar", "ComplaintsTable", "ActivityChart", "ComplaintStatus"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "Chart"], "features": ["passenger booking rides", "driver request acceptance", "real-time driver tracking", "admin complaint management", "activity monitoring"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/login", "purpose": "Authenticate user"}, {"method": "POST", "path": "/api/rides", "purpose": "Create passenger ride request"}, {"method": "GET", "path": "/api/drivers", "purpose": "Fetch driver locations"}, {"method": "POST", "path": "/api/complaints", "purpose": "Report passenger complaint"}, {"method": "GET", "path": "/api/admin/dashboard", "purpose": "Fetch admin dashboard data"}]}, "database": {"tables": [{"name": "users", "columns": ["id", "name", "email", "password", "role"]}, {"name": "rides", "columns": ["id", "passenger_id", "destination", "vehicle_type", "status"]}, {"name": "drivers", "columns": ["id", "name", "location", "availability"]}, {"name": "complaints", "columns": ["id", "passenger_id", "description", "status", "created_at"]}]}, "auth_required": true}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Ride Sharing Platform", "app_type": "web_app", "description": "A ride-sharing platform for passengers to book rides and drivers to accept requests, with real-time tracking and admin monitoring.", "target_users": ["passengers", "drivers", "admins"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "ServicesCards", "Footer"]}, {"name": "Login", "route": "/login", "components": ["Navbar", "LoginForm"]}, {"name": "Book Ride", "route": "/book-ride", "components": ["Navbar", "DestinationForm", "VehicleOptions", "BookButton"]}, {"name": "Driver Map", "route": "/driver-map", "components": ["Navbar", "DriverMap", "DriverMarkers"]}, {"name": "Admin Dashboard", "route": "/admin-dashboard", "components": ["Navbar", "ComplaintsTable", "ActivityChart", "ComplaintStatus"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "Chart"], "features": ["passenger booking rides", "driver request acceptance", "real-time driver tracking", "admin complaint management", "activity monitoring"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/login", "purpose": "Authenticate user"}, {"method": "POST", "path": "/api/rides", "purpose": "Create passenger ride request"}, {"method": "GET", "path": "/api/drivers", "purpose": "Fetch driver locations"}, {"method": "POST", "path": "/api/complaints", "purpose": "Report passenger complaint"}, {"method": "GET", "path": "/api/admin/dashboard", "purpose": "Fetch admin dashboard data"}]}, "database": {"tables": [{"name": "users", "columns": ["id", "name", "email", "password", "role"]}, {"name": "rides", "columns": ["id", "passenger_id", "destination", "vehicle_type", "status"]}, {"name": "drivers", "columns": ["id", "name", "location", "availability"]}, {"name": "complaints", "columns": ["id", "passenger_id", "description", "status", "created_at"]}]}, "auth_required": true}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Ride Sharing Platform",
+  "app_type": "web_app",
+  "description": "A ride-sharing platform for passengers to book rides and drivers to accept requests, with real-time tracking and admin monitoring.",
+  "target_users": [
+    "passengers",
+    "drivers",
+    "admins"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "ServicesCards",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Login",
+        "route": "/login",
+        "components": [
+          "Navbar",
+          "LoginForm"
+        ]
+      },
+      {
+        "name": "Book Ride",
+        "route": "/book-ride",
+        "components": [
+          "Navbar",
+          "DestinationForm",
+          "VehicleOptions",
+          "BookButton"
+        ]
+      },
+      {
+        "name": "Driver Map",
+        "route": "/driver-map",
+        "components": [
+          "Navbar",
+          "DriverMap",
+          "DriverMarkers"
+        ]
+      },
+      {
+        "name": "Admin Dashboard",
+        "route": "/admin-dashboard",
+        "components": [
+          "Navbar",
+          "ComplaintsTable",
+          "ActivityChart",
+          "ComplaintStatus"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Table",
+      "Chart"
+    ],
+    "features": [
+      "passenger booking rides",
+      "driver request acceptance",
+      "real-time driver tracking",
+      "admin complaint management",
+      "activity monitoring"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/login",
+        "purpose": "Authenticate user"
+      },
+      {
+        "method": "POST",
+        "path": "/api/rides",
+        "purpose": "Create passenger ride request"
+      },
+      {
+        "method": "GET",
+        "path": "/api/drivers",
+        "purpose": "Fetch driver locations"
+      },
+      {
+        "method": "POST",
+        "path": "/api/complaints",
+        "purpose": "Report passenger complaint"
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/dashboard",
+        "purpose": "Fetch admin dashboard data"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "users",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "password",
+          "role"
+        ]
+      },
+      {
+        "name": "rides",
+        "columns": [
+          "id",
+          "passenger_id",
+          "destination",
+          "vehicle_type",
+          "status"
+        ]
+      },
+      {
+        "name": "drivers",
+        "columns": [
+          "id",
+          "name",
+          "location",
+          "availability"
+        ]
+      },
+      {
+        "name": "complaints",
+        "columns": [
+          "id",
+          "passenger_id",
+          "description",
+          "status",
+          "created_at"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

@@ -1,0 +1,134 @@
+
+
+"event_management": """<|system|>
+Generate valid TaskSpec JSON only. Do not output markdown, comments, or explanation.
+<|user|>
+Build an event management system where organizers can create events, sell tickets, and manage attendees, while users can browse events, register, and receive notifications.
+<|assistant|>
+""",
+
+"hotel_booking": """<|system|>
+Generate valid TaskSpec JSON only. Do not output markdown, comments, or explanation.
+<|user|>
+Build a hotel booking platform where users can search hotels, filter by amenities, book rooms, and leave reviews, while hotel managers can manage listings, pricing, and availability.
+<|assistant|>
+""",
+
+"social_media": """<|system|>
+Generate valid TaskSpec JSON only. Do not output markdown, comments, or explanation.
+<|user|>
+Build a social media platform where users can create profiles, post content, follow others, like and comment on posts, and receive real-time notifications.
+<|assistant|>
+""",
+
+"inventory_management": """<|system|>
+Generate valid TaskSpec JSON only. Do not output markdown, comments, or explanation.
+<|user|>
+Build an inventory management system where businesses can track stock levels, manage suppliers, generate invoices, and receive alerts for low inventory.
+<|assistant|>
+""",
+
+"travel_planner": """<|system|>
+Generate valid TaskSpec JSON only. Do not output markdown, comments, or explanation.
+<|user|>
+Build a travel planning application where users can create itineraries, book flights and hotels, explore destinations, and share travel plans with others.
+<|assistant|>
+""",
+
+"online_forum": """<|system|>
+Generate valid TaskSpec JSON only. Do not output markdown, comments, or explanation.
+<|user|>
+Build an online discussion forum where users can create threads, post replies, upvote content, and moderators can manage discussions and enforce rules.
+<|assistant|>
+""",
+
+"subscription_platform": """<|system|>
+Generate valid TaskSpec JSON only. Do not output markdown, comments, or explanation.
+<|user|>
+Build a subscription-based platform where users can subscribe to premium content, manage billing, and access exclusive resources, while admins manage plans and payments.
+<|assistant|>
+""",
+
+"telemedicine": """<|system|>
+Generate valid TaskSpec JSON only. Do not output markdown, comments, or explanation.
+<|user|>
+Build a telemedicine platform where patients can consult doctors via video calls, book appointments, and access prescriptions, while doctors manage availability and patient records.
+<|assistant|>
+""",
+
+"online_exam": """<|system|>
+Generate valid TaskSpec JSON only. Do not output markdown, comments, or explanation.
+<|user|>
+Build an online examination system where instructors can create exams, set time limits, and evaluate submissions, while students can take tests and view results.
+<|assistant|>
+""",
+
+"crypto_dashboard": """<|system|>
+Generate valid TaskSpec JSON only. Do not output markdown, comments, or explanation.
+<|user|>
+Build a cryptocurrency dashboard where users can track portfolio performance, view live prices, set alerts, and analyze trends using charts.
+<|assistant|>
+""",
+
+"customer_support": """<|system|>
+Generate valid TaskSpec JSON only. Do not output markdown, comments, or explanation.
+<|user|>
+Build a customer support system where users can create tickets, track issues, and chat with support agents, while admins assign tickets and monitor response times.
+<|assistant|>
+""",
+
+"project_management": """<|system|>
+Generate valid TaskSpec JSON only. Do not output markdown, comments, or explanation.
+<|user|>
+Build a project management tool where teams can create tasks, assign members, track progress using boards, and collaborate through comments and file sharing.
+<|assistant|>
+""",
+
+"car_rental": """<|system|>
+Generate valid TaskSpec JSON only. Do not output markdown, comments, or explanation.
+<|user|>
+Build a car rental system where users can browse available cars, book rentals, make payments, and track reservations, while admins manage fleet and pricing.
+<|assistant|>
+""",
+
+"online_polling": """<|system|>
+Generate valid TaskSpec JSON only. Do not output markdown, comments, or explanation.
+<|user|>
+Build an online polling system where users can create polls, vote, and view results in real time, while admins monitor usage and prevent fraud.
+<|assistant|>
+""",
+
+"music_streaming": """<|system|>
+Generate valid TaskSpec JSON only. Do not output markdown, comments, or explanation.
+<|user|>
+Build a music streaming platform where users can search songs, create playlists, stream music, and receive recommendations based on listening history.
+<|assistant|>
+""",
+
+"news_portal": """<|system|>
+Generate valid TaskSpec JSON only. Do not output markdown, comments, or explanation.
+<|user|>
+Build a news portal where editors can publish articles, categorize content, and manage comments, while users can read, bookmark, and share news.
+<|assistant|>
+""",
+
+"freelance_marketplace": """<|system|>
+Generate valid TaskSpec JSON only. Do not output markdown, comments, or explanation.
+<|user|>
+Build a freelance marketplace where clients can post projects, freelancers can bid, and both parties can communicate, track progress, and handle payments.
+<|assistant|>
+""",
+
+"school_management": """<|system|>
+Generate valid TaskSpec JSON only. Do not output markdown, comments, or explanation.
+<|user|>
+Build a school management system where administrators manage students and staff, teachers handle classes and grades, and students can view schedules and results.
+<|assistant|>
+""",
+
+"warehouse_logistics": """<|system|>
+Generate valid TaskSpec JSON only. Do not output markdown, comments, or explanation.
+<|user|>
+Build a warehouse logistics system where managers can track shipments, monitor inventory movement, assign tasks to workers, and generate operational reports.
+<|assistant|>
+"""
