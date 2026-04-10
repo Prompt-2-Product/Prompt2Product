@@ -1,0 +1,8 @@
+{
+    "files": [
+        {
+            "path": "frontend/src/pages/ProductDetails.jsx",
+            "content": "import React, { useEffect, useState } from 'react';\n\nexport default function ProductDetails() {\n  const { id } = useParams();\n  const [product, setProduct] = useState(null);\n\n  useEffect(() => {\n    fetch(`http://localhost:5000/api/products/${id}`)\n      .then(res => res.json())\n      .then(data => setProduct(data));\n  }, [id]);\n\n  return <div>{product ? product.name : 'Loading...'}</div>;\n}"
+        }
+    ]
+}

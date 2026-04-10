@@ -1,0 +1,1 @@
+Create a college fest event portal with schedules, competition registration, and announcements.

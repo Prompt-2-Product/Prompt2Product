@@ -1,0 +1,129 @@
+{
+    "app_name": "E-commerce Analytics Dashboard",
+    "app_type": "dashboard_app",
+    "description": "An analytics dashboard for e-commerce businesses to monitor sales, customers, orders, and product category performance.",
+    "target_users": [
+        "business_owners",
+        "ecommerce_managers",
+        "analysts"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Dashboard",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "KpiCards",
+                    "SalesTrendChart",
+                    "OrdersChart",
+                    "CustomerGrowthChart",
+                    "DateFilter"
+                ]
+            },
+            {
+                "name": "Categories",
+                "route": "/categories",
+                "components": [
+                    "Navbar",
+                    "CategoryPerformanceTable",
+                    "CategoryRevenueChart"
+                ]
+            },
+            {
+                "name": "Customers",
+                "route": "/customers",
+                "components": [
+                    "Navbar",
+                    "CustomerSegmentChart",
+                    "TopCustomersTable"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Card",
+            "Chart",
+            "Table",
+            "FilterBar",
+            "Badge"
+        ],
+        "features": [
+            "sales analytics",
+            "customer analytics",
+            "order analysis",
+            "category performance",
+            "date filtering"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/sales-analytics",
+                "purpose": "Fetch sales trend data"
+            },
+            {
+                "method": "GET",
+                "path": "/api/orders-analytics",
+                "purpose": "Fetch order metrics"
+            },
+            {
+                "method": "GET",
+                "path": "/api/customers-analytics",
+                "purpose": "Fetch customer growth and segmentation data"
+            },
+            {
+                "method": "GET",
+                "path": "/api/categories-analytics",
+                "purpose": "Fetch category performance data"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "orders",
+                "columns": [
+                    "id",
+                    "order_date",
+                    "customer_id",
+                    "total_amount",
+                    "status"
+                ]
+            },
+            {
+                "name": "customers",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "registration_date",
+                    "segment"
+                ]
+            },
+            {
+                "name": "order_items",
+                "columns": [
+                    "id",
+                    "order_id",
+                    "product_id",
+                    "category",
+                    "quantity",
+                    "unit_price"
+                ]
+            },
+            {
+                "name": "products",
+                "columns": [
+                    "id",
+                    "name",
+                    "category",
+                    "price",
+                    "stock_quantity"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

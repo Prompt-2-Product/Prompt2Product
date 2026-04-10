@@ -1,0 +1,68 @@
+{
+    "app_name": "Sales Analytics Dashboard",
+    "app_type": "dashboard_app",
+    "description": "A sales analytics dashboard for monitoring KPIs, visualizing charts, applying date filters, and viewing reports.",
+    "target_users": [
+        "business_analysts",
+        "sales_managers"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Dashboard",
+                "route": "/"
+            },
+            {
+                "name": "Reports",
+                "route": "/reports"
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "KpiCard",
+            "ChartCard"
+        ],
+        "features": [
+            "sales KPIs",
+            "date filtering",
+            "sales charts",
+            "reports view"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/kpis",
+                "purpose": "Fetch KPI metrics"
+            },
+            {
+                "method": "GET",
+                "path": "/api/reports",
+                "purpose": "Fetch reports"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "sales_data",
+                "columns": [
+                    "id",
+                    "order_date",
+                    "sales_amount",
+                    "profit"
+                ]
+            },
+            {
+                "name": "reports",
+                "columns": [
+                    "id",
+                    "report_name",
+                    "generated_at"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

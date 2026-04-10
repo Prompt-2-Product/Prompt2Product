@@ -1,0 +1,1 @@
+Build a librarian admin portal to manage books, members, and issue records.

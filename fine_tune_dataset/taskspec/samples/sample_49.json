@@ -1,0 +1,90 @@
+{
+    "app_name": "Restaurant Admin Dashboard",
+    "app_type": "dashboard_app",
+    "description": "An admin dashboard for restaurant operations showing order volume, revenue trends, and top-selling menu items.",
+    "target_users": [
+        "restaurant_admin",
+        "managers"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Dashboard",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "KpiCards",
+                    "RevenueChart",
+                    "OrderTrendChart",
+                    "DateFilter"
+                ]
+            },
+            {
+                "name": "Menu Insights",
+                "route": "/menu-insights",
+                "components": [
+                    "Navbar",
+                    "BestSellingItemsTable",
+                    "CategoryRevenueChart"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Card",
+            "Chart",
+            "Table",
+            "FilterBar"
+        ],
+        "features": [
+            "order analytics",
+            "revenue analysis",
+            "best-selling items",
+            "category insights"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/order-stats",
+                "purpose": "Fetch order trend data"
+            },
+            {
+                "method": "GET",
+                "path": "/api/revenue-stats",
+                "purpose": "Fetch revenue statistics"
+            },
+            {
+                "method": "GET",
+                "path": "/api/menu-insights",
+                "purpose": "Fetch top-selling item data"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "orders",
+                "columns": [
+                    "id",
+                    "order_date",
+                    "total_amount",
+                    "status"
+                ]
+            },
+            {
+                "name": "order_items",
+                "columns": [
+                    "id",
+                    "order_id",
+                    "item_name",
+                    "category",
+                    "quantity",
+                    "unit_price"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

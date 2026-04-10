@@ -1,0 +1,8 @@
+{
+    "files": [
+        {
+            "path": "frontend/src/App.jsx",
+            "content": "import React from 'react';\nimport { BrowserRouter, Routes, Route } from 'react-router-dom';\nimport Home from './pages/Home';\nimport Courses from './pages/Courses';\nimport Grades from './pages/Grades';\n\nexport default function App() {\n  return (\n    <BrowserRouter>\n      <Layout>\n        <Routes>\n          <Route path='/' element={<Home />} />\n          <Route path='/courses' element={<Courses />} />\n          <Route path='/grades' element={<Grades />} />\n        </Routes>\n      </Layout>\n    </BrowserRouter>\n  );\n}"
+        }
+    ]
+}

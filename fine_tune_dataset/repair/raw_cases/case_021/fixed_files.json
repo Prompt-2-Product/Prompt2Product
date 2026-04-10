@@ -1,0 +1,8 @@
+{
+    "fixes": [
+        {
+            "path": "frontend/src/pages/Orders.jsx",
+            "content": "import React, { useEffect, useState } from 'react';\n\nexport default function Orders() {\n  const [orders, setOrders] = useState([]);\n\n  useEffect(() => {\n    fetch('http://localhost:5000/api/orders')\n      .then(res => res.json())\n      .then(data => setOrders(data.orders || []));\n  }, []);\n\n  return (\n    <div>\n      <h1>Orders</h1>\n      <p>Total orders: {orders.length}</p>\n    </div>\n  );\n}"
+        }
+    ]
+}

@@ -1,0 +1,1 @@
+Build a library website with a search page and detailed book page using React and Flask.

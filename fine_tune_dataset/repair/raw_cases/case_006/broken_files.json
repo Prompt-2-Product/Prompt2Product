@@ -1,0 +1,8 @@
+{
+    "files": [
+        {
+            "path": "frontend/src/pages/Books.jsx",
+            "content": "import React, { useEffect, useState } from 'react';\n\nexport default function Books() {\n  const [books, setBooks] = useState([]);\n\n  useEffect(() => {\n    fetch('http://localhost:5000/api/book')\n      .then(res => res.json())\n      .then(data => setBooks(data));\n  }, []);\n\n  return <div>{books.length} books found</div>;\n}"
+        }
+    ]
+}

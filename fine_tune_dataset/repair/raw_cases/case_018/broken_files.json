@@ -1,0 +1,12 @@
+{
+    "files": [
+        {
+            "path": "backend/app.py",
+            "content": "from flask import Flask\nfrom routes.books import books_bp\n\napp = Flask(__name__)\n\nif __name__ == '__main__':\n    app.run(debug=True)"
+        },
+        {
+            "path": "backend/routes/books.py",
+            "content": "from flask import Blueprint, jsonify\n\nbooks_bp = Blueprint('books_bp', __name__)\n\n@books_bp.route('/api/books')\ndef get_books():\n    return jsonify({'books': []})"
+        }
+    ]
+}

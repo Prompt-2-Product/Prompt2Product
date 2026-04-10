@@ -1,0 +1,8 @@
+{
+    "fixes": [
+        {
+            "path": "frontend/src/pages/Dashboard.jsx",
+            "content": "import React, { useEffect, useState } from 'react';\n\nexport default function Dashboard() {\n  const [notices, setNotices] = useState([]);\n\n  useEffect(() => {\n    fetch('http://localhost:5000/api/notices')\n      .then(res => res.json())\n      .then(data => setNotices(data.notices || []));\n  }, []);\n\n  return (\n    <div>\n      <h1>Dashboard</h1>\n      {notices.map((notice) => (\n        <div key={notice.id}>{notice.title}</div>\n      ))}\n    </div>\n  );\n}"
+        }
+    ]
+}

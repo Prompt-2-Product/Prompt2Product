@@ -1,0 +1,8 @@
+{
+    "fixes": [
+        {
+            "path": "taskspec.json",
+            "content": "{\n  \"app_name\": \"Student Portal\",\n  \"app_type\": \"web_app\",\n  \"frontend\": {\n    \"pages\": [\n      {\"name\": \"Home\", \"route\": \"/\"}\n    ]\n  }\n}"
+        }
+    ]
+}

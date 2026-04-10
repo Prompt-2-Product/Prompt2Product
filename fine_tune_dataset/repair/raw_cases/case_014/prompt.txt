@@ -1,0 +1,1 @@
+Build a restaurant ordering website with Home, Menu, Cart, and Checkout pages using React frontend and Flask backend.

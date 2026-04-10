@@ -1,0 +1,1 @@
+Create a health consultation platform with patient login, doctor schedule, and appointment management.

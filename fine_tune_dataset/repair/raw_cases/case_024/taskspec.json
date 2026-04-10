@@ -1,0 +1,24 @@
+{
+    "app_name": "University Portal",
+    "app_type": "web_app",
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/"
+            },
+            {
+                "name": "Courses",
+                "route": "/courses"
+            },
+            {
+                "name": "Grades",
+                "route": "/grades"
+            }
+        ],
+        "shared_components": [
+            "Layout",
+            "Navbar"
+        ]
+    }
+}

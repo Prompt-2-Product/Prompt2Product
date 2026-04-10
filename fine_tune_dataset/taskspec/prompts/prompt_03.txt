@@ -1,0 +1,1 @@
+Build an online bakery ordering system with product listing, cart, order placement, and admin product management.

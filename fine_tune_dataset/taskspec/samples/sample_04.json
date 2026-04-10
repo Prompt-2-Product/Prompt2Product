@@ -1,0 +1,130 @@
+{
+    "app_name": "Hostel Mess Management Portal",
+    "app_type": "web_app",
+    "description": "A portal for hostel students to view daily meals, pre-book food, and review their meal booking history.",
+    "target_users": [
+        "students",
+        "mess_staff"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "TodayMenuPreview",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Login",
+                "route": "/login",
+                "components": [
+                    "Navbar",
+                    "LoginForm"
+                ]
+            },
+            {
+                "name": "Today's Menu",
+                "route": "/menu",
+                "components": [
+                    "Navbar",
+                    "MealCardList",
+                    "MealTimeTabs"
+                ]
+            },
+            {
+                "name": "Pre-Booking",
+                "route": "/booking",
+                "components": [
+                    "Navbar",
+                    "BookingForm",
+                    "MealSelectionCard",
+                    "ConfirmButton"
+                ]
+            },
+            {
+                "name": "Meal History",
+                "route": "/history",
+                "components": [
+                    "Navbar",
+                    "HistoryTable",
+                    "DateFilter"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card"
+        ],
+        "features": [
+            "student login",
+            "view daily menu",
+            "meal pre-booking",
+            "booking confirmation",
+            "meal history"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "POST",
+                "path": "/api/login",
+                "purpose": "Authenticate student"
+            },
+            {
+                "method": "GET",
+                "path": "/api/menu/today",
+                "purpose": "Fetch today's meal menu"
+            },
+            {
+                "method": "POST",
+                "path": "/api/bookings",
+                "purpose": "Create meal pre-booking"
+            },
+            {
+                "method": "GET",
+                "path": "/api/bookings",
+                "purpose": "Fetch meal booking history"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "students",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "password",
+                    "hostel_block"
+                ]
+            },
+            {
+                "name": "daily_menus",
+                "columns": [
+                    "id",
+                    "date",
+                    "meal_type",
+                    "menu_details"
+                ]
+            },
+            {
+                "name": "meal_bookings",
+                "columns": [
+                    "id",
+                    "student_id",
+                    "menu_id",
+                    "booking_date",
+                    "status"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

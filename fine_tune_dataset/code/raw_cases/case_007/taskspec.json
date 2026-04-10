@@ -1,0 +1,76 @@
+{
+    "app_name": "Hotel Booking Website",
+    "app_type": "web_app",
+    "description": "A hotel booking website where users can browse rooms, make reservations, and view booking history.",
+    "target_users": [
+        "guests",
+        "hotel_staff"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/"
+            },
+            {
+                "name": "Rooms",
+                "route": "/rooms"
+            },
+            {
+                "name": "Book Room",
+                "route": "/book-room"
+            },
+            {
+                "name": "Reservations",
+                "route": "/reservations"
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "RoomCard"
+        ],
+        "features": [
+            "room browsing",
+            "room booking",
+            "reservation history"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/rooms",
+                "purpose": "Fetch room listings"
+            },
+            {
+                "method": "GET",
+                "path": "/api/reservations",
+                "purpose": "Fetch reservations"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "rooms",
+                "columns": [
+                    "id",
+                    "room_type",
+                    "price_per_night",
+                    "availability_status"
+                ]
+            },
+            {
+                "name": "reservations",
+                "columns": [
+                    "id",
+                    "guest_name",
+                    "room_type",
+                    "check_in_date",
+                    "status"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

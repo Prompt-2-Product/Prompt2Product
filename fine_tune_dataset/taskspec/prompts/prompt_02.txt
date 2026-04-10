@@ -1,0 +1,1 @@
+Create a fast food ordering app for a small restaurant with customer login, category-wise menu, cart, and checkout.

@@ -1,0 +1,86 @@
+{
+    "app_name": "Student Performance Dashboard",
+    "app_type": "dashboard_app",
+    "description": "A dashboard for viewing student marks, attendance percentages, and academic performance trends.",
+    "target_users": [
+        "students",
+        "teachers",
+        "academic_admin"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Dashboard",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "KpiCards",
+                    "MarksChart",
+                    "AttendanceChart",
+                    "SemesterFilter"
+                ]
+            },
+            {
+                "name": "Subjects",
+                "route": "/subjects",
+                "components": [
+                    "Navbar",
+                    "SubjectPerformanceTable",
+                    "TrendLineChart"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Card",
+            "Chart",
+            "Table",
+            "FilterBar"
+        ],
+        "features": [
+            "subject-wise marks",
+            "attendance tracking",
+            "performance trends",
+            "semester filtering"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/performance",
+                "purpose": "Fetch overall student performance data"
+            },
+            {
+                "method": "GET",
+                "path": "/api/subjects",
+                "purpose": "Fetch subject-wise performance"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "student_marks",
+                "columns": [
+                    "id",
+                    "student_id",
+                    "subject_name",
+                    "marks_obtained",
+                    "semester"
+                ]
+            },
+            {
+                "name": "attendance_records",
+                "columns": [
+                    "id",
+                    "student_id",
+                    "subject_name",
+                    "attendance_percentage",
+                    "semester"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

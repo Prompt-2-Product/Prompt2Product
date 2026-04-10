@@ -1,0 +1,1 @@
+Build a Flask API for product details and a React page that reads the product id from the URL.

@@ -1,0 +1,1 @@
+Build a hospital analytics dashboard for appointments, doctors, and patient trends.

@@ -1,0 +1,94 @@
+{
+    "app_name": "Personal Fitness Tracking Dashboard",
+    "app_type": "web_app",
+    "description": "A fitness tracking dashboard that allows users to log workouts, monitor fitness progress, and view performance analytics.",
+    "target_users": [
+        "fitness_users"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Dashboard",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "ProgressCharts",
+                    "WorkoutSummaryCard"
+                ]
+            },
+            {
+                "name": "Log Workout",
+                "route": "/log-workout",
+                "components": [
+                    "Navbar",
+                    "WorkoutForm",
+                    "ExerciseSelector"
+                ]
+            },
+            {
+                "name": "Progress",
+                "route": "/progress",
+                "components": [
+                    "Navbar",
+                    "ProgressChart",
+                    "GoalTracker"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Button",
+            "Card",
+            "Chart"
+        ],
+        "features": [
+            "workout logging",
+            "progress tracking",
+            "fitness charts",
+            "goal tracking"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "POST",
+                "path": "/api/workouts",
+                "purpose": "Log user workout"
+            },
+            {
+                "method": "GET",
+                "path": "/api/workouts",
+                "purpose": "Fetch workout history"
+            },
+            {
+                "method": "GET",
+                "path": "/api/progress",
+                "purpose": "Fetch progress statistics"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "users",
+                "columns": [
+                    "id",
+                    "name",
+                    "email"
+                ]
+            },
+            {
+                "name": "workouts",
+                "columns": [
+                    "id",
+                    "user_id",
+                    "exercise_name",
+                    "duration_minutes",
+                    "calories_burned",
+                    "workout_date"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

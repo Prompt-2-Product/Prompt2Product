@@ -1,0 +1,119 @@
+{
+    "app_name": "Resort Booking and Inquiry Website",
+    "app_type": "web_app",
+    "description": "A resort website for viewing image galleries, booking rooms, and sending customer inquiries.",
+    "target_users": [
+        "guests",
+        "resort_staff"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "ResortHighlights",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Gallery",
+                "route": "/gallery",
+                "components": [
+                    "Navbar",
+                    "ImageGalleryGrid",
+                    "CategoryTabs"
+                ]
+            },
+            {
+                "name": "Book Stay",
+                "route": "/book-stay",
+                "components": [
+                    "Navbar",
+                    "BookingForm",
+                    "RoomSelectionCard",
+                    "DatePicker"
+                ]
+            },
+            {
+                "name": "Contact",
+                "route": "/contact",
+                "components": [
+                    "Navbar",
+                    "InquiryForm",
+                    "ContactInfoCard",
+                    "MapSection"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card",
+            "FormInput"
+        ],
+        "features": [
+            "resort gallery",
+            "stay booking",
+            "customer inquiry form",
+            "room selection"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/gallery",
+                "purpose": "Fetch resort gallery images"
+            },
+            {
+                "method": "POST",
+                "path": "/api/bookings",
+                "purpose": "Create resort stay booking"
+            },
+            {
+                "method": "POST",
+                "path": "/api/inquiries",
+                "purpose": "Submit customer inquiry"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "gallery_items",
+                "columns": [
+                    "id",
+                    "image_url",
+                    "category",
+                    "caption"
+                ]
+            },
+            {
+                "name": "bookings",
+                "columns": [
+                    "id",
+                    "guest_name",
+                    "email",
+                    "room_type",
+                    "check_in_date",
+                    "check_out_date"
+                ]
+            },
+            {
+                "name": "inquiries",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "message",
+                    "submitted_at"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

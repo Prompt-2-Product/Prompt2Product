@@ -1,0 +1,1 @@
+Create a university dashboard for students to view timetable, notices, and assignments.

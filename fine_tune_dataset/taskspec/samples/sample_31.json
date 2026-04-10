@@ -1,0 +1,127 @@
+{
+    "app_name": "Library Management Website",
+    "app_type": "web_app",
+    "description": "A web application for library users to search books, issue available books, and check return due dates.",
+    "target_users": [
+        "students",
+        "librarians"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "FeaturedBooks",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Search Books",
+                "route": "/books",
+                "components": [
+                    "Navbar",
+                    "SearchBar",
+                    "CategoryFilter",
+                    "BookGrid"
+                ]
+            },
+            {
+                "name": "Issued Books",
+                "route": "/issued-books",
+                "components": [
+                    "Navbar",
+                    "IssuedBookTable",
+                    "DueDateBadge"
+                ]
+            },
+            {
+                "name": "Book Details",
+                "route": "/books/:id",
+                "components": [
+                    "Navbar",
+                    "BookInfoCard",
+                    "IssueBookButton",
+                    "AvailabilityBadge"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card",
+            "Table",
+            "Badge"
+        ],
+        "features": [
+            "book search",
+            "category filtering",
+            "issue books",
+            "view due dates",
+            "book availability status"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/books",
+                "purpose": "Fetch all books with search and filter support"
+            },
+            {
+                "method": "GET",
+                "path": "/api/books/:id",
+                "purpose": "Fetch selected book details"
+            },
+            {
+                "method": "POST",
+                "path": "/api/issue-book",
+                "purpose": "Issue selected book to user"
+            },
+            {
+                "method": "GET",
+                "path": "/api/issued-books",
+                "purpose": "Fetch user issued books and due dates"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "users",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "role"
+                ]
+            },
+            {
+                "name": "books",
+                "columns": [
+                    "id",
+                    "title",
+                    "author",
+                    "category",
+                    "isbn",
+                    "availability_status"
+                ]
+            },
+            {
+                "name": "issued_books",
+                "columns": [
+                    "id",
+                    "user_id",
+                    "book_id",
+                    "issue_date",
+                    "due_date",
+                    "return_status"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

@@ -1,0 +1,128 @@
+{
+    "app_name": "Retail Management Portal",
+    "app_type": "web_app",
+    "description": "A retail management portal for handling product records, billing transactions, and stock overview.",
+    "target_users": [
+        "retail_manager",
+        "cashier"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Dashboard",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "SalesStatsCards",
+                    "StockOverviewChart",
+                    "RecentBillsTable"
+                ]
+            },
+            {
+                "name": "Products",
+                "route": "/products",
+                "components": [
+                    "Navbar",
+                    "ProductTable",
+                    "AddProductForm",
+                    "SearchBar"
+                ]
+            },
+            {
+                "name": "Billing",
+                "route": "/billing",
+                "components": [
+                    "Navbar",
+                    "BillingForm",
+                    "CartTable",
+                    "GenerateBillButton"
+                ]
+            },
+            {
+                "name": "Stock Overview",
+                "route": "/stock-overview",
+                "components": [
+                    "Navbar",
+                    "StockTable",
+                    "LowStockBadge",
+                    "CategoryFilter"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Button",
+            "Card",
+            "Table",
+            "Chart",
+            "Badge"
+        ],
+        "features": [
+            "product management",
+            "billing",
+            "stock overview",
+            "sales history",
+            "search products"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/products",
+                "purpose": "Fetch retail products"
+            },
+            {
+                "method": "POST",
+                "path": "/api/products",
+                "purpose": "Add retail product"
+            },
+            {
+                "method": "POST",
+                "path": "/api/billing",
+                "purpose": "Create billing transaction"
+            },
+            {
+                "method": "GET",
+                "path": "/api/stock-overview",
+                "purpose": "Fetch stock summary"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "products",
+                "columns": [
+                    "id",
+                    "name",
+                    "category",
+                    "price",
+                    "stock_quantity",
+                    "barcode"
+                ]
+            },
+            {
+                "name": "bills",
+                "columns": [
+                    "id",
+                    "cashier_name",
+                    "total_amount",
+                    "bill_date",
+                    "payment_method"
+                ]
+            },
+            {
+                "name": "bill_items",
+                "columns": [
+                    "id",
+                    "bill_id",
+                    "product_id",
+                    "quantity",
+                    "unit_price"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

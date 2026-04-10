@@ -1,0 +1,15 @@
+{
+    "app_name": "Cafeteria Menu App",
+    "app_type": "web_app",
+    "frontend": {
+        "pages": [
+            {
+                "name": "Menu",
+                "route": "/menu"
+            }
+        ],
+        "shared_components": [
+            "FoodCard"
+        ]
+    }
+}

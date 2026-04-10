@@ -1,0 +1,149 @@
+{
+    "app_name": "QuickBite Restaurant Ordering App",
+    "app_type": "web_app",
+    "description": "A restaurant ordering platform where customers can log in, browse food by category, manage their cart, and complete checkout.",
+    "target_users": [
+        "customers",
+        "restaurant_staff"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "PopularItems",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Login",
+                "route": "/login",
+                "components": [
+                    "Navbar",
+                    "LoginForm"
+                ]
+            },
+            {
+                "name": "Menu",
+                "route": "/menu",
+                "components": [
+                    "Navbar",
+                    "CategoryTabs",
+                    "FoodItemGrid",
+                    "SearchBar"
+                ]
+            },
+            {
+                "name": "Cart",
+                "route": "/cart",
+                "components": [
+                    "Navbar",
+                    "CartList",
+                    "PriceSummary",
+                    "CheckoutButton"
+                ]
+            },
+            {
+                "name": "Checkout",
+                "route": "/checkout",
+                "components": [
+                    "Navbar",
+                    "DeliveryForm",
+                    "PaymentSummary",
+                    "PlaceOrderButton"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card"
+        ],
+        "features": [
+            "customer login",
+            "menu by category",
+            "search items",
+            "add to cart",
+            "checkout",
+            "order placement"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "POST",
+                "path": "/api/login",
+                "purpose": "Authenticate customer"
+            },
+            {
+                "method": "GET",
+                "path": "/api/menu",
+                "purpose": "Fetch restaurant menu items"
+            },
+            {
+                "method": "POST",
+                "path": "/api/cart",
+                "purpose": "Add selected item to cart"
+            },
+            {
+                "method": "GET",
+                "path": "/api/cart",
+                "purpose": "Get current cart items"
+            },
+            {
+                "method": "POST",
+                "path": "/api/checkout",
+                "purpose": "Process checkout and create order"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "customers",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "password"
+                ]
+            },
+            {
+                "name": "food_items",
+                "columns": [
+                    "id",
+                    "name",
+                    "category",
+                    "price",
+                    "description",
+                    "image_url"
+                ]
+            },
+            {
+                "name": "cart_items",
+                "columns": [
+                    "id",
+                    "customer_id",
+                    "food_item_id",
+                    "quantity"
+                ]
+            },
+            {
+                "name": "orders",
+                "columns": [
+                    "id",
+                    "customer_id",
+                    "address",
+                    "total_amount",
+                    "status",
+                    "created_at"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

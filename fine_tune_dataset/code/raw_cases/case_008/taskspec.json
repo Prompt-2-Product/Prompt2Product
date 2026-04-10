@@ -1,0 +1,76 @@
+{
+    "app_name": "Small Shop Inventory Management System",
+    "app_type": "web_app",
+    "description": "A web application for managing shop inventory, tracking stock changes, and maintaining sales records.",
+    "target_users": [
+        "shop_owner",
+        "shop_staff"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Dashboard",
+                "route": "/"
+            },
+            {
+                "name": "Products",
+                "route": "/products"
+            },
+            {
+                "name": "Stock Updates",
+                "route": "/stock-updates"
+            },
+            {
+                "name": "Sales Records",
+                "route": "/sales-records"
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "MetricCard"
+        ],
+        "features": [
+            "product management",
+            "stock updates",
+            "sales tracking"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/products",
+                "purpose": "Fetch products"
+            },
+            {
+                "method": "GET",
+                "path": "/api/sales",
+                "purpose": "Fetch sales records"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "products",
+                "columns": [
+                    "id",
+                    "name",
+                    "category",
+                    "price",
+                    "stock_quantity"
+                ]
+            },
+            {
+                "name": "sales_records",
+                "columns": [
+                    "id",
+                    "product_name",
+                    "quantity_sold",
+                    "total_amount"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

@@ -1,0 +1,1 @@
+Build a student assignment dashboard with cards and a responsive layout using React.

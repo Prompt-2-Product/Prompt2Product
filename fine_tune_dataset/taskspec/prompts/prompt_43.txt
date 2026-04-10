@@ -1,0 +1,1 @@
+Build a pharmacy stock system with medicine tracking and low-stock alerts.

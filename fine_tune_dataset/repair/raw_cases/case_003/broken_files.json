@@ -1,0 +1,8 @@
+{
+    "files": [
+        {
+            "path": "frontend/src/App.jsx",
+            "content": "import Navbar from './components/Navbar';\n\nexport default function App(){\n  return (\n    <div>\n      <Navbar />\n      <Progress />\n    </div>\n  );\n}"
+        }
+    ]
+}

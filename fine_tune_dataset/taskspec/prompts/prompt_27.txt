@@ -1,0 +1,1 @@
+Create a workshop booking platform with event listing and registration management.

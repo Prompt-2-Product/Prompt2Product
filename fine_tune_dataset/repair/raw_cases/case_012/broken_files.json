@@ -1,0 +1,8 @@
+{
+    "files": [
+        {
+            "path": "frontend/src/App.jsx",
+            "content": "import React from 'react';\nimport Navbar from './components/Navbar';\nimport Products from './pages/Products';\n\nexport default function App() {\n  return (\n    <div>\n      <Navbar />\n      <Products />\n    </div>\n  );\n}"
+        }
+    ]
+}

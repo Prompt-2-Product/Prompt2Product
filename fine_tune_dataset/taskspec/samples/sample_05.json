@@ -1,0 +1,137 @@
+{
+    "app_name": "Office Tea and Snacks Ordering Site",
+    "app_type": "web_app",
+    "description": "A web platform for office employees to order tea and snacks, view daily specials, manage their cart, and track orders.",
+    "target_users": [
+        "employees",
+        "canteen_staff"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "DailySpecials",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Menu",
+                "route": "/menu",
+                "components": [
+                    "Navbar",
+                    "SnackGrid",
+                    "TeaOptions",
+                    "SearchBar"
+                ]
+            },
+            {
+                "name": "Cart",
+                "route": "/cart",
+                "components": [
+                    "Navbar",
+                    "CartList",
+                    "PriceBox",
+                    "CheckoutButton"
+                ]
+            },
+            {
+                "name": "Orders",
+                "route": "/orders",
+                "components": [
+                    "Navbar",
+                    "OrderTable",
+                    "StatusBadge"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card"
+        ],
+        "features": [
+            "daily specials",
+            "menu browsing",
+            "cart management",
+            "checkout",
+            "order status tracking"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/specials",
+                "purpose": "Fetch daily special items"
+            },
+            {
+                "method": "GET",
+                "path": "/api/menu",
+                "purpose": "Fetch snacks and tea menu"
+            },
+            {
+                "method": "POST",
+                "path": "/api/cart",
+                "purpose": "Add item to cart"
+            },
+            {
+                "method": "POST",
+                "path": "/api/orders",
+                "purpose": "Place employee order"
+            },
+            {
+                "method": "GET",
+                "path": "/api/orders",
+                "purpose": "Fetch employee order history"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "employees",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "department"
+                ]
+            },
+            {
+                "name": "menu_items",
+                "columns": [
+                    "id",
+                    "name",
+                    "type",
+                    "price",
+                    "availability"
+                ]
+            },
+            {
+                "name": "cart_items",
+                "columns": [
+                    "id",
+                    "employee_id",
+                    "menu_item_id",
+                    "quantity"
+                ]
+            },
+            {
+                "name": "orders",
+                "columns": [
+                    "id",
+                    "employee_id",
+                    "total_amount",
+                    "status",
+                    "created_at"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

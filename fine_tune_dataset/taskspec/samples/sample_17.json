@@ -1,0 +1,118 @@
+{
+    "app_name": "Hospital Patient Management App",
+    "app_type": "web_app",
+    "description": "A patient-focused hospital application that supports registration, doctor browsing, and appointment booking.",
+    "target_users": [
+        "patients",
+        "hospital_staff",
+        "doctors"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "ServiceHighlights",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Register",
+                "route": "/register",
+                "components": [
+                    "Navbar",
+                    "PatientRegistrationForm"
+                ]
+            },
+            {
+                "name": "Doctors",
+                "route": "/doctors",
+                "components": [
+                    "Navbar",
+                    "DoctorGrid",
+                    "DepartmentFilter"
+                ]
+            },
+            {
+                "name": "Book Appointment",
+                "route": "/appointments/book",
+                "components": [
+                    "Navbar",
+                    "BookingForm",
+                    "SlotSelector",
+                    "ConfirmButton"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card"
+        ],
+        "features": [
+            "patient registration",
+            "doctor listing",
+            "department filtering",
+            "appointment booking"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "POST",
+                "path": "/api/register",
+                "purpose": "Register new patient"
+            },
+            {
+                "method": "GET",
+                "path": "/api/doctors",
+                "purpose": "Fetch hospital doctors"
+            },
+            {
+                "method": "POST",
+                "path": "/api/appointments",
+                "purpose": "Create patient appointment"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "patients",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "phone",
+                    "password",
+                    "address"
+                ]
+            },
+            {
+                "name": "doctors",
+                "columns": [
+                    "id",
+                    "name",
+                    "department",
+                    "specialization",
+                    "availability"
+                ]
+            },
+            {
+                "name": "appointments",
+                "columns": [
+                    "id",
+                    "patient_id",
+                    "doctor_id",
+                    "appointment_date",
+                    "status"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

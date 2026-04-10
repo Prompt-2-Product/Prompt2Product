@@ -1,0 +1,141 @@
+{
+    "app_name": "Student Academic Portal",
+    "app_type": "web_app",
+    "description": "A portal for students to log in and access academic information such as enrolled courses, attendance records, and grades.",
+    "target_users": [
+        "students",
+        "faculty_admin"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "PortalHighlights",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Login",
+                "route": "/login",
+                "components": [
+                    "Navbar",
+                    "LoginForm"
+                ]
+            },
+            {
+                "name": "Courses",
+                "route": "/courses",
+                "components": [
+                    "Navbar",
+                    "CourseCardGrid",
+                    "SemesterFilter"
+                ]
+            },
+            {
+                "name": "Attendance",
+                "route": "/attendance",
+                "components": [
+                    "Navbar",
+                    "AttendanceTable",
+                    "ProgressCard"
+                ]
+            },
+            {
+                "name": "Grades",
+                "route": "/grades",
+                "components": [
+                    "Navbar",
+                    "GradesTable",
+                    "GpaSummaryCard"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card",
+            "Table"
+        ],
+        "features": [
+            "student login",
+            "view enrolled courses",
+            "attendance tracking",
+            "grades overview",
+            "semester filtering"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "POST",
+                "path": "/api/login",
+                "purpose": "Authenticate student login"
+            },
+            {
+                "method": "GET",
+                "path": "/api/courses",
+                "purpose": "Fetch enrolled student courses"
+            },
+            {
+                "method": "GET",
+                "path": "/api/attendance",
+                "purpose": "Fetch attendance records"
+            },
+            {
+                "method": "GET",
+                "path": "/api/grades",
+                "purpose": "Fetch student grades"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "students",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "password",
+                    "department",
+                    "semester"
+                ]
+            },
+            {
+                "name": "courses",
+                "columns": [
+                    "id",
+                    "course_code",
+                    "course_name",
+                    "credit_hours",
+                    "semester"
+                ]
+            },
+            {
+                "name": "attendance_records",
+                "columns": [
+                    "id",
+                    "student_id",
+                    "course_id",
+                    "attendance_percentage"
+                ]
+            },
+            {
+                "name": "grades",
+                "columns": [
+                    "id",
+                    "student_id",
+                    "course_id",
+                    "grade",
+                    "gpa_points"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

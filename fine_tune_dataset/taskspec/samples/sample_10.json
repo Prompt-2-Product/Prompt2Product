@@ -1,0 +1,151 @@
+{
+    "app_name": "StepStyle Shoe Store Website",
+    "app_type": "web_app",
+    "description": "A shoe store website where users can register, browse available shoes, add items to cart, checkout, and track their orders.",
+    "target_users": [
+        "customers",
+        "store_admin"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "FeaturedShoes",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Register",
+                "route": "/register",
+                "components": [
+                    "Navbar",
+                    "RegisterForm"
+                ]
+            },
+            {
+                "name": "Shop",
+                "route": "/shop",
+                "components": [
+                    "Navbar",
+                    "ProductGrid",
+                    "SizeFilter",
+                    "CategoryFilter"
+                ]
+            },
+            {
+                "name": "Cart",
+                "route": "/cart",
+                "components": [
+                    "Navbar",
+                    "CartList",
+                    "SummaryBox",
+                    "CheckoutButton"
+                ]
+            },
+            {
+                "name": "Orders",
+                "route": "/orders",
+                "components": [
+                    "Navbar",
+                    "OrderTrackingTable",
+                    "StatusBadge"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card",
+            "Badge"
+        ],
+        "features": [
+            "user registration",
+            "shoe listing",
+            "size filtering",
+            "cart management",
+            "checkout",
+            "order tracking"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "POST",
+                "path": "/api/register",
+                "purpose": "Register new customer"
+            },
+            {
+                "method": "GET",
+                "path": "/api/products",
+                "purpose": "Fetch available shoes"
+            },
+            {
+                "method": "POST",
+                "path": "/api/cart",
+                "purpose": "Add shoe item to cart"
+            },
+            {
+                "method": "POST",
+                "path": "/api/checkout",
+                "purpose": "Create shoe order"
+            },
+            {
+                "method": "GET",
+                "path": "/api/orders",
+                "purpose": "Fetch customer order tracking details"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "customers",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "password",
+                    "address"
+                ]
+            },
+            {
+                "name": "products",
+                "columns": [
+                    "id",
+                    "name",
+                    "category",
+                    "size",
+                    "price",
+                    "description",
+                    "image_url",
+                    "stock"
+                ]
+            },
+            {
+                "name": "cart_items",
+                "columns": [
+                    "id",
+                    "customer_id",
+                    "product_id",
+                    "quantity"
+                ]
+            },
+            {
+                "name": "orders",
+                "columns": [
+                    "id",
+                    "customer_id",
+                    "total_amount",
+                    "status",
+                    "created_at"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

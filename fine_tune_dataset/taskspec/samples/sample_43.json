@@ -1,0 +1,95 @@
+{
+    "app_name": "Pharmacy Stock Management System",
+    "app_type": "web_app",
+    "description": "A stock management system for pharmacies to track medicines, expiry details, and low-stock notifications.",
+    "target_users": [
+        "pharmacists",
+        "store_admin"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Dashboard",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "LowStockAlertCards",
+                    "ExpiryWarningTable",
+                    "MedicineStats"
+                ]
+            },
+            {
+                "name": "Medicines",
+                "route": "/medicines",
+                "components": [
+                    "Navbar",
+                    "MedicineTable",
+                    "CategoryFilter",
+                    "SearchBar"
+                ]
+            },
+            {
+                "name": "Stock Alerts",
+                "route": "/alerts",
+                "components": [
+                    "Navbar",
+                    "AlertList",
+                    "PriorityBadge"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Button",
+            "Card",
+            "Table",
+            "Badge"
+        ],
+        "features": [
+            "medicine tracking",
+            "low stock alerts",
+            "expiry warnings",
+            "medicine search"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/medicines",
+                "purpose": "Fetch medicine stock"
+            },
+            {
+                "method": "GET",
+                "path": "/api/alerts",
+                "purpose": "Fetch low-stock and expiry alerts"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "medicines",
+                "columns": [
+                    "id",
+                    "medicine_name",
+                    "category",
+                    "stock_quantity",
+                    "expiry_date",
+                    "supplier_name"
+                ]
+            },
+            {
+                "name": "alerts",
+                "columns": [
+                    "id",
+                    "medicine_id",
+                    "alert_type",
+                    "priority",
+                    "created_at"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

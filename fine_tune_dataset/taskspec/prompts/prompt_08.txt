@@ -1,0 +1,1 @@
+Build a bookstore e-commerce website with search, category filtering, cart, and customer orders.

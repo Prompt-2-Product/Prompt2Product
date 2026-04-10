@@ -1,0 +1,153 @@
+{
+    "app_name": "Campus Cafeteria Ordering System",
+    "app_type": "web_app",
+    "description": "A web application for university students to browse food items, add them to cart, place orders, and track their order status.",
+    "target_users": [
+        "students",
+        "cafeteria_staff"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "FeaturedMenu",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Login",
+                "route": "/login",
+                "components": [
+                    "Navbar",
+                    "LoginForm"
+                ]
+            },
+            {
+                "name": "Menu",
+                "route": "/menu",
+                "components": [
+                    "Navbar",
+                    "CategoryFilter",
+                    "FoodCardGrid",
+                    "CartPreview"
+                ]
+            },
+            {
+                "name": "Cart",
+                "route": "/cart",
+                "components": [
+                    "Navbar",
+                    "CartItemList",
+                    "OrderSummary",
+                    "CheckoutButton"
+                ]
+            },
+            {
+                "name": "Orders",
+                "route": "/orders",
+                "components": [
+                    "Navbar",
+                    "OrderHistoryTable",
+                    "OrderStatusBadge"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card"
+        ],
+        "features": [
+            "user login",
+            "menu browsing",
+            "category filtering",
+            "add to cart",
+            "checkout",
+            "order tracking"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "POST",
+                "path": "/api/login",
+                "purpose": "Authenticate student login"
+            },
+            {
+                "method": "GET",
+                "path": "/api/menu",
+                "purpose": "Fetch all food items"
+            },
+            {
+                "method": "POST",
+                "path": "/api/cart",
+                "purpose": "Add item to cart"
+            },
+            {
+                "method": "GET",
+                "path": "/api/cart",
+                "purpose": "Retrieve current cart items"
+            },
+            {
+                "method": "POST",
+                "path": "/api/orders",
+                "purpose": "Place a new order"
+            },
+            {
+                "method": "GET",
+                "path": "/api/orders",
+                "purpose": "Fetch order history and status"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "users",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "password",
+                    "role"
+                ]
+            },
+            {
+                "name": "menu_items",
+                "columns": [
+                    "id",
+                    "name",
+                    "category",
+                    "price",
+                    "description",
+                    "image_url"
+                ]
+            },
+            {
+                "name": "cart_items",
+                "columns": [
+                    "id",
+                    "user_id",
+                    "menu_item_id",
+                    "quantity"
+                ]
+            },
+            {
+                "name": "orders",
+                "columns": [
+                    "id",
+                    "user_id",
+                    "total_amount",
+                    "status",
+                    "created_at"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

@@ -1,0 +1,95 @@
+{
+    "app_name": "Personal Trainer Booking App",
+    "app_type": "web_app",
+    "description": "A web platform for booking personal training sessions by viewing trainer availability schedules.",
+    "target_users": [
+        "gym_members",
+        "trainers"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "TrainerHighlights"
+                ]
+            },
+            {
+                "name": "Trainers",
+                "route": "/trainers",
+                "components": [
+                    "Navbar",
+                    "TrainerList",
+                    "SpecializationFilter"
+                ]
+            },
+            {
+                "name": "Book Session",
+                "route": "/book-session",
+                "components": [
+                    "Navbar",
+                    "TrainerSelectionCard",
+                    "SchedulePicker",
+                    "ConfirmButton"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Button",
+            "Card"
+        ],
+        "features": [
+            "trainer listing",
+            "trainer schedule viewing",
+            "training session booking"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/trainers",
+                "purpose": "Fetch trainer profiles"
+            },
+            {
+                "method": "GET",
+                "path": "/api/schedules",
+                "purpose": "Fetch trainer schedules"
+            },
+            {
+                "method": "POST",
+                "path": "/api/book-session",
+                "purpose": "Book personal training session"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "trainers",
+                "columns": [
+                    "id",
+                    "name",
+                    "specialization",
+                    "experience_years"
+                ]
+            },
+            {
+                "name": "sessions",
+                "columns": [
+                    "id",
+                    "trainer_id",
+                    "member_name",
+                    "session_date",
+                    "session_time",
+                    "status"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

@@ -1,0 +1,8 @@
+{
+    "fixes": [
+        {
+            "path": "frontend/src/App.jsx",
+            "content": "import React from 'react';\nimport SalesChart from './components/SalesChart';\n\nexport default function App() {\n  return (\n    <div>\n      <h1>Dashboard</h1>\n      <SalesChart />\n    </div>\n  );\n}"
+        }
+    ]
+}

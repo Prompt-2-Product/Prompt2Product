@@ -1,0 +1,119 @@
+{
+    "app_name": "Department Information Portal",
+    "app_type": "web_app",
+    "description": "A departmental web portal that allows students to view faculty profiles, read notices, and access academic resources.",
+    "target_users": [
+        "students",
+        "department_admin",
+        "faculty"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "DepartmentHighlights",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Faculty",
+                "route": "/faculty",
+                "components": [
+                    "Navbar",
+                    "FacultyCardGrid",
+                    "SearchBar"
+                ]
+            },
+            {
+                "name": "Notices",
+                "route": "/notices",
+                "components": [
+                    "Navbar",
+                    "NoticeBoard",
+                    "CategoryFilter"
+                ]
+            },
+            {
+                "name": "Resources",
+                "route": "/resources",
+                "components": [
+                    "Navbar",
+                    "ResourceCardList",
+                    "DownloadButton"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card"
+        ],
+        "features": [
+            "faculty browsing",
+            "notice viewing",
+            "resource downloads",
+            "faculty search",
+            "notice filtering"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/faculty",
+                "purpose": "Fetch faculty profiles"
+            },
+            {
+                "method": "GET",
+                "path": "/api/notices",
+                "purpose": "Fetch department notices"
+            },
+            {
+                "method": "GET",
+                "path": "/api/resources",
+                "purpose": "Fetch academic resources"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "faculty_members",
+                "columns": [
+                    "id",
+                    "name",
+                    "designation",
+                    "email",
+                    "specialization",
+                    "profile_image"
+                ]
+            },
+            {
+                "name": "notices",
+                "columns": [
+                    "id",
+                    "title",
+                    "category",
+                    "content",
+                    "published_at"
+                ]
+            },
+            {
+                "name": "resources",
+                "columns": [
+                    "id",
+                    "title",
+                    "type",
+                    "file_url",
+                    "uploaded_at"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

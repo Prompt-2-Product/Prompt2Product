@@ -1,0 +1,8 @@
+{
+    "fixes": [
+        {
+            "path": "frontend/src/pages/Books.jsx",
+            "content": "import React, { useState, useEffect } from 'react';\n\nexport default function Books() {\n  const [books, setBooks] = useState([]);\n\n  useEffect(() => {\n    fetch('http://localhost:5000/api/books')\n      .then(res => res.json())\n      .then(data => setBooks(data.books || []));\n  }, []);\n\n  return <div>{books.length} books available</div>;\n}"
+        }
+    ]
+}

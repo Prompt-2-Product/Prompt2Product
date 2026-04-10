@@ -1,0 +1,8 @@
+{
+    "fixes": [
+        {
+            "path": "frontend/src/pages/Assignments.jsx",
+            "content": "import React from 'react';\n\nconst assignments = [\n  { id: 1, title: 'DB Lab', status: 'Pending' },\n  { id: 2, title: 'AI Quiz', status: 'Completed' }\n];\n\nexport default function Assignments() {\n  return (\n    <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '24px' }}>\n      <h1 style={{ marginBottom: '20px' }}>Assignments</h1>\n      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>\n        {assignments.map(item => (\n          <div\n            key={item.id}\n            style={{\n              border: '1px solid #ddd',\n              borderRadius: '12px',\n              padding: '16px',\n              background: '#fff',\n              boxShadow: '0 2px 8px rgba(0,0,0,0.05)'\n            }}\n          >\n            <h3>{item.title}</h3>\n            <span\n              style={{\n                display: 'inline-block',\n                marginTop: '8px',\n                padding: '4px 10px',\n                borderRadius: '999px',\n                background: item.status === 'Completed' ? '#d1fae5' : '#fef3c7'\n              }}\n            >\n              {item.status}\n            </span>\n          </div>\n        ))}\n      </div>\n    </div>\n  );\n}"
+        }
+    ]
+}

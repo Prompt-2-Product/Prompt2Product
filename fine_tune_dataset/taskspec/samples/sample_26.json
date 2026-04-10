@@ -1,0 +1,88 @@
+{
+    "app_name": "University Seminar Registration Portal",
+    "app_type": "web_app",
+    "description": "A portal where students can register for university seminars and receive confirmation tickets.",
+    "target_users": [
+        "students",
+        "event_admin"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "UpcomingEvents"
+                ]
+            },
+            {
+                "name": "Events",
+                "route": "/events",
+                "components": [
+                    "Navbar",
+                    "EventCardGrid",
+                    "CategoryFilter"
+                ]
+            },
+            {
+                "name": "Register",
+                "route": "/register",
+                "components": [
+                    "Navbar",
+                    "RegistrationForm"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Button",
+            "Card"
+        ],
+        "features": [
+            "event listing",
+            "event registration",
+            "ticket confirmation"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/events",
+                "purpose": "Fetch seminar events"
+            },
+            {
+                "method": "POST",
+                "path": "/api/register",
+                "purpose": "Register participant"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "events",
+                "columns": [
+                    "id",
+                    "title",
+                    "date",
+                    "venue",
+                    "description"
+                ]
+            },
+            {
+                "name": "registrations",
+                "columns": [
+                    "id",
+                    "event_id",
+                    "participant_name",
+                    "email",
+                    "registration_date"
+                ]
+            }
+        ]
+    },
+    "auth_required": false
+}

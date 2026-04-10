@@ -1,0 +1,8 @@
+{
+    "fixes": [
+        {
+            "path": "backend/app.py",
+            "content": "from flask import Flask\nfrom routes.analytics import performance_bp\n\napp = Flask(__name__)\napp.register_blueprint(performance_bp)\n\nif __name__ == '__main__':\n    app.run(debug=True)"
+        }
+    ]
+}

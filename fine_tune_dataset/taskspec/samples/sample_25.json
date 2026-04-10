@@ -1,0 +1,99 @@
+{
+    "app_name": "Diet and Fitness Planner",
+    "app_type": "web_app",
+    "description": "A planning application that helps users set fitness goals and receive meal plan suggestions.",
+    "target_users": [
+        "fitness_users",
+        "nutritionists"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Profile",
+                "route": "/profile",
+                "components": [
+                    "Navbar",
+                    "UserProfileCard",
+                    "GoalSummary"
+                ]
+            },
+            {
+                "name": "Goals",
+                "route": "/goals",
+                "components": [
+                    "Navbar",
+                    "GoalForm",
+                    "ProgressIndicator"
+                ]
+            },
+            {
+                "name": "Meal Plans",
+                "route": "/meal-plans",
+                "components": [
+                    "Navbar",
+                    "MealPlanCards",
+                    "NutritionInfo"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Button",
+            "Card"
+        ],
+        "features": [
+            "goal setting",
+            "meal plan suggestions",
+            "nutrition tracking"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "POST",
+                "path": "/api/goals",
+                "purpose": "Create user fitness goal"
+            },
+            {
+                "method": "GET",
+                "path": "/api/meal-plans",
+                "purpose": "Fetch recommended meal plans"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "users",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "age",
+                    "weight",
+                    "height"
+                ]
+            },
+            {
+                "name": "goals",
+                "columns": [
+                    "id",
+                    "user_id",
+                    "goal_type",
+                    "target_value",
+                    "deadline"
+                ]
+            },
+            {
+                "name": "meal_plans",
+                "columns": [
+                    "id",
+                    "plan_name",
+                    "calories",
+                    "description"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

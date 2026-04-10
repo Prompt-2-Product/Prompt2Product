@@ -1,0 +1,1 @@
+Build a conference management system with agenda, speakers, and registration pages.

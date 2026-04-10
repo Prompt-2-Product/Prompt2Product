@@ -1,0 +1,1 @@
+Create a fitness dashboard where users can log workouts and track progress.

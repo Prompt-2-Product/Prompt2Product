@@ -1,0 +1,8 @@
+{
+    "fixes": [
+        {
+            "path": "frontend/src/pages/Orders.jsx",
+            "content": "import React from 'react';\n\nexport default function Orders() {\n  return (\n    <div className='page-container'>\n      <h1>Orders</h1>\n      <p>Track your previous and current cafeteria orders here.</p>\n    </div>\n  );\n}"
+        }
+    ]
+}

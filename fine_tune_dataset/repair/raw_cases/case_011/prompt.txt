@@ -1,0 +1,1 @@
+Build a student fee portal with dues and invoices pages using React frontend and Flask backend.

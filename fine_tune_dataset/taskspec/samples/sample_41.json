@@ -1,0 +1,126 @@
+{
+    "app_name": "Small Shop Inventory Management System",
+    "app_type": "web_app",
+    "description": "A web application for managing shop inventory, tracking stock changes, and maintaining sales records.",
+    "target_users": [
+        "shop_owner",
+        "shop_staff"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Dashboard",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "StatsCards",
+                    "LowStockAlert",
+                    "RecentSalesTable"
+                ]
+            },
+            {
+                "name": "Products",
+                "route": "/products",
+                "components": [
+                    "Navbar",
+                    "ProductTable",
+                    "AddProductForm",
+                    "CategoryFilter"
+                ]
+            },
+            {
+                "name": "Stock Updates",
+                "route": "/stock-updates",
+                "components": [
+                    "Navbar",
+                    "StockUpdateForm",
+                    "StockHistoryTable"
+                ]
+            },
+            {
+                "name": "Sales Records",
+                "route": "/sales-records",
+                "components": [
+                    "Navbar",
+                    "SalesTable",
+                    "DateFilter",
+                    "SummaryCard"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Button",
+            "Card",
+            "Table",
+            "Badge"
+        ],
+        "features": [
+            "product management",
+            "stock updates",
+            "sales tracking",
+            "low stock alerts",
+            "date filtering"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/products",
+                "purpose": "Fetch all products"
+            },
+            {
+                "method": "POST",
+                "path": "/api/products",
+                "purpose": "Add new product"
+            },
+            {
+                "method": "POST",
+                "path": "/api/stock-updates",
+                "purpose": "Create stock update record"
+            },
+            {
+                "method": "GET",
+                "path": "/api/sales",
+                "purpose": "Fetch sales records"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "products",
+                "columns": [
+                    "id",
+                    "name",
+                    "category",
+                    "price",
+                    "stock_quantity",
+                    "supplier_name"
+                ]
+            },
+            {
+                "name": "stock_updates",
+                "columns": [
+                    "id",
+                    "product_id",
+                    "change_amount",
+                    "update_type",
+                    "updated_at"
+                ]
+            },
+            {
+                "name": "sales_records",
+                "columns": [
+                    "id",
+                    "product_id",
+                    "quantity_sold",
+                    "total_amount",
+                    "sale_date"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

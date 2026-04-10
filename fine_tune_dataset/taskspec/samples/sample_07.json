@@ -1,0 +1,145 @@
+{
+    "app_name": "Mobile Accessories Shopping Website",
+    "app_type": "web_app",
+    "description": "A shopping platform for mobile accessories where users can browse category pages, view product details, add items to the cart, and proceed through payment flow.",
+    "target_users": [
+        "customers",
+        "store_admin"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Home",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "HeroSection",
+                    "FeaturedCategories",
+                    "Footer"
+                ]
+            },
+            {
+                "name": "Categories",
+                "route": "/categories",
+                "components": [
+                    "Navbar",
+                    "CategoryCardGrid",
+                    "SearchBar"
+                ]
+            },
+            {
+                "name": "Product Details",
+                "route": "/products/:id",
+                "components": [
+                    "Navbar",
+                    "ProductImageSection",
+                    "ProductInfo",
+                    "AddToCartButton"
+                ]
+            },
+            {
+                "name": "Cart",
+                "route": "/cart",
+                "components": [
+                    "Navbar",
+                    "CartItemsTable",
+                    "SummaryCard",
+                    "ProceedButton"
+                ]
+            },
+            {
+                "name": "Payment",
+                "route": "/payment",
+                "components": [
+                    "Navbar",
+                    "BillingForm",
+                    "PaymentMethodSelector",
+                    "ConfirmPaymentButton"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Footer",
+            "Button",
+            "Card"
+        ],
+        "features": [
+            "browse categories",
+            "view product details",
+            "add to cart",
+            "payment flow",
+            "search accessories"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/categories",
+                "purpose": "Fetch accessory categories"
+            },
+            {
+                "method": "GET",
+                "path": "/api/products/:id",
+                "purpose": "Fetch selected product details"
+            },
+            {
+                "method": "POST",
+                "path": "/api/cart",
+                "purpose": "Add accessory item to cart"
+            },
+            {
+                "method": "POST",
+                "path": "/api/payment",
+                "purpose": "Process customer payment"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "products",
+                "columns": [
+                    "id",
+                    "name",
+                    "category",
+                    "price",
+                    "description",
+                    "image_url",
+                    "stock"
+                ]
+            },
+            {
+                "name": "customers",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "password"
+                ]
+            },
+            {
+                "name": "cart_items",
+                "columns": [
+                    "id",
+                    "customer_id",
+                    "product_id",
+                    "quantity"
+                ]
+            },
+            {
+                "name": "payments",
+                "columns": [
+                    "id",
+                    "customer_id",
+                    "amount",
+                    "payment_method",
+                    "payment_status",
+                    "created_at"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

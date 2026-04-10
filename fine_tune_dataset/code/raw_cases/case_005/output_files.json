@@ -1,0 +1,40 @@
+{
+    "files": [
+        {
+            "path": "frontend/src/App.jsx",
+            "content": "import React from 'react';\nimport { BrowserRouter, Routes, Route } from 'react-router-dom';\nimport Navbar from './components/Navbar';\nimport Home from './pages/Home';\nimport Plans from './pages/Plans';\nimport Trainers from './pages/Trainers';\nimport Progress from './pages/Progress';\n\nexport default function App() {\n  return (\n    <BrowserRouter>\n      <Navbar />\n      <Routes>\n        <Route path='/' element={<Home />} />\n        <Route path='/plans' element={<Plans />} />\n        <Route path='/trainers' element={<Trainers />} />\n        <Route path='/progress' element={<Progress />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/components/Navbar.jsx",
+            "content": "import React from 'react';\nimport { NavLink } from 'react-router-dom';\n\nexport default function Navbar() {\n  const style = ({ isActive }) => ({ textDecoration: 'none', color: isActive ? '#0f172a' : '#64748b', fontWeight: isActive ? 700 : 500 });\n\n  return (\n    <nav style={{ borderBottom: '1px solid #e2e8f0', background: '#fff' }}>\n      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '16px 24px', display: 'flex', justifyContent: 'space-between' }}>\n        <h2 style={{ margin: 0 }}>FitLife</h2>\n        <div style={{ display: 'flex', gap: '18px' }}>\n          <NavLink to='/' style={style}>Home</NavLink>\n          <NavLink to='/plans' style={style}>Plans</NavLink>\n          <NavLink to='/trainers' style={style}>Trainers</NavLink>\n          <NavLink to='/progress' style={style}>Progress</NavLink>\n        </div>\n      </div>\n    </nav>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/components/PlanCard.jsx",
+            "content": "import React from 'react';\n\nexport default function PlanCard({ plan }) {\n  return (\n    <div style={{ border: '1px solid #e2e8f0', borderRadius: '14px', padding: '18px', background: '#fff' }}>\n      <h3 style={{ marginTop: 0 }}>{plan.plan_name}</h3>\n      <p style={{ color: '#64748b' }}>Duration: {plan.duration}</p>\n      <p style={{ fontWeight: 700 }}>${plan.price}</p>\n      <button style={{ marginTop: '8px', padding: '10px 14px', border: 'none', borderRadius: '10px', background: '#0f172a', color: '#fff' }}>Choose Plan</button>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/components/TrainerCard.jsx",
+            "content": "import React from 'react';\n\nexport default function TrainerCard({ trainer }) {\n  return (\n    <div style={{ border: '1px solid #e2e8f0', borderRadius: '14px', padding: '18px', background: '#fff' }}>\n      <h3 style={{ marginTop: 0 }}>{trainer.name}</h3>\n      <p style={{ color: '#64748b' }}>{trainer.specialization}</p>\n      <p>Experience: {trainer.experience}</p>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/pages/Home.jsx",
+            "content": "import React from 'react';\n\nexport default function Home() {\n  return (\n    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 24px' }}>\n      <div style={{ background: '#f8fafc', borderRadius: '18px', padding: '32px', border: '1px solid #e2e8f0' }}>\n        <h1>Train smarter, stay consistent</h1>\n        <p style={{ color: '#64748b', maxWidth: '700px' }}>\n          Explore membership plans, meet expert trainers, and keep track of your progress in one modern fitness dashboard.\n        </p>\n      </div>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/pages/Plans.jsx",
+            "content": "import React from 'react';\nimport PlanCard from '../components/PlanCard';\n\nconst plans = [\n  { id: 1, plan_name: 'Basic', duration: '1 Month', price: 25 },\n  { id: 2, plan_name: 'Standard', duration: '3 Months', price: 65 },\n  { id: 3, plan_name: 'Premium', duration: '6 Months', price: 120 }\n];\n\nexport default function Plans() {\n  return (\n    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 24px' }}>\n      <h1>Membership Plans</h1>\n      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '18px' }}>\n        {plans.map(plan => <PlanCard key={plan.id} plan={plan} />)}\n      </div>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/pages/Trainers.jsx",
+            "content": "import React from 'react';\nimport TrainerCard from '../components/TrainerCard';\n\nconst trainers = [\n  { id: 1, name: 'Ahmed Khan', specialization: 'Strength Training', experience: '5 years' },\n  { id: 2, name: 'Sara Malik', specialization: 'Yoga & Mobility', experience: '4 years' },\n  { id: 3, name: 'Usman Ali', specialization: 'Weight Loss', experience: '6 years' }\n];\n\nexport default function Trainers() {\n  return (\n    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 24px' }}>\n      <h1>Trainers</h1>\n      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '18px' }}>\n        {trainers.map(trainer => <TrainerCard key={trainer.id} trainer={trainer} />)}\n      </div>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "frontend/src/pages/Progress.jsx",
+            "content": "import React from 'react';\n\nconst progress = [\n  { id: 1, metric: 'Workouts Completed', value: '18' },\n  { id: 2, metric: 'Calories Burned', value: '4200 kcal' },\n  { id: 3, metric: 'Weight Change', value: '-2.5 kg' }\n];\n\nexport default function Progress() {\n  return (\n    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '32px 24px' }}>\n      <h1>Progress</h1>\n      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '18px' }}>\n        {progress.map(item => (\n          <div key={item.id} style={{ border: '1px solid #e2e8f0', borderRadius: '14px', padding: '18px', background: '#fff' }}>\n            <p style={{ margin: '0 0 8px 0', color: '#64748b' }}>{item.metric}</p>\n            <h3 style={{ margin: 0 }}>{item.value}</h3>\n          </div>\n        ))}\n      </div>\n    </div>\n  );\n}"
+        },
+        {
+            "path": "backend/app.py",
+            "content": "from flask import Flask, jsonify\n\napp = Flask(__name__)\n\n@app.route('/api/plans')\ndef get_plans():\n    return jsonify({\n        'plans': [\n            {'id': 1, 'plan_name': 'Basic', 'duration': '1 Month', 'price': 25},\n            {'id': 2, 'plan_name': 'Standard', 'duration': '3 Months', 'price': 65},\n            {'id': 3, 'plan_name': 'Premium', 'duration': '6 Months', 'price': 120}\n        ]\n    })\n\n@app.route('/api/trainers')\ndef get_trainers():\n    return jsonify({\n        'trainers': [\n            {'id': 1, 'name': 'Ahmed Khan', 'specialization': 'Strength Training', 'experience': '5 years'},\n            {'id': 2, 'name': 'Sara Malik', 'specialization': 'Yoga & Mobility', 'experience': '4 years'},\n            {'id': 3, 'name': 'Usman Ali', 'specialization': 'Weight Loss', 'experience': '6 years'}\n        ]\n    })\n\nif __name__ == '__main__':\n    app.run(debug=True)"
+        }
+    ]
+}

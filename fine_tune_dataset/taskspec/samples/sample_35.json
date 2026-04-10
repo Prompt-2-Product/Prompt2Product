@@ -1,0 +1,122 @@
+{
+    "app_name": "Librarian Admin Portal",
+    "app_type": "web_app",
+    "description": "An admin portal for librarians to manage books, member records, and issue/return transactions.",
+    "target_users": [
+        "librarians"
+    ],
+    "frontend": {
+        "pages": [
+            {
+                "name": "Dashboard",
+                "route": "/",
+                "components": [
+                    "Navbar",
+                    "StatsCards",
+                    "RecentActivityTable"
+                ]
+            },
+            {
+                "name": "Books",
+                "route": "/books",
+                "components": [
+                    "Navbar",
+                    "BookTable",
+                    "AddBookForm"
+                ]
+            },
+            {
+                "name": "Members",
+                "route": "/members",
+                "components": [
+                    "Navbar",
+                    "MemberTable",
+                    "MemberSearchBar"
+                ]
+            },
+            {
+                "name": "Issue Records",
+                "route": "/issue-records",
+                "components": [
+                    "Navbar",
+                    "IssueRecordTable",
+                    "StatusBadge"
+                ]
+            }
+        ],
+        "shared_components": [
+            "Navbar",
+            "Button",
+            "Card",
+            "Table",
+            "Badge"
+        ],
+        "features": [
+            "book management",
+            "member management",
+            "issue record tracking",
+            "dashboard overview"
+        ]
+    },
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/books",
+                "purpose": "Fetch all books"
+            },
+            {
+                "method": "POST",
+                "path": "/api/books",
+                "purpose": "Add new book"
+            },
+            {
+                "method": "GET",
+                "path": "/api/members",
+                "purpose": "Fetch library members"
+            },
+            {
+                "method": "GET",
+                "path": "/api/issue-records",
+                "purpose": "Fetch issue and return records"
+            }
+        ]
+    },
+    "database": {
+        "tables": [
+            {
+                "name": "books",
+                "columns": [
+                    "id",
+                    "title",
+                    "author",
+                    "isbn",
+                    "category",
+                    "availability_status"
+                ]
+            },
+            {
+                "name": "members",
+                "columns": [
+                    "id",
+                    "name",
+                    "email",
+                    "membership_date",
+                    "status"
+                ]
+            },
+            {
+                "name": "issue_records",
+                "columns": [
+                    "id",
+                    "member_id",
+                    "book_id",
+                    "issue_date",
+                    "due_date",
+                    "return_date"
+                ]
+            }
+        ]
+    },
+    "auth_required": true
+}

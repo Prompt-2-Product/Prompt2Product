@@ -13,7 +13,7 @@ from trl import SFTTrainer, SFTConfig
 # =========================
 # Config
 # =========================
-BASE_MODEL = "Qwen/Qwen2.5-Coder-3B"
+BASE_MODEL = "Qwen/Qwen2.5-Coder-3B-Instruct"
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 DATA_DIR = os.path.join(PROJECT_ROOT, "fine_tune_dataset", "merged")
@@ -21,21 +21,17 @@ DATA_DIR = os.path.join(PROJECT_ROOT, "fine_tune_dataset", "merged")
 TRAIN_FILE = os.path.join(DATA_DIR, "train.jsonl")
 VAL_FILE = os.path.join(DATA_DIR, "val.jsonl")
 
-OUTPUT_DIR = os.path.join(PROJECT_ROOT, "finetune", "outputs", "qwen_taskspec_repair_lora")
+OUTPUT_DIR = os.path.join(PROJECT_ROOT, "finetune", "outputs", "qwen_taskspec_repair_lora_v2")
 LOGGING_DIR = os.path.join(PROJECT_ROOT, "finetune", "logs")
 
-MAX_LENGTH = 512
+MAX_LENGTH = 1024
 
-DEBUG_SUBSET = True
+DEBUG_SUBSET = False
 DEBUG_TRAIN_SAMPLES = 20
 DEBUG_VAL_SAMPLES = 5
 
 
 def format_example(example):
-    """
-    Converts one chat-style JSONL record into a single text string
-    for supervised fine-tuning.
-    """
     messages = example["messages"]
     text_parts = []
 
@@ -107,6 +103,8 @@ def main():
         trust_remote_code=True,
     )
 
+    model.gradient_checkpointing_enable()
+
     model.config.use_cache = False
     model.config.pretraining_tp = 1
 
@@ -128,16 +126,16 @@ def main():
     print("Setting training config...")
     sft_config = SFTConfig(
         output_dir=OUTPUT_DIR,
-        num_train_epochs=2,
+        num_train_epochs=4,
         per_device_train_batch_size=1,
         per_device_eval_batch_size=1,
         gradient_accumulation_steps=4,
         eval_strategy="steps",
-        eval_steps=50,
+        eval_steps=100,
         save_strategy="steps",
-        save_steps=50,
-        logging_steps=5,
-        learning_rate=2e-4,
+        save_steps=100,
+        logging_steps=10,
+        learning_rate=1e-4,
         weight_decay=0.01,
         warmup_steps=50,
         lr_scheduler_type="cosine",

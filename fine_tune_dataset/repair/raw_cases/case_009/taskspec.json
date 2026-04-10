@@ -1,0 +1,15 @@
+{
+    "app_name": "Library Management Website",
+    "frontend": {
+        "pages": [
+            {
+                "name": "Search Books",
+                "route": "/books"
+            },
+            {
+                "name": "Book Details",
+                "route": "/books/:id"
+            }
+        ]
+    }
+}

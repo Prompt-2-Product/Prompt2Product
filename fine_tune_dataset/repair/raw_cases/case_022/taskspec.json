@@ -1,0 +1,12 @@
+{
+    "app_name": "Assignment Dashboard",
+    "app_type": "web_app",
+    "frontend": {
+        "pages": [
+            {
+                "name": "Assignments",
+                "route": "/"
+            }
+        ]
+    }
+}

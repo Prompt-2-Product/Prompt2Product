@@ -1,0 +1,8 @@
+{
+    "files": [
+        {
+            "path": "frontend/src/pages/Rooms.jsx",
+            "content": "import React from 'react';\n\nexport default function Rooms() {\n  const rooms = [\n    { id: 1, type: 'Standard' },\n    { id: 2, type: 'Deluxe' }\n  ];\n\n  return (\n    <div>\n      {rooms.map(room => (\n        <div>{room.type}</div>\n      ))}\n    </div>\n  );\n}"
+        }
+    ]
+}

@@ -1,0 +1,1 @@
+Build a sales analytics dashboard with charts, KPIs, date filters, and reports. Use React for frontend and Flask for backend.

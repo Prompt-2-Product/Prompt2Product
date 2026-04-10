@@ -1,0 +1,12 @@
+{
+    "app_name": "Shopping Cart Page",
+    "app_type": "web_app",
+    "frontend": {
+        "pages": [
+            {
+                "name": "Cart",
+                "route": "/cart"
+            }
+        ]
+    }
+}

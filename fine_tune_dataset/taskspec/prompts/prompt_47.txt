@@ -1,0 +1,1 @@
+Create a student performance dashboard with subject-wise marks, attendance, and trends.

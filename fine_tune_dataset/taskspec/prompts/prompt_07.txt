@@ -1,0 +1,1 @@
+Create a mobile accessories shopping website with category pages, product details, cart, and payment flow.

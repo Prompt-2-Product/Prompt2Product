@@ -1,0 +1,12 @@
+{
+    "files": [
+        {
+            "path": "backend/app.py",
+            "content": "from flask import Flask\nfrom routes.analytics import analytics_bp\n\napp = Flask(__name__)\napp.register_blueprint(analytics_bp)\n\nif __name__ == '__main__':\n    app.run(debug=True)"
+        },
+        {
+            "path": "backend/routes/analytics.py",
+            "content": "from flask import Blueprint, jsonify\n\nperformance_bp = Blueprint('performance_bp', __name__)\n\n@performance_bp.route('/api/performance')\ndef get_performance():\n    return jsonify({'data': []})"
+        }
+    ]
+}

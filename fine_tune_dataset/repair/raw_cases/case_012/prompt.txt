@@ -1,0 +1,1 @@
+Build a cosmetics shopping app with login, products, cart, and wishlist pages using React and Flask.

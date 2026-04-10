@@ -1,0 +1,8 @@
+{
+    "files": [
+        {
+            "path": "frontend/src/components/Navbar.jsx",
+            "content": "import React from 'react';\nimport { Link } from 'react-router-dom';\n\nexport default function Navbar() {\n  return (\n    <nav>\n      <NavLink to='/offered-courses'>Offered Courses</NavLink>\n      <NavLink to='/registered-courses'>Registered Courses</NavLink>\n    </nav>\n  );\n}"
+        }
+    ]
+}

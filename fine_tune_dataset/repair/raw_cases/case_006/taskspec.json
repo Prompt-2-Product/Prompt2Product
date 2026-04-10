@@ -1,0 +1,15 @@
+{
+    "app_name": "BookNest E-commerce Website",
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/books"
+            },
+            {
+                "method": "GET",
+                "path": "/api/books/<id>"
+            }
+        ]
+    }
+}

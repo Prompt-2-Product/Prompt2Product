@@ -1,0 +1,15 @@
+{
+    "app_name": "Student Fee Management Portal",
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/dues"
+            },
+            {
+                "method": "GET",
+                "path": "/api/invoices"
+            }
+        ]
+    }
+}

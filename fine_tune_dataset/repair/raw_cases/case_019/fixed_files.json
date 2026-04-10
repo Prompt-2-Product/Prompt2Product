@@ -1,0 +1,8 @@
+{
+    "fixes": [
+        {
+            "path": "frontend/src/pages/Products.jsx",
+            "content": "import React from 'react';\n\nconst products = [\n  { id: 1, name: 'Shirt', price: 25 },\n  { id: 2, name: 'Shoes', price: 60 },\n  { id: 3, name: 'Bag', price: 40 }\n];\n\nexport default function Products() {\n  return (\n    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '24px' }}>\n      <h1 style={{ marginBottom: '20px' }}>Products</h1>\n      <div\n        style={{\n          display: 'grid',\n          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',\n          gap: '20px'\n        }}\n      >\n        {products.map(product => (\n          <div\n            key={product.id}\n            style={{\n              border: '1px solid #ddd',\n              borderRadius: '12px',\n              padding: '16px',\n              background: '#fff',\n              boxShadow: '0 2px 8px rgba(0,0,0,0.06)'\n            }}\n          >\n            <h3>{product.name}</h3>\n            <p>${product.price}</p>\n            <button style={{ marginTop: '12px' }}>View Details</button>\n          </div>\n        ))}\n      </div>\n    </div>\n  );\n}"
+        }
+    ]
+}

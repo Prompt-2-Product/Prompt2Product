@@ -1,0 +1,1 @@
+Build a Flask app for a student performance dashboard using a blueprint file for analytics routes.

@@ -1,0 +1,8 @@
+{
+    "fixes": [
+        {
+            "path": "backend/app.py",
+            "content": "from flask import Flask, jsonify, request\n\napp = Flask(__name__)\n\n@app.route('/api/room-requests', methods=['POST'])\ndef room_requests():\n    data = request.get_json()\n    return jsonify({'message': 'Room request submitted', 'data': data}), 201"
+        }
+    ]
+}

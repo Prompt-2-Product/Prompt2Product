@@ -1,0 +1,11 @@
+{
+    "app_name": "Hostel Room Allocation Portal",
+    "backend": {
+        "endpoints": [
+            {
+                "method": "POST",
+                "path": "/api/room-requests"
+            }
+        ]
+    }
+}

@@ -1,0 +1,1 @@
+Create a hostel mess management website where students can view today’s menu, pre-book meals, and check meal history.

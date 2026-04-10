@@ -1,0 +1,1 @@
+Create an online library catalog with categories, book details, and borrowing history.

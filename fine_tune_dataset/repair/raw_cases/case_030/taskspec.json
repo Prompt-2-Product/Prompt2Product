@@ -1,0 +1,12 @@
+{
+    "app_name": "Student Performance Dashboard Backend",
+    "app_type": "dashboard_app",
+    "backend": {
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/api/performance"
+            }
+        ]
+    }
+}

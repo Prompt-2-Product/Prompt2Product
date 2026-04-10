@@ -1,0 +1,12 @@
+{
+    "app_name": "E-commerce Product Grid",
+    "app_type": "web_app",
+    "frontend": {
+        "pages": [
+            {
+                "name": "Products",
+                "route": "/products"
+            }
+        ]
+    }
+}

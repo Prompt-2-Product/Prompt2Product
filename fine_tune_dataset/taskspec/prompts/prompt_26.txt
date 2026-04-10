@@ -1,0 +1,1 @@
+Build an event registration website for university seminars with signup and ticket confirmation.
