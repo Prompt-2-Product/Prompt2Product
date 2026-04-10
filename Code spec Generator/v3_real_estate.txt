@@ -1,0 +1,143 @@
+Prompt Category: real_estate
+Model: D:\Prompt2Product\finetune\outputs\qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Real Estate Platform", "app_type": "web_app", "description": "A platform for real estate users to search, filter, and view property listings. Agents can post listings, and admins can verify and manage users.", "target_users": ["real_estate_users", "agents", "admins"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "FeaturedProperties", "Footer"]}, {"name": "Search Listings", "route": "/listings/search", "components": ["Navbar", "SearchBar", "FilterOptions", "PropertyListTable"]}, {"name": "Agents", "route": "/agents", "components": ["Navbar", "AgentCardGrid", "LocationFilter"]}, {"name": "My Listings", "route": "/listings/my-listings", "components": ["Navbar", "ListingCardGrid", "StatusBadge"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "Badge"], "features": ["property listing search", "agent filtering", "listing verification", "user management"]}, "backend": {"endpoints": [{"method": "GET", "path": "/api/listings", "purpose": "Fetch property listings"}, {"method": "POST", "path": "/api/listings", "purpose": "Create agent listing"}, {"method": "POST", "path": "/api/verification", "purpose": "Verify property listing"}, {"method": "GET", "path": "/api/users", "purpose": "Fetch admin users"}]}, "database": {"tables": [{"name": "listings", "columns": ["id", "title", "location", "price", "agent_id", "status"]}, {"name": "agents", "columns": ["id", "name", "email", "phone", "location"]}, {"name": "users", "columns": ["id", "name", "email", "role", "status"]}]}, "auth_required": true}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Real Estate Platform", "app_type": "web_app", "description": "A platform for real estate users to search, filter, and view property listings. Agents can post listings, and admins can verify and manage users.", "target_users": ["real_estate_users", "agents", "admins"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "FeaturedProperties", "Footer"]}, {"name": "Search Listings", "route": "/listings/search", "components": ["Navbar", "SearchBar", "FilterOptions", "PropertyListTable"]}, {"name": "Agents", "route": "/agents", "components": ["Navbar", "AgentCardGrid", "LocationFilter"]}, {"name": "My Listings", "route": "/listings/my-listings", "components": ["Navbar", "ListingCardGrid", "StatusBadge"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "Badge"], "features": ["property listing search", "agent filtering", "listing verification", "user management"]}, "backend": {"endpoints": [{"method": "GET", "path": "/api/listings", "purpose": "Fetch property listings"}, {"method": "POST", "path": "/api/listings", "purpose": "Create agent listing"}, {"method": "POST", "path": "/api/verification", "purpose": "Verify property listing"}, {"method": "GET", "path": "/api/users", "purpose": "Fetch admin users"}]}, "database": {"tables": [{"name": "listings", "columns": ["id", "title", "location", "price", "agent_id", "status"]}, {"name": "agents", "columns": ["id", "name", "email", "phone", "location"]}, {"name": "users", "columns": ["id", "name", "email", "role", "status"]}]}, "auth_required": true}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Real Estate Platform",
+  "app_type": "web_app",
+  "description": "A platform for real estate users to search, filter, and view property listings. Agents can post listings, and admins can verify and manage users.",
+  "target_users": [
+    "real_estate_users",
+    "agents",
+    "admins"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "FeaturedProperties",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Search Listings",
+        "route": "/listings/search",
+        "components": [
+          "Navbar",
+          "SearchBar",
+          "FilterOptions",
+          "PropertyListTable"
+        ]
+      },
+      {
+        "name": "Agents",
+        "route": "/agents",
+        "components": [
+          "Navbar",
+          "AgentCardGrid",
+          "LocationFilter"
+        ]
+      },
+      {
+        "name": "My Listings",
+        "route": "/listings/my-listings",
+        "components": [
+          "Navbar",
+          "ListingCardGrid",
+          "StatusBadge"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Table",
+      "Badge"
+    ],
+    "features": [
+      "property listing search",
+      "agent filtering",
+      "listing verification",
+      "user management"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/listings",
+        "purpose": "Fetch property listings"
+      },
+      {
+        "method": "POST",
+        "path": "/api/listings",
+        "purpose": "Create agent listing"
+      },
+      {
+        "method": "POST",
+        "path": "/api/verification",
+        "purpose": "Verify property listing"
+      },
+      {
+        "method": "GET",
+        "path": "/api/users",
+        "purpose": "Fetch admin users"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "listings",
+        "columns": [
+          "id",
+          "title",
+          "location",
+          "price",
+          "agent_id",
+          "status"
+        ]
+      },
+      {
+        "name": "agents",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "phone",
+          "location"
+        ]
+      },
+      {
+        "name": "users",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "role",
+          "status"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

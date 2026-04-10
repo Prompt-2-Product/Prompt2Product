@@ -22,3 +22,13 @@ node_modules/
 dist/
 build/
 backend/app/storage/
+
+
+#finetune
+finetune/.venv/
+finetune/logs/
+
+#results
+Fine tune attempt 3/
+Fine tune attempt 1/
+Fine tune attempt 2/

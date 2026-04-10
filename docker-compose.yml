@@ -6,14 +6,16 @@ services:
       context: .
       dockerfile: backend/Dockerfile
     ports:
-      - "8001:8000"
+      - "8002:8000"
+      # Port range for generated websites (8010 + run.id)
+      - "8010-8110:8010-8110"
     volumes:
       # Mount the sqlite db for persistence
       - ./backend/app.db:/code/backend/app.db
     # Environment variables
     environment:
       - DATABASE_URL=sqlite:///./app.db
-      - OLLAMA_BASE_URL=http://host.docker.internal:11435
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
@@ -22,12 +24,12 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        NEXT_PUBLIC_API_URL: http://localhost:8001
+        NEXT_PUBLIC_API_URL: http://localhost:8002
     ports:
       - "3001:3000"
     environment:
       # Ensure the frontend knows where to hit the backend
       # Note: For client-side requests (browser), use localhost
-      - NEXT_PUBLIC_API_URL=http://localhost:8001
+      - NEXT_PUBLIC_API_URL=http://localhost:8002
     depends_on:
       - backend

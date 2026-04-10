@@ -1,0 +1,250 @@
+Prompt Category: lms
+Model: D:\Prompt2Product\finetune\outputs\qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Learning Management System", "app_type": "web_app", "description": "A platform for instructors to create courses, upload lectures, and assign quizzes, and for students to enroll, track progress, and submit assignments.", "target_users": [{"role": "instructor", "tasks": ["create_courses", "upload_lectures", "assign_quizzes"]}, {"role": "student", "tasks": ["enroll_courses", "track_progress", "submit_assignments"]}], "features": ["course_management", "lecture_upload", "quiz_assignment", "student_enrollment", "progress_tracking", "assignment_submission"], "database": {"tables": [{"name": "courses", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "title", "type": "varchar"}, {"name": "description", "type": "text"}, {"name": "start_date", "type": "date"}, {"name": "end_date", "type": "date"}]}, {"name": "students", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "name", "type": "varchar"}, {"name": "email", "type": "varchar", "unique": true}, {"name": "password", "type": "varchar"}]}, {"name": "instructors", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "name", "type": "varchar"}, {"name": "email", "type": "varchar", "unique": true}, {"name": "password", "type": "varchar"}]}, {"name": "enrollments", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "student_id", "type": "integer", "references": "students(id)"}, {"name": "course_id", "type": "integer", "references": "courses(id)"}, {"name": "enrollment_date", "type": "date"}]}, {"name": "lectures", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "title", "type": "varchar"}, {"name": "file_path", "type": "varchar"}, {"name": "course_id", "type": "integer", "references": "courses(id)"}]}, {"name": "quizzes", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "title", "type": "varchar"}, {"name": "description", "type": "text"}, {"name": "course_id", "type": "integer", "references": "courses(id)"}]}, {"name": "questions", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "question_text", "type": "text"}, {"name": "answer_type", "type": "varchar"}, {"name": "quiz_id", "type": "integer", "references": "quizzes(id)"}]}, {"name": "assignments", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "title", "type": "varchar"}, {"name": "file_path", "type": "varchar"}, {"name": "due_date", "type": "date"}, {"name": "student_id", "type": "integer", "references": "students(id)"}]}]}, "auth_required": true, "signup_users": ["students", "instructors"], "admin_only": false}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Learning Management System", "app_type": "web_app", "description": "A platform for instructors to create courses, upload lectures, and assign quizzes, and for students to enroll, track progress, and submit assignments.", "target_users": [{"role": "instructor", "tasks": ["create_courses", "upload_lectures", "assign_quizzes"]}, {"role": "student", "tasks": ["enroll_courses", "track_progress", "submit_assignments"]}], "features": ["course_management", "lecture_upload", "quiz_assignment", "student_enrollment", "progress_tracking", "assignment_submission"], "database": {"tables": [{"name": "courses", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "title", "type": "varchar"}, {"name": "description", "type": "text"}, {"name": "start_date", "type": "date"}, {"name": "end_date", "type": "date"}]}, {"name": "students", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "name", "type": "varchar"}, {"name": "email", "type": "varchar", "unique": true}, {"name": "password", "type": "varchar"}]}, {"name": "instructors", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "name", "type": "varchar"}, {"name": "email", "type": "varchar", "unique": true}, {"name": "password", "type": "varchar"}]}, {"name": "enrollments", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "student_id", "type": "integer", "references": "students(id)"}, {"name": "course_id", "type": "integer", "references": "courses(id)"}, {"name": "enrollment_date", "type": "date"}]}, {"name": "lectures", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "title", "type": "varchar"}, {"name": "file_path", "type": "varchar"}, {"name": "course_id", "type": "integer", "references": "courses(id)"}]}, {"name": "quizzes", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "title", "type": "varchar"}, {"name": "description", "type": "text"}, {"name": "course_id", "type": "integer", "references": "courses(id)"}]}, {"name": "questions", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "question_text", "type": "text"}, {"name": "answer_type", "type": "varchar"}, {"name": "quiz_id", "type": "integer", "references": "quizzes(id)"}]}, {"name": "assignments", "columns": [{"name": "id", "type": "serial", "is_primary": true}, {"name": "title", "type": "varchar"}, {"name": "file_path", "type": "varchar"}, {"name": "due_date", "type": "date"}, {"name": "student_id", "type": "integer", "references": "students(id)"}]}]}, "auth_required": true, "signup_users": ["students", "instructors"], "admin_only": false}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Learning Management System",
+  "app_type": "web_app",
+  "description": "A platform for instructors to create courses, upload lectures, and assign quizzes, and for students to enroll, track progress, and submit assignments.",
+  "target_users": [
+    {
+      "role": "instructor",
+      "tasks": [
+        "create_courses",
+        "upload_lectures",
+        "assign_quizzes"
+      ]
+    },
+    {
+      "role": "student",
+      "tasks": [
+        "enroll_courses",
+        "track_progress",
+        "submit_assignments"
+      ]
+    }
+  ],
+  "features": [
+    "course_management",
+    "lecture_upload",
+    "quiz_assignment",
+    "student_enrollment",
+    "progress_tracking",
+    "assignment_submission"
+  ],
+  "database": {
+    "tables": [
+      {
+        "name": "courses",
+        "columns": [
+          {
+            "name": "id",
+            "type": "serial",
+            "is_primary": true
+          },
+          {
+            "name": "title",
+            "type": "varchar"
+          },
+          {
+            "name": "description",
+            "type": "text"
+          },
+          {
+            "name": "start_date",
+            "type": "date"
+          },
+          {
+            "name": "end_date",
+            "type": "date"
+          }
+        ]
+      },
+      {
+        "name": "students",
+        "columns": [
+          {
+            "name": "id",
+            "type": "serial",
+            "is_primary": true
+          },
+          {
+            "name": "name",
+            "type": "varchar"
+          },
+          {
+            "name": "email",
+            "type": "varchar",
+            "unique": true
+          },
+          {
+            "name": "password",
+            "type": "varchar"
+          }
+        ]
+      },
+      {
+        "name": "instructors",
+        "columns": [
+          {
+            "name": "id",
+            "type": "serial",
+            "is_primary": true
+          },
+          {
+            "name": "name",
+            "type": "varchar"
+          },
+          {
+            "name": "email",
+            "type": "varchar",
+            "unique": true
+          },
+          {
+            "name": "password",
+            "type": "varchar"
+          }
+        ]
+      },
+      {
+        "name": "enrollments",
+        "columns": [
+          {
+            "name": "id",
+            "type": "serial",
+            "is_primary": true
+          },
+          {
+            "name": "student_id",
+            "type": "integer",
+            "references": "students(id)"
+          },
+          {
+            "name": "course_id",
+            "type": "integer",
+            "references": "courses(id)"
+          },
+          {
+            "name": "enrollment_date",
+            "type": "date"
+          }
+        ]
+      },
+      {
+        "name": "lectures",
+        "columns": [
+          {
+            "name": "id",
+            "type": "serial",
+            "is_primary": true
+          },
+          {
+            "name": "title",
+            "type": "varchar"
+          },
+          {
+            "name": "file_path",
+            "type": "varchar"
+          },
+          {
+            "name": "course_id",
+            "type": "integer",
+            "references": "courses(id)"
+          }
+        ]
+      },
+      {
+        "name": "quizzes",
+        "columns": [
+          {
+            "name": "id",
+            "type": "serial",
+            "is_primary": true
+          },
+          {
+            "name": "title",
+            "type": "varchar"
+          },
+          {
+            "name": "description",
+            "type": "text"
+          },
+          {
+            "name": "course_id",
+            "type": "integer",
+            "references": "courses(id)"
+          }
+        ]
+      },
+      {
+        "name": "questions",
+        "columns": [
+          {
+            "name": "id",
+            "type": "serial",
+            "is_primary": true
+          },
+          {
+            "name": "question_text",
+            "type": "text"
+          },
+          {
+            "name": "answer_type",
+            "type": "varchar"
+          },
+          {
+            "name": "quiz_id",
+            "type": "integer",
+            "references": "quizzes(id)"
+          }
+        ]
+      },
+      {
+        "name": "assignments",
+        "columns": [
+          {
+            "name": "id",
+            "type": "serial",
+            "is_primary": true
+          },
+          {
+            "name": "title",
+            "type": "varchar"
+          },
+          {
+            "name": "file_path",
+            "type": "varchar"
+          },
+          {
+            "name": "due_date",
+            "type": "date"
+          },
+          {
+            "name": "student_id",
+            "type": "integer",
+            "references": "students(id)"
+          }
+        ]
+      }
+    ]
+  },
+  "auth_required": true,
+  "signup_users": [
+    "students",
+    "instructors"
+  ],
+  "admin_only": false
+}
