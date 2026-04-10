@@ -39,6 +39,7 @@ export default function PreviewPage() {
       setChangeMessage('')
 
       sessionStorage.setItem('changeRequest', message)
+      sessionStorage.setItem('generationFlow', 'modify')
       setIsRegenerating(true)
       setTimeout(() => {
         router.push('/generating')

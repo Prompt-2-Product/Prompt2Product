@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WeatherApp</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<style>
+/* Glassmorphism */
+.glass-card {
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+}
+
+/* Mesh Gradient Background */
+.mesh-bg {
+  background-color: #0c0c0e;
+  background-image: radial-gradient(at 0% 0%, hsla(253,16%,12%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,39%,20%,1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339,49%,20%,1) 0, transparent 50%);
+  background-attachment: fixed;
+}
+
+/* Sticky Blur Header */
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(16px);
+  background: rgba(15, 23, 42, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Scroll Reveal Animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Bento Grid */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+.bento-card {
+  border-radius: 1.25rem;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.bento-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+</style>
+</head>
+<body class="mesh-bg">
+<header class="sticky-header">
+<div class="container mx-auto py-4 px-8 flex justify-between items-center">
+<h1 class="text-3xl font-bold text-white">WeatherApp</h1>
+<nav>
+<ul class="flex space-x-4">
+<li><a href="#hero" class="text-white hover:text-gray-200">Hero</a></li>
+<li><a href="#features" class="text-white hover:text-gray-200">Features</a></li>
+<li><a href="#contact" class="text-white hover:text-gray-200">Contact</a></li>
+</ul>
+</nav>
+</div>
+</header>
+<section id="hero" class="relative py-16">
+<div class="container mx-auto px-8 text-center">
+<h2 class="text-5xl font-bold mb-4 reveal">Welcome to WeatherApp</h2>
+<p class="text-lg text-gray-300 mb-8 reveal">Get real-time weather updates, forecasts, and alerts with our user-friendly SaaS platform.</p>
+<button class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded" onclick="scrollToSection('features')">Learn More</button>
+</div>
+<div id="hero-mesh" class="absolute top-0 left-0 w-full h-full bg-transparent z-10"></div>
+</section>
+<section id="features" class="py-16">
+<div class="container mx-auto px-8 text-center">
+<h2 class="text-4xl font-bold mb-8 reveal">Our Features</h2>
+<div class="bento-grid">
+<div class="bento-card glass-card reveal">
+<h3>Real-Time Updates</h3>
+<p>Get the latest weather data instantly with our real-time tracking feature.</p>
+</div>
+<div class="bento-card glass-card reveal">
+<h3>Customizable Alerts</h3>
+<p>Create tailored alerts for specific locations and conditions to keep you informed.</p>
+</div>
+<div class="bento-card glass-card reveal">
+<h3>Historical Data</h3>
+<p>Access comprehensive historical weather data for analysis and trend tracking.</p>
+</div>
+</div>
+</section>
+<section id="contact" class="py-16 bg-gray-800 text-white">
+<div class="container mx-auto px-8 text-center">
+<h2 class="text-4xl font-bold mb-8 reveal">Get in Touch</h2>
+<p>For support or inquiries, please contact us below.</p>
+<form action="#" method="post" class="flex flex-col items-center">
+<input type="email" name="email" placeholder="Your Email" class="bg-gray-700 text-white p-2 mb-4 rounded focus:outline-none">
+<textarea name="message" placeholder="Your Message" class="bg-gray-700 text-white p-2 mb-4 rounded focus:outline-none"></textarea>
+<button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded">Send</button>
+</form>
+</div>
+</section>
+</body>
+</html>

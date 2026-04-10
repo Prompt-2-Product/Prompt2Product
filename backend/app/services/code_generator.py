@@ -1,11 +1,13 @@
 from __future__ import annotations
+import os
+import re
+from pathlib import Path
 from typing import List, Dict, Any
 from pydantic import BaseModel, Field, model_validator
 from app.services.llm.base import LLMClient
 from app.services.prompt_to_spec import TaskSpec
-from app.core.utils import extract_json, repair_json
+from app.core.utils import extract_json, extract_balanced_json_object, repair_json
 from app.services.ui_assembler import UIAssembler
-import os
 import json as json_lib
 
 # --- New Pydantic Models for Page Plan ---
@@ -151,7 +153,7 @@ Available Section Types: 'hero', 'features', 'pricing', 'testimonials', 'faq', '
 
 Refine the user's request into a concrete list of pages and sections.
 
-OUTPUT FORMAT (JSON ONLY):
+OUTPUT FORMAT (JSON ONLY — no markdown fences, no comments, no text before or after):
 {
   "brand_name": "LuxeSpaces",
   "pages": [
@@ -189,11 +191,17 @@ OUTPUT FORMAT (JSON ONLY):
        "title": "Contact Us",
        "description": "Get in touch.",
        "sections": [
-          { "type": "contact", "data": { "title": "Get in Touch", "subtitle": "We'd love to hear from you." } }
+          { "type": "contact", "data": { "title": "Get in Touch", "subtitle": "We would love to hear from you." } }
        ]
     }
   ]
 }
+
+JSON SAFETY (critical — invalid JSON will fail the whole pipeline):
+- Use double quotes for all keys and string values only. Never use single quotes for JSON.
+- Inside any string value, escape every double quote as \\" . Do not put raw double quotes inside a string.
+- Avoid line breaks inside string values; use spaces instead.
+- No trailing commas after the last item in an object or array.
 
 RULES:
 1. "filename" MUST end in .html (e.g., index.html, about.html).
@@ -227,18 +235,37 @@ async def generate_code(llm: LLMClient, model: str, task_spec: TaskSpec) -> GenO
         try:
             response = await llm.chat(model=model, system=SYSTEM_CODE, user=prompt)
             
-            # Extract and parse JSON
-            json_str = extract_json(response)
-            if not json_str:
-                json_str = response.strip()
-                
-            try:
-                plan_dict = json_lib.loads(json_str)
-            except json_lib.JSONDecodeError:
-                # Try repair
-                json_str_repaired = repair_json(json_str)
-                plan_dict = json_lib.loads(json_str_repaired)
-                
+            # Multiple extraction strategies: extract_json can return a truncated inner {...}
+            # via non-greedy regex; balanced scan fixes that.
+            candidates: list[str] = []
+            extracted = extract_json(response)
+            if extracted:
+                candidates.append(extracted)
+            balanced = extract_balanced_json_object(
+                response, required_substrings=('"brand_name"', '"pages"')
+            )
+            if balanced and balanced not in candidates:
+                candidates.append(balanced)
+            stripped = response.strip()
+            if stripped and stripped not in candidates:
+                candidates.append(stripped)
+
+            plan_dict = None
+            last_err: BaseException | None = None
+            for raw in candidates:
+                for use_repair in (False, True):
+                    try:
+                        blob = repair_json(raw) if use_repair else raw
+                        plan_dict = json_lib.loads(blob)
+                        break
+                    except (json_lib.JSONDecodeError, TypeError) as e:
+                        last_err = e
+                if plan_dict is not None:
+                    break
+
+            if plan_dict is None:
+                raise ValueError(f"Could not parse PagePlan JSON: {last_err}")
+
             page_plan = PagePlan(**plan_dict)
             
             # If successful, break loop
@@ -327,9 +354,131 @@ if __name__ == "__main__":
 # --- Backward Compatibility for Orchestrator ---
 llm_spec_to_code = generate_code
 
+def _collect_frontend_html_rel_paths(files: List[GenFile]) -> List[str]:
+    rels: List[str] = []
+    for f in files:
+        p = f.path.replace("\\", "/")
+        if not p.endswith(".html") or "/frontend/" not in p:
+            continue
+        rels.append(p.split("/frontend/", 1)[1])
+    return sorted(set(rels))
+
+
+def _http_routes_for_html(rel: str) -> List[str]:
+    """Paths the app should serve for this file (extensionless + .html where useful)."""
+    rel = rel.replace("\\", "/")
+    if rel == "index.html":
+        return ["/", "/index.html"]
+    stem = rel[:-5]  # drop .html
+    base = "/" + stem
+    return [base, base + ".html"]
+
+
+def _file_join_snippet(rel: str) -> str:
+    parts = rel.replace("\\", "/").split("/")
+    args = ", ".join(repr(p) for p in parts)
+    return f"os.path.join(FRONTEND_DIR, {args})"
+
+
+def _func_base_name(rel: str) -> str:
+    r = rel.replace("\\", "/")
+    stem = r[: -len(".html")] if r.endswith(".html") else r
+    stem = stem.replace("/", "_").replace("-", "_")
+    stem = re.sub(r"[^a-zA-Z0-9_]", "_", stem)
+    if stem and stem[0].isdigit():
+        stem = "page_" + stem
+    return stem or "page"
+
+
+def _existing_fastapi_routes(main_py: str) -> set[str]:
+    return set(re.findall(r'@app\.get\(\s*["\']([^"\']+)["\']', main_py))
+
+
+def _any_html_route_missing(main_py: str, html_rels: List[str]) -> bool:
+    ex = _existing_fastapi_routes(main_py)
+    for rel in html_rels:
+        for r in _http_routes_for_html(rel):
+            if r not in ex:
+                return True
+    return False
+
+
+def _ensure_main_py_html_routes(main_py: str, html_rels: List[str]) -> str:
+    if not html_rels:
+        return main_py
+    existing = _existing_fastapi_routes(main_py)
+    blocks: List[str] = []
+    used_funcs: set[str] = set()
+    for rel in html_rels:
+        routes = _http_routes_for_html(rel)
+        missing = [r for r in routes if r not in existing]
+        if not missing:
+            continue
+        fname = _func_base_name(rel)
+        func = f"read_{fname}"
+        n = 2
+        while func in used_funcs:
+            func = f"read_{fname}_{n}"
+            n += 1
+        used_funcs.add(func)
+        join_snip = _file_join_snippet(rel)
+        decorators = "\n".join(f'@app.get("{r}")' for r in missing)
+        for r in missing:
+            existing.add(r)
+        blocks.append(f"{decorators}\ndef {func}():\n    return FileResponse({join_snip})\n")
+    if not blocks:
+        return main_py
+    inject = (
+        "\n# ═══ Auto-injected HTML routes (post_process) ═══\n"
+        + "\n".join(blocks)
+    )
+    return main_py.rstrip() + inject + "\n"
+
+
+def repair_main_routes_on_disk(workspace: Path) -> bool:
+    """
+    Inject missing FastAPI routes for every frontend/**/*.html when main.py is incomplete.
+    Returns True if main.py was written.
+    """
+    fe = workspace / "generated_app" / "frontend"
+    main_path = workspace / "generated_app" / "backend" / "main.py"
+    if not fe.is_dir() or not main_path.is_file():
+        return False
+    rels = sorted(p.relative_to(fe).as_posix() for p in fe.rglob("*.html"))
+    if not rels:
+        return False
+    content = main_path.read_text(encoding="utf-8")
+    if "FileResponse" not in content or "FRONTEND_DIR" not in content:
+        return False
+    new_content = _ensure_main_py_html_routes(content, rels)
+    if new_content == content:
+        return False
+    main_path.write_text(new_content, encoding="utf-8")
+    return True
+
+
 def post_process_output(output: GenOutput) -> GenOutput:
     """
-    Pass-through for backward compatibility. 
-    The new assembler system handles structure, so minimal post-processing needed.
+    Fix common LLM issues: escaped newlines in files, truncated main.py without page routes.
     """
+    html_rels = _collect_frontend_html_rel_paths(output.files)
+    for f in output.files:
+        if "\\\\n" in f.content:
+            f.content = f.content.replace("\\\\n", "\n")
+        if not (
+            f.path.endswith("backend/main.py") or f.path.endswith("backend\\main.py")
+        ):
+            continue
+        content = f.content
+        if "FileResponse" not in content:
+            continue
+        if "FRONTEND_DIR" not in content:
+            continue
+        if not html_rels:
+            continue
+        if '@app.get("/")' not in content and "@app.get('/')" not in content:
+            f.content = _ensure_main_py_html_routes(content, html_rels)
+            continue
+        if _any_html_route_missing(content, html_rels):
+            f.content = _ensure_main_py_html_routes(content, html_rels)
     return output

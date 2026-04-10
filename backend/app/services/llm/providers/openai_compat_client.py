@@ -11,14 +11,14 @@ class OpenAICompatLLM(LLMClient):
         self.base_url = base_url.rstrip("/")
         self.api_key = api_key
 
-    async def chat(self, model: str, system: str, user: str) -> str:
+    async def chat(self, model: str, system: str, user: str, max_tokens: int | None = None, **kwargs: object) -> str:
         if not self.base_url or not self.api_key:
             raise RuntimeError("API_BASE_URL or API_KEY missing for LLM_MODE=api")
 
         url = f"{self.base_url}/v1/chat/completions"
         headers = {"Authorization": f"Bearer {self.api_key}"}
 
-        payload = {
+        payload: dict = {
             "model": model,
             "messages": [
                 {"role": "system", "content": system},
@@ -26,6 +26,8 @@ class OpenAICompatLLM(LLMClient):
             ],
             "temperature": 0.2,
         }
+        if max_tokens is not None:
+            payload["max_tokens"] = max_tokens
 
         async with httpx.AsyncClient(timeout=180) as client:
             r = await client.post(url, headers=headers, json=payload)

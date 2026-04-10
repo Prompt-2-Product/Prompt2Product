@@ -29,6 +29,7 @@ export default function IDEPage() {
   const [projectInfo, setProjectInfo] = useState<{ projectId: number; runId: number; description: string; language: string; appType: string } | null>(null)
   const [chatMessage, setChatMessage] = useState('')
   const [chatHistory, setChatHistory] = useState<Array<{ role: 'user' | 'system'; content: string }>>([])
+  const [isSubmittingChange, setIsSubmittingChange] = useState(false)
 
   const fetchFileTree = useCallback(async (projectId: number, runId: number) => {
     setIsLoadingTree(true)
@@ -104,13 +105,27 @@ export default function IDEPage() {
     )
   }
 
-  const handleChatSubmit = () => {
-    if (chatMessage.trim()) {
-      setChatHistory(prev => [...prev, { role: 'user', content: chatMessage }])
-      setChatMessage('')
-      setTimeout(() => {
-        setChatHistory(prev => [...prev, { role: 'system', content: 'I understand. Let me help you with that change.' }])
-      }, 1000)
+  const handleChatSubmit = async () => {
+    const message = chatMessage.trim()
+    if (!message || !projectInfo || isSubmittingChange) return
+
+    setIsSubmittingChange(true)
+    setChatHistory(prev => [...prev, { role: 'user', content: message }])
+    setChatMessage('')
+
+    try {
+      console.log(`[FRONTEND][IDE] Queued modify request for run ${projectInfo.runId}`)
+      sessionStorage.setItem('changeRequest', message)
+      sessionStorage.setItem('generationFlow', 'modify')
+      setChatHistory(prev => [...prev, { role: 'system', content: 'Queued. Opening generation console...' }])
+      router.push('/generating')
+    } catch (err) {
+      setChatHistory(prev => [...prev, {
+        role: 'system',
+        content: `Failed to submit modification: ${err instanceof Error ? err.message : 'Unknown error'}`
+      }])
+    } finally {
+      setIsSubmittingChange(false)
     }
   }
 
@@ -261,11 +276,11 @@ export default function IDEPage() {
                     />
                     <Button
                       onClick={handleChatSubmit}
-                      disabled={!chatMessage.trim()}
+                      disabled={!chatMessage.trim() || isSubmittingChange}
                       size="sm"
                       className="bg-gradient-to-r from-blue-500 via-blue-400 to-cyan-500 hover:from-blue-600 hover:via-blue-500 hover:to-cyan-600 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed px-3"
                     >
-                      Send
+                      {isSubmittingChange ? 'Sending...' : 'Send'}
                     </Button>
                   </div>
                 </div>

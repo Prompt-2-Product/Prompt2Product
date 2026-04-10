@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<style>
+  .glass-card {
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+  }
+
+  .mesh-bg {
+    background-color: #0c0c0e;
+    background-image: radial-gradient(at 0% 0%, hsla(253,16%,12%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,39%,20%,1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339,49%,20%,1) 0, transparent 50%);
+    background-attachment: fixed;
+  }
+
+  .sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(16px);
+    background: rgba(15, 23, 42, 0.7);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .bento-card {
+    border-radius: 1.25rem;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .bento-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+</style>
+</head>
+<body class="mesh-bg">
+<header class="sticky-header px-4 py-3">
+  <h1 class="text-white font-bold text-lg">FAQ</h1>
+</header>
+<main class="flex flex-col items-center justify-center p-6">
+  <div class="glass-card w-full max-w-2xl p-6 rounded-lg shadow-lg mb-8">
+    <h2 class="text-xl font-bold mb-4">Accordion FAQ</h2>
+    <button class="accordion-trigger bg-white border-b py-2 px-3 text-left font-medium w-full focus:outline-none" aria-expanded="false">
+      How do I list my property on WeatherWise?
+    </button>
+    <div class="accordion-content hidden max-h-0 overflow-hidden transition-all duration-500 ease-out">
+      <p>To list your property, simply log in to your WeatherWise account and navigate to the ‘List Your Property’ section. Fill out the required details including photos and a detailed description of your home.</p>
+    </div>
+
+    <button class="accordion-trigger bg-white border-b py-2 px-3 text-left font-medium w-full focus:outline-none" aria-expanded="false">
+      What types of properties can I list?
+    </button>
+    <div class="accordion-content hidden max-h-0 overflow-hidden transition-all duration-500 ease-out">
+      <p>WeatherWise accepts a wide range of property types including single-family homes, apartments, townhouses, and more. Simply ensure your listing includes accurate details for the best results.</p>
+    </div>
+
+    <button class="accordion-trigger bg-white border-b py-2 px-3 text-left font-medium w-full focus:outline-none" aria-expanded="false">
+      How do I manage my property listings?
+    </button>
+    <div class="accordion-content hidden max-h-0 overflow-hidden transition-all duration-500 ease-out">
+      <p>Once your property is listed, you can manage it through your WeatherWise dashboard. Update details, respond to inquiries, and see analytics on your home’s performance.</p>
+    </div>
+
+    <button class="accordion-trigger bg-white border-b py-2 px-3 text-left font-medium w-full focus:outline-none" aria-expanded="false">
+      What if I need to remove my property from the market?
+    </button>
+    <div class="accordion-content hidden max-h-0 overflow-hidden transition-all duration-500 ease-out">
+      <p>Removing your property is simple. Log into your WeatherWise account, go to your listing page, and click ‘Remove Property’.</p>
+    </div>
+
+    <button class="accordion-trigger bg-white border-b py-2 px-3 text-left font-medium w-full focus:outline-none" aria-expanded="false">
+      Can I customize my property’s listing?
+    </button>
+    <div class="accordion-content hidden max-h-0 overflow-hidden transition-all duration-500 ease-out">
+      <p>Yes, you can fully customize your listing. Add photos, set prices, and highlight features like a pool or garage to attract more buyers.</p>
+    </div>
+  </div>
+
+  <div class="bento-grid w-full max-w-3xl gap-6 mb-8">
+    <div class="bento-card glass-card">
+      <h3 class="text-lg font-bold">Real Estate Insights</h3>
+      <p>Stay ahead of the market with exclusive insights and data provided by WeatherWise.</p>
+    </div>
+
+    <div class="bento-card glass-card">
+      <h3 class="text-lg font-bold">Expert Support</h3>
+      <p>Get assistance from our team to optimize your property listings for maximum exposure.</p>
+    </div>
+
+    <div class="bento-card glass-card">
+      <h3 class="text-lg font-bold">Comprehensive Analytics</h3>
+      <p>Track the performance of your properties with detailed analytics and gain valuable insights.</p>
+    </div>
+  </div>
+</main>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const accordions = document.querySelectorAll('.accordion-trigger');
+    accordions.forEach(accordion => {
+      accordion.addEventListener('click', () => {
+        const content = accordion.nextElementSibling;
+        if (content.style.maxHeight) {
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + 'px';
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>

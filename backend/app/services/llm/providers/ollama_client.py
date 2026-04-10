@@ -1,7 +1,10 @@
 import httpx
 import sys
 import json
+import os
 from typing import Optional, List, Dict, Any
+
+_STREAM_TO_STDOUT = os.getenv("OLLAMA_STREAM_TO_STDOUT", "").strip().lower() in ("1", "true", "yes")
 
 class OllamaLLM:
     def __init__(self, base_url: str):
@@ -15,6 +18,7 @@ class OllamaLLM:
         user: Optional[str] = None,
         timeout: int = 1200,
         max_tokens: int = 1200,
+        **kwargs: Any,
     ) -> str:                                                   
         """
         Supports two calling styles:
@@ -64,8 +68,9 @@ class OllamaLLM:
                             chunk = json.loads(line)
                             content = chunk.get("message", {}).get("content", "")
                             if content:
-                                sys.stdout.write(content)
-                                sys.stdout.flush()
+                                if _STREAM_TO_STDOUT:
+                                    sys.stdout.write(content)
+                                    sys.stdout.flush()
                                 full_content.append(content)
                         except ValueError:
                             pass

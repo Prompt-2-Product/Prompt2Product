@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<style>
+.glass-card {
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+}
+
+.mesh-bg {
+  background-color: #0c0c0e;
+  background-image: radial-gradient(at 0% 0%, hsla(253,16%,12%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,39%,20%,1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339,49%,20%,1) 0, transparent 50%);
+  background-attachment: fixed;
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(16px);
+  background: rgba(15, 23, 42, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.bento-card {
+  border-radius: 1.25rem;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.bento-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+</style>
+</head>
+<body class="mesh-bg">
+<header class="sticky-header bg-gray-900 p-4 text-white">
+  <h1 class="text-3xl font-bold">Pricing</h1>
+</header>
+<section class="py-8" id="free-tier">
+  <div class="reveal mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <h2 class="text-3xl font-bold text-center mb-6">Free Tier</h2>
+    <p>Unlock basic features with our Free Tier, perfect for individual agents.</p>
+  </div>
+</section>
+<section class="py-8" id="premium-tier">
+  <div class="reveal mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <h2 class="text-3xl font-bold text-center mb-6">Premium Tier</h2>
+    <p>Enjoy advanced analytics and unlimited users with our Premium Tier.</p>
+  </div>
+</section>
+<section class="py-8" id="enterprise-tier">
+  <div class="reveal mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <h2 class="text-3xl font-bold text-center mb-6">Enterprise Tier</h2>
+    <p>Maximize efficiency with our Enterprise Tier, tailored for large teams.</p>
+  </div>
+</section>
+<section class="py-8" id="compare">
+  <div class="reveal mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <h2 class="text-3xl font-bold text-center mb-6">Compare</h2>
+    <table class="w-full border-collapse">
+      <thead>
+        <tr>
+          <th>Tier</th>
+          <th>Basic</th>
+          <th>Premium</th>
+          <th>Enterprise</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Users</td>
+          <td>1</td>
+          <td>5</td>
+          <td>Unlimited</td>
+        </tr>
+        <tr>
+          <td>Analytics</td>
+          <td>No</td>
+          <td>Yes</td>
+          <td>Advanced</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const reveals = document.querySelectorAll('.reveal');
+  window.addEventListener('scroll', function() {
+    reveals.forEach(reveal => {
+      if (window.scrollY + reveal.offsetHeight > reveal.offsetTop) {
+        reveal.classList.add('visible');
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>

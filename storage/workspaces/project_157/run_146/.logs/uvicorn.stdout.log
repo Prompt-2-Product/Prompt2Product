@@ -1,0 +1,2 @@
+INFO:     127.0.0.1:50808 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50808 - "GET /logo.png HTTP/1.1" 404 Not Found

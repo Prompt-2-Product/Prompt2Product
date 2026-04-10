@@ -32,6 +32,11 @@ export const api = {
             }),
         downloadUrl: (projectId: number, runId: number) =>
             `${API_BASE_URL}/projects/${projectId}/runs/${runId}/download`,
+        modify: (projectId: number, runId: number, prompt: string) =>
+            fetchApi(`/projects/${projectId}/runs/${runId}/modify`, {
+                method: 'POST',
+                body: JSON.stringify({ prompt }),
+            }),
     },
     runs: {
         get: (runId: number) => fetchApi(`/runs/${runId}`),

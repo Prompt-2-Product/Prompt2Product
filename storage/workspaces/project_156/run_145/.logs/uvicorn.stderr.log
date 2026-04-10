@@ -1,0 +1,352 @@
+INFO:     Started server process [6620]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8155 (Press CTRL+C to quit)
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\responses.py", line 350, in __call__
+    stat_result = await anyio.to_thread.run_sync(os.stat, self.path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [WinError 2] The system cannot find the file specified: '../frontend/Landing.html'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 420, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\applications.py", line 1163, in __call__
+    await super().__call__(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\applications.py", line 90, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\routing.py", line 121, in app
+    await response(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\responses.py", line 353, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path ../frontend/Landing.html does not exist.
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\responses.py", line 350, in __call__
+    stat_result = await anyio.to_thread.run_sync(os.stat, self.path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [WinError 2] The system cannot find the file specified: '../frontend/Landing.html'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 420, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\applications.py", line 1163, in __call__
+    await super().__call__(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\applications.py", line 90, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\routing.py", line 121, in app
+    await response(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\responses.py", line 353, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path ../frontend/Landing.html does not exist.
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\responses.py", line 350, in __call__
+    stat_result = await anyio.to_thread.run_sync(os.stat, self.path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [WinError 2] The system cannot find the file specified: '../frontend/Landing.html'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 420, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\applications.py", line 1163, in __call__
+    await super().__call__(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\applications.py", line 90, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\routing.py", line 121, in app
+    await response(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\responses.py", line 353, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path ../frontend/Landing.html does not exist.
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\responses.py", line 350, in __call__
+    stat_result = await anyio.to_thread.run_sync(os.stat, self.path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [WinError 2] The system cannot find the file specified: '../frontend/Landing.html'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 420, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\applications.py", line 1163, in __call__
+    await super().__call__(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\applications.py", line 90, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\routing.py", line 121, in app
+    await response(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\responses.py", line 353, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path ../frontend/Landing.html does not exist.
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\responses.py", line 350, in __call__
+    stat_result = await anyio.to_thread.run_sync(os.stat, self.path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [WinError 2] The system cannot find the file specified: '../frontend/Landing.html'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 420, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\applications.py", line 1163, in __call__
+    await super().__call__(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\applications.py", line 90, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\routing.py", line 121, in app
+    await response(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\responses.py", line 353, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path ../frontend/Landing.html does not exist.
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\responses.py", line 350, in __call__
+    stat_result = await anyio.to_thread.run_sync(os.stat, self.path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\anyio\_backends\_asyncio.py", line 2518, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\anyio\_backends\_asyncio.py", line 1002, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [WinError 2] The system cannot find the file specified: '../frontend/Landing.html'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 420, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\applications.py", line 1163, in __call__
+    await super().__call__(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\applications.py", line 90, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\fastapi\routing.py", line 121, in app
+    await response(scope, receive, send)
+  File "D:\FYP\storage\workspaces\project_156\run_145\.venv_sandbox\Lib\site-packages\starlette\responses.py", line 353, in __call__
+    raise RuntimeError(f"File at path {self.path} does not exist.")
+RuntimeError: File at path ../frontend/Landing.html does not exist.

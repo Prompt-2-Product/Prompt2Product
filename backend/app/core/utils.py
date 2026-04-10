@@ -1,6 +1,61 @@
 import json
 import re
 
+
+def extract_balanced_json_object(text: str, required_substrings: tuple[str, ...] = ()) -> str:
+    """
+    Find the first top-level {...} span with correct string/brace tracking.
+    Avoids the non-greedy \\{[\\s\\S]*?\\} trap that truncates nested JSON.
+
+    If required_substrings is set, returns the first balanced object that contains ALL of them.
+    """
+    text = text.strip()
+    if not text:
+        return ""
+
+    def balance_from(start_idx: int) -> str | None:
+        depth = 0
+        in_str = False
+        esc = False
+        for j in range(start_idx, len(text)):
+            c = text[j]
+            if esc:
+                esc = False
+                continue
+            if c == "\\" and in_str:
+                esc = True
+                continue
+            if c == '"':
+                in_str = not in_str
+                continue
+            if not in_str:
+                if c == "{":
+                    depth += 1
+                elif c == "}":
+                    depth -= 1
+                    if depth == 0:
+                        return text[start_idx : j + 1]
+        return None
+
+    candidates: list[str] = []
+    for i, ch in enumerate(text):
+        if ch != "{":
+            continue
+        frag = balance_from(i)
+        if frag:
+            candidates.append(frag)
+
+    if not candidates:
+        return ""
+
+    if required_substrings:
+        for frag in candidates:
+            if all(s in frag for s in required_substrings):
+                return frag
+
+    return max(candidates, key=len)
+
+
 def extract_json(text: str) -> str:
     """
     Robustly extract JSON object from LLM output.
@@ -12,12 +67,13 @@ def extract_json(text: str) -> str:
     pattern = r"```(?:json)?\s*([\s\S]*?)\s*```"
     matches = re.findall(pattern, text)
     
-    # if no markdown blocks, try to find all { } pairs at the top level
+    # if no markdown blocks, prefer balanced brace scan (non-greedy \{...\} breaks on nested objects)
     if not matches:
-        # This is a simple heuristic to find sibling { } objects
-        # It finds everything between { and } that looks like a root object
-        # We use a non-greedy match and look for objects that started at the start of a line or after a }
-        matches = re.findall(r"\{[\s\S]*?\}", text)
+        bal = extract_balanced_json_object(text, required_substrings=('"files"',))
+        if bal:
+            matches = [bal]
+        else:
+            matches = re.findall(r"\{[\s\S]*?\}", text)
 
     if not matches:
         return ""
@@ -90,6 +146,9 @@ def repair_json(text: str) -> str:
     """
     Experimental 'dirty' JSON fixer for common LLM mistakes.
     """
+    # Smart quotes often break JSON parsers if used as structural quotes
+    text = text.replace("\u201c", '"').replace("\u201d", '"')
+
     # 1. Fix 'code_files' -> 'files' alias
     text = text.replace('"code_files":', '"files":')
     

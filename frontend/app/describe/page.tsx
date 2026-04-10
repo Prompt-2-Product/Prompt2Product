@@ -83,6 +83,10 @@ export default function DescribePage() {
   const handleGenerateProject = async () => {
     if (description.trim()) {
       try {
+        // Ensure a fresh generation never accidentally enters modify flow.
+        sessionStorage.removeItem('changeRequest')
+        sessionStorage.removeItem('generationFlow')
+
         // Decide final language/appType based on auto-detect setting
         let finalLanguage = language
         let finalAppType = appType

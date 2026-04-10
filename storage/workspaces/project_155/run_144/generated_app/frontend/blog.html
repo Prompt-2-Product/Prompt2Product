@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog News</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .mesh-bg {
+      background-color: #0c0c0e;
+      background-image:
+        radial-gradient(at 0% 0%, hsla(253,16%,12%,1) 0, transparent 50%),
+        radial-gradient(at 50% 0%, hsla(225,39%,20%,1) 0, transparent 50%),
+        radial-gradient(at 100% 0%, hsla(339,49%,20%,1) 0, transparent 50%);
+      background-attachment: fixed;
+    }
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(16px);
+      background: rgba(15, 23, 42, 0.7);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .bento-card {
+      border-radius: 1.25rem;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .bento-card:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body class="mesh-bg">
+  <header class="sticky-header p-4 text-center">
+    <h1 class="text-3xl font-bold">Blog News</h1>
+  </header>
+  
+  <main class="py-6 px-4">
+    <section class="reveal mb-8" data-reveal-delay="0.2s">
+      <h2 class="text-xl font-semibold mb-4">Climate Change News</h2>
+      <!-- PLACEHOLDER: climate-change-news | type: list -->
+      <ul class="bento-grid">
+        <li class="bento-card glass-card p-4">
+          <h3>Global Warming Update</h3>
+          <p>Scientists reveal new data on global warming, highlighting accelerated ice melt and rising sea levels.</p>
+        </li>
+        <li class="bento-card glass-card p-4">
+          <h3>Renewable Energy Innovations</h3>
+          <p>Innovative solar panels capture 20% more sunlight, revolutionizing renewable energy solutions.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="reveal mb-8" data-reveal-delay="0.4s">
+      <h2 class="text-xl font-semibold mb-4">Weather Trends</h2>
+      <!-- PLACEHOLDER: weather-trends | type: list -->
+      <ul class="bento-grid">
+        <li class="bento-card glass-card p-4">
+          <h3>Global Weather Forecast</h3>
+          <p>Exclusive forecast predicts sunny spells across Europe with minimal rainfall.</p>
+        </li>
+        <li class="bento-card glass-card p-4">
+          <h3>Severe Weather Alerts</h3>
+          <p>Stay ahead of the storm with WeatherApp’s real-time severe weather alerts for your area.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="reveal mb-8" data-reveal-delay="0.6s">
+      <h2 class="text-xl font-semibold mb-4">Tech Updates</h2>
+      <!-- PLACEHOLDER: tech-updates | type: list -->
+      <ul class="bento-grid">
+        <li class="bento-card glass-card p-4">
+          <h3>Latest AI Advancements</h3>
+          <p>New AI models improve accuracy in machine learning by 15%, enhancing predictive capabilities.</p>
+        </li>
+        <li class="bento-card glass-card p-4">
+          <h3>Quantum Computing Breakthrough</h3>
+          <p>IBM unveils a quantum computer capable of solving complex problems up to 1,000 times faster than current systems.</p>
+        </li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

@@ -3,11 +3,13 @@ import os
 import subprocess
 import sys
 from pathlib import Path
+from typing import IO, Any
 from app.services.sandbox.base import SandboxRunner, ExecResult
 
 class VenvSandboxRunner(SandboxRunner):
     def __init__(self, venv_dir_name: str = ".venv_sandbox"):
         self.venv_dir_name = venv_dir_name
+        self._uvicorn_children: dict[int, tuple[subprocess.Popen[Any], IO[str], IO[str]]] = {}
 
     def _venv_dir(self, workspace: Path) -> Path:
         return workspace / self.venv_dir_name
@@ -87,9 +89,30 @@ class VenvSandboxRunner(SandboxRunner):
                     time.sleep(1)
         return False
 
-    def run_uvicorn(self, workspace: Path, app_dir: Path, host: str, port: int) -> ExecResult:
+    def stop_uvicorn_for_run(self, run_id: int) -> None:
+        existing = self._uvicorn_children.pop(run_id, None)
+        if not existing:
+            return
+        proc, out_log, err_log = existing
+        try:
+            if proc.poll() is None:
+                proc.terminate()
+                try:
+                    proc.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    proc.kill()
+        finally:
+            try:
+                out_log.close()
+            except Exception:
+                pass
+            try:
+                err_log.close()
+            except Exception:
+                pass
+
+    def run_uvicorn(self, workspace: Path, app_dir: Path, host: str, port: int, run_id: int | None = None) -> ExecResult:
         import time
-        import asyncio
         py = str(self._python_path(workspace))
         cmd = [py, "-m", "uvicorn", "main:app", "--host", host, "--port", str(port)]
         
@@ -98,54 +121,78 @@ class VenvSandboxRunner(SandboxRunner):
         log_dir.mkdir(exist_ok=True)
         
         # Use 'a' append mode to persist logs across attempts
-        with open(log_dir / "uvicorn.stdout.log", "a", encoding="utf-8") as out_log, \
-             open(log_dir / "uvicorn.stderr.log", "a", encoding="utf-8") as err_log:
+        out_log = open(log_dir / "uvicorn.stdout.log", "a", encoding="utf-8")
+        err_log = open(log_dir / "uvicorn.stderr.log", "a", encoding="utf-8")
 
-            try:
-                proc = subprocess.Popen(
-                    cmd, 
-                    cwd=str(app_dir), 
-                    stdout=out_log, 
-                    stderr=err_log,
-                    text=True
-                )
+        try:
+            if run_id is not None:
+                self.stop_uvicorn_for_run(run_id)
+
+            popen_kwargs = {
+                "cwd": str(app_dir),
+                "stdout": out_log,
+                "stderr": err_log,
+                "text": True,
+            }
+            if os.name == "nt":
+                popen_kwargs["creationflags"] = subprocess.CREATE_NO_WINDOW
+
+            proc = subprocess.Popen(cmd, **popen_kwargs)
                 
-                # Check for early exit (e.g. invalid arguments, port already in use)
-                time.sleep(2)
-                if proc.poll() is not None:
-                    # Process exited immediately
-                    stdout = (log_dir / "uvicorn.stdout.log").read_text(encoding="utf-8")
-                    stderr = (log_dir / "uvicorn.stderr.log").read_text(encoding="utf-8")
-                    return ExecResult(exit_code=proc.returncode, stdout=stdout, stderr=stderr or "Process failed to start")
+            # Check for early exit (e.g. invalid arguments, port already in use)
+            time.sleep(2)
+            if proc.poll() is not None:
+                # Process exited immediately
+                stdout = (log_dir / "uvicorn.stdout.log").read_text(encoding="utf-8")
+                stderr = (log_dir / "uvicorn.stderr.log").read_text(encoding="utf-8")
+                out_log.close()
+                err_log.close()
+                return ExecResult(exit_code=proc.returncode, stdout=stdout, stderr=stderr or "Process failed to start")
 
-                # Wait for port to become active
-                # Since run_uvicorn is sync, we use a simple loop
-                is_up = False
-                import socket
-                start_wait = time.time()
-                while time.time() - start_wait < 10:
-                    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                        s.settimeout(1)
-                        try:
-                            s.connect((host if host != "0.0.0.0" else "127.0.0.1", port))
-                            is_up = True
+            # Wait for port to become active
+            is_up = False
+            import socket
+            start_wait = time.time()
+            while time.time() - start_wait < 10:
+                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                    s.settimeout(1)
+                    try:
+                        s.connect((host if host != "0.0.0.0" else "127.0.0.1", port))
+                        is_up = True
+                        break
+                    except (socket.timeout, ConnectionRefusedError):
+                        if proc.poll() is not None:
                             break
-                        except (socket.timeout, ConnectionRefusedError):
-                            if proc.poll() is not None: break
-                            time.sleep(1)
+                        time.sleep(1)
 
-                if is_up:
-                    return ExecResult(exit_code=0, stdout=f"Uvicorn started and listening on http://{host}:{port}", stderr="")
+            if is_up:
+                if run_id is not None:
+                    self._uvicorn_children[run_id] = (proc, out_log, err_log)
                 else:
-                    # Check if it crashed during wait
-                    if proc.poll() is not None:
-                        stdout = (log_dir / "uvicorn.stdout.log").read_text(encoding="utf-8")
-                        stderr = (log_dir / "uvicorn.stderr.log").read_text(encoding="utf-8")
-                        return ExecResult(exit_code=proc.returncode, stdout=stdout, stderr=stderr)
-                    return ExecResult(exit_code=1, stdout="Uvicorn started but port timed out", stderr="Health check failed")
+                    out_log.close()
+                    err_log.close()
+                return ExecResult(exit_code=0, stdout=f"Uvicorn started and listening on http://{host}:{port}", stderr="")
+
+            if proc.poll() is not None:
+                stdout = (log_dir / "uvicorn.stdout.log").read_text(encoding="utf-8")
+                stderr = (log_dir / "uvicorn.stderr.log").read_text(encoding="utf-8")
+                out_log.close()
+                err_log.close()
+                return ExecResult(exit_code=proc.returncode, stdout=stdout, stderr=stderr)
+            out_log.close()
+            err_log.close()
+            return ExecResult(exit_code=1, stdout="Uvicorn started but port timed out", stderr="Health check failed")
                     
-            except Exception as e:
-                return ExecResult(exit_code=1, stdout="", stderr=str(e))
+        except Exception as e:
+            try:
+                out_log.close()
+            except Exception:
+                pass
+            try:
+                err_log.close()
+            except Exception:
+                pass
+            return ExecResult(exit_code=1, stdout="", stderr=str(e))
         # Note: We don't have a 'finally' that closes if it's still running, 
         # because the subprocess owns the duped handles. 
         # But our python file objects should be closed eventually or let GC handle them.

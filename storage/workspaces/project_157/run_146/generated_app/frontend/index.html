@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .glass-card {
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+    }
+
+    .mesh-bg {
+      background-color: #0c0c0e;
+      background-image: 
+        radial-gradient(at 0% 0%, hsla(253,16%,12%,1) 0, transparent 50%), 
+        radial-gradient(at 50% 0%, hsla(225,39%,20%,1) 0, transparent 50%), 
+        radial-gradient(at 100% 0%, hsla(339,49%,20%,1) 0, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(16px);
+      background: rgba(15, 23, 42, 0.7);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .bento-card {
+      border-radius: 1.25rem;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .bento-card:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body class="mesh-bg">
+  <header class="sticky-header p-4 text-white">
+    <!-- PLACEHOLDER: Header | type: logo -->
+    <img src="logo.png" alt="Logo" class="h-8 w-auto">
+  </header>
+
+  <main class="p-6">
+    <!-- Hero Section -->
+    <section class="hero py-12 text-center reveal">
+      <h1 class="text-4xl font-bold">Shop Smarter, Save More</h1>
+      <p class="mt-4 text-lg">Effortlessly manage your online shopping with SleekCalculator.</p>
+    </section>
+
+    <!-- Calculator Widget -->
+    <div class="glass-card reveal mt-8 p-6 mx-auto max-w-md w-full">
+      <h2 class="text-xl font-bold mb-4">Budget Tracker</h2>
+      <!-- PLACEHOLDER: Calculator | type: input_fields -->
+      <input type="number" placeholder="Enter Monthly Income" class="p-2 mb-2 border rounded">
+      <input type="number" placeholder="Enter Monthly Expenses" class="p-2 mb-2 border rounded">
+      <button class="bg-blue-500 text-white px-4 py-2 rounded">Calculate Savings</button>
+    </div>
+
+    <!-- CTA Buttons -->
+    <section class="reveal mt-12 flex justify-center gap-4">
+      <a href="#get-started" class="glass-card bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-700">Get Started</a>
+      <a href="#learn-more" class="glass-card bg-gray-500 text-white px-6 py-3 rounded hover:bg-gray-700">Learn More</a>
+    </section>
+  </main>
+
+  <!-- Bento Grid Section -->
+  <section class="bento-grid reveal mt-12">
+    <!-- PLACEHOLDER: Bento Card | type: card_item -->
+    <div class="bento-card bg-white text-black shadow-lg">
+      <h3 class="text-xl font-bold py-2">Quick Savings</h3>
+      <p class="py-2">Track your spending and save big.</p>
+      <a href="#savings" class="bg-blue-500 text-white px-4 py-2 rounded block mt-2">Learn More</a>
+    </div>
+    
+    <div class="bento-card bg-white text-black shadow-lg">
+      <h3 class="text-xl font-bold py-2">Budget Insights</h3>
+      <p class="py-2">Understand your financial health.</p>
+      <a href="#insights" class="bg-blue-500 text-white px-4 py-2 rounded block mt-2">Learn More</a>
+    </div>
+    
+    <div class="bento-card bg-white text-black shadow-lg">
+      <h3 class="text-xl font-bold py-2">Plan Your Shopping</h3>
+      <p class="py-2">Optimize your budget for smarter shopping.</p>
+      <a href="#shopping" class="bg-blue-500 text-white px-4 py-2 rounded block mt-2">Learn More</a>
+    </div>
+  </section>
+</body>
+</html>

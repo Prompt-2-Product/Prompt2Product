@@ -1,0 +1,4 @@
+INFO:     127.0.0.1:53169 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53204 - "GET /about HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53204 - "GET /services HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53204 - "GET /contact HTTP/1.1" 200 OK

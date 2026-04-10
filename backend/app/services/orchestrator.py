@@ -13,7 +13,13 @@ from app.services.llm.factory import get_llm_client
 from app.services.router import ModelRouter
 from app.services.prompt_enhancer import llm_enhance_prompt
 from app.services.spec_generator import llm_prompt_to_spec
-from app.services.code_generator import llm_spec_to_code, post_process_output, GenOutput, GenFile
+from app.services.code_generator import (
+    llm_spec_to_code,
+    post_process_output,
+    repair_main_routes_on_disk,
+    GenOutput,
+    GenFile,
+)
 from app.services.repair import llm_repair
 from app.services.patcher import apply_unified_patch
 
@@ -47,14 +53,14 @@ def validate_generated_files(files: list) -> list[str]:
             if "Feature 1" in content or "Feature 2" in content:
                 warnings.append(f"{path}: Contains generic 'Feature N' placeholders")
         
-        # Check CSS files
-        elif path.endswith("main.css"):
+        # Check CSS files (any name — not only main.css / styles.css)
+        elif path.endswith(".css"):
             lines = [line for line in content.split("\n") if line.strip() and not line.strip().startswith("//")]
             if len(lines) < 50:
                 warnings.append(f"{path}: Only {len(lines)} lines (minimum 50 recommended)")
         
-        # Check JS files
-        elif path.endswith("app.js"):
+        # Check JS files (any frontend .js — not only app.js)
+        elif path.endswith(".js"):
             lines = [line for line in content.split("\n") if line.strip() and not line.strip().startswith("//")]
             if len(lines) < 30:
                 warnings.append(f"{path}: Only {len(lines)} lines (minimum 30 recommended)")
@@ -107,21 +113,29 @@ def _context_snippets(workspace: Path, error_text: str = "") -> str:
                     rel = fname[start_idx:].replace("\\", "/")
                     relevant_files.add(rel)
 
-    candidates = [
+    # Priority order only — no demo-specific filenames (menu/order/styles) required.
+    candidates: list[str] = [
         "generated_app/backend/main.py",
         "generated_app/backend/requirements.txt",
-        "generated_app/frontend/app.js",
-        "generated_app/frontend/index.html",
-        "generated_app/frontend/menu.html",
-        "generated_app/frontend/order.html",
-        "generated_app/frontend/styles.css",
     ]
+    seen: set[str] = set(candidates)
+
+    frontend_dir = workspace / "generated_app" / "frontend"
+    if frontend_dir.exists():
+        for pattern in ("*.html", "*.css", "*.js"):
+            for f in sorted(frontend_dir.glob(pattern)):
+                rel = f.relative_to(workspace).as_posix()
+                if rel not in seen:
+                    seen.add(rel)
+                    candidates.append(rel)
     
     # If we found specific files in trace, prioritize them + requirements.txt
     if relevant_files:
-        # Always include requirements just in case
         relevant_files.add("generated_app/backend/requirements.txt")
-        final_list = list(relevant_files)
+        main_py = "generated_app/backend/main.py"
+        if (workspace / main_py).exists():
+            relevant_files.add(main_py)
+        final_list = sorted(relevant_files)
     else:
         # Fallback to all candidates
         final_list = candidates
@@ -153,7 +167,7 @@ class Orchestrator:
         log(session, run.id, "workspace", f"Workspace: {ws}")
 
         # Use unique port per run to avoid conflicts
-        port = 8010 + run.id
+        port = settings.PREVIEW_PORT_BASE + run.id
         log(session, run.id, "run", f"Will start generated app on http://{host}:{port}")
 
         try:
@@ -210,6 +224,13 @@ class Orchestrator:
                 log(session, run.id, "validate", f"Found {len(validation_warnings)} quality issues (non-blocking)")
             else:
                 log(session, run.id, "validate", "✅ All validation checks passed")
+
+            # Fix truncated main.py / missing FileResponse routes before write
+            post_in = GenOutput(
+                files=[GenFile(path=x["path"], content=x["content"]) for x in enriched_files]
+            )
+            post_out = post_process_output(post_in)
+            enriched_files = [{"path": f.path, "content": f.content} for f in post_out.files]
             
             # Write enriched files
             write_files(ws, enriched_files)
@@ -260,7 +281,7 @@ class Orchestrator:
                         log(session, run.id, "run", "Syntax check failed, skipping run", level="ERROR")
                         error_text = f"Syntax Error:\n{syntax_err}"
                     else:
-                        run_res = self.runner.run_uvicorn(ws, backend_dir, host=host, port=port)
+                        run_res = self.runner.run_uvicorn(ws, backend_dir, host=host, port=port, run_id=run.id)
 
                         if run_res.exit_code == 0:
                             update_run_status(session, run, "success")
@@ -344,7 +365,7 @@ class Orchestrator:
         """
         Applies a manual code modification requested by the user.
         """
-        from app.services.modifier import llm_modify
+        from app.services.modifier import llm_modify, llm_modify_json_only
         
         update_run_status(session, run, "running")
         ws: Path = project_workspace(run.project_id, run.id)
@@ -355,21 +376,53 @@ class Orchestrator:
             log(session, run.id, "modify", "Gathering codebase context...")
             context = _context_snippets(ws) # Fallback to candidates if no errors
             
-            # 2) Call Modifier LLM
+            # 2) Call Modifier LLM (retry once if patch cannot be parsed)
             modify_model = self.router.code_model().model # Use code model for modification
             log(session, run.id, "modify", "Consulting LLM for changes...")
             patch = asyncio.run(llm_modify(self.llm, modify_model, user_request, context))
 
             # 3) Apply Patch
             log(session, run.id, "modify", "Applying changes to codebase...")
-            apply_unified_patch(ws, patch)
+            try:
+                apply_unified_patch(ws, patch)
+            except ValueError as parse_err:
+                log(
+                    session,
+                    run.id,
+                    "modify",
+                    f"First modify output was not parseable ({parse_err}). Retrying with stricter format...",
+                    level="WARN",
+                )
+                retry_prompt = (
+                    user_request
+                    + "\n\nYour previous reply could not be applied. Output ONLY one of:\n"
+                    + '(1) Patch: lines *** Begin Patch then *** Update File: generated_app/... then +++ REPLACE ENTIRE FILE +++ then full file then *** End Patch;\n'
+                    + 'OR (2) One JSON object: {"files":[{"path":"generated_app/frontend/foo.html","content":"..."}]} with valid JSON strings (escape quotes and newlines). No other text.'
+                )
+                patch = asyncio.run(llm_modify(self.llm, modify_model, retry_prompt, context))
+                try:
+                    apply_unified_patch(ws, patch)
+                except ValueError as e2:
+                    log(
+                        session,
+                        run.id,
+                        "modify",
+                        f"Second modify output was not parseable ({e2}). JSON-only modify attempt...",
+                        level="WARN",
+                    )
+                    patch = asyncio.run(
+                        llm_modify_json_only(self.llm, modify_model, user_request, context)
+                    )
+                    apply_unified_patch(ws, patch)
             log(session, run.id, "modify", "Changes applied successfully.")
+            if repair_main_routes_on_disk(ws):
+                log(session, run.id, "modify", "Repaired missing FastAPI routes in main.py for all HTML pages.")
 
             # 4) Verify (Run the app again)
             log(session, run.id, "modify", "Verifying changes by restarting app...")
             # We reuse the repair loop logic or just call a simplified version
             # For simplicity, we just trigger a verify run
-            port = 8010 + run.id
+            port = settings.PREVIEW_PORT_BASE + run.id
             backend_dir = ws / "generated_app" / "backend"
             
             # Check syntax
@@ -379,16 +432,13 @@ class Orchestrator:
                 update_run_status(session, run, "failed")
                 return
 
-            run_res = self.runner.run_uvicorn(ws, backend_dir, host=host, port=port)
+            run_res = self.runner.run_uvicorn(ws, backend_dir, host=host, port=port, run_id=run.id)
             if run_res.exit_code == 0:
                 update_run_status(session, run, "success")
                 log(session, run.id, "done", "Modification applied and app is running.")
             else:
                 log(session, run.id, "modify", "App failed to start after modification. Entering repair mode...", level="WARN")
-                # We could loop back to original execute_run's repair logic here
-                # but for MS1 we just mark as success if patch applied, 
-                # or failed if it's broken.
-                update_run_status(session, run, "success") # Still success since change was applied
+                update_run_status(session, run, "failed")
         
         except Exception as e:
             log(session, run.id, "fatal", f"Modification failed: {str(e)}", level="ERROR")

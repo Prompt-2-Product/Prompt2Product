@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Navigation } from '@/components/navigation'
 import { Check, Loader } from 'lucide-react'
@@ -8,6 +8,7 @@ import { api } from '@/lib/api'
 
 export default function GeneratingPage() {
   const router = useRouter()
+  const hasInitializedRef = useRef(false)
   const [currentStep, setCurrentStep] = useState(1)
   const [progress, setProgress] = useState(0)
   const [status, setStatus] = useState<'pending' | 'running' | 'success' | 'failed'>('pending')
@@ -16,8 +17,12 @@ export default function GeneratingPage() {
     '[INFO] Initializing project generation...',
   ])
   const [projectInfo, setProjectInfo] = useState<{ description: string; language: string; appType: string } | null>(null)
+  const [isModificationFlow, setIsModificationFlow] = useState(false)
 
   useEffect(() => {
+    if (hasInitializedRef.current) return
+    hasInitializedRef.current = true
+
     const stored = sessionStorage.getItem('projectInfo')
     if (!stored) {
       router.push('/describe')
@@ -25,6 +30,10 @@ export default function GeneratingPage() {
     }
 
     const { projectId, runId, description, language, appType } = JSON.parse(stored)
+    const flowMode = sessionStorage.getItem('generationFlow')
+    const changeRequest = (sessionStorage.getItem('changeRequest') || '').trim()
+    const isModify = flowMode === 'modify' && changeRequest.length > 0
+    setIsModificationFlow(isModify)
     console.log(`[GENERATING] Start polling for Project: ${projectId}, Run: ${runId}`)
 
     if (!projectId || !runId) {
@@ -33,6 +42,24 @@ export default function GeneratingPage() {
     }
 
     setProjectInfo({ description, language, appType })
+
+    const startModificationIfNeeded = async (): Promise<boolean> => {
+      if (!isModify) return true
+      try {
+        // Consume mode so page refresh does not retrigger modify.
+        sessionStorage.removeItem('generationFlow')
+        console.log(`[FRONTEND][MODIFY] Submitting modify request for run ${runId}`)
+        setLogs(prev => [...prev, `[INFO] Submitting change request: ${changeRequest}`])
+        await api.projects.modify(projectId, runId, changeRequest)
+        setLogs(prev => [...prev, '[INFO] Change request accepted. Applying modifications...'])
+        return true
+      } catch (err) {
+        console.error('[FRONTEND][MODIFY] Failed to submit change request', err)
+        setStatus('failed')
+        setError(err instanceof Error ? err.message : 'Failed to start modification flow')
+        return false
+      }
+    }
 
     let intervalId: NodeJS.Timeout
     let retryCount = 0
@@ -49,6 +76,10 @@ export default function GeneratingPage() {
           setStatus(run.status)
 
           if (run.status === 'success') {
+            if (isModify) {
+              sessionStorage.removeItem('changeRequest')
+              sessionStorage.removeItem('generationFlow')
+            }
             setProgress(100)
             setCurrentStep(3)
             setTimeout(() => router.push('/preview'), 1500)
@@ -100,8 +131,11 @@ export default function GeneratingPage() {
       }
     }
 
-    intervalId = setInterval(poll, 3000)
-    poll()
+    startModificationIfNeeded().then((ok) => {
+      if (!ok) return
+      intervalId = setInterval(poll, 3000)
+      poll()
+    })
 
     return () => clearInterval(intervalId)
   }, [router])
@@ -184,10 +218,18 @@ export default function GeneratingPage() {
                   <>
                     <div className="flex items-center gap-2 mb-2 text-foreground">
                       {status === 'success' ? <Check className="h-4 w-4 text-green-500" /> : <Loader className="h-4 w-4 animate-spin text-primary" />}
-                      <span className="font-medium">{status === 'success' ? 'Generation Complete!' : 'Generating your project...'}</span>
+                    <span className="font-medium">
+                      {status === 'success'
+                        ? (isModificationFlow ? 'Modification Complete!' : 'Generation Complete!')
+                        : (isModificationFlow ? 'Applying your requested changes...' : 'Generating your project...')}
+                    </span>
                     </div>
                     <p className="text-muted-foreground text-xs">
-                      {status === 'pending' ? 'Initializing...' : 'This may take a few moments. Please wait while we build your project.'}
+                      {status === 'pending'
+                        ? 'Initializing...'
+                        : (isModificationFlow
+                          ? 'Applying patch, validating, and restarting preview.'
+                          : 'This may take a few moments. Please wait while we build your project.')}
                     </p>
                   </>
                 )}
@@ -210,8 +252,10 @@ export default function GeneratingPage() {
         <div className="flex-1 overflow-y-auto custom-scrollbar" style={{ background: 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(0, 0, 139) 33.33%, rgb(135, 206, 250) 66.66%, rgb(255, 255, 255) 100%)' }}>
           <div className="max-w-4xl mx-auto p-6 lg:p-8 pt-12 lg:pt-16">
             <div className="mb-8 md:mb-12 text-center text-white">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">
-                {status === 'failed' ? 'Generation Error' : 'Generating Your Project'}
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">
+                {status === 'failed'
+                  ? (isModificationFlow ? 'Modification Error' : 'Generation Error')
+                  : (isModificationFlow ? 'Applying Your Changes' : 'Generating Your Project')}
               </h1>
             </div>
 

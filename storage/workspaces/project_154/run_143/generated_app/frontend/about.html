@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .mesh-bg {
+      background-color: #0c0c0e;
+      background-image: radial-gradient(at 0% 0%, hsla(253,16%,12%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,39%,20%,1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339,49%,20%,1) 0, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(16px);
+      background: rgba(15, 23, 42, 0.7);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .bento-card {
+      border-radius: 1.25rem;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .bento-card:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body class="mesh-bg">
+  <header class="sticky-header p-4">
+    <h1 class="text-white text-3xl">WeatherApp</h1>
+  </header>
+  <main class="p-8">
+    <!-- Company Backstory -->
+    <section class="glass-card p-6 reveal" id="company-backstory">
+      <h2 class="text-xl font-bold mb-4">Our Journey</h2>
+      <p>WeatherApp was founded with a simple goal: to provide users with the most accurate and reliable weather information, no matter where they are in the world.</p>
+    </section>
+
+    <!-- Mission Statement -->
+    <section class="glass-card p-6 reveal" id="mission-statement">
+      <h2 class="text-xl font-bold mb-4">Our Commitment</h2>
+      <p>Our mission is to empower individuals and businesses with access to real-time weather data that drives informed decisions.</p>
+    </section>
+
+    <!-- Team Bios -->
+    <div class="bento-grid reveal" id="team-bios">
+      <!-- John Doe -->
+      <div class="bento-card text-center">
+        <img src="https://via.placeholder.com/300" alt="John Doe" class="rounded-full mx-auto mb-4">
+        <h3 class="text-lg font-bold">John Doe</h3>
+        <p>CEO & Founder</p>
+      </div>
+
+      <!-- Jane Smith -->
+      <div class="bento-card text-center">
+        <img src="https://via.placeholder.com/300" alt="Jane Smith" class="rounded-full mx-auto mb-4">
+        <h3 class="text-lg font-bold">Jane Smith</h3>
+        <p>CTO & Chief Architect</p>
+      </div>
+
+      <!-- Alice Johnson -->
+      <div class="bento-card text-center">
+        <img src="https://via.placeholder.com/300" alt="Alice Johnson" class="rounded-full mx-auto mb-4">
+        <h3 class="text-lg font-bold">Alice Johnson</h3>
+        <p>Developer & Data Scientist</p>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

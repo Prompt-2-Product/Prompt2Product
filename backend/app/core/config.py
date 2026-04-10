@@ -32,6 +32,7 @@ class Settings(BaseModel):
     MODEL_ENHANCE: str = (os.getenv("API_MODEL_ENHANCE") or os.getenv("MODEL_ENHANCE") or "qwen2.5:7b-instruct").strip()
 
     MAX_REPAIR_ATTEMPTS: int = int(os.getenv("MAX_REPAIR_ATTEMPTS", "2"))
+    PREVIEW_PORT_BASE: int = int(os.getenv("PREVIEW_PORT_BASE", "8010"))
 
 
 settings = Settings()

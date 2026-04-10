@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .mesh-bg {
+      background-color: #0c0c0e;
+      background-image: radial-gradient(at 0% 0%, hsla(253,16%,12%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,39%,20%,1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339,49%,20%,1) 0, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(16px);
+      background: rgba(15, 23, 42, 0.7);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .bento-card {
+      border-radius: 1.25rem;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .bento-card:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .glass-card {
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+    }
+  </style>
+</head>
+<body class="mesh-bg">
+  <header class="sticky-header p-4 flex items-center justify-between">
+    <h1 class="text-white text-2xl">Pricing</h1>
+    <nav class="flex space-x-4">
+      <a href="#" class="text-white hover:text-gray-300">Home</a>
+      <a href="#" class="text-white hover:text-gray-300">Features</a>
+      <a href="/pricing" class="text-white font-bold">Pricing</a>
+      <a href="#" class="text-white hover:text-gray-300">Contact</a>
+    </nav>
+  </header>
+
+  <main class="p-4">
+    <section id="free-tier" class="mt-16 reveal">
+      <h2 class="text-3xl font-bold mb-4">Free Tier Features</h2>
+      <ul class="list-disc pl-5">
+        <li>Unlimited basic weather updates</li>
+        <li>Access to global weather data</li>
+        <li>Limited forecast accuracy</li>
+      </ul>
+    </section>
+
+    <section id="premium-tier" class="mt-16 reveal">
+      <h2 class="text-3xl font-bold mb-4">Premium Tier Benefits</h2>
+      <ul class="list-disc pl-5">
+        <li>Unlimited weather updates and upgrades</li>
+        <li>Dedicated customer support</li>
+        <li>Unlimited forecast accuracy</li>
+        <li>Priority access to new features</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="bg-gray-800 text-white py-4 text-center">
+    &copy; 2023 Your Company. All rights reserved.
+  </footer>
+</body>
+</html>
