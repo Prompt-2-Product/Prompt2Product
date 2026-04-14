@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   backend:
     build:
@@ -8,10 +6,14 @@ services:
     ports:
       - "8002:8000"
       # Port range for generated websites (8010 + run.id)
-      - "8010-8110:8010-8110"
+      - "8010-8210:8010-8210"
     volumes:
       # Mount the sqlite db for persistence
       - ./backend/app.db:/code/backend/app.db
+      # Mount the storage directory to see generated runs on host
+      - ./storage:/code/storage
+    env_file:
+      - ./backend/.env
     # Environment variables
     environment:
       - DATABASE_URL=sqlite:///./app.db

@@ -18,12 +18,50 @@ class Section(BaseModel):
 class Page(BaseModel):
     filename: str = Field(..., description="Filename like index.html")
     title: str
+    nav_label: str = Field(..., description="Short label for navigation menu, e.g., 'About Us'")
     description: str
     sections: List[Section]
 
 class PagePlan(BaseModel):
     brand_name: str
     pages: List[Page]
+
+    @model_validator(mode='before')
+    @classmethod
+    def normalize_plan(cls, data: Any) -> Any:
+        # Case 1: If LLM returns just a list of pages, wrap it
+        if isinstance(data, list):
+            data = {"brand_name": "My App", "pages": data}
+        
+        # Case 2: If LLM returns a dict
+        if isinstance(data, dict):
+            # If it's a single page (has 'filename' but not 'pages')
+            if 'filename' in data and 'pages' not in data:
+                data = {"brand_name": data.get("brand_name", "My App"), "pages": [data]}
+            
+            # Map common key variants to 'pages'
+            for alt_key in ['files', 'page_list', 'site_pages']:
+                if alt_key in data and 'pages' not in data:
+                    data['pages'] = data[alt_key]
+            
+            # Final integrity checks
+            if 'pages' not in data or not data['pages']:
+                raise ValueError("LLM output is missing pages. Possible truncation.")
+            
+            # MANDATORY: index.html check
+            # This prevents the 'succeeding' with just an about page
+            has_index = any(
+                p.get('filename') == 'index.html' if isinstance(p, dict) else False 
+                for p in data['pages']
+            )
+            if not has_index:
+                raise ValueError("LLM failed to generate index.html. Incomplete response suspected.")
+
+            # Ensure brand_name exists
+            if 'brand_name' not in data:
+                data['brand_name'] = "My App"
+                
+        return data
 
 class GenFile(BaseModel):
     path: str
@@ -160,6 +198,7 @@ OUTPUT FORMAT (JSON ONLY — no markdown fences, no comments, no text before or 
     {
       "filename": "index.html",
       "title": "Home - LuxeSpaces",
+      "nav_label": "Home",
       "description": "Luxury interior design.",
       "sections": [
         {
@@ -189,6 +228,7 @@ OUTPUT FORMAT (JSON ONLY — no markdown fences, no comments, no text before or 
     {
        "filename": "contact.html",
        "title": "Contact Us",
+       "nav_label": "Contact",
        "description": "Get in touch.",
        "sections": [
           { "type": "contact", "data": { "title": "Get in Touch", "subtitle": "We would love to hear from you." } }
@@ -208,6 +248,8 @@ RULES:
 2. "type" MUST be one of: hero, features, pricing, testimonials, faq, contact.
 3. Content should be realistic and professional (no Lorem Ipsum).
 4. Create at least 3 pages if the prompt implies a full site (Home, About/Features, Contact).
+5. "nav_label" must be short (1-2 words).
+6. FOR NAVIGATION: The website's header will be automatically generated from the list of pages. Use the exact lowercase filename (without .html) for any internal links you write inside sections (e.g., use "/about" instead of "about-us.html" or "About").
 """
 
 async def generate_code(llm: LLMClient, model: str, task_spec: TaskSpec) -> GenOutput:
@@ -266,6 +308,10 @@ async def generate_code(llm: LLMClient, model: str, task_spec: TaskSpec) -> GenO
             if plan_dict is None:
                 raise ValueError(f"Could not parse PagePlan JSON: {last_err}")
 
+            # DEBUG: Print keys to help diagnose structure issues
+            if isinstance(plan_dict, dict):
+                 print(f"DEBUG: PagePlan keys: {list(plan_dict.keys())}")
+            
             page_plan = PagePlan(**plan_dict)
             
             # If successful, break loop
@@ -283,13 +329,20 @@ async def generate_code(llm: LLMClient, model: str, task_spec: TaskSpec) -> GenO
     # 2. Assemble HTML Files
     gen_files = []
     
+    # Pre-calculate navigation links
+    nav_links = []
+    for page in page_plan.pages:
+        slug = page.filename.replace(".html", "")
+        route = "/" if slug == "index" else f"/{slug}"
+        nav_links.append({"label": page.nav_label, "href": route})
+
     # Frontend Files
     for page in page_plan.pages:
         # Convert Pydantic model to dict for assembler
         page_dict = page.dict()
         page_dict["brand_name"] = page_plan.brand_name
         
-        html_content = UIAssembler.assemble_page(page_dict)
+        html_content = UIAssembler.assemble_page(page_dict, nav_links=nav_links)
         gen_files.append(GenFile(path=f"generated_app/frontend/{page.filename}", content=html_content))
 
     # 3. Generate Backend (main.py) with dynamic routes
