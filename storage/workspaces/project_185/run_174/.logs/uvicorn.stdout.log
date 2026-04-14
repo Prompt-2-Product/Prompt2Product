@@ -1,7 +1,0 @@
-INFO:     127.0.0.1:50101 - "GET / HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50108 - "GET /about HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50109 - "GET /services HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:50194 - "GET /contact HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50195 - "GET /services HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:50270 - "GET / HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50302 - "GET /services HTTP/1.1" 404 Not Found
