@@ -140,116 +140,74 @@ class GenOutput(BaseModel):
 
 SYSTEM_CODE = """You generate a COMPLETE, WORKING, premium full-stack website from a TaskSpec JSON.
 - Backend: FastAPI
-- Frontend: HTML/CSS/JS with Tailwind CSS (CDN)
+- Frontend: HTML/CSS/JS with custom Premium Design System (built-in)
 
 ═══════════════════════════════════════════════════════════════════
-🚨 STEP-BY-STEP GENERATION PROCESS (FOLLOW EXACTLY)
+🚨 CONTENT GROUNDING & RELIABILITY RULES (MANDATORY)
 ═══════════════════════════════════════════════════════════════════
 
-STEP 1: START WITH THIS EXACT main.py TEMPLATE
-───────────────────────────────────────────────────────────────────
-Copy this template EXACTLY and fill in the {PLACEHOLDERS}:
+1. **GROUNDED CONTENT**: Do NOT use generic placeholders like "Contact us today" or "info@example.com".
+   - If the app is for "Deep Sea Diving", use contact emails like "diver@deepsea-ocean.com" and missions like "Exploring the abyss since 1994."
+   - Bios for team members must reflect their industry expertise (e.g., "Chief Underwater Architect").
 
-```python
-import os
-from fastapi import FastAPI, Request
-from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
-from typing import List, Dict, Optional
+2. **ICON-FIRST DESIGN (NO BROKEN IMAGES)**: 
+   - NEVER use `<img>` tags for placeholders (e.g., "team1.jpg"). They appear as broken boxes.
+   - Use **Bootstrap Icons** (`bi-icon-name`) or **Emojis** for all visual highlights.
+   - For Team Members: Provide an `icon` name (e.g., `person-circle`, `inbox`, `rocket`).
 
-app = FastAPI()
+3. **STRUCTURAL INTEGRITY**:
+   - `index.html` MUST have a `hero` section and at least 2 other sections (features, pricing, etc.).
+   - Every page MUST have a clear `description` that matches the theme.
 
-# Get the parent directory (generated_app/) from backend/
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
+4. **NAVIGATION**:
+   - Headers are auto-generated. Use extensionless lowercase names for links: `/about`, `/pricing`, etc.
 
-# Ensure directories exist
-os.makedirs(FRONTEND_DIR, exist_ok=True)
+═══════════════════════════════════════════════════════════════════
+🚨 STEP-BY-STEP GENERATION PROCESS
+═══════════════════════════════════════════════════════════════════
 
-# Mount static files
-app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
+STEP 1: Start with the FastAPI backend logic (refer to templates).
 
-# ═══════════════════════════════════════════════════════════════════
-# FILE SERVING ROUTES (REQUIRED FOR EVERY HTML PAGE)
-# ═══════════════════════════════════════════════════════════════════
+STEP 2: Design the PagePlan JSON.
+Available Section Types: 'hero', 'features', 'pricing', 'testimonials', 'faq', 'team', 'contact'.
 
-@app.get("/")
-def read_root(request: Request):
-    return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))
-
-@app.get("/about")
-def read_about(request: Request):
-    return FileResponse(os.path.join(FRONTEND_DIR, "about.html"))
-
-@app.get("/contact")
-def read_contact(request: Request):
-    return FileResponse(os.path.join(FRONTEND_DIR, "contact.html"))
-
-Your goal is to design a high-converting, professional website using standard Bootstrap 5 components.
-Available Section Types: 'hero', 'features', 'pricing', 'testimonials', 'faq', 'contact'.
-
-Refine the user's request into a concrete list of pages and sections.
-
-OUTPUT FORMAT (JSON ONLY — no markdown fences, no comments, no text before or after):
+OUTPUT FORMAT (JSON ONLY):
 {
-  "brand_name": "LuxeSpaces",
+  "brand_name": "OceanicEx",
+  "footer_text": "Exploring the depths with cutting-edge sonar technology since 2010.",
   "pages": [
     {
       "filename": "index.html",
-      "title": "Home - LuxeSpaces",
+      "title": "OceanicEx - Marine Exploration Experts",
       "nav_label": "Home",
-      "description": "Luxury interior design.",
+      "description": "Leading the world in deep-sea archaeological surveys and marine biology.",
       "sections": [
         {
           "type": "hero",
           "data": {
-             "title": "Redefining Luxury Living",
-             "subtitle": "Award-winning interior design for modern homes.",
-             "cta_text": "View Portfolio",
-             "cta_link": "/portfolio.html",
-             "secondary_text": "Contact Us",
-             "secondary_link": "/contact.html"
+             "title": "Journey to the Abyss",
+             "subtitle": "Uncovering the secrets of the midnight zone with our state-of-the-art ROV fleet.",
+             "cta_text": "Our Missions",
+             "cta_link": "/projects"
           }
         },
         {
-          "type": "features",
+          "type": "team",
           "data": {
-             "title": "Why Choose Us",
-             "subtitle": "Excellence in every detail.",
-             "features": [
-                {"title": "Custom Design", "text": "Tailored to your lifestyle.", "icon": "palette"},
-                {"title": "Expert Team", "text": "Decades of experience.", "icon": "people"}
+             "title": "The Explorers",
+             "subtitle": "Meet the scientists and engineers leading our deep-sea ventures.",
+             "members": [
+                {"name": "Dr. Sarah Tides", "role": "Marine Biologist", "bio": "Specialist in bioluminescent ecosystems.", "icon": "water"},
+                {"name": "Mark Abyss", "role": "Lead ROV Pilot", "bio": "Over 5000 hours of deep-sea navigation.", "icon": "controller"}
              ]
           }
         }
       ]
-    },
-    {
-       "filename": "contact.html",
-       "title": "Contact Us",
-       "nav_label": "Contact",
-       "description": "Get in touch.",
-       "sections": [
-          { "type": "contact", "data": { "title": "Get in Touch", "subtitle": "We would love to hear from you." } }
-       ]
     }
   ]
 }
 
-JSON SAFETY (critical — invalid JSON will fail the whole pipeline):
-- Use double quotes for all keys and string values only. Never use single quotes for JSON.
-- Inside any string value, escape every double quote as \\" . Do not put raw double quotes inside a string.
-- Avoid line breaks inside string values; use spaces instead.
-- No trailing commas after the last item in an object or array.
-
-RULES:
-1. "filename" MUST end in .html (e.g., index.html, about.html).
-2. "type" MUST be one of: hero, features, pricing, testimonials, faq, contact.
-3. Content should be realistic and professional (no Lorem Ipsum).
-4. Create at least 3 pages if the prompt implies a full site (Home, About/Features, Contact).
-5. "nav_label" must be short (1-2 words).
-6. FOR NAVIGATION: The website's header will be automatically generated from the list of pages. Use the exact lowercase filename (without .html) for any internal links you write inside sections (e.g., use "/about" instead of "about-us.html" or "About").
+JSON SAFETY: Double quotes only. Escape \\" inside strings. No line breaks in strings. No comments.
 """
 
 async def generate_code(llm: LLMClient, model: str, task_spec: TaskSpec) -> GenOutput:

@@ -1,13 +1,13 @@
 <!-- FAQ Section -->
 <section class="section-padding" id="faq">
-    <div class="container px-5 my-5">
+    <div class="container px-5">
         <div class="text-center mb-5">
-            <h2 class="fw-bolder">{{ title }}</h2>
-            <p class="lead fw-normal text-muted mb-0">{{ subtitle }}</p>
+            <h2 class="display-5 fw-bold gradient-text mb-3">{{ title }}</h2>
+            <p class="lead fw-normal text-muted mb-0 mx-auto" style="max-width: 700px;">{{ subtitle }}</p>
         </div>
         <div class="row gx-5 justify-content-center">
             <div class="col-xl-8">
-                <div class="accordion" id="accordionFAQ">
+                <div class="accordion accordion-flush premium-card border-0" id="accordionFAQ" style="overflow: hidden;">
                     {{ faq_items }}
                 </div>
             </div>

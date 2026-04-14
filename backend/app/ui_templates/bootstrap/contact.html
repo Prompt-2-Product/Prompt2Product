@@ -1,31 +1,33 @@
 <!-- Contact Section -->
-<section class="section-padding bg-light" id="contact">
-    <div class="container px-5 my-5">
+<section class="section-padding" id="contact">
+    <div class="container px-5">
         <div class="text-center mb-5">
-            <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-envelope"></i></div>
-            <h2 class="fw-bolder">{{ title }}</h2>
-            <p class="lead fw-normal text-muted mb-0">{{ subtitle }}</p>
+            <h2 class="display-5 fw-bold gradient-text mb-3">{{ title }}</h2>
+            <p class="lead fw-normal text-muted mb-0 mx-auto" style="max-width: 700px;">{{ subtitle }}</p>
         </div>
         <div class="row gx-5 justify-content-center">
             <div class="col-lg-8 col-xl-6">
-                <form id="contactForm">
-                    <div class="form-floating mb-3">
-                        <input class="form-control" id="name" type="text" placeholder="Enter your name..." />
-                        <label for="name">Full name</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input class="form-control" id="email" type="email" placeholder="name@example.com" />
-                        <label for="email">Email address</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..."
-                            style="height: 10rem"></textarea>
-                        <label for="message">Message</label>
-                    </div>
-                    <div class="d-grid">
-                        <button class="btn btn-primary btn-lg" id="submitButton" type="submit">Submit</button>
-                    </div>
-                </form>
+                <!-- Use glass-panel for the form container -->
+                <div class="glass-panel p-5">
+                    <form id="contactForm">
+                        <div class="form-floating mb-4">
+                            <input class="form-control border-0 bg-light" id="name" type="text" placeholder="Enter your name..." style="border-radius: 0.75rem;" />
+                            <label for="name">Full name</label>
+                        </div>
+                        <div class="form-floating mb-4">
+                            <input class="form-control border-0 bg-light" id="email" type="email" placeholder="name@example.com" style="border-radius: 0.75rem;" />
+                            <label for="email">Email address</label>
+                        </div>
+                        <div class="form-floating mb-4">
+                            <textarea class="form-control border-0 bg-light" id="message" type="text" placeholder="Enter your message here..."
+                                style="height: 10rem; border-radius: 0.75rem;"></textarea>
+                            <label for="message">Message</label>
+                        </div>
+                        <div class="d-grid">
+                            <button class="btn btn-premium btn-lg" id="submitButton" type="submit">Send Message</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

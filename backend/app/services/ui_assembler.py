@@ -59,12 +59,16 @@ class UIAssembler:
                 # Construct feature cards
                 cards_html = ""
                 for feature in sec_data["features"]:
-                    # Bootstrap card snippet
+                    # Premium Feature Card
                     card = f'''
-                    <div class="col-lg-4 mb-5 mb-lg-0">
-                        <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-{feature.get("icon", "collection")}"></i></div>
-                        <h2 class="h4 fw-bolder">{feature.get("title", "Feature")}</h2>
-                        <p>{feature.get("text", "Description")}</p>
+                    <div class="col-lg-4 mb-5">
+                        <div class="premium-card p-5 h-100">
+                            <div class="feature bg-primary bg-gradient text-white rounded-4 mb-4 d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                                <i class="bi bi-{feature.get("icon", "collection")}"></i>
+                            </div>
+                            <h3 class="h4 mb-3">{feature.get("title", "Feature")}</h3>
+                            <p class="text-muted mb-0">{feature.get("text", "Description")}</p>
+                        </div>
                     </div>
                     '''
                     cards_html += card
@@ -75,14 +79,17 @@ class UIAssembler:
                 for plan in sec_data["plans"]:
                     card = f'''
                     <div class="col-lg-4 mb-5">
-                        <div class="card h-100 shadow border-0">
-                            <div class="card-body p-5">
-                                <div class="small text-uppercase fw-bold text-muted">{plan.get("name", "Plan")}</div>
-                                <div class="mb-3"><span class="display-4 fw-bold">{plan.get("price", "$0")}</span><span class="text-muted">/mo</span></div>
-                                <ul class="list-unstyled mb-4">
-                                    {''.join([f'<li class="mb-2"><i class="bi bi-check text-primary"></i> {feat}</li>' for feat in plan.get("features", [])])}
-                                </ul>
-                                <div class="d-grid"><a class="btn btn-primary" href="#!">{plan.get("cta", "Choose Plan")}</a></div>
+                        <div class="premium-card p-5 h-100 text-center">
+                            <div class="small text-uppercase fw-bold text-primary mb-4">{plan.get("name", "Plan")}</div>
+                            <div class="mb-4">
+                                <span class="display-4 fw-bold gradient-text">{plan.get("price", "$0")}</span>
+                                <span class="text-muted">/mo</span>
+                            </div>
+                            <ul class="list-unstyled mb-5 text-start">
+                                {''.join([f'<li class="mb-3 text-muted"><i class="bi bi-check2-circle text-primary me-2"></i> {feat}</li>' for feat in plan.get("features", [])])}
+                            </ul>
+                            <div class="d-grid">
+                                <a class="btn btn-premium" href="#!">{plan.get("cta", "Choose Plan")}</a>
                             </div>
                         </div>
                     </div>
@@ -95,14 +102,20 @@ class UIAssembler:
                 for t in sec_data["testimonials"]:
                     card = f'''
                     <div class="col-lg-4 mb-5">
-                        <div class="card h-100 shadow border-0">
-                            <div class="card-body p-4">
-                                <p class="card-text fs-5 mb-4">"{t.get("quote", "Great service!")}"</p>
-                                <div class="d-flex align-items-center">
-                                    <div class="ms-3">
-                                        <div class="fw-bold">{t.get("author", "Client")}</div>
-                                        <div class="text-secondary">{t.get("role", "Customer")}</div>
+                        <div class="premium-card p-5 h-100">
+                            <div class="mb-4 text-warning">
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            </div>
+                            <p class="card-text fs-5 mb-5 text-muted italic">"{t.get("quote", "Great service!")}"</p>
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <div class="bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background: var(--primary-gradient) !important; color: white;">
+                                        {t.get("author", "C")[0]}
                                     </div>
+                                </div>
+                                <div class="ms-3">
+                                    <div class="fw-bold">{t.get("author", "Client")}</div>
+                                    <div class="text-muted small">{t.get("role", "Customer")}</div>
                                 </div>
                             </div>
                         </div>
@@ -131,6 +144,24 @@ class UIAssembler:
                     items_html += item
                 template = template.replace("{{ faq_items }}", items_html)
 
+            elif sec_type == "team" and "members" in sec_data:
+                cards_html = ""
+                for member in sec_data["members"]:
+                    card = f'''
+                    <div class="col-lg-4 mb-5">
+                        <div class="premium-card p-5 h-100 text-center">
+                            <div class="mb-4 d-inline-flex align-items-center justify-content-center rounded-circle" style="width: 100px; height: 100px; background: var(--primary-gradient); color: white; font-size: 3rem;">
+                                <i class="bi bi-{member.get("icon", "person-circle")}"></i>
+                            </div>
+                            <h3 class="h4 mb-2">{member.get("name", "Team Member")}</h3>
+                            <div class="small text-uppercase fw-bold text-primary mb-3">{member.get("role", "Expert")}</div>
+                            <p class="text-muted mb-0">{member.get("bio", "Dedicated to excellence.")}</p>
+                        </div>
+                    </div>
+                    '''
+                    cards_html += card
+                template = template.replace("{{ team_cards }}", cards_html)
+
             # Generic replacement for top-level data
             for key, value in sec_data.items():
                 if isinstance(value, str):
@@ -138,11 +169,18 @@ class UIAssembler:
             
             body_content += template
 
+        # Ensure we always have AT LEAST a minimal body if LLM failed to provide sections
+        if not body_content.strip():
+            body_content = '<section class="section-padding text-center"><div class="container"><h1 class="gradient-text">Welcome</h1><p>Building your experience...</p></div></section>'
+
         # Inject Footer
         footer_template = UIAssembler.load_template("footer")
         footer_template = footer_template.replace("{{ brand_name }}", page_plan.get("brand_name", "Brand"))
         footer_template = footer_template.replace("{{ year }}", "2024")
-        footer_template = footer_template.replace("{{ footer_text }}", "Empowering your business.")
+        
+        # Grounded Footer Text
+        foot_text = page_plan.get("footer_text") or page_plan.get("description", "Premium digital experiences.")
+        footer_template = footer_template.replace("{{ footer_text }}", foot_text)
         body_content += footer_template
 
         # Final Assembly
