@@ -21,10 +21,22 @@ class UIAssembler:
         return content
 
     @staticmethod
-    def assemble_page(page_plan: Dict[str, Any], nav_links: List[Dict[str, str]] = None) -> str:
+    def assemble_page(page_plan: Dict[str, Any]) -> str:
         """
         Assembles a complete HTML page from a PagePlan dictionary.
-        nav_links: list of {"label": "Home", "href": "/"}
+        page_plan schema:
+        {
+            "filename": "index.html",
+            "title": "Page Title",
+            "description": "SEO Description",
+            "sections": [
+                {
+                    "type": "hero",
+                    "data": { "title": "...", "subtitle": "...", "cta_text": "...", "cta_link": "..." }
+                },
+                ...
+            ]
+        }
         """
         base_template = UIAssembler.load_template("base")
         
@@ -32,15 +44,15 @@ class UIAssembler:
         body_content = ""
         
         # Inject Navbar (Always first)
+        # Using a default navbar or constructing it from page plan?
+        # For now, let's assume we want a standard navbar.
+        # We need navigation links. In a real app, these might come from a global config.
+        # For this implementation, we'll hardcode or deduce standard links.
         navbar_template = UIAssembler.load_template("navbar")
         nav_links_html = ""
-        
-        # Use provided links or fallback to Home only
-        links = nav_links or [{"label": "Home", "href": "/"}]
-        
-        for link in links:
-            label = link.get("label", "Link")
-            href = link.get("href", "#")
+        # Standard links
+        links = [("Home", "/"), ("About", "/about"), ("Services", "/services"), ("Contact", "/contact")]
+        for label, href in links:
             nav_links_html += f'<li class="nav-item"><a class="nav-link" href="{href}">{label}</a></li>'
             
         navbar_html = navbar_template.replace("{{ brand_name }}", page_plan.get("brand_name", "Brand"))
