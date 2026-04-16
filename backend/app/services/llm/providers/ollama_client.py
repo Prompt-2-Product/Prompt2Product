@@ -16,8 +16,8 @@ class OllamaLLM:
         messages: Optional[List[Dict[str, Any]]] = None,
         system: Optional[str] = None,
         user: Optional[str] = None,
-        timeout: int = 1200,
-        max_tokens: int = 1200,
+        timeout: int = 1800,
+        max_tokens: int = 3000,
         **kwargs: Any,
     ) -> str:                                                   
         """
@@ -37,7 +37,9 @@ class OllamaLLM:
             if system:
                 messages = [{"role": "system", "content": system}] + list(messages)
 
-        async with httpx.AsyncClient(timeout=timeout) as client:
+        # Force IPv4 and add retries for robustness
+        transport = httpx.AsyncHTTPTransport(retries=2)
+        async with httpx.AsyncClient(timeout=timeout, transport=transport) as client:
             # 1) Try Ollama native endpoint
             native_url = f"{self.base_url}/api/chat"
             # Enable streaming

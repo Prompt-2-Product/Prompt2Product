@@ -3,17 +3,29 @@
 .gitignore
 
 # Python
-venv
-__pycache__
+**/venv/
+**/.venv/
+**/env/
+**/.env
+**/__pycache__/
 *.pyc
 *.pyo
 *.pyd
 .Python
-env/
-.env
+
+# Project Data & Artifacts
+storage/
+**/storage/
+generated_app/
+finetune/
+fine_tune_dataset/
+Fine Tune Attempt */
+Fine tune attempt */
 
 # Node
-node_modules
+**/node_modules/
 npm-debug.log
 yarn-error.log
-.next
+.next/
+dist/
+build/
