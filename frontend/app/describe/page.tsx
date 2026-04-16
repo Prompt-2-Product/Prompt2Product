@@ -127,7 +127,7 @@ export default function DescribePage() {
   }
 
   return (
-    <div className="min-h-screen text-foreground relative overflow-hidden page-transition">
+    <div className="h-screen text-foreground relative overflow-hidden page-transition">
       {/* Overview gradient background - light pastel blue to cyan-blue */}
       <div
         className="pointer-events-none absolute inset-0 -z-10"
@@ -138,7 +138,7 @@ export default function DescribePage() {
       />
       <Navigation />
 
-      <main className="flex items-center justify-center min-h-[calc(100vh-4rem)] pt-16 pb-8 sm:pb-16 px-6 sm:px-10 lg:px-16 xl:px-24">
+      <main className="flex items-center justify-center h-[calc(100vh-4rem)] mt-16 overflow-hidden px-6 sm:px-10 lg:px-16 xl:px-24">
         <div className="w-full page-content">
           {/* Title - Centered */}
           <div className="mb-12 md:mb-14 text-center">
