@@ -8,7 +8,7 @@ services:
     ports:
       - "8002:8000"
       # Port range for generated websites (8010 + run.id)
-      - "8010-8110:8010-8110"
+      - "8010-8310:8010-8310"
     volumes:
       # Mount the sqlite db for persistence
       - ./backend/app.db:/code/backend/app.db
@@ -16,6 +16,10 @@ services:
     environment:
       - DATABASE_URL=sqlite:///./app.db
       - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - MODEL_SPEC=qwen2.5-coder:3b
+      - MODEL_CODE=qwen2.5-coder:7b
+      - MODEL_REPAIR=qwen2.5-coder:3b
+      - MODEL_ENHANCE=qwen2.5:7b-instruct
     extra_hosts:
       - "host.docker.internal:host-gateway"
 

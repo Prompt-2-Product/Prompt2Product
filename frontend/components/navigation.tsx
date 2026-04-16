@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { Code2, LogOut, Menu, X, ChevronDown } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { ThemeToggle } from '@/components/theme-toggle'
 import { AuthModal } from '@/components/auth-modal'
 import {
   DropdownMenu,
@@ -80,50 +81,53 @@ export function Navigation() {
           )}
 
           {/* Right side - Auth */}
-          {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="flex items-center gap-2 rounded-full bg-secondary/50 px-3 sm:px-4 py-1.5 sm:py-2 hover:bg-secondary/70 transition-colors outline-none">
-                  <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-white">
-                    {user.name.charAt(0).toUpperCase()}
-                  </div>
-                  <span className="text-sm font-medium text-foreground hidden sm:inline">{user.name}</span>
-                  <ChevronDown className="h-3 w-3 text-muted-foreground hidden sm:block" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuItem onClick={handleLogout} variant="destructive" className="cursor-pointer">
-                  <LogOut className="h-4 w-4" />
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <div className="flex items-center gap-3">
-              <Button
-                onClick={() => {
-                  setAuthMode('login')
-                  setAuthModalOpen(true)
-                }}
-                variant="ghost"
-                size="sm"
-                className="btn-glow text-foreground hover:bg-secondary/50 font-medium"
-              >
-                Sign In
-              </Button>
-              <Button
-                onClick={() => {
-                  setAuthMode('signup')
-                  setAuthModalOpen(true)
-                }}
-                variant="ghost"
-                size="sm"
-                className="btn-glow text-foreground hover:bg-secondary/50 font-medium"
-              >
-                Sign Up
-              </Button>
-            </div>
-          )}
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="flex items-center gap-2 rounded-full bg-secondary/50 px-3 sm:px-4 py-1.5 sm:py-2 hover:bg-secondary/70 transition-colors outline-none">
+                    <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-white">
+                      {user.name.charAt(0).toUpperCase()}
+                    </div>
+                    <span className="text-sm font-medium text-foreground hidden sm:inline">{user.name}</span>
+                    <ChevronDown className="h-3 w-3 text-muted-foreground hidden sm:block" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem onClick={handleLogout} variant="destructive" className="cursor-pointer">
+                    <LogOut className="h-4 w-4" />
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <div className="flex items-center gap-3">
+                <Button
+                  onClick={() => {
+                    setAuthMode('login')
+                    setAuthModalOpen(true)
+                  }}
+                  variant="ghost"
+                  size="sm"
+                  className="btn-glow text-foreground hover:bg-secondary/50 font-medium"
+                >
+                  Sign In
+                </Button>
+                <Button
+                  onClick={() => {
+                    setAuthMode('signup')
+                    setAuthModalOpen(true)
+                  }}
+                  variant="ghost"
+                  size="sm"
+                  className="btn-glow text-foreground hover:bg-secondary/50 font-medium"
+                >
+                  Sign Up
+                </Button>
+              </div>
+            )}
+          </div>
 
           {/* Mobile menu button */}
           <button
