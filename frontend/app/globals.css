@@ -4,39 +4,39 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #0a0e17;
-  --foreground: #e8ecf1;
-  --card: #0f1419;
-  --card-foreground: #e8ecf1;
-  --popover: #0f1419;
-  --popover-foreground: #e8ecf1;
-  --primary: #2563eb;
-  --primary-foreground: #ffffff;
-  --secondary: #1a1f2e;
-  --secondary-foreground: #e8ecf1;
-  --muted: #1a1f2e;
-  --muted-foreground: #64748b;
-  --accent: #2563eb;
-  --accent-foreground: #ffffff;
-  --destructive: #dc2626;
-  --destructive-foreground: #ffffff;
-  --border: #1a1f2e;
-  --input: #0f1419;
-  --ring: #2563eb;
-  --chart-1: #2563eb;
-  --chart-2: #7c3aed;
-  --chart-3: #db2777;
-  --chart-4: #ea580c;
-  --chart-5: #059669;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
   --radius: 0.625rem;
-  --sidebar: #0a0e17;
-  --sidebar-foreground: #e8ecf1;
-  --sidebar-primary: #2563eb;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1a1f2e;
-  --sidebar-accent-foreground: #e8ecf1;
-  --sidebar-border: #1a1f2e;
-  --sidebar-ring: #2563eb;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
 }
 
 .dark {
@@ -121,11 +121,15 @@
   }
   body {
     @apply bg-background text-foreground;
-    background: linear-gradient(135deg, #0a0e17 0%, #0f1419 25%, #0a0e17 100%);
     position: relative;
     min-height: 100vh;
   }
-  body::before {
+  
+  .dark body {
+    background: linear-gradient(135deg, #0a0e17 0%, #0f1419 25%, #0a0e17 100%);
+  }
+
+  .dark body::before {
     content: '';
     position: fixed;
     inset: 0;
@@ -177,14 +181,14 @@
     }
   }
 
-  /* Neon Glow Effects */
-  .btn-glow {
+  /* Neon Glow Effects - Only in dark mode */
+  .dark .btn-glow {
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
   }
 
-  .btn-glow::before {
+  .dark .btn-glow::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -194,21 +198,21 @@
     pointer-events: none;
   }
 
-  .btn-glow:hover::before {
+  .dark .btn-glow:hover::before {
     opacity: 1;
   }
 
-  .btn-glow:hover {
+  .dark .btn-glow:hover {
     box-shadow: 0 0 20px rgba(37, 99, 235, 0.3), 0 0 40px rgba(37, 99, 235, 0.15);
   }
 
-  /* Darker Neon Glow for Team Cards */
-  .team-card-glow {
+  /* Darker Neon Glow for Team Cards - Only in dark mode */
+  .dark .team-card-glow {
     position: relative;
     transition: all 0.3s ease;
   }
 
-  .team-card-glow::before {
+  .dark .team-card-glow::before {
     content: '';
     position: absolute;
     inset: -1px;
@@ -219,11 +223,11 @@
     z-index: -1;
   }
 
-  .team-card-glow:hover::before {
+  .dark .team-card-glow:hover::before {
     opacity: 1;
   }
 
-  .team-card-glow:hover {
+  .dark .team-card-glow:hover {
     box-shadow: 0 0 25px rgba(37, 99, 235, 0.25), 0 0 50px rgba(37, 99, 235, 0.1);
   }
 }
