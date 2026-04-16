@@ -22,7 +22,8 @@ export function Navigation() {
   const isDescribePage = pathname === '/describe'
   const isGeneratingPage = pathname === '/generating'
   const isPreviewPage = pathname === '/preview'
-  const isMinimalNav = isDescribePage || isGeneratingPage || isPreviewPage
+  const isIdePage = pathname === '/ide'
+  const isMinimalNav = isDescribePage || isGeneratingPage || isPreviewPage || isIdePage
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -30,10 +31,6 @@ export function Navigation() {
     const storedUser = window.localStorage.getItem('user')
     if (storedUser) {
       setUser(JSON.parse(storedUser))
-    } else if (window.location.pathname === '/') {
-      // Show sign-in dialog on first visit to the landing page if not logged in
-      setAuthMode('login')
-      setAuthModalOpen(true)
     }
 
     const handler = (event: Event) => {

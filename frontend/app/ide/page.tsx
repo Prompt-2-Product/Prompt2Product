@@ -181,27 +181,46 @@ export default function IDEPage() {
     <div className="h-screen bg-background text-foreground flex flex-col overflow-hidden">
       <Navigation />
 
-      {/* Top Bar */}
-      <div className="border-b border-border px-4 md:px-6 py-3 flex items-center justify-between bg-background flex-shrink-0" style={{ marginTop: '3rem' }}>
-        <Button
-          onClick={() => router.push('/preview')}
-          variant="ghost"
-          size="sm"
-          className="text-foreground hover:bg-secondary/50 gap-2 font-medium"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          <span className="hidden sm:inline">Back to Project summary</span>
-        </Button>
-        <span className="text-xs md:text-sm text-foreground font-medium">Prompt2Product - IDE</span>
-        <Button
-          onClick={handleDownload}
-          variant="ghost"
-          size="sm"
-          className="text-foreground hover:bg-secondary/50 gap-2 font-medium"
-        >
-          <Download className="h-4 w-4" />
-          <span className="hidden sm:inline">Download</span>
-        </Button>
+      {/* Top Bar - Refactored for better spacing and prominence */}
+      <div className="border-b border-border bg-background/95 backdrop-blur-sm flex-shrink-0 z-10 shadow-sm" style={{ marginTop: '3.5rem' }}>
+        <div className="px-6 md:px-8 py-4 grid grid-cols-3 items-center">
+          {/* Left: Back Button */}
+          <div className="flex justify-start">
+            <Button
+              onClick={() => router.push('/preview')}
+              variant="outline"
+              size="sm"
+              className="border-border hover:bg-secondary/50 gap-2 font-medium bg-secondary/10 shadow-sm transition-all hover:scale-[1.02]"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              <span className="hidden md:inline">Back to Project summary</span>
+              <span className="md:hidden">Back</span>
+            </Button>
+          </div>
+
+          {/* Center: Title */}
+          <div className="flex justify-center">
+            <div className="flex items-center gap-3">
+              <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
+              <span className="text-sm md:text-base text-foreground font-bold tracking-wide uppercase px-4 py-1 rounded-full bg-secondary/30 border border-border/50">
+                PROMPT2PRODUCT <span className="text-muted-foreground font-medium ml-1">IDE</span>
+              </span>
+            </div>
+          </div>
+
+          {/* Right: Actions */}
+          <div className="flex justify-end gap-3">
+            <Button
+              onClick={handleDownload}
+              variant="outline"
+              size="sm"
+              className="border-border hover:bg-secondary/50 gap-2 font-medium bg-secondary/10 shadow-sm transition-all hover:scale-[1.02]"
+            >
+              <Download className="h-4 w-4 text-blue-400" />
+              <span className="hidden md:inline">Download</span>
+            </Button>
+          </div>
+        </div>
       </div>
 
       {/* Main IDE Layout */}

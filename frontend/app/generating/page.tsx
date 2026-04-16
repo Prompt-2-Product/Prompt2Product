@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Navigation } from '@/components/navigation'
-import { Check, Loader } from 'lucide-react'
+import { Check, Loader, ChevronLeft, ChevronRight } from 'lucide-react'
 import { api } from '@/lib/api'
 
 export default function GeneratingPage() {
@@ -18,6 +18,7 @@ export default function GeneratingPage() {
   ])
   const [projectInfo, setProjectInfo] = useState<{ description: string; language: string; appType: string } | null>(null)
   const [isModificationFlow, setIsModificationFlow] = useState(false)
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
 
   useEffect(() => {
     if (hasInitializedRef.current) return
@@ -157,27 +158,36 @@ export default function GeneratingPage() {
       />
       <Navigation />
 
-      <main className="absolute inset-x-0 top-[3rem] bottom-0 flex flex-col lg:flex-row">
-        <aside className="w-full lg:w-[380px] border-r border-border/50 bg-background flex flex-col flex-shrink-0 h-full">
-          <div className="px-5 py-4 border-b border-border/50 flex-shrink-0 bg-background backdrop-blur-sm">
-            <div className="flex items-center justify-between">
-              <div className="flex-1">
-                <h2 className="text-base font-semibold text-foreground mb-1">Project Chat</h2>
-                {projectInfo && (
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-xs px-2 py-0.5 rounded-md bg-primary/10 text-primary border border-primary/20">
-                      {projectInfo.language}
-                    </span>
-                    <span className="text-xs px-2 py-0.5 rounded-md bg-secondary/50 text-foreground border border-border/50">
-                      {projectInfo.appType}
-                    </span>
+      <main className="absolute inset-x-0 top-[3.5rem] bottom-0 flex flex-col lg:flex-row">
+        <aside className={`${isSidebarCollapsed ? 'w-0 lg:w-0 border-r-0' : 'w-full lg:w-[380px] border-r'} border-border/50 bg-background flex flex-col flex-shrink-0 h-full transition-all duration-300 relative overflow-visible`}>
+          {!isSidebarCollapsed && (
+            <>
+              <div className="px-5 py-4 border-b border-border/50 flex-shrink-0 bg-background backdrop-blur-sm">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <h2 className="text-base font-semibold text-foreground mb-1">Project Chat</h2>
+                    {projectInfo && (
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-xs px-2 py-0.5 rounded-md bg-primary/10 text-primary border border-primary/20">
+                          {projectInfo.language}
+                        </span>
+                        <span className="text-xs px-2 py-0.5 rounded-md bg-secondary/50 text-foreground border border-border/50">
+                          {projectInfo.appType}
+                        </span>
+                      </div>
+                    )}
                   </div>
-                )}
+                  <button
+                    onClick={() => setIsSidebarCollapsed(true)}
+                    className="p-1.5 hover:bg-secondary/50 rounded-lg transition-colors text-muted-foreground hover:text-foreground"
+                    title="Collapse sidebar"
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                  </button>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div className="flex-1 overflow-y-auto px-5 py-4 space-y-5 custom-scrollbar min-h-0">
+              <div className="flex-1 overflow-y-auto px-5 py-4 space-y-5 custom-scrollbar min-h-0">
             {projectInfo && (
               <div className="flex flex-col gap-2.5">
                 <div className="flex items-center gap-2">
@@ -247,7 +257,20 @@ export default function GeneratingPage() {
               />
             </div>
           </div>
-        </aside>
+        </>
+      )}
+    </aside>
+
+        {/* Floating Expand Button */}
+        {isSidebarCollapsed && (
+          <button
+            onClick={() => setIsSidebarCollapsed(false)}
+            className="fixed left-0 top-1/2 -translate-y-1/2 z-40 bg-background border-y border-r border-border/50 p-2 rounded-r-xl shadow-xl hover:bg-secondary/50 transition-all group"
+            title="Expand sidebar"
+          >
+            <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-foreground transition-colors" />
+          </button>
+        )}
 
         <div className="flex-1 overflow-y-auto custom-scrollbar" style={{ background: 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(0, 0, 139) 33.33%, rgb(135, 206, 250) 66.66%, rgb(255, 255, 255) 100%)' }}>
           <div className="max-w-4xl mx-auto p-6 lg:p-8 pt-12 lg:pt-16">
