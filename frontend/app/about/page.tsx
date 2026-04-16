@@ -11,8 +11,7 @@ export default function AboutPage() {
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
 
-      <main className="pt-24 pb-20">
-        <div className="mx-auto max-w-7xl px-6">
+      <main className="pt-16 pb-20 px-6 sm:px-10 lg:px-16 xl:px-24">
           {/* Hero Section */}
           <section className="mb-16 md:mb-20 animate-in fade-in duration-1000">
             <div className="max-w-3xl mb-12">
@@ -117,7 +116,6 @@ export default function AboutPage() {
               </Link>
             </div>
           </section>
-        </div>
       </main>
     </div>
   )

@@ -77,7 +77,7 @@ export default function PreviewPage() {
           }}
         />
         <Navigation />
-        <main className="flex items-center justify-center min-h-[calc(100vh-5rem)] pt-8 sm:pt-16 md:pt-24 pb-8 sm:pb-16">
+        <main className="flex items-center justify-center min-h-[calc(100vh-4rem)] pt-16 pb-8 sm:pb-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-slate-800 dark:text-slate-900">Loading...</p>
           </div>
@@ -98,7 +98,7 @@ export default function PreviewPage() {
       />
       <Navigation />
 
-      <main className="absolute inset-x-0 top-[3.5rem] bottom-0 flex flex-col lg:flex-row">
+      <main className="absolute inset-x-0 top-16 bottom-0 flex flex-col lg:flex-row">
         {/* Left: Chat Sidebar - Only visible when showChat is true */}
         {showChat && projectInfo && (
           <aside className={`${isSidebarCollapsed ? 'w-0 lg:w-0 border-r-0' : 'w-full lg:w-[380px] border-r'} border-border/50 bg-background flex flex-col flex-shrink-0 h-full transition-all duration-300 relative overflow-visible`}>

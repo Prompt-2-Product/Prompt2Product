@@ -138,7 +138,7 @@ export default function DescribePage() {
       />
       <Navigation />
 
-      <main className="flex items-center justify-center min-h-[calc(100vh-5rem)] pt-8 sm:pt-16 md:pt-24 pb-8 sm:pb-16">
+      <main className="flex items-center justify-center min-h-[calc(100vh-4rem)] pt-16 pb-8 sm:pb-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 w-full page-content">
           {/* Title - Centered */}
           <div className="mb-12 md:mb-14 text-center">

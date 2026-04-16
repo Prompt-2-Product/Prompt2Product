@@ -158,7 +158,7 @@ export default function GeneratingPage() {
       />
       <Navigation />
 
-      <main className="absolute inset-x-0 top-[3.5rem] bottom-0 flex flex-col lg:flex-row">
+      <main className="absolute inset-x-0 top-16 bottom-0 flex flex-col lg:flex-row">
         <aside className={`${isSidebarCollapsed ? 'w-0 lg:w-0 border-r-0' : 'w-full lg:w-[380px] border-r'} border-border/50 bg-background flex flex-col flex-shrink-0 h-full transition-all duration-300 relative overflow-visible`}>
           {!isSidebarCollapsed && (
             <>

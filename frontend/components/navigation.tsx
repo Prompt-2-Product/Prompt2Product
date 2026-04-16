@@ -61,15 +61,15 @@ export function Navigation() {
 
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 border-b border-border ${isMinimalNav ? 'bg-background backdrop-blur-md' : 'bg-background backdrop-blur-md'}`}>
-      <div className={`mx-auto max-w-7xl ${isMinimalNav ? 'px-4 py-2' : 'px-6 py-4'}`}>
-        <div className="flex items-center justify-between">
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background backdrop-blur-md h-16">
+      <div className="mx-auto max-w-7xl h-full px-4 sm:px-6">
+        <div className="flex items-center justify-between h-full">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 sm:gap-3">
-            <div className={`flex items-center justify-center rounded-lg bg-primary text-primary-foreground ${isMinimalNav ? 'h-7 w-7' : 'h-8 w-8'}`}>
-              <Code2 className={isMinimalNav ? 'h-4 w-4' : 'h-5 w-5'} />
+            <div className="flex items-center justify-center rounded-lg bg-primary text-primary-foreground h-8 w-8">
+              <Code2 className="h-5 w-5" />
             </div>
-            <span className={`font-semibold text-foreground ${isMinimalNav ? 'text-base' : 'text-xl'}`}>Prompt2Product</span>
+            <span className="font-semibold text-foreground text-xl">Prompt2Product</span>
           </Link>
 
           {/* Center menu - Hidden on describe and generating pages */}

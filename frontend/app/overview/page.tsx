@@ -11,8 +11,7 @@ export default function OverviewPage() {
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
 
-      <main className="pt-24 pb-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <main className="pt-16 pb-20 px-6 sm:px-10 lg:px-16 xl:px-24">
           {/* Hero Section */}
           <section className="mb-16 md:mb-24 animate-in fade-in duration-1000">
             <div className="max-w-4xl mx-auto mb-12 text-center">
@@ -212,7 +211,6 @@ export default function OverviewPage() {
               </Button>
             </Link>
           </div>
-        </div>
       </main>
     </div>
   )

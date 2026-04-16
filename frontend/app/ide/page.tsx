@@ -178,11 +178,11 @@ export default function IDEPage() {
   }
 
   return (
-    <div className="h-screen bg-background text-foreground flex flex-col overflow-hidden">
+    <div className="h-screen bg-background text-foreground flex flex-col overflow-hidden pt-16">
       <Navigation />
 
       {/* Top Bar - Refactored for better spacing and prominence */}
-      <div className="border-b border-border bg-background/95 backdrop-blur-sm flex-shrink-0 z-10 shadow-sm" style={{ marginTop: '3.5rem' }}>
+      <div className="border-b border-border bg-background/95 backdrop-blur-sm flex-shrink-0 z-10 shadow-sm">
         <div className="px-6 md:px-8 py-4 grid grid-cols-3 items-center">
           {/* Left: Back Button */}
           <div className="flex justify-start">
