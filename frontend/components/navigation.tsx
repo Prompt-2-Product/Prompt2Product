@@ -30,10 +30,6 @@ export function Navigation() {
     const storedUser = window.localStorage.getItem('user')
     if (storedUser) {
       setUser(JSON.parse(storedUser))
-    } else if (window.location.pathname === '/') {
-      // Show sign-in dialog on first visit to the landing page if not logged in
-      setAuthMode('login')
-      setAuthModalOpen(true)
     }
 
     const handler = (event: Event) => {

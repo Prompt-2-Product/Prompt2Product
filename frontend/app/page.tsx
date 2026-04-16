@@ -8,25 +8,7 @@ export default function LandingPage() {
   const router = useRouter()
 
   const handleStartBuilding = () => {
-    if (typeof window === 'undefined') return
-
-    const storedUser = window.localStorage.getItem('user')
-
-    if (storedUser) {
-      // User is already signed in, go directly to describe page
-      router.push('/describe')
-      return
-    }
-
-    // Store where we want to go after successful auth
-    window.sessionStorage.setItem('postAuthRedirect', '/describe')
-
-    // Ask the navigation bar to open the auth modal (prefer signup for new users)
-    window.dispatchEvent(
-      new CustomEvent('open-auth-modal', {
-        detail: { mode: 'signup', postAuthRedirect: '/describe' },
-      }),
-    )
+    router.push('/describe')
   }
 
   const steps = [
