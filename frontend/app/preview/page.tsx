@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Navigation } from '@/components/navigation'
 import { Button } from '@/components/ui/button'
-import { Code2, Edit3, Download, Eye, Loader, X } from 'lucide-react'
+import { Code2, Edit3, Download, Eye, Loader, X, ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface ProjectInfo {
   description: string
@@ -25,6 +25,7 @@ export default function PreviewPage() {
   const [isRegenerating, setIsRegenerating] = useState(false)
   const [changeMessage, setChangeMessage] = useState('')
   const [chatHistory, setChatHistory] = useState<Array<{ role: 'user' | 'system'; content: string }>>([])
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
 
   useEffect(() => {
     const stored = sessionStorage.getItem('projectInfo')
@@ -97,36 +98,47 @@ export default function PreviewPage() {
       />
       <Navigation />
 
-      <main className="absolute inset-x-0 top-[3rem] bottom-0 flex flex-col lg:flex-row">
+      <main className="absolute inset-x-0 top-[3.5rem] bottom-0 flex flex-col lg:flex-row">
         {/* Left: Chat Sidebar - Only visible when showChat is true */}
         {showChat && projectInfo && (
-          <aside className="w-full lg:w-[380px] border-r border-border/50 bg-background flex flex-col flex-shrink-0 h-full">
-            {/* Chat Header */}
-            <div className="px-5 py-4 border-b border-border/50 flex-shrink-0 bg-background backdrop-blur-sm">
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <h2 className="text-base font-semibold text-foreground mb-1">Request Changes</h2>
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-xs px-2 py-0.5 rounded-md bg-primary/10 text-primary border border-primary/20">
-                      {projectInfo.language}
-                    </span>
-                    <span className="text-xs px-2 py-0.5 rounded-md bg-secondary/50 text-foreground border border-border/50">
-                      {projectInfo.appType}
-                    </span>
+          <aside className={`${isSidebarCollapsed ? 'w-0 lg:w-0 border-r-0' : 'w-full lg:w-[380px] border-r'} border-border/50 bg-background flex flex-col flex-shrink-0 h-full transition-all duration-300 relative overflow-visible`}>
+            {!isSidebarCollapsed && (
+              <>
+                {/* Chat Header */}
+                <div className="px-5 py-4 border-b border-border/50 flex-shrink-0 bg-background backdrop-blur-sm">
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <h2 className="text-base font-semibold text-foreground mb-1">Request Changes</h2>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-xs px-2 py-0.5 rounded-md bg-primary/10 text-primary border border-primary/20">
+                          {projectInfo.language}
+                        </span>
+                        <span className="text-xs px-2 py-0.5 rounded-md bg-secondary/50 text-foreground border border-border/50">
+                          {projectInfo.appType}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => setIsSidebarCollapsed(true)}
+                        className="p-1.5 hover:bg-secondary/50 rounded-lg transition-colors text-muted-foreground hover:text-foreground"
+                        title="Collapse sidebar"
+                      >
+                        <ChevronLeft className="h-5 w-5" />
+                      </button>
+                      <button
+                        onClick={() => setShowChat(false)}
+                        className="p-1.5 hover:bg-secondary/50 rounded-lg transition-colors text-muted-foreground hover:text-foreground"
+                        aria-label="Close chat"
+                      >
+                        <X className="h-5 w-5" />
+                      </button>
+                    </div>
                   </div>
                 </div>
-                <button
-                  onClick={() => setShowChat(false)}
-                  className="p-2 hover:bg-secondary/50 rounded-lg transition-colors"
-                  aria-label="Close chat"
-                >
-                  <X className="h-5 w-5 text-foreground" />
-                </button>
-              </div>
-            </div>
 
-            {/* Chat Messages Area */}
-            <div className="flex-1 overflow-y-auto px-5 py-4 space-y-5 custom-scrollbar min-h-0">
+                {/* Chat Messages Area */}
+                <div className="flex-1 overflow-y-auto px-5 py-4 space-y-5 custom-scrollbar min-h-0">
               {/* Original Project Description */}
               <div className="flex flex-col gap-2.5">
                 <div className="flex items-center gap-2">
@@ -218,7 +230,20 @@ export default function PreviewPage() {
                 </div>
               </div>
             </div>
+              </>
+            )}
           </aside>
+        )}
+
+        {/* Floating Expand Button for Preview Chat */}
+        {showChat && isSidebarCollapsed && (
+          <button
+            onClick={() => setIsSidebarCollapsed(false)}
+            className="fixed left-0 top-1/2 -translate-y-1/2 z-40 bg-background border-y border-r border-border/50 p-2 rounded-r-xl shadow-xl hover:bg-secondary/50 transition-all group"
+            title="Expand chat"
+          >
+            <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-foreground transition-colors" />
+          </button>
         )}
 
         {/* Right: Main Content */}

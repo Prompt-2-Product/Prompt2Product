@@ -22,7 +22,8 @@ export function Navigation() {
   const isDescribePage = pathname === '/describe'
   const isGeneratingPage = pathname === '/generating'
   const isPreviewPage = pathname === '/preview'
-  const isMinimalNav = isDescribePage || isGeneratingPage || isPreviewPage
+  const isIdePage = pathname === '/ide'
+  const isMinimalNav = isDescribePage || isGeneratingPage || isPreviewPage || isIdePage
 
   useEffect(() => {
     if (typeof window === 'undefined') return
