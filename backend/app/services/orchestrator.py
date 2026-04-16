@@ -311,14 +311,51 @@ class Orchestrator:
 
                 # --- NEW HARDENING BLOCK --- #
                 try:
-                    from app.services.code_generator import repair_main_routes_on_disk
-                    log(session, run.id, "repair", "Running Route Guard to restore missing FastAPI routes...")
-                    if repair_main_routes_on_disk(ws):
-                        log(session, run.id, "repair", "Route Guard: Repaired missing backend routes in main.py.")
-                    else:
-                        log(session, run.id, "repair", "Route Guard: Backend routes are already synchronized.")
+                    log(session, run.id, "repair", "Running hardening logic on patched files...")
+                    
+                    files_to_harden = []
+                    generated_app_dir = ws / "generated_app"
+                    
+                    # Check main.py
+                    main_py_path = generated_app_dir / "backend" / "main.py"
+                    if main_py_path.exists():
+                        files_to_harden.append(GenFile(path="backend/main.py", content=main_py_path.read_text(encoding="utf-8")))
+                    
+                    # Check requirements.txt
+                    req_txt_path = generated_app_dir / "backend" / "requirements.txt"
+                    if req_txt_path.exists():
+                        files_to_harden.append(GenFile(path="backend/requirements.txt", content=req_txt_path.read_text(encoding="utf-8")))
+
+                    # Check app.js
+                    app_js_path = generated_app_dir / "frontend" / "app.js"
+                    if app_js_path.exists():
+                        files_to_harden.append(GenFile(path="frontend/app.js", content=app_js_path.read_text(encoding="utf-8")))
+
+                    # Check main.css
+                    main_css_path = generated_app_dir / "frontend" / "main.css"
+                    if main_css_path.exists():
+                        files_to_harden.append(GenFile(path="frontend/main.css", content=main_css_path.read_text(encoding="utf-8")))
+
+                    if files_to_harden:
+                        dummy_output = GenOutput(files=files_to_harden)
+                        processed = post_process_output(dummy_output)
+                        
+                        for f in processed.files:
+                            # We assume path is relative to generated_app
+                            # Note: f.path might be absolute if post_process modifies it incorrectly, 
+                            # but GenFile paths are typically relative as created above.
+                            # However, post_process checks endsswith, so it's safe.
+                            
+                            # Handle potential path separators
+                            clean_path = f.path.replace("\\", "/")
+                            full_path = generated_app_dir / clean_path
+                            
+                            full_path.parent.mkdir(parents=True, exist_ok=True)
+                            full_path.write_text(f.content, encoding="utf-8")
+                            
+                        log(session, run.id, "repair", "Hardening complete: Files validated and potential errors fixed.")
                 except Exception as e:
-                     log(session, run.id, "repair", f"Route Guard warning: {e}", level="WARN")
+                     log(session, run.id, "repair", f"Hardening warning: {e}", level="WARN")
 
         except Exception as e:
             log(session, run.id, "fatal", f"{type(e).__name__}: {e}", level="ERROR")
@@ -382,11 +419,9 @@ class Orchestrator:
                 log(session, run.id, "modify", "Repaired missing FastAPI routes in main.py for all HTML pages.")
 
             # 4) Verify (Run the app again)
-            log(session, run.id, "modify", "Running Route Guard...")
-            if repair_main_routes_on_disk(ws):
-                 log(session, run.id, "modify", "Route Guard: Repaired missing backend routes in main.py.")
-
             log(session, run.id, "modify", "Verifying changes by restarting app...")
+            # We reuse the repair loop logic or just call a simplified version
+            # For simplicity, we just trigger a verify run
             port = settings.PREVIEW_PORT_BASE + run.id
             backend_dir = ws / "generated_app" / "backend"
             
