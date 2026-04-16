@@ -62,50 +62,48 @@ export function Navigation() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 h-16 border-b border-border bg-background/95 backdrop-blur-md">
       <div className="h-full w-full px-4 sm:px-6">
-        <div className="flex h-full items-center justify-between gap-8">
+        <div className="flex h-full items-center gap-2">
 
-          {/* ── Left: Logo ── */}
-          <Link href="/" className="flex shrink-0 items-center gap-2.5 group">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm group-hover:shadow-primary/40 transition-shadow">
-              <Code2 className="h-4 w-4" />
-            </div>
-            <span className="text-base font-semibold tracking-tight text-foreground">
-              Prompt2Product
-            </span>
-          </Link>
+          {/* ── Left: Logo + Nav Links ── */}
+          <div className="flex items-center gap-1 flex-1 min-w-0">
+            {/* Logo */}
+            <Link href="/" className="flex shrink-0 items-center gap-2 mr-4 group">
+              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground shadow-sm group-hover:shadow-primary/40 transition-shadow">
+                <Code2 className="h-4 w-4" />
+              </div>
+              <span className="text-sm font-semibold tracking-tight text-foreground whitespace-nowrap">
+                Prompt2Product
+              </span>
+            </Link>
 
-          {/* ── Center: Nav links (full pages only) ── */}
-          {!isMinimalNav && (
-            <div className="hidden md:flex items-center gap-1">
-              {navLinks.map(({ href, label }) => {
-                const active = pathname === href
-                return (
-                  <Link
-                    key={href}
-                    href={href}
-                    className={`relative px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                      active
-                        ? 'text-foreground bg-secondary/60'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-secondary/40'
-                    }`}
-                  >
-                    {label}
-                    {active && (
-                      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 w-4 rounded-full bg-primary" />
-                    )}
-                  </Link>
-                )
-              })}
-            </div>
-          )}
+            {/* Nav links — immediately after logo, hidden on minimal pages */}
+            {!isMinimalNav && (
+              <div className="hidden md:flex items-center gap-0.5">
+                {navLinks.map(({ href, label }) => {
+                  const active = pathname === href
+                  return (
+                    <Link
+                      key={href}
+                      href={href}
+                      className={`relative px-3 py-1.5 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
+                        active
+                          ? 'text-foreground bg-secondary/60'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-secondary/40'
+                      }`}
+                    >
+                      {label}
+                      {active && (
+                        <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 w-3 rounded-full bg-primary" />
+                      )}
+                    </Link>
+                  )
+                })}
+              </div>
+            )}
+          </div>
 
-          {/* ── Right: Controls ── */}
-          <div className="flex shrink-0 items-center gap-2">
-            <ThemeToggle />
-
-            {/* Divider */}
-            <div className="hidden sm:block h-5 w-px bg-border mx-1" />
-
+          {/* ── Right: Auth + Theme ── */}
+          <div className="flex shrink-0 items-center gap-1.5">
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -125,24 +123,28 @@ export function Navigation() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <div className="flex items-center gap-1.5">
+              <>
                 <Button
                   onClick={() => { setAuthMode('login'); setAuthModalOpen(true) }}
                   variant="ghost"
                   size="sm"
-                  className="h-8 px-4 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                  className="h-8 px-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50"
                 >
                   Sign In
                 </Button>
                 <Button
                   onClick={() => { setAuthMode('signup'); setAuthModalOpen(true) }}
                   size="sm"
-                  className="h-8 px-4 text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
+                  className="h-8 px-3 text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
                 >
                   Sign Up
                 </Button>
-              </div>
+              </>
             )}
+
+            {/* Divider before theme toggle */}
+            <div className="h-4 w-px bg-border/70 mx-1" />
+            <ThemeToggle />
 
             {/* Mobile hamburger */}
             {!isMinimalNav && (
