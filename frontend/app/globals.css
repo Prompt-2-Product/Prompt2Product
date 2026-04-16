@@ -7,39 +7,31 @@
   /* Navigation height - used for page top offsets */
   --nav-height: 4rem;
 
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #2563eb;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #2563eb;
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+
+  /* Hero Gradient Variables - Light Mode (Higher Contrast) */
+  --hero-gradient-1: #2563eb;
+  --hero-gradient-2: #0ea5e9;
+  --hero-gradient-3: #2563eb;
 }
 
 .dark {
@@ -62,19 +54,12 @@
   --border: #1a1f2e;
   --input: #0f1419;
   --ring: #2563eb;
-  --chart-1: #2563eb;
-  --chart-2: #7c3aed;
-  --chart-3: #db2777;
-  --chart-4: #ea580c;
-  --chart-5: #059669;
-  --sidebar: #0a0e17;
-  --sidebar-foreground: #e8ecf1;
-  --sidebar-primary: #2563eb;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1a1f2e;
-  --sidebar-accent-foreground: #e8ecf1;
-  --sidebar-border: #1a1f2e;
-  --sidebar-ring: #2563eb;
+  --radius: 0.625rem;
+
+  /* Hero Gradient Variables - Dark Mode (Lighter/Glowing) */
+  --hero-gradient-1: #93c5fd;
+  --hero-gradient-2: #cffafe;
+  --hero-gradient-3: #bfdbfe;
 }
 
 @theme inline {
@@ -127,23 +112,34 @@
     padding: 0;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground transition-colors duration-300;
     position: relative;
     min-height: 100vh;
   }
+
+  /* Light Theme Premium Effects */
+  body {
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(37, 99, 235, 0.02) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(124, 58, 237, 0.01) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
   
+  /* Dark Theme Premium Effects */
   .dark body {
     background: linear-gradient(135deg, #0a0e17 0%, #0f1419 25%, #0a0e17 100%);
   }
 
   .dark body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
     background: radial-gradient(circle at 30% 50%, rgba(37, 99, 235, 0.06) 0%, transparent 50%),
                 radial-gradient(circle at 70% 80%, rgba(124, 58, 237, 0.03) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 0;
   }
 }
 
@@ -235,6 +231,25 @@
   }
 
   .dark .team-card-glow:hover {
-    box-shadow: 0 0 25px rgba(37, 99, 235, 0.25), 0 0 50px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 25px rgba(37, 99, 235, 0.25), 0 0 50px rgba(37, 99, 235, 0.15);
+  }
+
+  .hero-text-accent {
+    background: linear-gradient(to right, var(--hero-gradient-1), var(--hero-gradient-2), var(--hero-gradient-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .premium-card {
+    @apply border border-border/70 shadow-sm transition-all duration-300;
+  }
+  
+  :root .premium-card {
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03), 0 2px 8px -1px rgba(0, 0, 0, 0.02);
+  }
+
+  .dark .premium-card {
+    @apply shadow-none;
   }
 }

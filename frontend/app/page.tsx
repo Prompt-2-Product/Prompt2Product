@@ -50,7 +50,7 @@ export default function LandingPage() {
             <div>
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight text-foreground mb-3 sm:mb-4 text-balance">
                 Natural Language to{' '}
-                <span className="bg-gradient-to-r from-blue-300 via-cyan-200 to-blue-200 bg-clip-text text-transparent">
+                <span className="hero-text-accent">
                   Executable Code
                 </span>
               </h1>
@@ -80,7 +80,7 @@ export default function LandingPage() {
               {steps.map((item) => (
                 <div
                   key={item.step}
-                  className="rounded-xl bg-card border border-border/70 px-4 py-4 sm:px-5 sm:py-5 flex flex-col gap-1.5 text-center items-center"
+                  className="rounded-xl bg-card premium-card px-4 py-4 sm:px-5 sm:py-5 flex flex-col gap-1.5 text-center items-center"
                 >
                   <div className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-primary/20 text-xs sm:text-sm font-semibold text-primary mb-1">
                     {item.step}
