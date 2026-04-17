@@ -182,8 +182,8 @@ export default function IDEPage() {
       <Navigation />
 
       {/* Top Bar - Refactored for better spacing and prominence */}
-      <div className="border-b border-border bg-background/95 backdrop-blur-sm flex-shrink-0 z-10 shadow-sm">
-        <div className="px-6 md:px-8 py-4 grid grid-cols-3 items-center">
+      <div className="border-b border-border bg-background/80 backdrop-blur-md flex-shrink-0 z-10 shadow-sm relative">
+        <div className="px-6 md:px-8 py-3.5 grid grid-cols-3 items-center">
           {/* Left: Back Button */}
           <div className="flex justify-start">
             <Button
@@ -201,8 +201,8 @@ export default function IDEPage() {
           {/* Center: Title */}
           <div className="flex justify-center">
             <div className="flex items-center gap-3">
-              <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
-              <span className="text-sm md:text-base text-foreground font-bold tracking-wide uppercase px-4 py-1 rounded-full bg-secondary/30 border border-border/50">
+              <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse shadow-[0_0_8px_rgba(59,130,246,0.5)]" />
+              <span className="text-xs md:text-sm text-foreground font-bold tracking-widest uppercase px-4 py-1.5 rounded-full bg-secondary border border-border/50 shadow-inner">
                 PROMPT2PRODUCT <span className="text-muted-foreground font-medium ml-1">IDE</span>
               </span>
             </div>
@@ -266,10 +266,10 @@ export default function IDEPage() {
                           </>
                         )}
                       </div>
-                      <div className={`ml-7 rounded-lg p-3 text-xs leading-relaxed whitespace-pre-wrap break-words ${
+                      <div className={`ml-7 rounded-xl p-3.5 text-xs leading-relaxed whitespace-pre-wrap break-words shadow-sm ${
                         msg.role === 'user' 
-                          ? 'bg-secondary/60 border border-border/60 text-foreground' 
-                          : 'bg-primary/15 border border-primary/30 text-foreground'
+                          ? 'bg-secondary text-foreground border border-border/50' 
+                          : 'bg-primary/10 text-foreground border border-primary/20'
                       }`}>
                         {msg.content}
                       </div>
@@ -368,13 +368,13 @@ export default function IDEPage() {
                     </div>
                   ) : (
                     <div className="flex h-full min-h-0">
-                      <div className="w-10 bg-secondary/50 text-muted-foreground py-3 px-2 text-right select-none border-r border-border text-[10px] flex-shrink-0">
+                      <div className="w-12 bg-secondary/30 text-muted-foreground py-4 px-2 text-right select-none border-r border-border text-[10px] flex-shrink-0 font-mono opacity-60">
                         {fileContent.split('\n').map((_, i) => (
-                          <div key={i} className="leading-5">{i + 1}</div>
+                          <div key={i} className="leading-6">{i + 1}</div>
                         ))}
                       </div>
-                      <div className="flex-1 py-3 px-4 text-foreground bg-background overflow-auto min-w-0">
-                        <pre className="whitespace-pre-wrap break-words leading-5">{fileContent || (isLoadingContent ? '' : '// No content')}</pre>
+                      <div className="flex-1 py-4 px-6 text-foreground bg-background/50 overflow-auto min-w-0">
+                        <pre className="whitespace-pre-wrap break-words leading-6 font-mono selection:bg-primary/30">{fileContent || (isLoadingContent ? '' : '// No content')}</pre>
                       </div>
                     </div>
                   )}

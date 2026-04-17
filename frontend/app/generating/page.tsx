@@ -196,24 +196,26 @@ export default function GeneratingPage() {
 
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2">
-                  <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
-                    <span className="text-[10px] font-bold text-white">P</span>
-                  </div>
+                    <div className="h-4 w-4 rounded-full bg-primary flex items-center justify-center ring-2 ring-primary/20">
+                      <span className="text-[10px] font-bold text-primary-foreground">P</span>
+                    </div>
                   <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Prompt2Product</span>
                 </div>
                 <div className={`ml-8 rounded-2xl glass-panel p-4 text-sm font-light leading-relaxed shadow-lg ${
-                  status === 'failed' ? 'bg-red-500/10 border-red-500/30 text-red-200' : 'bg-primary/5 border-primary/20 text-foreground'
+                  status === 'failed' ? 'bg-red-500/10 border-red-500/20 text-red-600 dark:text-red-200' : 'bg-primary/5 border-primary/20 text-foreground'
                 }`}>
                   {status === 'failed' ? (
                     <div className="space-y-3">
-                      <div className="flex items-center gap-2 font-bold text-red-400">
-                        <X className="h-4 w-4" />
-                        <span className="uppercase tracking-tighter">Generation Failed</span>
+                      <div className="flex items-center gap-2 font-bold text-red-600 dark:text-red-400">
+                        <div className="h-5 w-5 rounded-full bg-red-500/20 flex items-center justify-center">
+                          <X className="h-3 w-3" />
+                        </div>
+                        <span className="uppercase tracking-tighter text-xs">Generation Failed</span>
                       </div>
-                      <p className="text-xs opacity-80">{error || 'Unexpected error detected.'}</p>
+                      <p className="text-[11px] leading-snug opacity-90">{error || 'The engine encountered a critical logic error.'}</p>
                       <button 
                         onClick={() => router.push('/describe')}
-                        className="w-full py-2 bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-200 rounded-lg text-xs font-bold transition-all"
+                        className="w-full py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-600 dark:text-red-200 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all"
                       >
                         RESTART FORGE
                       </button>
@@ -222,8 +224,8 @@ export default function GeneratingPage() {
                     <div className="space-y-3">
                       <div className="flex items-center gap-3">
                         {status === 'success' ? (
-                          <div className="h-4 w-4 rounded-full bg-green-500 flex items-center justify-center">
-                            <Check className="h-2.5 w-2.5 text-white" />
+                          <div className="h-4 w-4 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                            <Check className="h-2.5 w-2.5 text-emerald-500" />
                           </div>
                         ) : (
                           <Loader className="h-4 w-4 animate-spin text-primary" />
@@ -261,34 +263,29 @@ export default function GeneratingPage() {
           {/* New Fold Button - Border Bar Placement */}
           <button
             onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-            className={`absolute z-50 transition-all duration-500 ease-in-out hover:scale-110 flex items-center justify-center rounded-full bg-primary border border-primary/40 shadow-xl group ${
-              isSidebarCollapsed 
-                ? 'left-8 top-1/2 -translate-y-1/2 w-10 h-10' 
-                : '-right-4 top-1/2 -translate-y-1/2 w-8 h-18'
-            }`}
-            title={isSidebarCollapsed ? "Show Chat" : "Hide Chat"}
+            className="absolute -right-3 top-1/2 -translate-y-1/2 h-10 w-6 bg-primary text-primary-foreground rounded-r-lg shadow-xl hover:bg-primary/90 transition-all z-50 flex items-center justify-center group border border-primary/20"
           >
             {isSidebarCollapsed ? (
-              <ChevronRight className="h-5 w-5 text-white group-hover:translate-x-0.5 transition-transform" />
+              <ChevronRight className="h-4 w-4 text-primary-foreground group-hover:translate-x-0.5 transition-transform" />
             ) : (
-              <ChevronLeft className="h-5 w-5 text-white group-hover:-translate-x-0.5 transition-transform" />
+              <ChevronLeft className="h-4 w-4 text-primary-foreground group-hover:-translate-x-0.5 transition-transform" />
             )}
           </button>
         </aside>
 
         {/* Main Production Area */}
         <div className="flex-1 h-full overflow-hidden relative">
-          <div className="max-w-4xl mx-auto px-6 pt-10 lg:pt-16 pb-32 lg:pb-48 flex flex-col h-full justify-between items-stretch relative z-10">
+          <div className="max-w-5xl mx-auto px-6 h-full flex flex-col justify-between relative z-10 py-12 lg:py-16">
             {/* Cinematic Header */}
-            <div className="shrink-0 text-center animate-in fade-in slide-in-from-top-4 duration-1000 relative z-20">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black mb-4 tracking-tighter text-white">
+            <div className="shrink-0 text-center animate-in fade-in slide-in-from-top-4 duration-1000 relative z-20 mb-8 mt-2">
+              <h1 className="text-2xl sm:text-3xl md:text-5xl font-black mb-3 tracking-tighter text-foreground dark:text-white uppercase">
                 {status === 'failed'
-                  ? (isModificationFlow ? <>Core <span className="text-red-500">Error</span></> : <>Forge <span className="text-red-500">Failed</span></>)
-                  : (isModificationFlow ? <>Applying Your <span className="hero-text-accent">Changes</span></> : <>Generating Your <span className="hero-text-accent">Project</span></>)}
+                  ? (isModificationFlow ? <>Core <span className="text-red-500">Error</span></> : <>Generation <span className="text-red-500">Failed</span></>)
+                  : (isModificationFlow ? <>Applying <span className="hero-text-accent">Changes</span></> : <>Generating <span className="hero-text-accent">Project</span></>)}
               </h1>
-              <p className="text-sm sm:text-base text-muted-foreground font-light tracking-wide max-w-xl mx-auto">
+              <p className="text-[10px] sm:text-xs text-muted-foreground font-light tracking-widest uppercase opacity-70">
                 {status === 'failed' 
-                  ? 'The engine encountered a critical error during construction.'
+                  ? 'The engine encountered a critical logic error.'
                   : 'Synthesizing components, establishing framework, and validating logic layers.'}
               </p>
             </div>
@@ -306,19 +303,19 @@ export default function GeneratingPage() {
                       <div key={step.number} className="flex flex-col items-center gap-5 group flex-1">
                         <div className="relative">
                           {/* Inner Circle */}
-                          <div className={`h-14 w-14 rounded-full flex items-center justify-center transition-all duration-700 z-10 relative overflow-hidden ${
+                          <div className={`h-10 w-10 rounded-full flex items-center justify-center transition-all duration-700 z-10 relative overflow-hidden ${
                             isCompleted 
-                              ? 'bg-primary shadow-[0_0_20px_rgba(37,99,235,0.4)] border-primary' 
+                              ? 'bg-primary shadow-[0_0_15px_rgba(37,99,235,0.4)] border-primary' 
                               : isActive 
-                                ? 'glass-panel bg-primary/20 border-primary shadow-[0_0_30px_rgba(37,99,235,0.2)]' 
+                                ? 'glass-panel bg-primary/20 border-primary shadow-[0_0_20px_rgba(37,99,235,0.2)]' 
                                 : 'glass-panel bg-white/5 border-white/10'
                           }`}>
                             {isCompleted ? (
-                              <Check className="h-6 w-6 text-white" />
+                              <Check className="h-4 w-4 text-primary-foreground" />
                             ) : isActive ? (
-                              <Loader className="h-6 w-6 animate-spin text-primary" />
+                              <Loader className="h-4 w-4 animate-spin text-primary" />
                             ) : (
-                              <span className="text-sm font-bold opacity-30">{step.number}</span>
+                              <span className="text-[10px] font-black text-muted-foreground/50 tracking-tighter">{step.number}</span>
                             )}
                           </div>
                           {/* Outer Glow Ring for Active */}
@@ -333,7 +330,6 @@ export default function GeneratingPage() {
                             {step.label}
                           </p>
                         </div>
-                        {/* Stepper connecting lines removed as per user request */}
                       </div>
                     )
                   })}
@@ -342,30 +338,21 @@ export default function GeneratingPage() {
             )}
 
             {/* Error State - Cinematic Panel */}
+            {/* Error Actions - Minimalist version (No Box) */}
             {status === 'failed' && (
-              <div className="max-w-2xl mx-auto mb-16 rounded-3xl glass-panel p-10 text-center relative overflow-hidden group">
-                <div className="absolute -top-12 -right-12 h-40 w-40 bg-red-500/10 rounded-full blur-3xl" />
-                <div className="h-20 w-20 bg-red-500/20 rounded-2xl flex items-center justify-center mx-auto mb-8 border border-red-500/30">
-                  <X className="h-10 w-10 text-red-500" />
-                </div>
-                <h3 className="text-2xl font-black mb-4 tracking-tight">SYNTHESIS INTERRUPTED</h3>
-                <p className="text-muted-foreground text-sm font-light leading-relaxed mb-8 max-w-md mx-auto">
-                  The LLM construction engine timed out or reached a dead-end. This can happen with very complex prompts or unstable API tunnels.
-                </p>
-                <div className="flex flex-col sm:flex-row justify-center gap-4">
-                  <button 
-                    onClick={() => router.push('/describe')}
-                    className="px-8 py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-all shadow-xl shadow-primary/20"
-                  >
-                    MODIFY PLAN
-                  </button>
-                  <button 
-                    onClick={() => window.location.reload()}
-                    className="px-8 py-3 glass-panel bg-white/5 text-white font-bold rounded-xl hover:bg-white/10 transition-all"
-                  >
-                    RE-IGNITE CORE
-                  </button>
-                </div>
+              <div className="flex flex-col sm:flex-row justify-center gap-3 relative z-30 mb-8 py-4">
+                <button 
+                  onClick={() => router.push('/describe')}
+                  className="px-6 py-2 bg-red-500/20 text-red-600 dark:text-red-400 font-bold uppercase tracking-widest text-[10px] rounded-lg border border-red-500/30 hover:bg-red-500/30 transition-all"
+                >
+                  REPROMPT
+                </button>
+                <button 
+                  onClick={() => window.location.reload()}
+                  className="px-6 py-2 bg-secondary/50 dark:bg-white/5 text-foreground/70 dark:text-white/70 font-bold uppercase tracking-widest text-[10px] rounded-lg border border-border/50 hover:bg-secondary/70 dark:hover:bg-white/10 transition-all font-mono"
+                >
+                  RETRY_CONNECTION
+                </button>
               </div>
             )}
 
@@ -373,17 +360,17 @@ export default function GeneratingPage() {
             <div className="shrink-0 space-y-6 lg:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500">
               {/* Production Log - THE HUB */}
               <div className="max-w-2xl mx-auto w-full">
-                <div className="rounded-3xl glass-panel overflow-hidden bg-background/30 backdrop-blur-3xl shadow-3xl">
-                  <div className="bg-white/5 px-6 py-4 border-b border-white/5 flex justify-between items-center">
+                <div className="rounded-3xl glass-panel overflow-hidden bg-background/40 dark:bg-background/30 backdrop-blur-3xl shadow-2xl border border-black/10 dark:border-white/10">
+                  <div className="bg-black/[0.03] dark:bg-white/5 px-6 py-4 border-b border-black/5 dark:border-white/5 flex justify-between items-center">
                     <div className="flex items-center gap-3">
-                      <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-                      <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">REALTIME PRODUCTION FEED</p>
+                      <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
+                      <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/80">REALTIME PRODUCTION FEED</p>
                     </div>
-                    {status === 'failed' && <span className="text-[10px] bg-red-500/20 text-red-500 px-2 py-0.5 rounded font-black uppercase tracking-wider">CRITICAL_ERROR</span>}
+                    {status === 'failed' && <span className="text-[10px] bg-red-500/20 text-red-600 dark:text-red-500 px-2 py-0.5 rounded font-black uppercase tracking-wider">CRITICAL_ERROR</span>}
                   </div>
-                  <div className="p-6 h-48 sm:h-56 lg:h-64 overflow-y-auto font-mono text-[11px] sm:text-xs space-y-2 custom-scrollbar-dark scroll-smooth">
+                  <div className="p-6 h-28 sm:h-32 lg:h-36 overflow-y-auto font-mono text-xs sm:text-sm leading-relaxed space-y-3 custom-scrollbar-dark scroll-smooth">
                     {logs.map((log, index) => (
-                      <div key={index} className={`opacity-0 animate-in fade-in duration-500 fill-mode-forwards ${log.includes('[ERROR]') || log.includes('[fatal]') ? 'text-red-400' : 'text-primary/80'}`}>
+                      <div key={index} className={`opacity-0 animate-in fade-in duration-500 fill-mode-forwards ${log.includes('[ERROR]') || log.includes('[fatal]') ? 'text-red-400' : 'text-primary'}`}>
                         <span className="opacity-30 mr-3">[{new Date().toLocaleTimeString([], {hour12: false})}]</span>
                         {log}
                       </div>

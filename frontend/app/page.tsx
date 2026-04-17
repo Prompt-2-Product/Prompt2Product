@@ -40,15 +40,19 @@ export default function LandingPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+    <div className="min-h-screen bg-background text-foreground relative overflow-hidden page-transition">
+      {/* Cinematic Background Layer */}
+      <div className="mesh-gradient" />
+      <div className="technical-grid" />
+
       <Navigation />
 
       <main className="pt-16">
         <section className="min-h-[calc(100vh-4rem)] flex flex-col justify-center gap-6 sm:gap-8 md:gap-10 lg:gap-12 px-6 sm:px-10 lg:px-16 xl:px-24">
           {/* Row 1 - Hero copy + CTA */}
-          <div className="space-y-4 sm:space-y-6 md:space-y-8 animate-in fade-in duration-1000 text-center">
+          <div className="space-y-4 sm:space-y-6 md:space-y-8 animate-in fade-in duration-1000 text-center relative z-20">
             <div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight text-foreground mb-3 sm:mb-4 text-balance">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black leading-tight text-foreground dark:text-white mb-3 sm:mb-4 text-balance tracking-tighter">
                 Natural Language to{' '}
                 <span className="hero-text-accent">
                   Executable Code
@@ -71,16 +75,16 @@ export default function LandingPage() {
           </div>
 
           {/* Row 2 - Horizontal 5-step flow */}
-          <div className="animate-in fade-in duration-1000 delay-150 text-center">
-            <h2 className="text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-foreground mb-3 sm:mb-4 md:mb-5">
-              Your project in <span className="text-primary">5 easy steps</span>
+          <div className="animate-in fade-in duration-1000 delay-150 text-center relative z-20">
+            <h2 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-foreground dark:text-white mb-3 sm:mb-4 md:mb-5 tracking-tight uppercase">
+              Your project in <span className="text-primary italic">5 easy steps</span>
             </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
               {steps.map((item) => (
                 <div
                   key={item.step}
-                  className="rounded-xl bg-card premium-card px-4 py-4 sm:px-5 sm:py-5 flex flex-col gap-1.5 text-center items-center"
+                  className="rounded-2xl glass-panel px-4 py-4 sm:px-5 sm:py-6 flex flex-col gap-2 text-center items-center group hover:scale-[1.02] transition-all duration-300"
                 >
                   <div className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-primary/20 text-xs sm:text-sm font-semibold text-primary mb-1">
                     {item.step}
