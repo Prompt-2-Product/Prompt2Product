@@ -281,7 +281,7 @@ export default function GeneratingPage() {
               <h1 className="text-2xl sm:text-3xl md:text-5xl font-black mb-3 tracking-tighter text-foreground dark:text-white uppercase">
                 {status === 'failed'
                   ? (isModificationFlow ? <>Core <span className="text-red-500">Error</span></> : <>Generation <span className="text-red-500">Failed</span></>)
-                  : (isModificationFlow ? <>Applying <span className="hero-text-accent">Changes</span></> : <>Generating <span className="hero-text-accent">Project</span></>)}
+                  : (isModificationFlow ? <>Applying <span className="hero-text-accent">Your Changes</span></> : <>Generating <span className="hero-text-accent">Your Project</span></>)}
               </h1>
               <p className="text-[10px] sm:text-xs text-muted-foreground font-light tracking-widest uppercase opacity-70">
                 {status === 'failed' 
@@ -368,13 +368,24 @@ export default function GeneratingPage() {
                     </div>
                     {status === 'failed' && <span className="text-[10px] bg-red-500/20 text-red-600 dark:text-red-500 px-2 py-0.5 rounded font-black uppercase tracking-wider">CRITICAL_ERROR</span>}
                   </div>
-                  <div className="p-6 h-28 sm:h-32 lg:h-36 overflow-y-auto font-mono text-xs sm:text-sm leading-relaxed space-y-3 custom-scrollbar-dark scroll-smooth">
-                    {logs.map((log, index) => (
-                      <div key={index} className={`opacity-0 animate-in fade-in duration-500 fill-mode-forwards ${log.includes('[ERROR]') || log.includes('[fatal]') ? 'text-red-400' : 'text-primary'}`}>
-                        <span className="opacity-30 mr-3">[{new Date().toLocaleTimeString([], {hour12: false})}]</span>
-                        {log}
-                      </div>
-                    ))}
+                  <div className="p-6 h-28 sm:h-32 lg:h-36 overflow-y-auto font-mono text-sm leading-relaxed space-y-3 custom-scrollbar-dark scroll-smooth">
+                    {logs.map((log, index) => {
+                      const isError = log.includes('[ERROR]') || log.includes('[fatal]')
+                      const isInfo = log.includes('[INFO]')
+                      const isSuccess = log.includes('[SUCCESS]') || log.includes('successfully')
+                      
+                      return (
+                        <div key={index} className="opacity-0 animate-in fade-in duration-500 fill-mode-forwards flex gap-3 text-foreground/90">
+                          <span className="opacity-50 shrink-0 select-none">[{new Date().toLocaleTimeString([], {hour12: false})}]</span>
+                          <div className="flex flex-wrap gap-x-2">
+                             {isError && <span className="text-red-500 font-bold shrink-0">[ERROR]</span>}
+                             {isInfo && <span className="text-blue-500 dark:text-blue-400 font-bold shrink-0">[INFO]</span>}
+                             {isSuccess && <span className="text-emerald-500 font-bold shrink-0">[SUCCESS]</span>}
+                             <span className="break-all">{log.replace(/\[(INFO|ERROR|SUCCESS|fatal|warn)\]/g, '').trim()}</span>
+                          </div>
+                        </div>
+                      )
+                    })}
                   </div>
                 </div>
               </div>
