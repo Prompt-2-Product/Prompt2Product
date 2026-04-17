@@ -1,0 +1,147 @@
+{
+  "app_name": "Team Project Management Tool",
+  "app_type": "web_app",
+  "description": "A collaborative project management tool for teams to create tasks, assign members, track progress, and share files.",
+  "target_users": [
+    "project_manager",
+    "team_member"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Dashboard",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "ProjectOverviewCards",
+          "TaskBoardSummary",
+          "RecentComments"
+        ]
+      },
+      {
+        "name": "Projects",
+        "route": "/projects",
+        "components": [
+          "Navbar",
+          "ProjectCardGrid",
+          "FilterBar",
+          "StatusBadge"
+        ]
+      },
+      {
+        "name": "Tasks",
+        "route": "/tasks",
+        "components": [
+          "Navbar",
+          "TaskTable",
+          "AssigneeFilter",
+          "PriorityTag"
+        ]
+      },
+      {
+        "name": "Comments",
+        "route": "/comments",
+        "components": [
+          "Navbar",
+          "CommentList",
+          "ReplyForm"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Button",
+      "Card",
+      "Badge",
+      "Table",
+      "FormInput"
+    ],
+    "features": [
+      "task creation",
+      "task assignment",
+      "progress tracking",
+      "board view",
+      "comment sharing",
+      "file sharing",
+      "project filtering",
+      "status updates"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/projects",
+        "purpose": "Create new project"
+      },
+      {
+        "method": "POST",
+        "path": "/api/tasks",
+        "purpose": "Create new task"
+      },
+      {
+        "method": "PATCH",
+        "path": "/api/tasks/:taskId",
+        "purpose": "Update task status"
+      },
+      {
+        "method": "POST",
+        "path": "/api/comments",
+        "purpose": "Create comment"
+      },
+      {
+        "method": "POST",
+        "path": "/api/files",
+        "purpose": "Upload file"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "projects",
+        "columns": [
+          "id",
+          "name",
+          "description",
+          "start_date",
+          "status"
+        ]
+      },
+      {
+        "name": "tasks",
+        "columns": [
+          "id",
+          "title",
+          "description",
+          "priority",
+          "assignee_id",
+          "status",
+          "project_id",
+          "created_at"
+        ]
+      },
+      {
+        "name": "comments",
+        "columns": [
+          "id",
+          "content",
+          "task_id",
+          "author_id",
+          "created_at"
+        ]
+      },
+      {
+        "name": "files",
+        "columns": [
+          "id",
+          "filename",
+          "url",
+          "uploaded_by",
+          "project_id"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

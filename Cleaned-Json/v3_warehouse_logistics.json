@@ -1,0 +1,158 @@
+{
+  "app_name": "Warehouse Logistics Management System",
+  "app_type": "web_app",
+  "description": "A warehouse logistics management system for tracking shipments, monitoring inventory, assigning tasks, and generating reports.",
+  "target_users": [
+    "warehouse_managers",
+    "warehouse_workers"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Dashboard",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "StatsCards",
+          "TaskSummaryCard",
+          "InventoryMovementChart"
+        ]
+      },
+      {
+        "name": "Shipments",
+        "route": "/shipments",
+        "components": [
+          "Navbar",
+          "ShipmentTable",
+          "StatusFilter",
+          "TrackingBadge"
+        ]
+      },
+      {
+        "name": "Inventory",
+        "route": "/inventory",
+        "components": [
+          "Navbar",
+          "InventoryTable",
+          "MovementChart",
+          "StockAlerts"
+        ]
+      },
+      {
+        "name": "Tasks",
+        "route": "/tasks",
+        "components": [
+          "Navbar",
+          "TaskListTable",
+          "AssignWorkerButton",
+          "StatusBadge"
+        ]
+      },
+      {
+        "name": "Reports",
+        "route": "/reports",
+        "components": [
+          "Navbar",
+          "ReportSelector",
+          "DownloadButton",
+          "ChartViewer"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Card",
+      "Table",
+      "Chart",
+      "Badge",
+      "Button",
+      "FilterBar"
+    ],
+    "features": [
+      "shipment tracking",
+      "inventory monitoring",
+      "task assignment",
+      "report generation",
+      "status tracking",
+      "stock alerts"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/shipments",
+        "purpose": "Fetch shipment data"
+      },
+      {
+        "method": "GET",
+        "path": "/api/inventory",
+        "purpose": "Fetch inventory movement data"
+      },
+      {
+        "method": "POST",
+        "path": "/api/tasks",
+        "purpose": "Assign task to worker"
+      },
+      {
+        "method": "GET",
+        "path": "/api/reports",
+        "purpose": "Fetch report data"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "shipments",
+        "columns": [
+          "id",
+          "tracking_number",
+          "status",
+          "origin",
+          "destination",
+          "created_at"
+        ]
+      },
+      {
+        "name": "inventory_movements",
+        "columns": [
+          "id",
+          "item_id",
+          "movement_type",
+          "quantity",
+          "location",
+          "timestamp"
+        ]
+      },
+      {
+        "name": "workers",
+        "columns": [
+          "id",
+          "name",
+          "role"
+        ]
+      },
+      {
+        "name": "tasks",
+        "columns": [
+          "id",
+          "task_name",
+          "worker_id",
+          "status",
+          "assigned_at"
+        ]
+      },
+      {
+        "name": "reports",
+        "columns": [
+          "id",
+          "report_name",
+          "download_link",
+          "generated_at"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

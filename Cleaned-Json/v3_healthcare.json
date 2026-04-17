@@ -1,0 +1,149 @@
+{
+  "app_name": "Healthcare Management System",
+  "app_type": "web_app",
+  "description": "A healthcare management system for patients to book appointments, doctors to manage schedules, admin to manage hospital operations, billing, and medical records.",
+  "target_users": [
+    "patients",
+    "doctors",
+    "admins"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "ServicesHighlights",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Patients",
+        "route": "/patients",
+        "components": [
+          "Navbar",
+          "PatientDashboard",
+          "AppointmentsTable",
+          "MedicalRecordsCard"
+        ]
+      },
+      {
+        "name": "Doctors",
+        "route": "/doctors",
+        "components": [
+          "Navbar",
+          "DoctorDashboard",
+          "ScheduleTable",
+          "PatientHistoryTable"
+        ]
+      },
+      {
+        "name": "Admin",
+        "route": "/admin",
+        "components": [
+          "Navbar",
+          "AdminDashboard",
+          "OperationsOverviewCard",
+          "BillingStatsChart",
+          "MedicalRecordsSummaryTable"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Card",
+      "Table",
+      "Chart",
+      "Button"
+    ],
+    "features": [
+      "patient appointment booking",
+      "doctor schedule management",
+      "patient medical records",
+      "admin hospital operations",
+      "billing statistics",
+      "medical records summary"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/patients/book-appointment",
+        "purpose": "Create patient appointment"
+      },
+      {
+        "method": "GET",
+        "path": "/api/doctors/schedule",
+        "purpose": "Fetch doctor schedule"
+      },
+      {
+        "method": "POST",
+        "path": "/api/admin/billing-stats",
+        "purpose": "Upload billing statistics"
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/records-summary",
+        "purpose": "Fetch medical records summary"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "patients",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "phone_number",
+          "gender",
+          "appointment_date"
+        ]
+      },
+      {
+        "name": "doctors",
+        "columns": [
+          "id",
+          "name",
+          "specialization",
+          "schedule_time"
+        ]
+      },
+      {
+        "name": "appointments",
+        "columns": [
+          "id",
+          "patient_id",
+          "doctor_id",
+          "appointment_date",
+          "status"
+        ]
+      },
+      {
+        "name": "billing_stats",
+        "columns": [
+          "id",
+          "month",
+          "total_amount",
+          "payment_status"
+        ]
+      },
+      {
+        "name": "medical_records",
+        "columns": [
+          "id",
+          "patient_id",
+          "record_date",
+          "diagnosis",
+          "prescription"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

@@ -1,0 +1,150 @@
+Prompt Category: document_management
+Model: /home/noor/FYP/finetune/outputs/qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Document Management System", "app_type": "web_app", "description": "A secure document management system for uploading, organizing, searching, sharing, and version controlling files.", "target_users": ["users"], "frontend": {"pages": [{"name": "Dashboard", "route": "/", "components": ["Navbar", "FileUploadCard", "RecentFilesTable", "SharedDocumentsCard"]}, {"name": "Upload Files", "route": "/upload", "components": ["Navbar", "FileUploader", "VersionControlForm", "UploadButton"]}, {"name": "Organize Files", "route": "/organize", "components": ["Navbar", "FileBrowser", "SearchBar", "TagFilter"]}, {"name": "Share Documents", "route": "/share", "components": ["Navbar", "SharedDocumentList", "AccessPermissionForm", "ShareButton"]}], "shared_components": ["Navbar", "Button", "Card", "Table", "Form", "Badge"], "features": ["file upload", "version control", "search files", "organize files", "share documents", "access permissions", "sharing links"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/upload", "purpose": "Upload files with version control"}, {"method": "GET", "path": "/api/files", "purpose": "Fetch organized file list"}, {"method": "POST", "path": "/api/search", "purpose": "Search files by name or tags"}, {"method": "POST", "path": "/api/share", "purpose": "Share documents via link"}, {"method": "POST", "path": "/api/access", "purpose": "Manage access permissions"}]}, "database": {"tables": [{"name": "files", "columns": ["id", "filename", "uploaded_at", "version_number", "uploader_id", "tags"]}, {"name": "users", "columns": ["id", "username", "email", "password_hash"]}, {"name": "shared_documents", "columns": ["id", "document_id", "receiver_email", "link_token", "shared_at"]}]}, "auth_required": true}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Document Management System", "app_type": "web_app", "description": "A secure document management system for uploading, organizing, searching, sharing, and version controlling files.", "target_users": ["users"], "frontend": {"pages": [{"name": "Dashboard", "route": "/", "components": ["Navbar", "FileUploadCard", "RecentFilesTable", "SharedDocumentsCard"]}, {"name": "Upload Files", "route": "/upload", "components": ["Navbar", "FileUploader", "VersionControlForm", "UploadButton"]}, {"name": "Organize Files", "route": "/organize", "components": ["Navbar", "FileBrowser", "SearchBar", "TagFilter"]}, {"name": "Share Documents", "route": "/share", "components": ["Navbar", "SharedDocumentList", "AccessPermissionForm", "ShareButton"]}], "shared_components": ["Navbar", "Button", "Card", "Table", "Form", "Badge"], "features": ["file upload", "version control", "search files", "organize files", "share documents", "access permissions", "sharing links"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/upload", "purpose": "Upload files with version control"}, {"method": "GET", "path": "/api/files", "purpose": "Fetch organized file list"}, {"method": "POST", "path": "/api/search", "purpose": "Search files by name or tags"}, {"method": "POST", "path": "/api/share", "purpose": "Share documents via link"}, {"method": "POST", "path": "/api/access", "purpose": "Manage access permissions"}]}, "database": {"tables": [{"name": "files", "columns": ["id", "filename", "uploaded_at", "version_number", "uploader_id", "tags"]}, {"name": "users", "columns": ["id", "username", "email", "password_hash"]}, {"name": "shared_documents", "columns": ["id", "document_id", "receiver_email", "link_token", "shared_at"]}]}, "auth_required": true}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Document Management System",
+  "app_type": "web_app",
+  "description": "A secure document management system for uploading, organizing, searching, sharing, and version controlling files.",
+  "target_users": [
+    "users"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Dashboard",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "FileUploadCard",
+          "RecentFilesTable",
+          "SharedDocumentsCard"
+        ]
+      },
+      {
+        "name": "Upload Files",
+        "route": "/upload",
+        "components": [
+          "Navbar",
+          "FileUploader",
+          "VersionControlForm",
+          "UploadButton"
+        ]
+      },
+      {
+        "name": "Organize Files",
+        "route": "/organize",
+        "components": [
+          "Navbar",
+          "FileBrowser",
+          "SearchBar",
+          "TagFilter"
+        ]
+      },
+      {
+        "name": "Share Documents",
+        "route": "/share",
+        "components": [
+          "Navbar",
+          "SharedDocumentList",
+          "AccessPermissionForm",
+          "ShareButton"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Button",
+      "Card",
+      "Table",
+      "Form",
+      "Badge"
+    ],
+    "features": [
+      "file upload",
+      "version control",
+      "search files",
+      "organize files",
+      "share documents",
+      "access permissions",
+      "sharing links"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/upload",
+        "purpose": "Upload files with version control"
+      },
+      {
+        "method": "GET",
+        "path": "/api/files",
+        "purpose": "Fetch organized file list"
+      },
+      {
+        "method": "POST",
+        "path": "/api/search",
+        "purpose": "Search files by name or tags"
+      },
+      {
+        "method": "POST",
+        "path": "/api/share",
+        "purpose": "Share documents via link"
+      },
+      {
+        "method": "POST",
+        "path": "/api/access",
+        "purpose": "Manage access permissions"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "files",
+        "columns": [
+          "id",
+          "filename",
+          "uploaded_at",
+          "version_number",
+          "uploader_id",
+          "tags"
+        ]
+      },
+      {
+        "name": "users",
+        "columns": [
+          "id",
+          "username",
+          "email",
+          "password_hash"
+        ]
+      },
+      {
+        "name": "shared_documents",
+        "columns": [
+          "id",
+          "document_id",
+          "receiver_email",
+          "link_token",
+          "shared_at"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

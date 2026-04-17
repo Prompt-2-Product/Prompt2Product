@@ -1,0 +1,157 @@
+{
+  "app_name": "Gym Management System",
+  "app_type": "web_app",
+  "description": "A gym management system for member bookings, attendance tracking, subscription management, trainer scheduling, and admin membership management.",
+  "target_users": [
+    "members",
+    "trainers",
+    "admins"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "FeaturedServices",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Members",
+        "route": "/members",
+        "components": [
+          "Navbar",
+          "MemberListTable",
+          "SubscriptionCard",
+          "SearchBar"
+        ]
+      },
+      {
+        "name": "Classes",
+        "route": "/classes",
+        "components": [
+          "Navbar",
+          "ClassScheduleTable",
+          "TrainerBadge",
+          "BookingButton"
+        ]
+      },
+      {
+        "name": "Attendance",
+        "route": "/attendance",
+        "components": [
+          "Navbar",
+          "AttendanceChart",
+          "MemberAttendanceTable"
+        ]
+      },
+      {
+        "name": "Admin",
+        "route": "/admin",
+        "components": [
+          "Navbar",
+          "MembershipTable",
+          "TrainerDashboard",
+          "AttendanceSummary"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Table",
+      "Chart"
+    ],
+    "features": [
+      "member registration",
+      "class booking",
+      "trainer scheduling",
+      "attendance tracking",
+      "subscription management",
+      "membership approval",
+      "attendance charts"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/members",
+        "purpose": "Register gym member"
+      },
+      {
+        "method": "POST",
+        "path": "/api/classes",
+        "purpose": "Schedule gym class"
+      },
+      {
+        "method": "POST",
+        "path": "/api/attendance",
+        "purpose": "Record member attendance"
+      },
+      {
+        "method": "GET",
+        "path": "/api/members",
+        "purpose": "Fetch member list"
+      },
+      {
+        "method": "GET",
+        "path": "/api/classes",
+        "purpose": "Fetch class schedule"
+      },
+      {
+        "method": "POST",
+        "path": "/api/admin/memberships",
+        "purpose": "Approve gym memberships"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "members",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "phone",
+          "membership_type",
+          "subscription_start_date"
+        ]
+      },
+      {
+        "name": "classes",
+        "columns": [
+          "id",
+          "trainer_name",
+          "class_name",
+          "time_slot",
+          "venue"
+        ]
+      },
+      {
+        "name": "attendance_records",
+        "columns": [
+          "id",
+          "member_id",
+          "class_id",
+          "attendance_status"
+        ]
+      },
+      {
+        "name": "admin_memberships",
+        "columns": [
+          "id",
+          "member_id",
+          "approval_status"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

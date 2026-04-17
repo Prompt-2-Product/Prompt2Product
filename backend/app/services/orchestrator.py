@@ -181,43 +181,23 @@ class Orchestrator:
             log(session, run.id, "spec", "Starting spec generation...")
             spec_model = self.router.spec_model().model
             spec = asyncio.run(llm_prompt_to_spec(self.llm, spec_model, enhanced_prompt))
-            log(session, run.id, "spec", f"LLM TaskSpec: {spec.app_name}")
+            import json as _json
+            log(session, run.id, "spec", f"TaskSpec Generated:\n{_json.dumps(spec.model_dump(), indent=2)}")
 
-            # 2) SPEC -> CODE FILES (LLM - Skeleton Generation)
+            # 2) SPEC -> CODE FILES (LLM - Full Generation)
             log(session, run.id, "codegen", "Starting code generation...")
             code_model = self.router.code_model().model
             gen = asyncio.run(llm_spec_to_code(self.llm, code_model, spec))
-            log(session, run.id, "codegen", f"LLM generated {len(gen.files)} skeleton files")
+            
+            # Informative LLM phase logging mimicking local script
+            plan_preview = gen.plan[:120] + "..." if len(gen.plan) > 120 else gen.plan
+            log(session, run.id, "codegen", f"📋 Plan: {plan_preview}")
+            log(session, run.id, "codegen", f"📄 Manifest: {len(gen.manifest)} entries generated")
+            log(session, run.id, "codegen", f"📁 Files: {len(gen.files)} required pieces of code")
 
-            # 2.5) CONTENT ENRICHMENT (NEW STAGE)
-            log(session, run.id, "enrich", "Enriching content...")
-            from app.services.content_enricher import enrich_html_content
-            
-            enriched_files = []
-            html_count = 0
-            for file in gen.files:
-                if file.path.endswith('.html'):
-                    html_count += 1
-                    try:
-                        # Extract page name from path
-                        page_name = file.path.split('/')[-1].replace('.html', '')
-                        enriched_content = asyncio.run(enrich_html_content(
-                            self.llm, code_model, file.content, spec, page_name
-                        ))
-                        enriched_files.append({"path": file.path, "content": enriched_content})
-                        log(session, run.id, "enrich", f"Enriched {page_name}.html")
-                    except Exception as e:
-                        log(session, run.id, "enrich", f"Enrichment failed for {file.path}: {str(e)}", level="WARN")
-                        # Fall back to original content
-                        enriched_files.append({"path": file.path, "content": file.content})
-                else:
-                    enriched_files.append({"path": file.path, "content": file.content})
-            
-            log(session, run.id, "enrich", f"Enriched {html_count} HTML files")
-            
             # 2.6) VALIDATION (NEW STAGE)
             log(session, run.id, "validate", "Validating generated files...")
-            validation_warnings = validate_generated_files(enriched_files)
+            validation_warnings = validate_generated_files([{"path": f.path, "content": f.content} for f in gen.files])
             if validation_warnings:
                 for warning in validation_warnings:
                     log(session, run.id, "validate", f"⚠️ {warning}", level="WARN")
@@ -226,15 +206,34 @@ class Orchestrator:
                 log(session, run.id, "validate", "✅ All validation checks passed")
 
             # Fix truncated main.py / missing FileResponse routes before write
-            post_in = GenOutput(
-                files=[GenFile(path=x["path"], content=x["content"]) for x in enriched_files]
-            )
-            post_out = post_process_output(post_in)
-            enriched_files = [{"path": f.path, "content": f.content} for f in post_out.files]
+            post_out = post_process_output(gen)
+            final_files = [{"path": f.path, "content": f.content} for f in post_out.files]
             
-            # Write enriched files
-            write_files(ws, enriched_files)
-            log(session, run.id, "codegen", f"Wrote {len(enriched_files)} enriched files")
+            # Write generated files
+            write_files(ws, final_files)
+            
+            # Show extracted files iteratively
+            log(session, run.id, "codegen", f"📂 Writing to output directory...")
+            for f in final_files:
+                log(session, run.id, "codegen", f"  ✅ Extracted: {f['path']} ({len(f['content'])} chars)")
+                
+            # Write run.sh launch script
+            run_script_path = ws / "generated_app" / "run.sh"
+            run_script_content = (
+                "#!/bin/bash\n"
+                "# Auto-generated launch script\n"
+                "echo '📦 Installing dependencies...'\n"
+                "pip install -r requirements.txt\n"
+                "echo '🚀 Starting app...'\n"
+                "uvicorn main:app --reload --host 0.0.0.0 --port 8000\n"
+            )
+            run_script_path.write_text(run_script_content, encoding="utf-8")
+            try:
+                run_script_path.chmod(0o755)
+            except:
+                pass # Unix style permissions might raise NotImplementedError on some Windows configs
+            log(session, run.id, "codegen", "  ✅ Extracted: run.sh (auto-generated launch script)")
+            log(session, run.id, "codegen", f"─── Summary ───\n✅ Created: {len(final_files)} primary files + launch script")
 
             backend_dir = ws / "generated_app" / "backend"
             req_path = backend_dir / "requirements.txt"

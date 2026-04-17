@@ -1,0 +1,162 @@
+Prompt Category: co_working_space
+Model: /home/noor/FYP/finetune/outputs/qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Co-working Space Booking System", "app_type": "web_app", "description": "A co-working space booking system for users to reserve desks or rooms, manage bookings, and make payments, with admin access for space availability management.", "target_users": ["users", "admins"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "BookingHighlights", "Footer"]}, {"name": "Book Desk/Room", "route": "/bookings", "components": ["Navbar", "BookingForm", "AvailabilityCheck", "PaymentCard"]}, {"name": "My Bookings", "route": "/my-bookings", "components": ["Navbar", "BookingListTable", "StatusBadge"]}, {"name": "Admin Dashboard", "route": "/admin-dashboard", "components": ["Navbar", "SpaceAvailabilityChart", "BookingStatsTable", "UserActivityLog"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "Badge"], "features": ["desk/room booking", "payment processing", "booking management", "space availability check", "admin dashboard"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/bookings", "purpose": "Create user booking"}, {"method": "GET", "path": "/api/bookings", "purpose": "Fetch user bookings"}, {"method": "POST", "path": "/api/payments", "purpose": "Process payment"}, {"method": "GET", "path": "/api/spaces-availability", "purpose": "Fetch space availability data"}, {"method": "POST", "path": "/api/admin-logs", "purpose": "Log admin activity"}]}, "database": {"tables": [{"name": "users", "columns": ["id", "name", "email", "phone_number", "password", "role"]}, {"name": "bookings", "columns": ["id", "user_id", "space_type", "space_name", "start_date", "end_date", "status", "total_amount"]}, {"name": "payments", "columns": ["id", "booking_id", "amount", "payment_method", "status"]}, {"name": "spaces", "columns": ["id", "space_type", "space_name", "available_seats", "status"]}]}, "auth_required": true}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Co-working Space Booking System", "app_type": "web_app", "description": "A co-working space booking system for users to reserve desks or rooms, manage bookings, and make payments, with admin access for space availability management.", "target_users": ["users", "admins"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "BookingHighlights", "Footer"]}, {"name": "Book Desk/Room", "route": "/bookings", "components": ["Navbar", "BookingForm", "AvailabilityCheck", "PaymentCard"]}, {"name": "My Bookings", "route": "/my-bookings", "components": ["Navbar", "BookingListTable", "StatusBadge"]}, {"name": "Admin Dashboard", "route": "/admin-dashboard", "components": ["Navbar", "SpaceAvailabilityChart", "BookingStatsTable", "UserActivityLog"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "Badge"], "features": ["desk/room booking", "payment processing", "booking management", "space availability check", "admin dashboard"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/bookings", "purpose": "Create user booking"}, {"method": "GET", "path": "/api/bookings", "purpose": "Fetch user bookings"}, {"method": "POST", "path": "/api/payments", "purpose": "Process payment"}, {"method": "GET", "path": "/api/spaces-availability", "purpose": "Fetch space availability data"}, {"method": "POST", "path": "/api/admin-logs", "purpose": "Log admin activity"}]}, "database": {"tables": [{"name": "users", "columns": ["id", "name", "email", "phone_number", "password", "role"]}, {"name": "bookings", "columns": ["id", "user_id", "space_type", "space_name", "start_date", "end_date", "status", "total_amount"]}, {"name": "payments", "columns": ["id", "booking_id", "amount", "payment_method", "status"]}, {"name": "spaces", "columns": ["id", "space_type", "space_name", "available_seats", "status"]}]}, "auth_required": true}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Co-working Space Booking System",
+  "app_type": "web_app",
+  "description": "A co-working space booking system for users to reserve desks or rooms, manage bookings, and make payments, with admin access for space availability management.",
+  "target_users": [
+    "users",
+    "admins"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "BookingHighlights",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Book Desk/Room",
+        "route": "/bookings",
+        "components": [
+          "Navbar",
+          "BookingForm",
+          "AvailabilityCheck",
+          "PaymentCard"
+        ]
+      },
+      {
+        "name": "My Bookings",
+        "route": "/my-bookings",
+        "components": [
+          "Navbar",
+          "BookingListTable",
+          "StatusBadge"
+        ]
+      },
+      {
+        "name": "Admin Dashboard",
+        "route": "/admin-dashboard",
+        "components": [
+          "Navbar",
+          "SpaceAvailabilityChart",
+          "BookingStatsTable",
+          "UserActivityLog"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Table",
+      "Badge"
+    ],
+    "features": [
+      "desk/room booking",
+      "payment processing",
+      "booking management",
+      "space availability check",
+      "admin dashboard"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/bookings",
+        "purpose": "Create user booking"
+      },
+      {
+        "method": "GET",
+        "path": "/api/bookings",
+        "purpose": "Fetch user bookings"
+      },
+      {
+        "method": "POST",
+        "path": "/api/payments",
+        "purpose": "Process payment"
+      },
+      {
+        "method": "GET",
+        "path": "/api/spaces-availability",
+        "purpose": "Fetch space availability data"
+      },
+      {
+        "method": "POST",
+        "path": "/api/admin-logs",
+        "purpose": "Log admin activity"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "users",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "phone_number",
+          "password",
+          "role"
+        ]
+      },
+      {
+        "name": "bookings",
+        "columns": [
+          "id",
+          "user_id",
+          "space_type",
+          "space_name",
+          "start_date",
+          "end_date",
+          "status",
+          "total_amount"
+        ]
+      },
+      {
+        "name": "payments",
+        "columns": [
+          "id",
+          "booking_id",
+          "amount",
+          "payment_method",
+          "status"
+        ]
+      },
+      {
+        "name": "spaces",
+        "columns": [
+          "id",
+          "space_type",
+          "space_name",
+          "available_seats",
+          "status"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}
