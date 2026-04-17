@@ -148,210 +148,241 @@ export default function GeneratingPage() {
   ]
 
   return (
-    <div className="min-h-screen text-foreground relative overflow-hidden page-transition">
-      <div
-        className="pointer-events-none absolute inset-0 -z-10"
-        aria-hidden="true"
-        style={{
-          background: 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(0, 0, 139) 33.33%, rgb(135, 206, 250) 66.66%, rgb(255, 255, 255) 100%)',
-        }}
-      />
+    <div className="h-screen text-foreground relative overflow-hidden page-transition">
+      {/* Cinematic Background Layer */}
+      <div className="mesh-gradient" />
+      <div className="technical-grid" />
+      
       <Navigation />
 
-      <main className="absolute inset-x-0 top-[3.5rem] bottom-0 flex flex-col lg:flex-row">
-        <aside className={`${isSidebarCollapsed ? 'w-0 lg:w-0 border-r-0' : 'w-full lg:w-[380px] border-r'} border-border/50 bg-background flex flex-col flex-shrink-0 h-full transition-all duration-300 relative overflow-visible`}>
-          {!isSidebarCollapsed && (
-            <>
-              <div className="px-5 py-4 border-b border-border/50 flex-shrink-0 bg-background backdrop-blur-sm">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <h2 className="text-base font-semibold text-foreground mb-1">Project Chat</h2>
-                    {projectInfo && (
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-xs px-2 py-0.5 rounded-md bg-primary/10 text-primary border border-primary/20">
-                          {projectInfo.language}
-                        </span>
-                        <span className="text-xs px-2 py-0.5 rounded-md bg-secondary/50 text-foreground border border-border/50">
-                          {projectInfo.appType}
+      <main className="absolute inset-x-0 top-16 bottom-0 flex">
+        {/* Cinematic Sidebar - Glass Panel */}
+        <aside 
+          className={`h-full transition-all duration-500 ease-in-out relative border-r border-white/5 ${
+            isSidebarCollapsed ? 'w-0' : 'w-full lg:w-[360px]'
+          }`}
+        >
+          <div className={`h-full flex flex-col glass-panel bg-background/20 backdrop-blur-2xl transition-opacity duration-300 ${isSidebarCollapsed ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+            {/* Sidebar Header */}
+            <div className="px-6 py-6 border-b border-white/5 shrink-0">
+              <h2 className="text-sm font-bold uppercase tracking-widest text-foreground mb-3">Project Chat</h2>
+              {projectInfo && (
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-primary/20 text-primary border border-primary/20 uppercase tracking-tighter">
+                    {projectInfo.language}
+                  </span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-secondary/50 text-muted-foreground border border-border/50 uppercase tracking-tighter">
+                    {projectInfo.appType}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Chat Body - Glass Bubbles */}
+            <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6 custom-scrollbar">
+              {projectInfo && (
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-2">
+                    <div className="h-6 w-6 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30">
+                      <span className="text-[10px] font-bold text-primary">U</span>
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">You</span>
+                  </div>
+                  <div className="ml-8 rounded-2xl glass-panel bg-white/5 p-4 text-sm text-foreground/90 leading-relaxed font-light shadow-sm">
+                    {projectInfo.description}
+                  </div>
+                </div>
+              )}
+
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-2">
+                  <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
+                    <span className="text-[10px] font-bold text-white">P</span>
+                  </div>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Prompt2Product</span>
+                </div>
+                <div className={`ml-8 rounded-2xl glass-panel p-4 text-sm font-light leading-relaxed shadow-lg ${
+                  status === 'failed' ? 'bg-red-500/10 border-red-500/30 text-red-200' : 'bg-primary/5 border-primary/20 text-foreground'
+                }`}>
+                  {status === 'failed' ? (
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 font-bold text-red-400">
+                        <X className="h-4 w-4" />
+                        <span className="uppercase tracking-tighter">Generation Failed</span>
+                      </div>
+                      <p className="text-xs opacity-80">{error || 'Unexpected error detected.'}</p>
+                      <button 
+                        onClick={() => router.push('/describe')}
+                        className="w-full py-2 bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-200 rounded-lg text-xs font-bold transition-all"
+                      >
+                        RESTART FORGE
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-3">
+                        {status === 'success' ? (
+                          <div className="h-4 w-4 rounded-full bg-green-500 flex items-center justify-center">
+                            <Check className="h-2.5 w-2.5 text-white" />
+                          </div>
+                        ) : (
+                          <Loader className="h-4 w-4 animate-spin text-primary" />
+                        )}
+                        <span className="font-bold tracking-tight">
+                          {status === 'success'
+                            ? (isModificationFlow ? 'MODIFICATION COMPLETE' : 'BUILD SUCCESSFUL')
+                            : (isModificationFlow ? 'APPLYING PATCHES...' : 'IGNITING THE CORE...')}
                         </span>
                       </div>
-                    )}
-                  </div>
-                  <button
-                    onClick={() => setIsSidebarCollapsed(true)}
-                    className="p-1.5 hover:bg-secondary/50 rounded-lg transition-colors text-muted-foreground hover:text-foreground"
-                    title="Collapse sidebar"
-                  >
-                    <ChevronLeft className="h-5 w-5" />
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex-1 overflow-y-auto px-5 py-4 space-y-5 custom-scrollbar min-h-0">
-            {projectInfo && (
-              <div className="flex flex-col gap-2.5">
-                <div className="flex items-center gap-2">
-                  <div className="h-6 w-6 rounded-full bg-primary/20 flex items-center justify-center">
-                    <span className="text-xs font-semibold text-primary">U</span>
-                  </div>
-                  <span className="text-xs font-medium text-muted-foreground">You</span>
-                </div>
-                <div className="ml-8 rounded-xl bg-secondary/60 border border-border/60 p-4 text-sm leading-relaxed text-foreground whitespace-pre-wrap break-words shadow-sm">
-                  {projectInfo.description}
-                </div>
-              </div>
-            )}
-
-            <div className="flex flex-col gap-2.5">
-              <div className="flex items-center gap-2">
-                <div className="h-6 w-6 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center">
-                  <span className="text-xs font-semibold text-white">P</span>
-                </div>
-                <span className="text-xs font-medium text-muted-foreground">Prompt2Product</span>
-              </div>
-              <div className={`ml-8 rounded-xl border p-4 text-sm leading-relaxed shadow-sm ${status === 'failed' ? 'bg-red-500/10 border-red-500/50 text-red-700' : 'bg-primary/15 border-primary/30 text-foreground'}`}>
-                {status === 'failed' ? (
-                  <>
-                    <div className="flex items-center gap-2 mb-2 font-bold text-red-600">
-                      <X className="h-4 w-4" />
-                      <span>Generation Failed</span>
+                      <p className="text-xs text-muted-foreground">
+                        {status === 'pending'
+                          ? 'Waiting for initialization...'
+                          : (isModificationFlow
+                            ? 'Applying logic changes and regenerating project structure.'
+                            : 'This may take a minute. Our AI is currently sculpting your codebase.')}
+                      </p>
                     </div>
-                    <p className="text-xs mb-3">{error || 'An unexpected error occurred during generation.'}</p>
-                    <button 
-                      onClick={() => router.push('/describe')}
-                      className="px-3 py-1.5 bg-red-600 text-white rounded-lg text-xs font-semibold hover:bg-red-700 transition-colors"
-                    >
-                      Try Again
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <div className="flex items-center gap-2 mb-2 text-foreground">
-                      {status === 'success' ? <Check className="h-4 w-4 text-green-500" /> : <Loader className="h-4 w-4 animate-spin text-primary" />}
-                    <span className="font-medium">
-                      {status === 'success'
-                        ? (isModificationFlow ? 'Modification Complete!' : 'Generation Complete!')
-                        : (isModificationFlow ? 'Applying your requested changes...' : 'Generating your project...')}
-                    </span>
-                    </div>
-                    <p className="text-muted-foreground text-xs">
-                      {status === 'pending'
-                        ? 'Initializing...'
-                        : (isModificationFlow
-                          ? 'Applying patch, validating, and restarting preview.'
-                          : 'This may take a few moments. Please wait while we build your project.')}
-                    </p>
-                  </>
-                )}
+                  )}
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="px-5 py-4 border-t border-border/50 flex-shrink-0 bg-background backdrop-blur-sm">
-            <div className="relative">
+            {/* Sidebar Footer */}
+            <div className="px-6 py-4 border-t border-white/5 bg-background/20 backdrop-blur-3xl">
               <textarea
                 disabled
-                placeholder={status === 'failed' ? "Generation failed." : "Generation in progress..."}
-                className="w-full min-h-[90px] rounded-xl bg-secondary/40 border border-border/60 px-4 py-3 text-sm text-muted-foreground resize-none focus:outline-none disabled:cursor-not-allowed disabled:opacity-70 placeholder:text-muted-foreground/60"
+                placeholder={status === 'failed' ? "Core extinguished." : "System processing..."}
+                className="w-full min-h-[90px] rounded-xl bg-black/20 border border-white/5 px-4 py-3 text-sm text-muted-foreground font-light resize-none focus:outline-none disabled:cursor-not-allowed opacity-50 italic"
                 rows={3}
               />
             </div>
           </div>
-        </>
-      )}
-    </aside>
 
-        {/* Floating Expand Button */}
-        {isSidebarCollapsed && (
+          {/* New Fold Button - Border Bar Placement */}
           <button
-            onClick={() => setIsSidebarCollapsed(false)}
-            className="fixed left-0 top-1/2 -translate-y-1/2 z-40 bg-background border-y border-r border-border/50 p-2 rounded-r-xl shadow-xl hover:bg-secondary/50 transition-all group"
-            title="Expand sidebar"
+            onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+            className={`absolute z-50 transition-all duration-500 ease-in-out hover:scale-110 flex items-center justify-center rounded-full bg-primary border border-primary/40 shadow-xl group ${
+              isSidebarCollapsed 
+                ? 'left-8 top-1/2 -translate-y-1/2 w-10 h-10' 
+                : '-right-4 top-1/2 -translate-y-1/2 w-8 h-18'
+            }`}
+            title={isSidebarCollapsed ? "Show Chat" : "Hide Chat"}
           >
-            <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-foreground transition-colors" />
+            {isSidebarCollapsed ? (
+              <ChevronRight className="h-5 w-5 text-white group-hover:translate-x-0.5 transition-transform" />
+            ) : (
+              <ChevronLeft className="h-5 w-5 text-white group-hover:-translate-x-0.5 transition-transform" />
+            )}
           </button>
-        )}
+        </aside>
 
-        <div className="flex-1 overflow-y-auto custom-scrollbar" style={{ background: 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(0, 0, 139) 33.33%, rgb(135, 206, 250) 66.66%, rgb(255, 255, 255) 100%)' }}>
-          <div className="max-w-4xl mx-auto p-6 lg:p-8 pt-12 lg:pt-16">
-            <div className="mb-8 md:mb-12 text-center text-white">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">
+        {/* Main Production Area */}
+        <div className="flex-1 h-full overflow-hidden relative">
+          <div className="max-w-4xl mx-auto p-6 lg:p-10 flex flex-col h-full pt-16 lg:pt-20 pb-12 lg:pb-16">
+            {/* Cinematic Header */}
+            <div className="mb-8 lg:mb-12 text-center animate-in fade-in slide-in-from-top-4 duration-1000">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black mb-4 tracking-tighter">
                 {status === 'failed'
-                  ? (isModificationFlow ? 'Modification Error' : 'Generation Error')
-                  : (isModificationFlow ? 'Applying Your Changes' : 'Generating Your Project')}
+                  ? (isModificationFlow ? <>Core <span className="text-red-500">Error</span></> : <>Forge <span className="text-red-500">Failed</span></>)
+                  : (isModificationFlow ? <>Applying Your <span className="hero-text-accent">Changes</span></> : <>Generating Your <span className="hero-text-accent">Project</span></>)}
               </h1>
+              <p className="text-sm sm:text-base text-muted-foreground font-light tracking-wide max-w-xl mx-auto">
+                {status === 'failed' 
+                  ? 'The engine encountered a critical error during construction.'
+                  : 'Synthesizing components, establishing framework, and validating logic layers.'}
+              </p>
             </div>
 
-            {status === 'failed' ? (
-              <div className="max-w-2xl mx-auto mb-12 p-6 rounded-2xl bg-white/10 backdrop-blur-xl border border-red-500/30 text-center">
-                <div className="h-16 w-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <X className="h-8 w-8 text-red-500" />
-                </div>
-                <h3 className="text-xl font-bold text-white mb-2">Something went wrong</h3>
-                <p className="text-slate-200 text-sm mb-6 leading-relaxed">
-                  The LLM failed to respond. This is often caused by an unstable connection to Ollama (SSH tunnel timeout) or the model taking too long to generate.
-                </p>
-                <div className="flex justify-center gap-4">
-                  <button 
-                    onClick={() => router.push('/describe')}
-                    className="px-6 py-2.5 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/25"
-                  >
-                    Modify Prompt
-                  </button>
-                  <button 
-                    onClick={() => window.location.reload()}
-                    className="px-6 py-2.5 bg-white/10 text-white border border-white/20 rounded-xl font-semibold hover:bg-white/20 transition-all"
-                  >
-                    Retry Connection
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="mb-8 md:mb-12">
-                <div className="flex flex-col sm:flex-row sm:items-center items-start sm:justify-center gap-8 sm:gap-12">
-                  {steps.map((step, index) => (
-                    <div key={step.number} className="flex items-center">
-                      <div className="flex flex-col items-center">
-                        <div
-                          className={`flex h-12 w-12 items-center justify-center rounded-full font-semibold transition-all ${step.number < currentStep
-                            ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
-                            : step.number === currentStep
-                              ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
-                              : 'bg-slate-200/80 text-slate-500'
-                            }`}
-                        >
-                          {step.number < currentStep ? (
-                            <Check className="h-6 w-6" />
-                          ) : step.number === currentStep ? (
-                            <Loader className="h-6 w-6 animate-spin" />
-                          ) : (
-                            step.number
+            {/* Cinematic Stepper */}
+            {status !== 'failed' && (
+              <div className="mb-10 lg:mb-16 relative max-w-3xl mx-auto w-full">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-12 relative z-10">
+                  {steps.map((step, index) => {
+                    const isActive = step.number === currentStep
+                    const isCompleted = step.number < currentStep
+                    const isPending = step.number > currentStep
+
+                    return (
+                      <div key={step.number} className="flex flex-col items-center gap-5 group flex-1">
+                        <div className="relative">
+                          {/* Inner Circle */}
+                          <div className={`h-14 w-14 rounded-full flex items-center justify-center transition-all duration-700 z-10 relative overflow-hidden ${
+                            isCompleted 
+                              ? 'bg-primary shadow-[0_0_20px_rgba(37,99,235,0.4)] border-primary' 
+                              : isActive 
+                                ? 'glass-panel bg-primary/20 border-primary shadow-[0_0_30px_rgba(37,99,235,0.2)]' 
+                                : 'glass-panel bg-white/5 border-white/10'
+                          }`}>
+                            {isCompleted ? (
+                              <Check className="h-6 w-6 text-white" />
+                            ) : isActive ? (
+                              <Loader className="h-6 w-6 animate-spin text-primary" />
+                            ) : (
+                              <span className="text-sm font-bold opacity-30">{step.number}</span>
+                            )}
+                          </div>
+                          {/* Outer Glow Ring for Active */}
+                          {isActive && (
+                            <div className="absolute inset-0 -m-2 rounded-full border border-primary/20 animate-ping opacity-20" />
                           )}
                         </div>
-                        <p className={`mt-3 text-sm font-medium text-center ${step.number <= currentStep ? 'text-white' : 'text-slate-400'}`}>
-                          {step.label}
-                        </p>
+                        <div className="text-center">
+                          <p className={`text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-colors duration-500 ${
+                            isPending ? 'text-muted-foreground/30' : isActive ? 'text-primary' : 'text-foreground'
+                          }`}>
+                            {step.label}
+                          </p>
+                        </div>
+                        {/* Stepper connecting lines removed as per user request */}
                       </div>
-                      {index < steps.length - 1 && (
-                        <div
-                          className={`hidden sm:block w-16 h-1 mx-4 transition-all ${step.number < currentStep ? 'bg-gradient-to-r from-blue-500 to-cyan-500' : 'bg-slate-200/80'}`}
-                        ></div>
-                      )}
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
               </div>
             )}
 
-            <div className="mb-8 max-w-3xl mx-auto">
-              <div className="rounded-xl bg-background backdrop-blur-md border border-border shadow-lg overflow-hidden">
-                <div className="bg-background px-4 py-3 border-b border-border flex justify-between items-center">
-                  <p className="text-xs sm:text-sm font-medium text-foreground">Generation Log</p>
-                  {status === 'failed' && <span className="text-[10px] bg-red-500/20 text-red-500 px-2 py-0.5 rounded font-bold uppercase tracking-wider">Failed</span>}
+            {/* Error State - Cinematic Panel */}
+            {status === 'failed' && (
+              <div className="max-w-2xl mx-auto mb-16 rounded-3xl glass-panel p-10 text-center relative overflow-hidden group">
+                <div className="absolute -top-12 -right-12 h-40 w-40 bg-red-500/10 rounded-full blur-3xl" />
+                <div className="h-20 w-20 bg-red-500/20 rounded-2xl flex items-center justify-center mx-auto mb-8 border border-red-500/30">
+                  <X className="h-10 w-10 text-red-500" />
                 </div>
-                <div className="bg-background/60 p-3 sm:p-4 h-56 sm:h-64 overflow-y-auto font-mono text-xs sm:text-sm space-y-1 custom-scrollbar">
+                <h3 className="text-2xl font-black mb-4 tracking-tight">SYNTHESIS INTERRUPTED</h3>
+                <p className="text-muted-foreground text-sm font-light leading-relaxed mb-8 max-w-md mx-auto">
+                  The LLM construction engine timed out or reached a dead-end. This can happen with very complex prompts or unstable API tunnels.
+                </p>
+                <div className="flex flex-col sm:flex-row justify-center gap-4">
+                  <button 
+                    onClick={() => router.push('/describe')}
+                    className="px-8 py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-all shadow-xl shadow-primary/20"
+                  >
+                    MODIFY PLAN
+                  </button>
+                  <button 
+                    onClick={() => window.location.reload()}
+                    className="px-8 py-3 glass-panel bg-white/5 text-white font-bold rounded-xl hover:bg-white/10 transition-all"
+                  >
+                    RE-IGNITE CORE
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Production Log - THE HUB */}
+            <div className="max-w-3xl mx-auto w-full mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500">
+              <div className="rounded-3xl glass-panel overflow-hidden bg-background/30 backdrop-blur-3xl shadow-3xl">
+                <div className="bg-white/5 px-6 py-4 border-b border-white/5 flex justify-between items-center">
+                  <div className="flex items-center gap-3">
+                    <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">REALTIME PRODUCTION FEED</p>
+                  </div>
+                  {status === 'failed' && <span className="text-[10px] bg-red-500/20 text-red-500 px-2 py-0.5 rounded font-black uppercase tracking-wider">CRITICAL_ERROR</span>}
+                </div>
+                <div className="p-6 h-64 sm:h-80 overflow-y-auto font-mono text-[11px] sm:text-xs space-y-2 custom-scrollbar-dark scroll-smooth">
                   {logs.map((log, index) => (
-                    <div key={index} className={log.includes('[ERROR]') || log.includes('[fatal]') ? 'text-red-400' : 'text-green-400'}>
+                    <div key={index} className={`opacity-0 animate-in fade-in duration-500 fill-mode-forwards ${log.includes('[ERROR]') || log.includes('[fatal]') ? 'text-red-400' : 'text-primary/80'}`}>
+                      <span className="opacity-30 mr-3">[{new Date().toLocaleTimeString([], {hour12: false})}]</span>
                       {log}
                     </div>
                   ))}
@@ -359,15 +390,19 @@ export default function GeneratingPage() {
               </div>
             </div>
 
+            {/* Progress Visualization */}
             {status !== 'failed' && (
-              <div className="space-y-2 max-w-2xl mx-auto">
-                <div className="flex justify-between text-xs text-white">
-                  <span>Progress</span>
-                  <span>{Math.min(Math.round(progress), 100)}%</span>
+              <div className="max-w-xl mx-auto w-full space-y-4">
+                <div className="flex justify-between items-end mb-1">
+                  <div className="text-left">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">Total Integrity</p>
+                    <p className="text-xs font-bold text-foreground">Synthesis in progress...</p>
+                  </div>
+                  <span className="text-2xl font-black text-primary tracking-tighter">{Math.min(Math.round(progress), 100)}%</span>
                 </div>
-                <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+                <div className="h-1.5 w-full rounded-full bg-white/5 border border-white/5 overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-500"
+                    className="h-full bg-gradient-to-r from-blue-600 via-blue-400 to-cyan-400 shadow-[0_0_20px_rgba(37,99,235,0.5)] transition-all duration-1000 ease-out"
                     style={{ width: `${Math.min(progress, 100)}%` }}
                   ></div>
                 </div>

@@ -77,8 +77,8 @@ export default function PreviewPage() {
           }}
         />
         <Navigation />
-        <main className="flex items-center justify-center min-h-[calc(100vh-5rem)] pt-8 sm:pt-16 md:pt-24 pb-8 sm:pb-16">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+        <main className="flex items-center justify-center min-h-[calc(100vh-4rem)] pt-16 pb-8 sm:pb-16">
+          <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 text-center">
             <p className="text-slate-800 dark:text-slate-900">Loading...</p>
           </div>
         </main>
@@ -98,7 +98,7 @@ export default function PreviewPage() {
       />
       <Navigation />
 
-      <main className="absolute inset-x-0 top-[3.5rem] bottom-0 flex flex-col lg:flex-row">
+      <main className="absolute inset-x-0 top-16 bottom-0 flex flex-col lg:flex-row">
         {/* Left: Chat Sidebar - Only visible when showChat is true */}
         {showChat && projectInfo && (
           <aside className={`${isSidebarCollapsed ? 'w-0 lg:w-0 border-r-0' : 'w-full lg:w-[380px] border-r'} border-border/50 bg-background flex flex-col flex-shrink-0 h-full transition-all duration-300 relative overflow-visible`}>
@@ -248,7 +248,7 @@ export default function PreviewPage() {
 
         {/* Right: Main Content */}
         <div className="flex-1 overflow-y-auto custom-scrollbar" style={{ background: 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(0, 0, 139) 33.33%, rgb(135, 206, 250) 66.66%, rgb(255, 255, 255) 100%)' }}>
-          <div className="p-6 lg:p-8 max-w-7xl mx-auto page-content">
+          <div className="p-6 lg:p-8 px-6 sm:px-10 lg:px-16 xl:px-24 page-content">
             <div className="mb-6 md:mb-8 text-center">
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 text-white">Project Summary</h1>
               <p className="text-white text-sm md:text-base">Review your generated project</p>
