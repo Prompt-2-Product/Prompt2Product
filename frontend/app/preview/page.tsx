@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Navigation } from '@/components/navigation'
 import { Button } from '@/components/ui/button'
-import { Code2, Edit3, Download, Eye, Loader, X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Code2, Edit3, Download, Eye, Loader, X, ChevronLeft, ChevronRight, RotateCcw } from 'lucide-react'
 
 interface ProjectInfo {
   description: string
@@ -59,11 +59,13 @@ export default function PreviewPage() {
 
   const handlePreview = () => {
     if (projectInfo?.runId) {
-      // In a real scenario, we might have a port mapping or a proxy
-      // For now, we'll try to follow the intent of the original mock
       const port = 8010 + projectInfo.runId
       window.open(`http://127.0.0.1:${port}`, '_blank')
     }
+  }
+
+  const handleRequestChanges = () => {
+    setShowChat(true)
   }
 
   if (!projectInfo) {
@@ -249,7 +251,7 @@ export default function PreviewPage() {
           <div className="max-w-6xl mx-auto px-6 pt-8 lg:pt-12 pb-48 lg:pb-72 flex flex-col h-full justify-center items-stretch relative z-10 transition-all duration-500">
             {/* Cinematic Header */}
             <div className="shrink-0 text-center animate-in fade-in slide-in-from-top-4 duration-1000 relative z-20">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black mb-4 tracking-tighter text-white">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black mb-4 tracking-tighter text-foreground dark:text-white">
                 Project <span className="hero-text-accent">Summary</span>
               </h1>
               <p className="text-sm sm:text-base text-muted-foreground font-light tracking-wide max-w-xl mx-auto">
@@ -260,8 +262,8 @@ export default function PreviewPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8 md:mb-12 flex-1 min-h-0 py-8 lg:py-12">
               {/* Left: Project Info Card */}
               <div className="lg:col-span-2 flex h-full">
-                <div className="rounded-3xl glass-panel bg-background/30 backdrop-blur-3xl shadow-3xl p-6 sm:p-8 md:p-10 w-full flex flex-col h-full overflow-hidden">
-                  <h2 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8 text-white tracking-tight flex items-center gap-3">
+                <div className="rounded-3xl glass-panel bg-background/30 dark:bg-background/20 backdrop-blur-3xl shadow-3xl p-6 sm:p-8 md:p-10 w-full flex flex-col h-full overflow-hidden">
+                  <h2 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8 text-foreground dark:text-white tracking-tight flex items-center gap-3">
                     <div className="h-2 w-2 rounded-full bg-primary" />
                     GENERATED PROJECT
                   </h2>
@@ -294,8 +296,8 @@ export default function PreviewPage() {
 
               {/* Right: Action Buttons */}
               <div className="flex h-full">
-                <div className="rounded-3xl glass-panel bg-background/30 backdrop-blur-3xl shadow-3xl p-6 sm:p-8 md:p-10 w-full flex flex-col h-full">
-                  <h3 className="text-xl sm:text-2xl font-black text-white mb-6 sm:mb-8 tracking-tight flex items-center gap-3">
+                <div className="rounded-3xl glass-panel bg-background/30 dark:bg-background/20 backdrop-blur-3xl shadow-3xl p-6 sm:p-8 md:p-10 w-full flex flex-col h-full">
+                  <h3 className="text-xl sm:text-2xl font-black text-foreground dark:text-white mb-6 sm:mb-8 tracking-tight flex items-center gap-3">
                     <div className="h-2 w-2 rounded-full bg-cyan-400" />
                     ACTIONS
                   </h3>
@@ -310,29 +312,29 @@ export default function PreviewPage() {
                     </Button>
 
                     <Button
-                      onClick={() => setShowChat(true)}
+                      onClick={handleRequestChanges}
                       variant="outline"
-                      className="w-full border border-white/5 bg-white/5 backdrop-blur-xl text-white hover:bg-white/10 hover:border-blue-400/50 transition-all duration-500 h-14 font-bold shadow-sm hover:shadow-md group rounded-2xl"
+                      className="w-full border border-black/5 dark:border-white/5 bg-secondary/40 dark:bg-white/5 backdrop-blur-xl text-foreground dark:text-white hover:bg-black/5 dark:hover:bg-white/10 hover:border-blue-400/50 transition-all duration-500 h-14 font-bold shadow-sm hover:shadow-md group rounded-2xl"
                       size="lg"
                     >
-                      <Edit3 className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform group-hover:text-blue-400" />
+                      <RotateCcw className="mr-3 h-5 w-5 group-hover:rotate-180 transition-transform duration-700 group-hover:text-blue-500" />
                       Request Changes
                     </Button>
 
                     <Button
                       onClick={handleDownload}
                       variant="outline"
-                      className="w-full border border-white/5 bg-white/5 backdrop-blur-xl text-white hover:bg-white/10 hover:border-blue-400/50 transition-all duration-500 h-14 font-bold shadow-sm hover:shadow-md group rounded-2xl"
+                      className="w-full border border-black/5 dark:border-white/5 bg-secondary/40 dark:bg-white/5 backdrop-blur-xl text-foreground dark:text-white hover:bg-black/5 dark:hover:bg-white/10 hover:border-emerald-400/50 transition-all duration-500 h-14 font-bold shadow-sm hover:shadow-md group rounded-2xl"
                       size="lg"
                     >
-                      <Download className="mr-3 h-5 w-5 group-hover:translate-y-0.5 transition-transform group-hover:text-blue-400" />
+                      <Download className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform group-hover:text-emerald-500" />
                       Download Project
                     </Button>
 
                     <Button
                       onClick={handlePreview}
                       variant="outline"
-                      className="w-full border border-white/5 bg-white/5 backdrop-blur-xl text-white hover:bg-white/10 hover:border-blue-400/50 transition-all duration-500 h-14 font-bold shadow-sm hover:shadow-md group rounded-2xl"
+                      className="w-full border border-black/5 dark:border-white/5 bg-secondary/40 dark:bg-white/5 backdrop-blur-xl text-foreground dark:text-white hover:bg-black/5 dark:hover:bg-white/10 hover:border-blue-400/50 transition-all duration-500 h-14 font-bold shadow-sm hover:shadow-md group rounded-2xl"
                       size="lg"
                     >
                       <Eye className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform group-hover:text-blue-400" />

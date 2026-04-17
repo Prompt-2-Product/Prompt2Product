@@ -138,7 +138,7 @@ export default function DescribePage() {
         <div className="w-full page-content">
           {/* Header - RESTORED SIZE */}
           <div className="mb-10 md:mb-12 text-center animate-in fade-in duration-1000">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 tracking-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 tracking-tight text-foreground dark:text-white">
               Describe Your <span className="hero-text-accent">Project</span>
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
@@ -237,41 +237,41 @@ export default function DescribePage() {
                 {/* Parameters - Standard size restored */}
                 <div className="space-y-4">
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-medium text-muted-foreground uppercase tracking-wider">Language</label>
+                    <label className="block text-[10px] font-bold text-muted-foreground/70 dark:text-muted-foreground uppercase tracking-widest">Language</label>
                     <select
                       value={language}
                       onChange={(e) => setLanguage(e.target.value)}
                       disabled={autoDetect}
-                      className="w-full rounded-lg bg-secondary/50 border border-border px-3 py-2 text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 transition-all appearance-none cursor-pointer"
+                      className="w-full rounded-lg bg-secondary/50 dark:bg-white/5 border border-black/5 dark:border-white/10 px-3 py-2 text-foreground dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 transition-all appearance-none cursor-pointer"
                     >
-                      <option>Python</option>
-                      <option>JavaScript</option>
-                      <option>TypeScript</option>
+                      <option className="bg-background text-foreground">Python</option>
+                      <option className="bg-background text-foreground">JavaScript</option>
+                      <option className="bg-background text-foreground">TypeScript</option>
                     </select>
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-medium text-muted-foreground uppercase tracking-wider">App Type</label>
+                    <label className="block text-[10px] font-bold text-muted-foreground/70 dark:text-muted-foreground uppercase tracking-widest">App Type</label>
                     <select
                       value={appType}
                       onChange={(e) => setAppType(e.target.value)}
                       disabled={autoDetect}
-                      className="w-full rounded-lg bg-secondary/50 border border-border px-3 py-2 text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 transition-all appearance-none cursor-pointer"
+                      className="w-full rounded-lg bg-secondary/50 dark:bg-white/5 border border-black/5 dark:border-white/10 px-3 py-2 text-foreground dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 transition-all appearance-none cursor-pointer"
                     >
                       {APP_TYPES.map((type) => (
-                        <option key={type}>{type}</option>
+                        <option key={type} className="bg-background text-foreground">{type}</option>
                       ))}
                     </select>
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-medium text-muted-foreground uppercase tracking-wider">Additional Instructions</label>
+                    <label className="block text-[10px] font-bold text-muted-foreground/70 dark:text-muted-foreground uppercase tracking-widest">Additional Instructions</label>
                     <input
                       type="text"
                       value={additionalInstructions}
                       onChange={(e) => setAdditionalInstructions(e.target.value)}
                       placeholder="Specific requirements..."
-                      className="w-full rounded-lg bg-secondary/50 border border-border px-3 py-2 text-foreground placeholder-muted-foreground/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                      className="w-full rounded-lg bg-secondary/50 dark:bg-white/5 border border-black/5 dark:border-white/10 px-3 py-2 text-foreground dark:text-white placeholder-muted-foreground/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                     />
                   </div>
                 </div>
