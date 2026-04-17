@@ -1,0 +1,132 @@
+{
+  "app_name": "Collaborative Whiteboard",
+  "app_type": "web_app",
+  "description": "An online platform for collaborative drawing and note-taking where users can share boards, annotate, and collaborate in real-time.",
+  "target_users": [
+    "students",
+    "teachers",
+    "designers"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "FeaturesCards",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Board",
+        "route": "/boards",
+        "components": [
+          "Navbar",
+          "BoardList",
+          "SharedBoardCard",
+          "CreateBoardButton"
+        ]
+      },
+      {
+        "name": "Board Detail",
+        "route": "/boards/:id",
+        "components": [
+          "Navbar",
+          "DrawingCanvas",
+          "AnnotationNotes",
+          "ShareButton",
+          "CommentSection"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Table"
+    ],
+    "features": [
+      "whiteboard drawing",
+      "note taking",
+      "board sharing",
+      "real-time collaboration",
+      "annotation",
+      "commenting"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/boards",
+        "purpose": "Fetch shared whiteboard boards"
+      },
+      {
+        "method": "POST",
+        "path": "/api/boards",
+        "purpose": "Create a new whiteboard board"
+      },
+      {
+        "method": "GET",
+        "path": "/api/boards/:id",
+        "purpose": "Fetch specific whiteboard details"
+      },
+      {
+        "method": "POST",
+        "path": "/api/boards/:id/drawings",
+        "purpose": "Upload drawing data"
+      },
+      {
+        "method": "POST",
+        "path": "/api/boards/:id/comments",
+        "purpose": "Add comment to board"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "users",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "password_hash",
+          "role"
+        ]
+      },
+      {
+        "name": "boards",
+        "columns": [
+          "id",
+          "title",
+          "created_at",
+          "shared_with"
+        ]
+      },
+      {
+        "name": "drawings",
+        "columns": [
+          "id",
+          "board_id",
+          "drawing_data",
+          "created_at"
+        ]
+      },
+      {
+        "name": "comments",
+        "columns": [
+          "id",
+          "board_id",
+          "user_id",
+          "comment_text",
+          "created_at"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

@@ -1,0 +1,152 @@
+{
+  "app_name": "Recipe Sharing Platform",
+  "app_type": "web_app",
+  "description": "A platform for users to share, rate, and comment on recipes. Users can also save favorites and search recipes by ingredients or categories.",
+  "target_users": [
+    "recipe_sharing_users"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "FeaturedRecipes",
+          "ExploreCategories",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Recipes",
+        "route": "/recipes",
+        "components": [
+          "Navbar",
+          "SearchBar",
+          "CategoryFilter",
+          "RecipeCardGrid",
+          "FavoriteToggle"
+        ]
+      },
+      {
+        "name": "Recipe Details",
+        "route": "/recipes/:id",
+        "components": [
+          "Navbar",
+          "RecipeCard",
+          "IngredientsList",
+          "InstructionsSection",
+          "RatingStars",
+          "CommentsSection",
+          "SaveButton"
+        ]
+      },
+      {
+        "name": "Favorites",
+        "route": "/favorites",
+        "components": [
+          "Navbar",
+          "FavoriteRecipesGrid",
+          "SavedToggle"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Tag",
+      "Badge"
+    ],
+    "features": [
+      "recipe upload",
+      "recipe search",
+      "category filtering",
+      "rating",
+      "comments",
+      "favorite recipes",
+      "ingredient search"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/recipes",
+        "purpose": "Upload recipe"
+      },
+      {
+        "method": "GET",
+        "path": "/api/recipes",
+        "purpose": "Fetch recipes"
+      },
+      {
+        "method": "POST",
+        "path": "/api/recipes/:id/rate",
+        "purpose": "Rate recipe"
+      },
+      {
+        "method": "POST",
+        "path": "/api/recipes/:id/comments",
+        "purpose": "Add comment"
+      },
+      {
+        "method": "POST",
+        "path": "/api/favorites",
+        "purpose": "Save recipe as favorite"
+      },
+      {
+        "method": "GET",
+        "path": "/api/search",
+        "purpose": "Search recipes by ingredients or categories"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "recipes",
+        "columns": [
+          "id",
+          "title",
+          "author",
+          "category",
+          "ingredients",
+          "instructions",
+          "created_at"
+        ]
+      },
+      {
+        "name": "recipe_comments",
+        "columns": [
+          "id",
+          "recipe_id",
+          "comment_text",
+          "user_name",
+          "created_at"
+        ]
+      },
+      {
+        "name": "recipe_ratings",
+        "columns": [
+          "id",
+          "recipe_id",
+          "rating_score",
+          "user_name"
+        ]
+      },
+      {
+        "name": "favorites",
+        "columns": [
+          "id",
+          "recipe_id",
+          "user_name",
+          "created_at"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

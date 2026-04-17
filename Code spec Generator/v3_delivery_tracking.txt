@@ -1,0 +1,140 @@
+Prompt Category: delivery_tracking
+Model: /home/noor/FYP/finetune/outputs/qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Delivery Tracking System", "app_type": "web_app", "description": "A delivery tracking system for users to track shipments in real-time, view delivery history, and receive notifications. Admins manage logistics.", "target_users": ["users", "admins"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "TrackingCards", "Footer"]}, {"name": "Track Shipment", "route": "/track", "components": ["Navbar", "ShipmentTracker", "StatusBadge", "NotificationBadge"]}, {"name": "Delivery History", "route": "/history", "components": ["Navbar", "HistoryTable", "DateFilter", "StatusChart"]}, {"name": "Notifications", "route": "/notifications", "components": ["Navbar", "NotificationList", "PriorityBadge"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Badge", "Table", "Chart"], "features": ["shipment tracking", "delivery history", "notifications", "status badges", "date filtering", "priority notifications"]}, "backend": {"endpoints": [{"method": "GET", "path": "/api/shipments", "purpose": "Fetch shipment tracking data"}, {"method": "GET", "path": "/api/history", "purpose": "Fetch delivery history data"}, {"method": "POST", "path": "/api/notifications", "purpose": "Send notification"}]}, "database": {"tables": [{"name": "shipments", "columns": ["id", "tracking_number", "origin", "destination", "status", "created_at"]}, {"name": "delivery_history", "columns": ["id", "shipment_id", "status_change_time", "new_status"]}, {"name": "notifications", "columns": ["id", "recipient", "message", "priority", "sent_at"]}]}, "auth_required": true}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Delivery Tracking System", "app_type": "web_app", "description": "A delivery tracking system for users to track shipments in real-time, view delivery history, and receive notifications. Admins manage logistics.", "target_users": ["users", "admins"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "TrackingCards", "Footer"]}, {"name": "Track Shipment", "route": "/track", "components": ["Navbar", "ShipmentTracker", "StatusBadge", "NotificationBadge"]}, {"name": "Delivery History", "route": "/history", "components": ["Navbar", "HistoryTable", "DateFilter", "StatusChart"]}, {"name": "Notifications", "route": "/notifications", "components": ["Navbar", "NotificationList", "PriorityBadge"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Badge", "Table", "Chart"], "features": ["shipment tracking", "delivery history", "notifications", "status badges", "date filtering", "priority notifications"]}, "backend": {"endpoints": [{"method": "GET", "path": "/api/shipments", "purpose": "Fetch shipment tracking data"}, {"method": "GET", "path": "/api/history", "purpose": "Fetch delivery history data"}, {"method": "POST", "path": "/api/notifications", "purpose": "Send notification"}]}, "database": {"tables": [{"name": "shipments", "columns": ["id", "tracking_number", "origin", "destination", "status", "created_at"]}, {"name": "delivery_history", "columns": ["id", "shipment_id", "status_change_time", "new_status"]}, {"name": "notifications", "columns": ["id", "recipient", "message", "priority", "sent_at"]}]}, "auth_required": true}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Delivery Tracking System",
+  "app_type": "web_app",
+  "description": "A delivery tracking system for users to track shipments in real-time, view delivery history, and receive notifications. Admins manage logistics.",
+  "target_users": [
+    "users",
+    "admins"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "TrackingCards",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Track Shipment",
+        "route": "/track",
+        "components": [
+          "Navbar",
+          "ShipmentTracker",
+          "StatusBadge",
+          "NotificationBadge"
+        ]
+      },
+      {
+        "name": "Delivery History",
+        "route": "/history",
+        "components": [
+          "Navbar",
+          "HistoryTable",
+          "DateFilter",
+          "StatusChart"
+        ]
+      },
+      {
+        "name": "Notifications",
+        "route": "/notifications",
+        "components": [
+          "Navbar",
+          "NotificationList",
+          "PriorityBadge"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Badge",
+      "Table",
+      "Chart"
+    ],
+    "features": [
+      "shipment tracking",
+      "delivery history",
+      "notifications",
+      "status badges",
+      "date filtering",
+      "priority notifications"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/shipments",
+        "purpose": "Fetch shipment tracking data"
+      },
+      {
+        "method": "GET",
+        "path": "/api/history",
+        "purpose": "Fetch delivery history data"
+      },
+      {
+        "method": "POST",
+        "path": "/api/notifications",
+        "purpose": "Send notification"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "shipments",
+        "columns": [
+          "id",
+          "tracking_number",
+          "origin",
+          "destination",
+          "status",
+          "created_at"
+        ]
+      },
+      {
+        "name": "delivery_history",
+        "columns": [
+          "id",
+          "shipment_id",
+          "status_change_time",
+          "new_status"
+        ]
+      },
+      {
+        "name": "notifications",
+        "columns": [
+          "id",
+          "recipient",
+          "message",
+          "priority",
+          "sent_at"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

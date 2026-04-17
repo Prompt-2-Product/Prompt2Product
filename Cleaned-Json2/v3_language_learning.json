@@ -1,0 +1,156 @@
+{
+  "app_name": "Language Learning Platform",
+  "app_type": "web_app",
+  "description": "A platform for language learners to take lessons, complete exercises, track progress, and receive personalized recommendations.",
+  "target_users": [
+    "language learners"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "FeaturedCourses",
+          "CallToAction"
+        ]
+      },
+      {
+        "name": "Courses",
+        "route": "/courses",
+        "components": [
+          "Navbar",
+          "CourseCardGrid",
+          "CategoryFilter",
+          "DurationBadge"
+        ]
+      },
+      {
+        "name": "Lessons",
+        "route": "/lessons",
+        "components": [
+          "Navbar",
+          "LessonList",
+          "VideoPlayer",
+          "NotesSidebar"
+        ]
+      },
+      {
+        "name": "Exercises",
+        "route": "/exercises",
+        "components": [
+          "Navbar",
+          "ExerciseGrid",
+          "ProgressTracker",
+          "SubmitButton"
+        ]
+      },
+      {
+        "name": "Dashboard",
+        "route": "/dashboard",
+        "components": [
+          "Navbar",
+          "ProgressChart",
+          "CompletionBadge",
+          "Recommendations"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Badge"
+    ],
+    "features": [
+      "course browsing",
+      "lesson watching",
+      "exercise completion",
+      "progress tracking",
+      "recommendations",
+      "course search"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/courses",
+        "purpose": "Fetch available language courses"
+      },
+      {
+        "method": "GET",
+        "path": "/api/lessons",
+        "purpose": "Fetch lesson details by course"
+      },
+      {
+        "method": "POST",
+        "path": "/api/exercises",
+        "purpose": "Submit exercise answers"
+      },
+      {
+        "method": "GET",
+        "path": "/api/dashboard",
+        "purpose": "Fetch user dashboard data"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "users",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "password",
+          "role"
+        ]
+      },
+      {
+        "name": "courses",
+        "columns": [
+          "id",
+          "title",
+          "category",
+          "duration",
+          "teacher_name"
+        ]
+      },
+      {
+        "name": "lessons",
+        "columns": [
+          "id",
+          "course_id",
+          "title",
+          "video_url",
+          "duration"
+        ]
+      },
+      {
+        "name": "exercises",
+        "columns": [
+          "id",
+          "lesson_id",
+          "question",
+          "answer",
+          "is_correct",
+          "user_id"
+        ]
+      },
+      {
+        "name": "dashboard_data",
+        "columns": [
+          "user_id",
+          "total_completed_exercises",
+          "average_completion_time",
+          "recommended_course_id"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

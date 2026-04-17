@@ -1,0 +1,135 @@
+{
+  "app_name": "Smart Parking Management System",
+  "app_type": "web_app",
+  "description": "A platform for users to find, reserve, and pay for parking spots, along with admin tools for space management.",
+  "target_users": [
+    "parking_users",
+    "admin"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "ParkingSpotHighlights",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Parking Spots",
+        "route": "/spots",
+        "components": [
+          "Navbar",
+          "ParkingSpotGrid",
+          "AvailabilityStatus",
+          "SearchBar"
+        ]
+      },
+      {
+        "name": "Reserve Spot",
+        "route": "/spots/reserve",
+        "components": [
+          "Navbar",
+          "ReservationForm",
+          "PaymentCard",
+          "CancelButton"
+        ]
+      },
+      {
+        "name": "Admin Dashboard",
+        "route": "/admin",
+        "components": [
+          "Navbar",
+          "DashboardCards",
+          "ParkingSpaceTable",
+          "UserActivityChart"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Table",
+      "Chart"
+    ],
+    "features": [
+      "parking spot listing",
+      "availability check",
+      "reservation",
+      "payment",
+      "admin dashboard",
+      "space management"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/spots",
+        "purpose": "Fetch available parking spots"
+      },
+      {
+        "method": "POST",
+        "path": "/api/spots/reserve",
+        "purpose": "Create parking reservation"
+      },
+      {
+        "method": "POST",
+        "path": "/api/payments",
+        "purpose": "Process payment"
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/dashboard",
+        "purpose": "Fetch admin dashboard data"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "parking_spots",
+        "columns": [
+          "id",
+          "location",
+          "status",
+          "capacity"
+        ]
+      },
+      {
+        "name": "reservations",
+        "columns": [
+          "id",
+          "spot_id",
+          "user_id",
+          "reserved_at",
+          "status"
+        ]
+      },
+      {
+        "name": "payments",
+        "columns": [
+          "id",
+          "reservation_id",
+          "amount",
+          "payment_method"
+        ]
+      },
+      {
+        "name": "users",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "role"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

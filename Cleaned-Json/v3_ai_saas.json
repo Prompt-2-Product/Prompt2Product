@@ -1,0 +1,118 @@
+{
+  "app_name": "AI Content Generation Platform",
+  "app_type": "web_app",
+  "description": "An AI-driven platform for generating text, images, summaries, managing projects, and exporting results.",
+  "target_users": [
+    "content_generators",
+    "project_managers"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "FeaturesCards",
+          "GetStartedButton"
+        ]
+      },
+      {
+        "name": "Projects",
+        "route": "/projects",
+        "components": [
+          "Navbar",
+          "ProjectTable",
+          "StatusBadge",
+          "FilterBar"
+        ]
+      },
+      {
+        "name": "Generate",
+        "route": "/generate",
+        "components": [
+          "Navbar",
+          "PromptForm",
+          "GenerateButton",
+          "OutputPreview"
+        ]
+      },
+      {
+        "name": "Results",
+        "route": "/results",
+        "components": [
+          "Navbar",
+          "ResultList",
+          "DownloadButtons",
+          "ShareLink"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Button",
+      "Card",
+      "Table",
+      "Badge"
+    ],
+    "features": [
+      "prompt generation",
+      "image generation",
+      "text summarization",
+      "project management",
+      "result export",
+      "sharing"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/projects",
+        "purpose": "Create new project"
+      },
+      {
+        "method": "POST",
+        "path": "/api/generate",
+        "purpose": "Generate text/image/summary"
+      },
+      {
+        "method": "GET",
+        "path": "/api/projects",
+        "purpose": "Fetch project list"
+      },
+      {
+        "method": "POST",
+        "path": "/api/results",
+        "purpose": "Export result files"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "projects",
+        "columns": [
+          "id",
+          "project_name",
+          "client_name",
+          "status",
+          "created_at"
+        ]
+      },
+      {
+        "name": "generated_items",
+        "columns": [
+          "id",
+          "project_id",
+          "item_type",
+          "filename",
+          "download_url",
+          "created_at"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

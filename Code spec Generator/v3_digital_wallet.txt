@@ -1,0 +1,157 @@
+Prompt Category: digital_wallet
+Model: /home/noor/FYP/finetune/outputs/qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Secure Digital Wallet", "app_type": "web_app", "description": "A secure digital wallet application for storing funds, transferring money, viewing transaction history, and receiving notifications.", "target_users": ["wallet_users"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "WalletSummaryCard", "Footer"]}, {"name": "Login", "route": "/login", "components": ["Navbar", "LoginForm"]}, {"name": "Dashboard", "route": "/dashboard", "components": ["Navbar", "WalletBalanceCard", "RecentTransactionsTable", "NotificationBadge"]}, {"name": "Transfer", "route": "/transfer", "components": ["Navbar", "TransferForm", "CurrencySelector"]}, {"name": "History", "route": "/history", "components": ["Navbar", "TransactionHistoryTable", "DateFilter"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "Badge"], "features": ["login", "wallet balance", "transaction history", "fund transfer", "notifications", "date filtering"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/login", "purpose": "Authenticate user"}, {"method": "GET", "path": "/api/wallet/balance", "purpose": "Fetch wallet balance"}, {"method": "POST", "path": "/api/transactions", "purpose": "Create transaction record"}, {"method": "GET", "path": "/api/transactions", "purpose": "Fetch transaction history"}, {"method": "POST", "path": "/api/notifications", "purpose": "Send notification"}]}, "database": {"tables": [{"name": "users", "columns": ["id", "name", "email", "password", "created_at"]}, {"name": "transactions", "columns": ["id", "sender_id", "receiver_id", "amount", "currency", "status", "created_at"]}, {"name": "notifications", "columns": ["id", "user_id", "message", "is_read", "created_at"]}]}, "auth_required": true}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Secure Digital Wallet", "app_type": "web_app", "description": "A secure digital wallet application for storing funds, transferring money, viewing transaction history, and receiving notifications.", "target_users": ["wallet_users"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "WalletSummaryCard", "Footer"]}, {"name": "Login", "route": "/login", "components": ["Navbar", "LoginForm"]}, {"name": "Dashboard", "route": "/dashboard", "components": ["Navbar", "WalletBalanceCard", "RecentTransactionsTable", "NotificationBadge"]}, {"name": "Transfer", "route": "/transfer", "components": ["Navbar", "TransferForm", "CurrencySelector"]}, {"name": "History", "route": "/history", "components": ["Navbar", "TransactionHistoryTable", "DateFilter"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "Badge"], "features": ["login", "wallet balance", "transaction history", "fund transfer", "notifications", "date filtering"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/login", "purpose": "Authenticate user"}, {"method": "GET", "path": "/api/wallet/balance", "purpose": "Fetch wallet balance"}, {"method": "POST", "path": "/api/transactions", "purpose": "Create transaction record"}, {"method": "GET", "path": "/api/transactions", "purpose": "Fetch transaction history"}, {"method": "POST", "path": "/api/notifications", "purpose": "Send notification"}]}, "database": {"tables": [{"name": "users", "columns": ["id", "name", "email", "password", "created_at"]}, {"name": "transactions", "columns": ["id", "sender_id", "receiver_id", "amount", "currency", "status", "created_at"]}, {"name": "notifications", "columns": ["id", "user_id", "message", "is_read", "created_at"]}]}, "auth_required": true}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Secure Digital Wallet",
+  "app_type": "web_app",
+  "description": "A secure digital wallet application for storing funds, transferring money, viewing transaction history, and receiving notifications.",
+  "target_users": [
+    "wallet_users"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "WalletSummaryCard",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Login",
+        "route": "/login",
+        "components": [
+          "Navbar",
+          "LoginForm"
+        ]
+      },
+      {
+        "name": "Dashboard",
+        "route": "/dashboard",
+        "components": [
+          "Navbar",
+          "WalletBalanceCard",
+          "RecentTransactionsTable",
+          "NotificationBadge"
+        ]
+      },
+      {
+        "name": "Transfer",
+        "route": "/transfer",
+        "components": [
+          "Navbar",
+          "TransferForm",
+          "CurrencySelector"
+        ]
+      },
+      {
+        "name": "History",
+        "route": "/history",
+        "components": [
+          "Navbar",
+          "TransactionHistoryTable",
+          "DateFilter"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Table",
+      "Badge"
+    ],
+    "features": [
+      "login",
+      "wallet balance",
+      "transaction history",
+      "fund transfer",
+      "notifications",
+      "date filtering"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/login",
+        "purpose": "Authenticate user"
+      },
+      {
+        "method": "GET",
+        "path": "/api/wallet/balance",
+        "purpose": "Fetch wallet balance"
+      },
+      {
+        "method": "POST",
+        "path": "/api/transactions",
+        "purpose": "Create transaction record"
+      },
+      {
+        "method": "GET",
+        "path": "/api/transactions",
+        "purpose": "Fetch transaction history"
+      },
+      {
+        "method": "POST",
+        "path": "/api/notifications",
+        "purpose": "Send notification"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "users",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "password",
+          "created_at"
+        ]
+      },
+      {
+        "name": "transactions",
+        "columns": [
+          "id",
+          "sender_id",
+          "receiver_id",
+          "amount",
+          "currency",
+          "status",
+          "created_at"
+        ]
+      },
+      {
+        "name": "notifications",
+        "columns": [
+          "id",
+          "user_id",
+          "message",
+          "is_read",
+          "created_at"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

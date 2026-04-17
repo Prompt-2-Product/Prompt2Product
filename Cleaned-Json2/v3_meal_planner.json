@@ -1,0 +1,161 @@
+{
+  "app_name": "Meal Planning Application",
+  "app_type": "web_app",
+  "description": "A meal planning application for users to create weekly meal plans, generate shopping lists, track nutrition, and receive recipe suggestions.",
+  "target_users": [
+    "dieticians",
+    "students",
+    "households"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "FeaturedRecipes",
+          "GetStartedButton"
+        ]
+      },
+      {
+        "name": "Weekly Planner",
+        "route": "/weekly-planner",
+        "components": [
+          "Navbar",
+          "WeekSelector",
+          "MealOfDayCard",
+          "PlanSummaryCard"
+        ]
+      },
+      {
+        "name": "Shopping List",
+        "route": "/shopping-list",
+        "components": [
+          "Navbar",
+          "ShoppingListTable",
+          "CategoryFilter"
+        ]
+      },
+      {
+        "name": "Nutrition Tracker",
+        "route": "/nutrition-tracker",
+        "components": [
+          "Navbar",
+          "NutritionChart",
+          "DailyIntakeCard"
+        ]
+      },
+      {
+        "name": "Recipe Suggestions",
+        "route": "/recipe-suggestions",
+        "components": [
+          "Navbar",
+          "SearchBar",
+          "RecipeCardGrid"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Button",
+      "Card",
+      "Table",
+      "Chart",
+      "Badge"
+    ],
+    "features": [
+      "weekly meal plan creation",
+      "meal of the day tracking",
+      "shopping list generation",
+      "nutrition tracking",
+      "recipe suggestions",
+      "category filtering",
+      "search meals"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/weekly-planner",
+        "purpose": "Create weekly meal plan"
+      },
+      {
+        "method": "GET",
+        "path": "/api/weekly-planner/:weekId",
+        "purpose": "Fetch meal plan details"
+      },
+      {
+        "method": "POST",
+        "path": "/api/shopping-list",
+        "purpose": "Generate shopping list"
+      },
+      {
+        "method": "GET",
+        "path": "/api/nutrition-tracker",
+        "purpose": "Fetch daily nutrition intake"
+      },
+      {
+        "method": "POST",
+        "path": "/api/recipe-suggestions",
+        "purpose": "Search and suggest recipes"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "weekly_plans",
+        "columns": [
+          "id",
+          "week_number",
+          "created_at"
+        ]
+      },
+      {
+        "name": "meals_of_day",
+        "columns": [
+          "id",
+          "plan_id",
+          "day_of_week",
+          "meal_name",
+          "calories"
+        ]
+      },
+      {
+        "name": "shopping_list_items",
+        "columns": [
+          "id",
+          "plan_id",
+          "item_name",
+          "quantity",
+          "unit"
+        ]
+      },
+      {
+        "name": "nutrition_tracker_entries",
+        "columns": [
+          "id",
+          "plan_id",
+          "date",
+          "protein",
+          "carbs",
+          "fats"
+        ]
+      },
+      {
+        "name": "recipes",
+        "columns": [
+          "id",
+          "title",
+          "category",
+          "prep_time",
+          "servings"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

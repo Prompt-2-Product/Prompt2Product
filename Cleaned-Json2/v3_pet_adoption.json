@@ -1,0 +1,141 @@
+{
+  "app_name": "Pet Adoption Platform",
+  "app_type": "web_app",
+  "description": "A platform for shelters to list pets for adoption and users to browse and apply for adoption.",
+  "target_users": [
+    "shelters",
+    "adopters"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "FeaturedShelterCards",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Shelters",
+        "route": "/shelters",
+        "components": [
+          "Navbar",
+          "ShelterListings",
+          "DistanceFilter",
+          "AdoptionStatusBadge"
+        ]
+      },
+      {
+        "name": "Adopt Pets",
+        "route": "/adopt-pets",
+        "components": [
+          "Navbar",
+          "PetListingCards",
+          "AgeFilter",
+          "BreedFilter",
+          "ApplyButton"
+        ]
+      },
+      {
+        "name": "Admin Panel",
+        "route": "/admin-panel",
+        "components": [
+          "Navbar",
+          "ApplicationTable",
+          "AdoptionStatusUpdateForm",
+          "PetListingManagement"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Card",
+      "Button",
+      "Badge"
+    ],
+    "features": [
+      "shelter listing",
+      "pet browsing",
+      "adoption application",
+      "distance filter",
+      "status updates",
+      "listing management"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/shelters",
+        "purpose": "Fetch shelter listings"
+      },
+      {
+        "method": "GET",
+        "path": "/api/pets",
+        "purpose": "Fetch pet listings"
+      },
+      {
+        "method": "POST",
+        "path": "/api/adoptions",
+        "purpose": "Create adoption application"
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/applications",
+        "purpose": "Fetch adoption applications"
+      },
+      {
+        "method": "PATCH",
+        "path": "/api/admin/applications/:id",
+        "purpose": "Update adoption status"
+      },
+      {
+        "method": "PUT",
+        "path": "/api/admin/shelters",
+        "purpose": "Update shelter listing"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "shelters",
+        "columns": [
+          "id",
+          "name",
+          "location",
+          "phone_number",
+          "website"
+        ]
+      },
+      {
+        "name": "pets",
+        "columns": [
+          "id",
+          "name",
+          "age",
+          "breed",
+          "description",
+          "available",
+          "shelter_id"
+        ]
+      },
+      {
+        "name": "adoptions",
+        "columns": [
+          "id",
+          "shelter_id",
+          "applicant_name",
+          "applicant_email",
+          "status",
+          "created_at"
+        ]
+      }
+    ]
+  },
+  "auth_required": false
+}

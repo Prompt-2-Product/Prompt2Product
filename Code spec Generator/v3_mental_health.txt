@@ -1,0 +1,134 @@
+Prompt Category: mental_health
+Model: /home/noor/FYP/finetune/outputs/qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Mental Health Support Platform", "app_type": "web_app", "description": "A platform for tracking mood, journaling, accessing resources, and connecting with counselors.", "target_users": ["users"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "KeyFeatures", "Footer"]}, {"name": "Journal", "route": "/journal", "components": ["Navbar", "JournalForm", "MoodTracker"]}, {"name": "Resources", "route": "/resources", "components": ["Navbar", "ResourceCardGrid", "CategoryFilter"]}, {"name": "Sessions", "route": "/sessions", "components": ["Navbar", "CounselorList", "SessionBookingForm"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Badge"], "features": ["mood tracking", "journaling", "resource access", "counselor sessions", "session booking"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/journals", "purpose": "Create journal entry"}, {"method": "GET", "path": "/api/resources", "purpose": "Fetch mental health resources"}, {"method": "POST", "path": "/api/sessions", "purpose": "Book counselor session"}]}, "database": {"tables": [{"name": "journals", "columns": ["id", "user_id", "entry_date", "mood", "content"]}, {"name": "resources", "columns": ["id", "category", "title", "link", "description"]}, {"name": "sessions", "columns": ["id", "user_id", "counselor_id", "session_date", "status"]}]}, "auth_required": true}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Mental Health Support Platform", "app_type": "web_app", "description": "A platform for tracking mood, journaling, accessing resources, and connecting with counselors.", "target_users": ["users"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "KeyFeatures", "Footer"]}, {"name": "Journal", "route": "/journal", "components": ["Navbar", "JournalForm", "MoodTracker"]}, {"name": "Resources", "route": "/resources", "components": ["Navbar", "ResourceCardGrid", "CategoryFilter"]}, {"name": "Sessions", "route": "/sessions", "components": ["Navbar", "CounselorList", "SessionBookingForm"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Badge"], "features": ["mood tracking", "journaling", "resource access", "counselor sessions", "session booking"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/journals", "purpose": "Create journal entry"}, {"method": "GET", "path": "/api/resources", "purpose": "Fetch mental health resources"}, {"method": "POST", "path": "/api/sessions", "purpose": "Book counselor session"}]}, "database": {"tables": [{"name": "journals", "columns": ["id", "user_id", "entry_date", "mood", "content"]}, {"name": "resources", "columns": ["id", "category", "title", "link", "description"]}, {"name": "sessions", "columns": ["id", "user_id", "counselor_id", "session_date", "status"]}]}, "auth_required": true}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Mental Health Support Platform",
+  "app_type": "web_app",
+  "description": "A platform for tracking mood, journaling, accessing resources, and connecting with counselors.",
+  "target_users": [
+    "users"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "KeyFeatures",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Journal",
+        "route": "/journal",
+        "components": [
+          "Navbar",
+          "JournalForm",
+          "MoodTracker"
+        ]
+      },
+      {
+        "name": "Resources",
+        "route": "/resources",
+        "components": [
+          "Navbar",
+          "ResourceCardGrid",
+          "CategoryFilter"
+        ]
+      },
+      {
+        "name": "Sessions",
+        "route": "/sessions",
+        "components": [
+          "Navbar",
+          "CounselorList",
+          "SessionBookingForm"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Badge"
+    ],
+    "features": [
+      "mood tracking",
+      "journaling",
+      "resource access",
+      "counselor sessions",
+      "session booking"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/journals",
+        "purpose": "Create journal entry"
+      },
+      {
+        "method": "GET",
+        "path": "/api/resources",
+        "purpose": "Fetch mental health resources"
+      },
+      {
+        "method": "POST",
+        "path": "/api/sessions",
+        "purpose": "Book counselor session"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "journals",
+        "columns": [
+          "id",
+          "user_id",
+          "entry_date",
+          "mood",
+          "content"
+        ]
+      },
+      {
+        "name": "resources",
+        "columns": [
+          "id",
+          "category",
+          "title",
+          "link",
+          "description"
+        ]
+      },
+      {
+        "name": "sessions",
+        "columns": [
+          "id",
+          "user_id",
+          "counselor_id",
+          "session_date",
+          "status"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

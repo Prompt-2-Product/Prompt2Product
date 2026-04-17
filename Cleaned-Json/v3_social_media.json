@@ -1,0 +1,175 @@
+{
+  "app_name": "Social Media Hub",
+  "app_type": "web_app",
+  "description": "A social media platform for users to create profiles, share posts, follow others, interact with likes and comments, and receive real-time notifications.",
+  "target_users": [
+    "users"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "FeaturedPosts",
+          "ExploreButton"
+        ]
+      },
+      {
+        "name": "Profile",
+        "route": "/profile",
+        "components": [
+          "Navbar",
+          "ProfileHeader",
+          "PostsList",
+          "FollowButtons"
+        ]
+      },
+      {
+        "name": "Posts",
+        "route": "/posts",
+        "components": [
+          "Navbar",
+          "PostCardGrid",
+          "SearchBar",
+          "LikeButton",
+          "CommentBox"
+        ]
+      },
+      {
+        "name": "Notifications",
+        "route": "/notifications",
+        "components": [
+          "Navbar",
+          "NotificationFeed",
+          "Badge"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Badge",
+      "Icon",
+      "CardFooter"
+    ],
+    "features": [
+      "user profile creation",
+      "post sharing",
+      "follow/unfollow",
+      "likes",
+      "comments",
+      "search posts",
+      "real-time notifications"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/users",
+        "purpose": "Register new user"
+      },
+      {
+        "method": "POST",
+        "path": "/api/users/follow",
+        "purpose": "Follow another user"
+      },
+      {
+        "method": "POST",
+        "path": "/api/posts",
+        "purpose": "Create new post"
+      },
+      {
+        "method": "GET",
+        "path": "/api/posts",
+        "purpose": "Fetch posts"
+      },
+      {
+        "method": "POST",
+        "path": "/api/posts/like",
+        "purpose": "Like a post"
+      },
+      {
+        "method": "POST",
+        "path": "/api/posts/comment",
+        "purpose": "Add comment to a post"
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "purpose": "Fetch notifications"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "users",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "password",
+          "bio",
+          "profile_picture"
+        ]
+      },
+      {
+        "name": "posts",
+        "columns": [
+          "id",
+          "user_id",
+          "title",
+          "content",
+          "image_url",
+          "created_at",
+          "likes_count",
+          "comments_count"
+        ]
+      },
+      {
+        "name": "follows",
+        "columns": [
+          "id",
+          "follower_id",
+          "followed_user_id"
+        ]
+      },
+      {
+        "name": "comments",
+        "columns": [
+          "id",
+          "post_id",
+          "user_id",
+          "comment_text",
+          "created_at"
+        ]
+      },
+      {
+        "name": "likes",
+        "columns": [
+          "id",
+          "post_id",
+          "user_id"
+        ]
+      },
+      {
+        "name": "notifications",
+        "columns": [
+          "id",
+          "sender_id",
+          "receiver_id",
+          "notification_type",
+          "read_status",
+          "created_at"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

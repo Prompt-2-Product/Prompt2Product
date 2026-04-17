@@ -1,0 +1,113 @@
+{
+  "app_name": "Crowdfunding Platform",
+  "app_type": "web_app",
+  "description": "A platform for creators to launch crowdfunding campaigns and receive donations from supporters.",
+  "target_users": [
+    "creators",
+    "donors"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "FeaturedProjects",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Projects",
+        "route": "/projects",
+        "components": [
+          "Navbar",
+          "ProjectCardGrid",
+          "SearchBar",
+          "CategoryFilter"
+        ]
+      },
+      {
+        "name": "Campaigns",
+        "route": "/campaigns",
+        "components": [
+          "Navbar",
+          "CampaignCardGrid",
+          "GoalProgressChart",
+          "StatusBadge"
+        ]
+      },
+      {
+        "name": "Donate",
+        "route": "/donate",
+        "components": [
+          "Navbar",
+          "DonationForm",
+          "ProjectSelectionCard"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Badge"
+    ],
+    "features": [
+      "create crowdfunding campaigns",
+      "browse projects",
+      "search projects",
+      "donate to campaigns",
+      "track progress"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/projects",
+        "purpose": "Create a new crowdfunding campaign"
+      },
+      {
+        "method": "GET",
+        "path": "/api/projects",
+        "purpose": "Fetch project listings"
+      },
+      {
+        "method": "POST",
+        "path": "/api/donations",
+        "purpose": "Record donation transaction"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "projects",
+        "columns": [
+          "id",
+          "title",
+          "creator_name",
+          "goal_amount",
+          "current_raised",
+          "category",
+          "description",
+          "image_url"
+        ]
+      },
+      {
+        "name": "donations",
+        "columns": [
+          "id",
+          "project_id",
+          "donor_name",
+          "amount",
+          "donation_date"
+        ]
+      }
+    ]
+  },
+  "auth_required": false
+}

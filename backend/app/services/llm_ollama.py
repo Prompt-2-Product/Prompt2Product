@@ -15,7 +15,7 @@ class OllamaClient:
             ],
             "stream": False,
         }
-        async with httpx.AsyncClient(timeout=120) as client:
+        async with httpx.AsyncClient(timeout=600) as client:
             r = await client.post(url, json=payload)
             r.raise_for_status()
             data = r.json()

@@ -31,6 +31,8 @@ IMPORTANT:
 - Remember: sections is an ARRAY OF STRINGS, not objects!
 """
 
+SYSTEM_SPEC_FINETUNED = "Generate valid TaskSpec JSON only. Do not output markdown, comments, or explanation."
+
 def repair_spec_json(data: dict) -> dict:
     """
     Repairs common LLM mistakes in spec JSON, like using objects instead of strings for sections.
@@ -53,7 +55,16 @@ def repair_spec_json(data: dict) -> dict:
     return data
 
 async def llm_prompt_to_spec(llm: LLMClient, model: str, prompt: str) -> TaskSpec:
-    user = f"USER_PROMPT:\n{prompt}\n\nReturn TaskSpec JSON only."
+    # Check if we are using the fine-tuned model
+    model_lower = model.lower()
+    is_finetuned = "taskspec" in model_lower or "ts" in model_lower or "lora" in model_lower
+    
+    if is_finetuned:
+        system = SYSTEM_SPEC_FINETUNED
+        user = prompt  # Direct enriched description
+    else:
+        system = SYSTEM_SPEC
+        user = f"USER_PROMPT:\n{prompt}\n\nReturn TaskSpec JSON only."
     
     attempts = 0
     max_attempts = 3
@@ -61,7 +72,7 @@ async def llm_prompt_to_spec(llm: LLMClient, model: str, prompt: str) -> TaskSpe
     while attempts < max_attempts:
         attempts += 1
         try:
-            raw = await llm.chat(model=model, system=SYSTEM_SPEC, user=user, max_tokens=4096)
+            raw = await llm.chat(model=model, system=system, user=user, max_tokens=4096)
             cleaned = extract_json(raw)
             
             # Try to parse as dict first for repair

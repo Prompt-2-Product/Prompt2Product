@@ -1,0 +1,149 @@
+{
+  "app_name": "Blogging Platform",
+  "app_type": "web_app",
+  "description": "A blogging platform for users to create, edit, and publish blog posts, add tags, comment, like, and manage posts with admin moderation.",
+  "target_users": [
+    "bloggers",
+    "readers"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "FeaturedPosts",
+          "TagsSidebar"
+        ]
+      },
+      {
+        "name": "Blog Posts",
+        "route": "/posts",
+        "components": [
+          "Navbar",
+          "PostList",
+          "TagFilter",
+          "SearchBar"
+        ]
+      },
+      {
+        "name": "Create Post",
+        "route": "/posts/create",
+        "components": [
+          "Navbar",
+          "PostForm",
+          "TagPicker",
+          "PublishButton"
+        ]
+      },
+      {
+        "name": "Post Details",
+        "route": "/posts/:id",
+        "components": [
+          "Navbar",
+          "PostCard",
+          "CommentsSection",
+          "LikeButton",
+          "CommentForm"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Badge"
+    ],
+    "features": [
+      "post creation",
+      "editing",
+      "publishing",
+      "tagging",
+      "commenting",
+      "liking",
+      "search",
+      "filtering",
+      "admin moderation"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/posts",
+        "purpose": "Create a new blog post"
+      },
+      {
+        "method": "PUT",
+        "path": "/api/posts/:id",
+        "purpose": "Edit an existing blog post"
+      },
+      {
+        "method": "GET",
+        "path": "/api/posts",
+        "purpose": "Fetch blog posts"
+      },
+      {
+        "method": "POST",
+        "path": "/api/comments",
+        "purpose": "Create a comment on a post"
+      },
+      {
+        "method": "POST",
+        "path": "/api/tags",
+        "purpose": "Add a tag"
+      },
+      {
+        "method": "POST",
+        "path": "/api/admin/moderate",
+        "purpose": "Admin moderation"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "users",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "password",
+          "role"
+        ]
+      },
+      {
+        "name": "posts",
+        "columns": [
+          "id",
+          "title",
+          "content",
+          "published_at",
+          "tags",
+          "author_id"
+        ]
+      },
+      {
+        "name": "comments",
+        "columns": [
+          "id",
+          "post_id",
+          "author_name",
+          "comment_text",
+          "created_at"
+        ]
+      },
+      {
+        "name": "tags",
+        "columns": [
+          "id",
+          "name"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

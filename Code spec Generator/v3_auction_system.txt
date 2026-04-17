@@ -1,0 +1,187 @@
+Prompt Category: auction_system
+Model: /home/noor/FYP/finetune/outputs/qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Online Auction System", "app_type": "web_app", "description": "An auction platform for sellers to list items and buyers to bid on them in real-time.", "target_users": ["sellers", "buyers", "admins"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "FeaturedItems", "Footer"]}, {"name": "Login", "route": "/login", "components": ["Navbar", "LoginForm"]}, {"name": "Register", "route": "/register", "components": ["Navbar", "RegisterForm"]}, {"name": "Auctions", "route": "/auctions", "components": ["Navbar", "AuctionCardGrid", "SearchBar"]}, {"name": "Item Details", "route": "/auctions/:id", "components": ["Navbar", "ItemCard", "BidForm", "BidsTable"]}, {"name": "Admin Dashboard", "route": "/admin-dashboard", "components": ["Navbar", "DashboardCards", "DisputeTable", "AdminActions"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "Badge"], "features": ["item listing", "real-time bidding", "search auctions", "bid placement", "dispute resolution", "admin monitoring"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/login", "purpose": "Authenticate user"}, {"method": "POST", "path": "/api/register", "purpose": "Register new user"}, {"method": "GET", "path": "/api/auctions", "purpose": "Fetch auction listings"}, {"method": "GET", "path": "/api/auctions/:id", "purpose": "Fetch auction details"}, {"method": "POST", "path": "/api/bids", "purpose": "Place a bid"}, {"method": "GET", "path": "/api/disputes", "purpose": "Fetch dispute records"}, {"method": "POST", "path": "/api/disputes", "purpose": "Resolve dispute"}]}, "database": {"tables": [{"name": "users", "columns": ["id", "name", "email", "password", "role"]}, {"name": "auctions", "columns": ["id", "title", "category", "start_date", "end_date", "seller_id"]}, {"name": "bids", "columns": ["id", "auction_id", "buyer_id", "amount", "created_at"]}, {"name": "disputes", "columns": ["id", "auction_id", "buyer_id", "reason", "status"]}]}, "auth_required": true}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Online Auction System", "app_type": "web_app", "description": "An auction platform for sellers to list items and buyers to bid on them in real-time.", "target_users": ["sellers", "buyers", "admins"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "FeaturedItems", "Footer"]}, {"name": "Login", "route": "/login", "components": ["Navbar", "LoginForm"]}, {"name": "Register", "route": "/register", "components": ["Navbar", "RegisterForm"]}, {"name": "Auctions", "route": "/auctions", "components": ["Navbar", "AuctionCardGrid", "SearchBar"]}, {"name": "Item Details", "route": "/auctions/:id", "components": ["Navbar", "ItemCard", "BidForm", "BidsTable"]}, {"name": "Admin Dashboard", "route": "/admin-dashboard", "components": ["Navbar", "DashboardCards", "DisputeTable", "AdminActions"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "Badge"], "features": ["item listing", "real-time bidding", "search auctions", "bid placement", "dispute resolution", "admin monitoring"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/login", "purpose": "Authenticate user"}, {"method": "POST", "path": "/api/register", "purpose": "Register new user"}, {"method": "GET", "path": "/api/auctions", "purpose": "Fetch auction listings"}, {"method": "GET", "path": "/api/auctions/:id", "purpose": "Fetch auction details"}, {"method": "POST", "path": "/api/bids", "purpose": "Place a bid"}, {"method": "GET", "path": "/api/disputes", "purpose": "Fetch dispute records"}, {"method": "POST", "path": "/api/disputes", "purpose": "Resolve dispute"}]}, "database": {"tables": [{"name": "users", "columns": ["id", "name", "email", "password", "role"]}, {"name": "auctions", "columns": ["id", "title", "category", "start_date", "end_date", "seller_id"]}, {"name": "bids", "columns": ["id", "auction_id", "buyer_id", "amount", "created_at"]}, {"name": "disputes", "columns": ["id", "auction_id", "buyer_id", "reason", "status"]}]}, "auth_required": true}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Online Auction System",
+  "app_type": "web_app",
+  "description": "An auction platform for sellers to list items and buyers to bid on them in real-time.",
+  "target_users": [
+    "sellers",
+    "buyers",
+    "admins"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "FeaturedItems",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Login",
+        "route": "/login",
+        "components": [
+          "Navbar",
+          "LoginForm"
+        ]
+      },
+      {
+        "name": "Register",
+        "route": "/register",
+        "components": [
+          "Navbar",
+          "RegisterForm"
+        ]
+      },
+      {
+        "name": "Auctions",
+        "route": "/auctions",
+        "components": [
+          "Navbar",
+          "AuctionCardGrid",
+          "SearchBar"
+        ]
+      },
+      {
+        "name": "Item Details",
+        "route": "/auctions/:id",
+        "components": [
+          "Navbar",
+          "ItemCard",
+          "BidForm",
+          "BidsTable"
+        ]
+      },
+      {
+        "name": "Admin Dashboard",
+        "route": "/admin-dashboard",
+        "components": [
+          "Navbar",
+          "DashboardCards",
+          "DisputeTable",
+          "AdminActions"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Table",
+      "Badge"
+    ],
+    "features": [
+      "item listing",
+      "real-time bidding",
+      "search auctions",
+      "bid placement",
+      "dispute resolution",
+      "admin monitoring"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/login",
+        "purpose": "Authenticate user"
+      },
+      {
+        "method": "POST",
+        "path": "/api/register",
+        "purpose": "Register new user"
+      },
+      {
+        "method": "GET",
+        "path": "/api/auctions",
+        "purpose": "Fetch auction listings"
+      },
+      {
+        "method": "GET",
+        "path": "/api/auctions/:id",
+        "purpose": "Fetch auction details"
+      },
+      {
+        "method": "POST",
+        "path": "/api/bids",
+        "purpose": "Place a bid"
+      },
+      {
+        "method": "GET",
+        "path": "/api/disputes",
+        "purpose": "Fetch dispute records"
+      },
+      {
+        "method": "POST",
+        "path": "/api/disputes",
+        "purpose": "Resolve dispute"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "users",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "password",
+          "role"
+        ]
+      },
+      {
+        "name": "auctions",
+        "columns": [
+          "id",
+          "title",
+          "category",
+          "start_date",
+          "end_date",
+          "seller_id"
+        ]
+      },
+      {
+        "name": "bids",
+        "columns": [
+          "id",
+          "auction_id",
+          "buyer_id",
+          "amount",
+          "created_at"
+        ]
+      },
+      {
+        "name": "disputes",
+        "columns": [
+          "id",
+          "auction_id",
+          "buyer_id",
+          "reason",
+          "status"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

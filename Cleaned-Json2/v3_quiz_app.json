@@ -1,0 +1,141 @@
+{
+  "app_name": "Quiz Application",
+  "app_type": "web_app",
+  "description": "A quiz application for users to take quizzes, view scores, and track progress. Admins can manage questions, categories, and leaderboards.",
+  "target_users": [
+    "students",
+    "teachers"
+  ],
+  "admin_only": false,
+  "auth_required": true,
+  "database": {
+    "tables": [
+      {
+        "name": "users",
+        "columns": [
+          {
+            "name": "id",
+            "type": "serial",
+            "is_primary": true
+          },
+          {
+            "name": "username",
+            "type": "varchar(50)",
+            "unique": true
+          },
+          {
+            "name": "email",
+            "type": "varchar(100)",
+            "unique": true
+          },
+          {
+            "name": "password_hash",
+            "type": "varchar(255)"
+          }
+        ]
+      },
+      {
+        "name": "categories",
+        "columns": [
+          {
+            "name": "id",
+            "type": "serial",
+            "is_primary": true
+          },
+          {
+            "name": "category_name",
+            "type": "varchar(100)",
+            "unique": true
+          }
+        ]
+      }
+    ]
+  },
+  "auth_required_tables": [],
+  "api_endpoints": [
+    {
+      "method": "POST",
+      "path": "/api/login",
+      "purpose": "Authenticate user"
+    },
+    {
+      "method": "GET",
+      "path": "/api/categories",
+      "purpose": "Fetch quiz categories"
+    },
+    {
+      "method": "POST",
+      "path": "/api/questions",
+      "purpose": "Create quiz question"
+    },
+    {
+      "method": "POST",
+      "path": "/api/quizzes",
+      "purpose": "Start quiz"
+    },
+    {
+      "method": "POST",
+      "path": "/api/quizzes/submit",
+      "purpose": "Submit quiz answers"
+    },
+    {
+      "method": "GET",
+      "path": "/api/scores",
+      "purpose": "Fetch user scores"
+    },
+    {
+      "method": "GET",
+      "path": "/api/leaderboards",
+      "purpose": "Fetch leaderboard data"
+    }
+  ],
+  "frontend_pages": [
+    {
+      "name": "Login",
+      "route": "/login",
+      "components": [
+        "Navbar",
+        "LoginForm"
+      ]
+    },
+    {
+      "name": "Categories",
+      "route": "/categories",
+      "components": [
+        "Navbar",
+        "CategoryList"
+      ]
+    },
+    {
+      "name": "Quizzes",
+      "route": "/quizzes",
+      "components": [
+        "Navbar",
+        "QuizCardList",
+        "StartButton"
+      ]
+    },
+    {
+      "name": "Scores",
+      "route": "/scores",
+      "components": [
+        "Navbar",
+        "ScoreTable"
+      ]
+    },
+    {
+      "name": "Leaderboards",
+      "route": "/leaderboards",
+      "components": [
+        "Navbar",
+        "LeaderboardTable"
+      ]
+    }
+  ],
+  "shared_components": [
+    "Navbar",
+    "Button",
+    "Card",
+    "Table"
+  ]
+}

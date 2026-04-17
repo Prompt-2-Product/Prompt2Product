@@ -1,0 +1,168 @@
+{
+  "app_name": "Music Streaming Platform",
+  "app_type": "web_app",
+  "description": "A music streaming platform for searching songs, creating playlists, streaming music, and receiving personalized recommendations.",
+  "target_users": [
+    "music_listeners"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "FeaturedSongs",
+          "ExploreCategories"
+        ]
+      },
+      {
+        "name": "Search",
+        "route": "/search",
+        "components": [
+          "Navbar",
+          "SearchBar",
+          "GenreFilter",
+          "ArtistFilter",
+          "SongCardGrid"
+        ]
+      },
+      {
+        "name": "Playlists",
+        "route": "/playlists",
+        "components": [
+          "Navbar",
+          "PlaylistCardGrid",
+          "RecentlyAddedButton",
+          "SharedPlaylistsSection"
+        ]
+      },
+      {
+        "name": "Songs",
+        "route": "/songs",
+        "components": [
+          "Navbar",
+          "SongCardGrid",
+          "AlbumsGrid",
+          "DurationBadge"
+        ]
+      },
+      {
+        "name": "Recommendations",
+        "route": "/recommendations",
+        "components": [
+          "Navbar",
+          "RecommendationCardGrid",
+          "SimilarArtistsSection"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Badge",
+      "Tab",
+      "Modal"
+    ],
+    "features": [
+      "song search",
+      "genre filtering",
+      "artist filtering",
+      "playlist creation",
+      "streaming music",
+      "song cards",
+      "album grid",
+      "listening history analysis",
+      "recommendations"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/search",
+        "purpose": "Fetch songs by query"
+      },
+      {
+        "method": "POST",
+        "path": "/api/playlists",
+        "purpose": "Create user playlist"
+      },
+      {
+        "method": "GET",
+        "path": "/api/playlists",
+        "purpose": "Fetch user playlists"
+      },
+      {
+        "method": "GET",
+        "path": "/api/songs",
+        "purpose": "Fetch song details"
+      },
+      {
+        "method": "POST",
+        "path": "/api/recommendations",
+        "purpose": "Generate song recommendations"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "users",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "password_hash",
+          "created_at"
+        ]
+      },
+      {
+        "name": "songs",
+        "columns": [
+          "id",
+          "title",
+          "artist",
+          "album",
+          "duration",
+          "genre",
+          "release_date",
+          "file_path",
+          "is_streamable"
+        ]
+      },
+      {
+        "name": "playlists",
+        "columns": [
+          "id",
+          "user_id",
+          "name",
+          "description",
+          "created_at"
+        ]
+      },
+      {
+        "name": "playlist_songs",
+        "columns": [
+          "id",
+          "playlist_id",
+          "song_id",
+          "added_at"
+        ]
+      },
+      {
+        "name": "recommendations",
+        "columns": [
+          "id",
+          "user_id",
+          "recommended_song_id",
+          "generated_at"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

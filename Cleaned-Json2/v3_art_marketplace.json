@@ -1,0 +1,132 @@
+{
+  "app_name": "Art Marketplace",
+  "app_type": "web_app",
+  "description": "An online marketplace for artists to showcase their artwork and buyers to browse, purchase, and review artworks.",
+  "target_users": [
+    "artists",
+    "buyers"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "FeaturedArtworks",
+          "ExploreButton",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Artists",
+        "route": "/artists",
+        "components": [
+          "Navbar",
+          "ArtistCardGrid",
+          "LocationFilter",
+          "SortArtworks"
+        ]
+      },
+      {
+        "name": "Artwork",
+        "route": "/artworks",
+        "components": [
+          "Navbar",
+          "ArtworkCardGrid",
+          "CategoryFilter",
+          "PriceRangeFilter",
+          "BuyButton"
+        ]
+      },
+      {
+        "name": "Profile",
+        "route": "/profile",
+        "components": [
+          "Navbar",
+          "UserDetailsCard",
+          "ArtworkGallery",
+          "ReviewsList"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "ImageCard",
+      "Tag"
+    ],
+    "features": [
+      "artist showcase",
+      "browse artworks",
+      "purchase artworks",
+      "filter artworks",
+      "leave reviews"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/artists",
+        "purpose": "Fetch artist profiles"
+      },
+      {
+        "method": "GET",
+        "path": "/api/artworks",
+        "purpose": "Fetch artwork listings"
+      },
+      {
+        "method": "POST",
+        "path": "/api/artworks/buy",
+        "purpose": "Process artwork purchase"
+      },
+      {
+        "method": "POST",
+        "path": "/api/reviews",
+        "purpose": "Submit artwork review"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "artists",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "location",
+          "bio"
+        ]
+      },
+      {
+        "name": "artworks",
+        "columns": [
+          "id",
+          "title",
+          "artist_id",
+          "category",
+          "price",
+          "image_url",
+          "available"
+        ]
+      },
+      {
+        "name": "reviews",
+        "columns": [
+          "id",
+          "buyer_id",
+          "artwork_id",
+          "rating",
+          "comment",
+          "created_at"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

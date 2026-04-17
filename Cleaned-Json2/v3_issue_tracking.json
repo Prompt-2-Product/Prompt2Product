@@ -1,0 +1,129 @@
+{
+  "app_name": "Bug Tracking System",
+  "app_type": "web_app",
+  "description": "A platform for users to report bugs, assign tasks, track progress, and collaborate on project updates.",
+  "target_users": [
+    "developers",
+    "project_managers",
+    "qa_team"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Dashboard",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "ProjectOverviewCards",
+          "TaskStatusChart",
+          "RecentUpdatesTable"
+        ]
+      },
+      {
+        "name": "Issues",
+        "route": "/issues",
+        "components": [
+          "Navbar",
+          "IssueCardGrid",
+          "IssueFilterBar",
+          "AssignButton"
+        ]
+      },
+      {
+        "name": "Assignments",
+        "route": "/assignments",
+        "components": [
+          "Navbar",
+          "AssignedTasksTable",
+          "StatusBadge",
+          "CommentSection"
+        ]
+      },
+      {
+        "name": "Profile",
+        "route": "/profile",
+        "components": [
+          "Navbar",
+          "UserDetailsCard",
+          "ActivityLogTable"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Card",
+      "Button",
+      "Badge",
+      "Table",
+      "Chart",
+      "FormInput"
+    ],
+    "features": [
+      "issue reporting",
+      "task assignment",
+      "status tracking",
+      "comments",
+      "collaboration"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/issues",
+        "purpose": "Create a new issue"
+      }
+    ],
+    "shared_resources": [
+      "users",
+      "projects",
+      "tasks",
+      "comments"
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "users",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "role"
+        ]
+      },
+      {
+        "name": "projects",
+        "columns": [
+          "id",
+          "name",
+          "description",
+          "start_date"
+        ]
+      },
+      {
+        "name": "issues",
+        "columns": [
+          "id",
+          "title",
+          "description",
+          "priority",
+          "status",
+          "assigned_to_id",
+          "created_at"
+        ]
+      },
+      {
+        "name": "comments",
+        "columns": [
+          "id",
+          "issue_id",
+          "comment",
+          "author_id",
+          "created_at"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}

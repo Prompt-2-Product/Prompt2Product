@@ -1,0 +1,200 @@
+Prompt Category: subscription_box
+Model: /home/noor/FYP/finetune/outputs/qwen_taskspec_only_lora_v3
+
+===== RAW GENERATED TEXT =====
+
+{"app_name": "Subscription Box Service Platform", "app_type": "web_app", "description": "A platform for users to subscribe to curated products, manage deliveries, and track orders. Admins manage inventory and plans.", "target_users": ["customers", "admins"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "FeaturedProducts", "Footer"]}, {"name": "Login", "route": "/login", "components": ["Navbar", "LoginForm"]}, {"name": "Products", "route": "/products", "components": ["Navbar", "ProductGrid", "CategoryFilter", "PriceRangeFilter"]}, {"name": "Cart", "route": "/cart", "components": ["Navbar", "CartItemsTable", "CheckoutButton"]}, {"name": "Orders", "route": "/orders", "components": ["Navbar", "OrderListTable", "StatusBadge"]}, {"name": "Admin Dashboard", "route": "/admin-dashboard", "components": ["Navbar", "InventoryOverview", "PlanManagementTable", "DeliveryStatsCard"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "Badge"], "features": ["user login", "product browsing", "product cart", "order tracking", "delivery management", "admin inventory management", "plan management"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/login", "purpose": "Authenticate user"}, {"method": "GET", "path": "/api/products", "purpose": "Fetch product list"}, {"method": "POST", "path": "/api/cart", "purpose": "Add product to cart"}, {"method": "GET", "path": "/api/orders", "purpose": "Fetch order history"}, {"method": "POST", "path": "/api/admin/inventory", "purpose": "Manage inventory"}, {"method": "POST", "path": "/api/admin/plans", "purpose": "Manage subscription plans"}]}, "database": {"tables": [{"name": "users", "columns": ["id", "name", "email", "password", "role"]}, {"name": "products", "columns": ["id", "name", "category", "price", "description", "image_url"]}, {"name": "carts", "columns": ["id", "user_id", "product_id", "quantity"]}, {"name": "orders", "columns": ["id", "user_id", "status", "delivery_date", "total_amount"]}, {"name": "inventory", "columns": ["id", "product_id", "stock_quantity", "available_date"]}, {"name": "plans", "columns": ["id", "name", "price", "duration", "description"]}]}}
+
+===== EXTRACTED JSON =====
+
+{"app_name": "Subscription Box Service Platform", "app_type": "web_app", "description": "A platform for users to subscribe to curated products, manage deliveries, and track orders. Admins manage inventory and plans.", "target_users": ["customers", "admins"], "frontend": {"pages": [{"name": "Home", "route": "/", "components": ["Navbar", "HeroSection", "FeaturedProducts", "Footer"]}, {"name": "Login", "route": "/login", "components": ["Navbar", "LoginForm"]}, {"name": "Products", "route": "/products", "components": ["Navbar", "ProductGrid", "CategoryFilter", "PriceRangeFilter"]}, {"name": "Cart", "route": "/cart", "components": ["Navbar", "CartItemsTable", "CheckoutButton"]}, {"name": "Orders", "route": "/orders", "components": ["Navbar", "OrderListTable", "StatusBadge"]}, {"name": "Admin Dashboard", "route": "/admin-dashboard", "components": ["Navbar", "InventoryOverview", "PlanManagementTable", "DeliveryStatsCard"]}], "shared_components": ["Navbar", "Footer", "Button", "Card", "Table", "Badge"], "features": ["user login", "product browsing", "product cart", "order tracking", "delivery management", "admin inventory management", "plan management"]}, "backend": {"endpoints": [{"method": "POST", "path": "/api/login", "purpose": "Authenticate user"}, {"method": "GET", "path": "/api/products", "purpose": "Fetch product list"}, {"method": "POST", "path": "/api/cart", "purpose": "Add product to cart"}, {"method": "GET", "path": "/api/orders", "purpose": "Fetch order history"}, {"method": "POST", "path": "/api/admin/inventory", "purpose": "Manage inventory"}, {"method": "POST", "path": "/api/admin/plans", "purpose": "Manage subscription plans"}]}, "database": {"tables": [{"name": "users", "columns": ["id", "name", "email", "password", "role"]}, {"name": "products", "columns": ["id", "name", "category", "price", "description", "image_url"]}, {"name": "carts", "columns": ["id", "user_id", "product_id", "quantity"]}, {"name": "orders", "columns": ["id", "user_id", "status", "delivery_date", "total_amount"]}, {"name": "inventory", "columns": ["id", "product_id", "stock_quantity", "available_date"]}, {"name": "plans", "columns": ["id", "name", "price", "duration", "description"]}]}}
+
+===== JSON VALIDITY =====
+
+Valid JSON
+
+===== PRETTY JSON =====
+
+{
+  "app_name": "Subscription Box Service Platform",
+  "app_type": "web_app",
+  "description": "A platform for users to subscribe to curated products, manage deliveries, and track orders. Admins manage inventory and plans.",
+  "target_users": [
+    "customers",
+    "admins"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Home",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "HeroSection",
+          "FeaturedProducts",
+          "Footer"
+        ]
+      },
+      {
+        "name": "Login",
+        "route": "/login",
+        "components": [
+          "Navbar",
+          "LoginForm"
+        ]
+      },
+      {
+        "name": "Products",
+        "route": "/products",
+        "components": [
+          "Navbar",
+          "ProductGrid",
+          "CategoryFilter",
+          "PriceRangeFilter"
+        ]
+      },
+      {
+        "name": "Cart",
+        "route": "/cart",
+        "components": [
+          "Navbar",
+          "CartItemsTable",
+          "CheckoutButton"
+        ]
+      },
+      {
+        "name": "Orders",
+        "route": "/orders",
+        "components": [
+          "Navbar",
+          "OrderListTable",
+          "StatusBadge"
+        ]
+      },
+      {
+        "name": "Admin Dashboard",
+        "route": "/admin-dashboard",
+        "components": [
+          "Navbar",
+          "InventoryOverview",
+          "PlanManagementTable",
+          "DeliveryStatsCard"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Footer",
+      "Button",
+      "Card",
+      "Table",
+      "Badge"
+    ],
+    "features": [
+      "user login",
+      "product browsing",
+      "product cart",
+      "order tracking",
+      "delivery management",
+      "admin inventory management",
+      "plan management"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/login",
+        "purpose": "Authenticate user"
+      },
+      {
+        "method": "GET",
+        "path": "/api/products",
+        "purpose": "Fetch product list"
+      },
+      {
+        "method": "POST",
+        "path": "/api/cart",
+        "purpose": "Add product to cart"
+      },
+      {
+        "method": "GET",
+        "path": "/api/orders",
+        "purpose": "Fetch order history"
+      },
+      {
+        "method": "POST",
+        "path": "/api/admin/inventory",
+        "purpose": "Manage inventory"
+      },
+      {
+        "method": "POST",
+        "path": "/api/admin/plans",
+        "purpose": "Manage subscription plans"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "users",
+        "columns": [
+          "id",
+          "name",
+          "email",
+          "password",
+          "role"
+        ]
+      },
+      {
+        "name": "products",
+        "columns": [
+          "id",
+          "name",
+          "category",
+          "price",
+          "description",
+          "image_url"
+        ]
+      },
+      {
+        "name": "carts",
+        "columns": [
+          "id",
+          "user_id",
+          "product_id",
+          "quantity"
+        ]
+      },
+      {
+        "name": "orders",
+        "columns": [
+          "id",
+          "user_id",
+          "status",
+          "delivery_date",
+          "total_amount"
+        ]
+      },
+      {
+        "name": "inventory",
+        "columns": [
+          "id",
+          "product_id",
+          "stock_quantity",
+          "available_date"
+        ]
+      },
+      {
+        "name": "plans",
+        "columns": [
+          "id",
+          "name",
+          "price",
+          "duration",
+          "description"
+        ]
+      }
+    ]
+  }
+}

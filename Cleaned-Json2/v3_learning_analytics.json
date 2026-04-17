@@ -1,0 +1,109 @@
+{
+  "app_name": "Learning Analytics Dashboard",
+  "app_type": "dashboard_app",
+  "description": "A dashboard for educational institutions to track student performance, visualize metrics, and generate course-related reports.",
+  "target_users": [
+    "instructors",
+    "administrators",
+    "students"
+  ],
+  "frontend": {
+    "pages": [
+      {
+        "name": "Dashboard",
+        "route": "/",
+        "components": [
+          "Navbar",
+          "CoursePerformanceCardGrid",
+          "OverallMetricsChart",
+          "YearlyPerformanceChart"
+        ]
+      },
+      {
+        "name": "Courses",
+        "route": "/courses",
+        "components": [
+          "Navbar",
+          "CourseTable",
+          "SemesterFilterBar"
+        ]
+      },
+      {
+        "name": "Reports",
+        "route": "/reports",
+        "components": [
+          "Navbar",
+          "ReportListGrid",
+          "DownloadButton"
+        ]
+      }
+    ],
+    "shared_components": [
+      "Navbar",
+      "Card",
+      "Chart",
+      "Table",
+      "Button",
+      "FilterBar"
+    ],
+    "features": [
+      "student performance tracking",
+      "course metrics visualization",
+      "report generation",
+      "course filtering"
+    ]
+  },
+  "backend": {
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/courses",
+        "purpose": "Fetch course data"
+      },
+      {
+        "method": "GET",
+        "path": "/api/student-performance",
+        "purpose": "Fetch student performance metrics"
+      },
+      {
+        "method": "GET",
+        "path": "/api/reports",
+        "purpose": "Fetch available reports"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "courses",
+        "columns": [
+          "id",
+          "course_name",
+          "department",
+          "semester"
+        ]
+      },
+      {
+        "name": "student_performance",
+        "columns": [
+          "id",
+          "course_id",
+          "student_id",
+          "attendance_rate",
+          "midterm_score",
+          "final_score"
+        ]
+      },
+      {
+        "name": "reports",
+        "columns": [
+          "id",
+          "title",
+          "description",
+          "download_link"
+        ]
+      }
+    ]
+  },
+  "auth_required": true
+}
