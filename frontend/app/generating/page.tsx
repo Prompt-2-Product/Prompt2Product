@@ -278,10 +278,10 @@ export default function GeneratingPage() {
 
         {/* Main Production Area */}
         <div className="flex-1 h-full overflow-hidden relative">
-          <div className="max-w-4xl mx-auto p-6 lg:p-10 flex flex-col h-full pt-16 lg:pt-20 pb-12 lg:pb-16">
+          <div className="max-w-4xl mx-auto px-6 pt-10 lg:pt-16 pb-32 lg:pb-48 flex flex-col h-full justify-between items-stretch relative z-10">
             {/* Cinematic Header */}
-            <div className="mb-8 lg:mb-12 text-center animate-in fade-in slide-in-from-top-4 duration-1000">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black mb-4 tracking-tighter">
+            <div className="shrink-0 text-center animate-in fade-in slide-in-from-top-4 duration-1000 relative z-20">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black mb-4 tracking-tighter text-white">
                 {status === 'failed'
                   ? (isModificationFlow ? <>Core <span className="text-red-500">Error</span></> : <>Forge <span className="text-red-500">Failed</span></>)
                   : (isModificationFlow ? <>Applying Your <span className="hero-text-accent">Changes</span></> : <>Generating Your <span className="hero-text-accent">Project</span></>)}
@@ -295,7 +295,7 @@ export default function GeneratingPage() {
 
             {/* Cinematic Stepper */}
             {status !== 'failed' && (
-              <div className="mb-10 lg:mb-16 relative max-w-3xl mx-auto w-full">
+              <div className="relative max-w-3xl mx-auto w-full py-2">
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-12 relative z-10">
                   {steps.map((step, index) => {
                     const isActive = step.number === currentStep
@@ -369,45 +369,48 @@ export default function GeneratingPage() {
               </div>
             )}
 
-            {/* Production Log - THE HUB */}
-            <div className="max-w-3xl mx-auto w-full mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500">
-              <div className="rounded-3xl glass-panel overflow-hidden bg-background/30 backdrop-blur-3xl shadow-3xl">
-                <div className="bg-white/5 px-6 py-4 border-b border-white/5 flex justify-between items-center">
-                  <div className="flex items-center gap-3">
-                    <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">REALTIME PRODUCTION FEED</p>
-                  </div>
-                  {status === 'failed' && <span className="text-[10px] bg-red-500/20 text-red-500 px-2 py-0.5 rounded font-black uppercase tracking-wider">CRITICAL_ERROR</span>}
-                </div>
-                <div className="p-6 h-64 sm:h-80 overflow-y-auto font-mono text-[11px] sm:text-xs space-y-2 custom-scrollbar-dark scroll-smooth">
-                  {logs.map((log, index) => (
-                    <div key={index} className={`opacity-0 animate-in fade-in duration-500 fill-mode-forwards ${log.includes('[ERROR]') || log.includes('[fatal]') ? 'text-red-400' : 'text-primary/80'}`}>
-                      <span className="opacity-30 mr-3">[{new Date().toLocaleTimeString([], {hour12: false})}]</span>
-                      {log}
+            {/* Bottom Dashboard: Feed + Progress */}
+            <div className="shrink-0 space-y-6 lg:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500">
+              {/* Production Log - THE HUB */}
+              <div className="max-w-2xl mx-auto w-full">
+                <div className="rounded-3xl glass-panel overflow-hidden bg-background/30 backdrop-blur-3xl shadow-3xl">
+                  <div className="bg-white/5 px-6 py-4 border-b border-white/5 flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                      <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+                      <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">REALTIME PRODUCTION FEED</p>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Progress Visualization */}
-            {status !== 'failed' && (
-              <div className="max-w-xl mx-auto w-full space-y-4">
-                <div className="flex justify-between items-end mb-1">
-                  <div className="text-left">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">Total Integrity</p>
-                    <p className="text-xs font-bold text-foreground">Synthesis in progress...</p>
+                    {status === 'failed' && <span className="text-[10px] bg-red-500/20 text-red-500 px-2 py-0.5 rounded font-black uppercase tracking-wider">CRITICAL_ERROR</span>}
                   </div>
-                  <span className="text-2xl font-black text-primary tracking-tighter">{Math.min(Math.round(progress), 100)}%</span>
-                </div>
-                <div className="h-1.5 w-full rounded-full bg-white/5 border border-white/5 overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-blue-600 via-blue-400 to-cyan-400 shadow-[0_0_20px_rgba(37,99,235,0.5)] transition-all duration-1000 ease-out"
-                    style={{ width: `${Math.min(progress, 100)}%` }}
-                  ></div>
+                  <div className="p-6 h-48 sm:h-56 lg:h-64 overflow-y-auto font-mono text-[11px] sm:text-xs space-y-2 custom-scrollbar-dark scroll-smooth">
+                    {logs.map((log, index) => (
+                      <div key={index} className={`opacity-0 animate-in fade-in duration-500 fill-mode-forwards ${log.includes('[ERROR]') || log.includes('[fatal]') ? 'text-red-400' : 'text-primary/80'}`}>
+                        <span className="opacity-30 mr-3">[{new Date().toLocaleTimeString([], {hour12: false})}]</span>
+                        {log}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            )}
+
+              {/* Progress Visualization */}
+              {status !== 'failed' && (
+                <div className="max-w-xl mx-auto w-full space-y-3">
+                  <div className="flex justify-between items-end">
+                    <div className="text-left">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-0.5">Total Integrity</p>
+                      <p className="text-[11px] font-bold text-foreground/80">Synthesis in progress...</p>
+                    </div>
+                    <span className="text-xl font-black text-primary tracking-tighter">{Math.min(Math.round(progress), 100)}%</span>
+                  </div>
+                  <div className="h-1 w-full rounded-full bg-white/5 border border-white/5 overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-blue-600 via-blue-400 to-cyan-400 shadow-[0_0_20px_rgba(37,99,235,0.5)] transition-all duration-1000 ease-out"
+                      style={{ width: `${Math.min(progress, 100)}%` }}
+                    ></div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </main>
