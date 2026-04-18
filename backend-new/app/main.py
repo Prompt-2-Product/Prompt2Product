@@ -10,7 +10,7 @@ from pathlib import Path
 
 from app.db.repo import list_projects, create_project, create_run, get_run, list_logs
 from app.core.config import STORAGE_DIR
-from app.pipeline.manager import run_pipeline
+from app.pipeline.manager import run_pipeline, run_modification_pipeline
 
 app = FastAPI(title="Prompt2Product Modular Backend")
 
@@ -43,6 +43,9 @@ def get_projects():
 def run_background_pipeline(run_id: int, project_id: int, prompt: str):
     asyncio.run(run_pipeline(run_id, project_id, prompt))
 
+def run_background_modification(run_id: int, project_id: int, prompt: str):
+    asyncio.run(run_modification_pipeline(run_id, project_id, prompt))
+
 @app.post("/projects/{project_id}/runs")
 def start_generation_run(project_id: int, payload: CreateRunRequest, background_tasks: BackgroundTasks):
     run = create_run(project_id, payload.entrypoint)
@@ -61,9 +64,9 @@ def fetch_logs(run_id: int):
     return list_logs(run_id)
 
 @app.post("/projects/{project_id}/runs/{run_id}/modify")
-def modify_run(project_id: int, run_id: int, payload: ModifyRunRequest):
-    """Placeholder for modification functionality."""
-    return {"message": "Modification not implemented in modular pipeline yet."}
+def modify_run(project_id: int, run_id: int, payload: ModifyRunRequest, background_tasks: BackgroundTasks):
+    background_tasks.add_task(run_background_modification, run_id, project_id, payload.prompt)
+    return {"message": "Modification started in background."}
 
 @app.get("/projects/{project_id}/runs/{run_id}/download")
 def download_project(project_id: int, run_id: int):

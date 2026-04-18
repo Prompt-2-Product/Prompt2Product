@@ -5,3 +5,7 @@ sqlmodel
 python-multipart
 aiofiles
 bcrypt
+torch--index-url https://download.pytorch.org/whl/cu121
+bitsandbytes
+xformers
+unsloth

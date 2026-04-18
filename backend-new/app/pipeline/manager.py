@@ -8,6 +8,23 @@ from app.pipeline.stage1_taskspec import generate_taskspec
 from app.pipeline.stage2_codegen import generate_code_async
 from app.pipeline.stage3_extract import extract_and_repair
 from app.pipeline.stage4_sandbox import run_sandbox_async
+from app.pipeline.stage5_modify import apply_modification_async
+
+PROCESS_REGISTRY = {}
+
+def stop_run(run_id: int):
+    if run_id in PROCESS_REGISTRY:
+        proc = PROCESS_REGISTRY[run_id]
+        if proc.poll() is None: # Still running
+            print(f"[PROCESS] Terminating run {run_id}...")
+            proc.terminate()
+            try:
+                proc.wait(timeout=5)
+            except:
+                proc.kill()
+        del PROCESS_REGISTRY[run_id]
+        return True
+    return False
 
 async def run_pipeline(run_id: int, project_id: int, prompt: str):
     def log(stage: str, msg: str, level: str = 'INFO'):
@@ -56,9 +73,10 @@ async def run_pipeline(run_id: int, project_id: int, prompt: str):
 
         # Stage 4 
         log('sandbox', "Preparing virtual environment...")
-        success = await run_sandbox_async(output_dir, port, log)
+        proc_handle = await run_sandbox_async(output_dir, port, log)
 
-        if success:
+        if proc_handle:
+            PROCESS_REGISTRY[run_id] = proc_handle
             update_run_status(run_id, 'success')
             log('done', f"Pipeline successfully completed! Live on port {port}")
         else:
@@ -67,4 +85,40 @@ async def run_pipeline(run_id: int, project_id: int, prompt: str):
 
     except Exception as e:
         log('fatal', f"Critical failure in pipeline: {str(e)}", 'ERROR')
+        update_run_status(run_id, 'failed')
+
+async def run_modification_pipeline(run_id: int, project_id: int, user_request: str):
+    def log(stage: str, msg: str, level: str = 'INFO'):
+        print(f"[MODIFY] {msg}")
+        log_message(run_id, stage, msg, level)
+
+    log('modify', f"Applying modification: {user_request}")
+    update_run_status(run_id, 'running')
+    port = PREVIEW_PORT_BASE + run_id
+    output_dir = os.path.join(STORAGE_DIR, f"project_{project_id}", f"run_{run_id}")
+
+    try:
+        # 1. Stop existing process
+        stop_run(run_id)
+        
+        # 2. Apply modifications
+        success = await apply_modification_async(output_dir, user_request, log)
+        
+        if success:
+            log('modify', "Modifications applied. Restarting sandbox...")
+            # 3. Restart process
+            proc_handle = await run_sandbox_async(output_dir, port, log)
+            if proc_handle:
+                PROCESS_REGISTRY[run_id] = proc_handle
+                update_run_status(run_id, 'success')
+                log('done', f"Modification successful! Live on http://localhost:{port}")
+            else:
+                update_run_status(run_id, 'failed')
+                log('fatal', "Failed to restart application after modification.", 'ERROR')
+        else:
+            update_run_status(run_id, 'failed')
+            log('fatal', "Failed to apply modifications.", 'ERROR')
+            
+    except Exception as e:
+        log('fatal', f"Critical failure in modification: {str(e)}", 'ERROR')
         update_run_status(run_id, 'failed')

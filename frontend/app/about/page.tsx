@@ -11,8 +11,7 @@ export default function AboutPage() {
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
 
-      <main className="pt-24 pb-20">
-        <div className="mx-auto max-w-7xl px-6">
+      <main className="pt-16 pb-20 px-6 sm:px-10 lg:px-16 xl:px-24">
           {/* Hero Section */}
           <section className="mb-16 md:mb-20 animate-in fade-in duration-1000">
             <div className="max-w-3xl mb-12">
@@ -41,7 +40,7 @@ export default function AboutPage() {
               ].map((item, idx) => (
                 <div
                   key={idx}
-                  className="group bg-card border border-border rounded-xl p-6 hover:border-primary/60 hover:bg-card/80 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10"
+                  className="group bg-card premium-card rounded-xl p-6 hover:border-primary/60 hover:bg-card/80 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10"
                 >
                   <h3 className="text-lg font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">{item.title}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
@@ -117,7 +116,6 @@ export default function AboutPage() {
               </Link>
             </div>
           </section>
-        </div>
       </main>
     </div>
   )

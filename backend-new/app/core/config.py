@@ -8,10 +8,10 @@ FINETUNE_OUTPUTS_DIR = BASE_DIR.parent / "finetune" / "outputs"
 DB_PATH = BASE_DIR / "app.db"
 
 # Models Configuration
-OLLAMA_URL = "http://localhost:11434/api/chat"
-ENHANCE_MODEL = "qwen2.5:7b-instruct"
-TASKSPEC_MODEL_DIR = FINETUNE_OUTPUTS_DIR / "qwen_taskspec_only_lora_v3"
-CODER_MODEL = "qwen-code-model"
+OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434/api/chat")
+ENHANCE_MODEL = os.getenv("ENHANCE_MODEL", "qwen2.5:7b-instruct")
+TASKSPEC_MODEL_DIR = os.getenv("TASKSPEC_MODEL_DIR", FINETUNE_OUTPUTS_DIR / "qwen_taskspec_only_lora_v3")
+CODER_MODEL = os.getenv("CODER_MODEL", "qwen-code-model")
 
 MAX_LENGTH_TS = 1024
 

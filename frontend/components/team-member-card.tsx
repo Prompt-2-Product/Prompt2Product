@@ -23,7 +23,7 @@ export function TeamMemberCard({
 }: TeamMemberProps) {
   return (
     <div className="group relative team-card-glow rounded-2xl">
-      <div className="relative rounded-2xl bg-card border border-border p-6 group-hover:border-primary/60 group-hover:bg-card/80 transition-all duration-300 flex flex-col items-center text-center">
+      <div className="relative rounded-2xl bg-card premium-card p-6 group-hover:border-primary/60 group-hover:bg-card/80 transition-all duration-300 flex flex-col items-center text-center">
         {/* Avatar */}
         <div
           className={`w-20 h-20 rounded-full flex items-center justify-center text-2xl font-bold text-white mb-4 ${gradientColor} shadow-lg`}

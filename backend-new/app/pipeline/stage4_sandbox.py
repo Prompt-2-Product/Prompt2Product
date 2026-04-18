@@ -68,15 +68,15 @@ async def run_sandbox_async(output_dir: str, port: int, logger) -> bool:
     
     # We use Popen instead of asyncio.subprocess for fully detached background execution
     try:
-        subprocess.Popen(
+        proc = subprocess.Popen(
             [str(uvicorn_exe)] + run_args[1:],
             cwd=output_dir,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
             start_new_session=True
         )
-        logger("done", f"Application is live tightly on http://localhost:{port}")
-        return True
+        logger("done", f"Application is live on http://localhost:{port}")
+        return proc 
     except Exception as e:
         logger("fatal", f"Failed to start uvicorn: {e}")
-        return False
+        return None

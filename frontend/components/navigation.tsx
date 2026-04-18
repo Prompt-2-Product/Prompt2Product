@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { Code2, LogOut, Menu, X, ChevronDown } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { ThemeToggle } from '@/components/theme-toggle'
 import { AuthModal } from '@/components/auth-modal'
 import {
   DropdownMenu,
@@ -19,10 +20,17 @@ export function Navigation() {
   const [authModalOpen, setAuthModalOpen] = useState(false)
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
   const isDescribePage = pathname === '/describe'
   const isGeneratingPage = pathname === '/generating'
   const isPreviewPage = pathname === '/preview'
-  const isMinimalNav = isDescribePage || isGeneratingPage || isPreviewPage
+  const isIdePage = pathname === '/ide'
+  const isMinimalNav = isDescribePage || isGeneratingPage || isPreviewPage || isIdePage
+
+  const navLinks = [
+    { href: '/', label: 'Home' },
+    { href: '/overview', label: 'Overview' },
+  ]
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -34,9 +42,7 @@ export function Navigation() {
 
     const handler = (event: Event) => {
       const detail = (event as CustomEvent<{ mode?: 'login' | 'signup'; postAuthRedirect?: string }>).detail || {}
-      if (detail.mode) {
-        setAuthMode(detail.mode)
-      }
+      if (detail.mode) setAuthMode(detail.mode)
       if (detail.postAuthRedirect) {
         window.sessionStorage.setItem('postAuthRedirect', detail.postAuthRedirect)
       }
@@ -44,10 +50,7 @@ export function Navigation() {
     }
 
     window.addEventListener('open-auth-modal', handler as EventListener)
-
-    return () => {
-      window.removeEventListener('open-auth-modal', handler as EventListener)
-    }
+    return () => window.removeEventListener('open-auth-modal', handler as EventListener)
   }, [])
 
   const handleLogout = () => {
@@ -56,102 +59,129 @@ export function Navigation() {
     window.location.href = '/'
   }
 
-
-
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 border-b border-border ${isMinimalNav ? 'bg-background backdrop-blur-md' : 'bg-background backdrop-blur-md'}`}>
-      <div className={`mx-auto max-w-7xl ${isMinimalNav ? 'px-4 py-2' : 'px-6 py-4'}`}>
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 sm:gap-3">
-            <div className={`flex items-center justify-center rounded-lg bg-primary text-primary-foreground ${isMinimalNav ? 'h-7 w-7' : 'h-8 w-8'}`}>
-              <Code2 className={isMinimalNav ? 'h-4 w-4' : 'h-5 w-5'} />
-            </div>
-            <span className={`font-semibold text-foreground ${isMinimalNav ? 'text-base' : 'text-xl'}`}>Prompt2Product</span>
-          </Link>
+    <nav className="fixed top-0 left-0 right-0 z-50 h-16 border-b border-border bg-background/95 backdrop-blur-md">
+      <div className="h-full w-full px-4 sm:px-6">
+        <div className="flex h-full items-center gap-2">
 
-          {/* Center menu - Hidden on describe and generating pages */}
-          {!isMinimalNav && (
-            <div className="hidden items-center gap-8 md:flex">
-              <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium">Home</Link>
-              <Link href="/overview" className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium">Overview</Link>
-            </div>
-          )}
-
-          {/* Right side - Auth */}
-          {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="flex items-center gap-2 rounded-full bg-secondary/50 px-3 sm:px-4 py-1.5 sm:py-2 hover:bg-secondary/70 transition-colors outline-none">
-                  <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-white">
-                    {user.name.charAt(0).toUpperCase()}
-                  </div>
-                  <span className="text-sm font-medium text-foreground hidden sm:inline">{user.name}</span>
-                  <ChevronDown className="h-3 w-3 text-muted-foreground hidden sm:block" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuItem onClick={handleLogout} variant="destructive" className="cursor-pointer">
-                  <LogOut className="h-4 w-4" />
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <div className="flex items-center gap-3">
-              <Button
-                onClick={() => {
-                  setAuthMode('login')
-                  setAuthModalOpen(true)
-                }}
-                variant="ghost"
-                size="sm"
-                className="btn-glow text-foreground hover:bg-secondary/50 font-medium"
-              >
-                Sign In
-              </Button>
-              <Button
-                onClick={() => {
-                  setAuthMode('signup')
-                  setAuthModalOpen(true)
-                }}
-                variant="ghost"
-                size="sm"
-                className="btn-glow text-foreground hover:bg-secondary/50 font-medium"
-              >
-                Sign Up
-              </Button>
-            </div>
-          )}
-
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-foreground hover:bg-secondary/50 rounded-lg"
-          >
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
-
-          <AuthModal
-            isOpen={authModalOpen}
-            onClose={() => setAuthModalOpen(false)}
-            mode={authMode}
-            onToggleMode={(mode) => setAuthMode(mode)}
-          />
-        </div>
-
-        {/* Mobile menu - Hidden on describe and generating pages */}
-        {mobileMenuOpen && !isMinimalNav && (
-          <div className="md:hidden border-t border-border bg-background backdrop-blur-sm py-4 mt-4 space-y-2">
-            <Link href="/" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 text-foreground hover:bg-secondary/50 rounded-lg">
-              Home
+          {/* ── Left: Logo + Nav Links ── */}
+          <div className="flex items-center gap-1 flex-1 min-w-0">
+            {/* Logo */}
+            <Link href="/" className="flex shrink-0 items-center gap-2 mr-4 group">
+              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground shadow-sm group-hover:shadow-primary/40 transition-shadow">
+                <Code2 className="h-4 w-4" />
+              </div>
+              <span className="text-sm font-semibold tracking-tight text-foreground whitespace-nowrap">
+                Prompt2Product
+              </span>
             </Link>
-            <Link href="/overview" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2 text-foreground hover:bg-secondary/50 rounded-lg">
-              Overview
-            </Link>
+
+            {/* Nav links — immediately after logo, hidden on minimal pages */}
+            {!isMinimalNav && (
+              <div className="hidden md:flex items-center gap-0.5">
+                {navLinks.map(({ href, label }) => {
+                  const active = pathname === href
+                  return (
+                    <Link
+                      key={href}
+                      href={href}
+                      className={`relative px-3 py-1.5 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
+                        active
+                          ? 'text-foreground bg-secondary/60'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-secondary/40'
+                      }`}
+                    >
+                      {label}
+                      {active && (
+                        <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 w-3 rounded-full bg-primary" />
+                      )}
+                    </Link>
+                  )
+                })}
+              </div>
+            )}
           </div>
-        )}
+
+          {/* ── Right: Auth + Theme ── */}
+          <div className="flex shrink-0 items-center gap-1.5">
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="flex items-center gap-2 rounded-full bg-secondary/50 px-3 py-1.5 hover:bg-secondary/70 transition-colors outline-none border border-border/50">
+                    <div className="h-5 w-5 rounded-full bg-primary flex items-center justify-center text-[10px] font-bold text-white">
+                      {user.name.charAt(0).toUpperCase()}
+                    </div>
+                    <span className="text-sm font-medium text-foreground hidden sm:inline">{user.name}</span>
+                    <ChevronDown className="h-3 w-3 text-muted-foreground" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-44">
+                  <DropdownMenuItem onClick={handleLogout} variant="destructive" className="cursor-pointer gap-2">
+                    <LogOut className="h-4 w-4" />
+                    Sign out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <>
+                <Button
+                  onClick={() => { setAuthMode('login'); setAuthModalOpen(true) }}
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 px-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                >
+                  Sign In
+                </Button>
+                <Button
+                  onClick={() => { setAuthMode('signup'); setAuthModalOpen(true) }}
+                  size="sm"
+                  className="h-8 px-3 text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
+                >
+                  Sign Up
+                </Button>
+              </>
+            )}
+
+            {/* Divider before theme toggle */}
+            <div className="h-4 w-px bg-border/70 mx-1" />
+            <ThemeToggle />
+
+            {/* Mobile hamburger */}
+            {!isMinimalNav && (
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="md:hidden ml-1 p-1.5 text-muted-foreground hover:text-foreground hover:bg-secondary/50 rounded-md transition-colors"
+                aria-label="Toggle menu"
+              >
+                {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </button>
+            )}
+          </div>
+        </div>
       </div>
+
+      {/* Mobile dropdown */}
+      {mobileMenuOpen && !isMinimalNav && (
+        <div className="md:hidden border-t border-border bg-background/98 backdrop-blur-sm px-6 py-3 space-y-1">
+          {navLinks.map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              onClick={() => setMobileMenuOpen(false)}
+              className="block px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors"
+            >
+              {label}
+            </Link>
+          ))}
+        </div>
+      )}
+
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        mode={authMode}
+        onToggleMode={(mode) => setAuthMode(mode)}
+      />
     </nav>
   )
 }
