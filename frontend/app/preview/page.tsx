@@ -102,13 +102,13 @@ export default function PreviewPage() {
       <main className="absolute inset-x-0 top-16 bottom-0 flex">
         {/* Left: Chat Sidebar - Glass Panel */}
         {showChat && projectInfo && (
-          <aside className={`h-full transition-all duration-500 ease-in-out relative border-r border-white/5 ${isSidebarCollapsed ? 'w-0' : 'w-full lg:w-[380px]'
+          <aside className={`h-full transition-all duration-500 ease-in-out relative border-r border-slate-200/80 dark:border-white/5 ${isSidebarCollapsed ? 'w-0' : 'w-full lg:w-[380px]'
             }`}>
             <div className={`h-full flex flex-col glass-panel glass-panel-cinematic backdrop-blur-2xl transition-opacity duration-300 ${isSidebarCollapsed ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
               {!isSidebarCollapsed && (
                 <>
                   {/* Chat Header */}
-                  <div className="px-6 py-6 border-b border-white/5 shrink-0">
+                  <div className="px-6 py-6 border-b border-slate-200/80 dark:border-white/5 shrink-0">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
                         <h2 className="text-sm font-bold uppercase tracking-widest text-foreground mb-3">Request Changes</h2>
@@ -116,7 +116,7 @@ export default function PreviewPage() {
                           <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-primary/20 text-primary border border-primary/20 uppercase tracking-tighter">
                             {projectInfo.language}
                           </span>
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-black/30 text-foreground/85 dark:text-slate-200 border border-white/15 uppercase tracking-tighter">
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-200/80 text-foreground/85 dark:bg-black/30 dark:text-slate-200 border border-slate-300/80 dark:border-white/15 uppercase tracking-tighter">
                             {projectInfo.appType}
                           </span>
                         </div>
@@ -202,7 +202,7 @@ export default function PreviewPage() {
                   </div>
 
                   {/* Chat Input Area */}
-                  <div className="px-5 py-4 border-t border-white/10 flex-shrink-0 bg-black/25 backdrop-blur-md">
+                  <div className="px-5 py-4 border-t border-slate-200/80 dark:border-white/10 flex-shrink-0 bg-white/50 dark:bg-black/25 backdrop-blur-md">
                     <div className="flex gap-3">
                       <textarea
                         value={changeMessage}

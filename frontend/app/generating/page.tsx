@@ -201,20 +201,20 @@ export default function GeneratingPage() {
       <main className="absolute inset-x-0 top-16 bottom-0 flex">
         {/* Cinematic Sidebar - Glass Panel */}
         <aside 
-          className={`h-full transition-all duration-500 ease-in-out relative border-r border-white/5 ${
+          className={`h-full transition-all duration-500 ease-in-out relative border-r border-slate-200/80 dark:border-white/5 ${
             isSidebarCollapsed ? 'w-0' : 'w-full lg:w-[360px]'
           }`}
         >
           <div className={`h-full flex flex-col glass-panel glass-panel-cinematic backdrop-blur-2xl transition-opacity duration-300 ${isSidebarCollapsed ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
             {/* Sidebar Header */}
-            <div className="px-6 py-6 border-b border-white/5 shrink-0">
+            <div className="px-6 py-6 border-b border-slate-200/80 dark:border-white/5 shrink-0">
               <h2 className="text-sm font-bold uppercase tracking-widest text-foreground mb-3">Project Chat</h2>
               {projectInfo && (
                 <div className="flex items-center gap-2">
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-primary/20 text-primary border border-primary/20 uppercase tracking-tighter">
                     {projectInfo.language}
                   </span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-black/30 text-foreground/85 dark:text-slate-200 border border-white/15 uppercase tracking-tighter">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-200/80 text-foreground/85 dark:bg-black/30 dark:text-slate-200 border border-slate-300/80 dark:border-white/15 uppercase tracking-tighter">
                     {projectInfo.appType}
                   </span>
                 </div>
@@ -293,11 +293,11 @@ export default function GeneratingPage() {
             </div>
 
             {/* Sidebar Footer */}
-            <div className="px-6 py-4 border-t border-white/10 bg-black/25 backdrop-blur-3xl">
+            <div className="px-6 py-4 border-t border-slate-200/80 dark:border-white/10 bg-white/50 dark:bg-black/25 backdrop-blur-3xl">
               <textarea
                 disabled
                 placeholder={status === 'failed' ? "Core extinguished." : "System processing..."}
-                className="w-full min-h-[90px] rounded-xl bg-black/35 border border-white/10 px-4 py-3 text-sm text-slate-200/90 font-light resize-none focus:outline-none disabled:cursor-not-allowed opacity-80 italic"
+                className="w-full min-h-[90px] rounded-xl bg-white/80 border border-slate-200/90 text-slate-700 dark:bg-black/35 dark:border-white/10 px-4 py-3 text-sm dark:text-slate-200/90 font-light resize-none focus:outline-none disabled:cursor-not-allowed opacity-80 italic"
                 rows={3}
               />
             </div>
@@ -351,7 +351,7 @@ export default function GeneratingPage() {
                               ? 'bg-primary shadow-[0_0_15px_rgba(37,99,235,0.4)] border-primary' 
                               : isActive 
                                 ? 'glass-panel glass-panel-cinematic bg-primary/25 border-primary shadow-[0_0_20px_rgba(37,99,235,0.35)]' 
-                                : 'glass-panel glass-panel-cinematic border-white/15 bg-black/25'
+                                : 'glass-panel glass-panel-cinematic border-slate-200/90 bg-white/55 dark:border-white/15 dark:bg-black/25'
                           }`}>
                             {isCompleted ? (
                               <Check className="h-4 w-4 text-primary-foreground" />
@@ -443,7 +443,7 @@ export default function GeneratingPage() {
                     </div>
                     <span className="text-xl font-black text-primary tracking-tighter">{Math.min(Math.round(progress), 100)}%</span>
                   </div>
-                  <div className="h-1 w-full rounded-full bg-white/5 border border-white/5 overflow-hidden">
+                  <div className="h-1 w-full rounded-full bg-slate-200/90 border border-slate-300/70 dark:bg-white/5 dark:border-white/5 overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-blue-600 via-blue-400 to-cyan-400 shadow-[0_0_20px_rgba(37,99,235,0.5)] transition-all duration-1000 ease-out"
                       style={{ width: `${Math.min(progress, 100)}%` }}

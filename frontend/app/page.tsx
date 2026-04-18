@@ -3,7 +3,7 @@
 import { Navigation } from '@/components/navigation'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
-import { Bot, Code2, Layers, Monitor, Smartphone, Terminal } from 'lucide-react'
+import { Bot, Braces, Code2, Cpu, FileCode2, GitBranch, Layers, Monitor, Server, Smartphone, Sparkles, Terminal } from 'lucide-react'
 
 export default function LandingPage() {
   const router = useRouter()
@@ -46,47 +46,43 @@ export default function LandingPage() {
       <div className="mesh-gradient" />
       <div className="technical-grid" />
 
-      {/* Floating icon silhouettes only (no geometric blobs) */}
+      {/* Floating icons — ring + mid accents, low contrast (see globals.css) */}
       <div className="landing-float-layer" aria-hidden="true">
-        <div className="landing-float-icon landing-float-icon--code">
-          <Code2 stroke="currentColor" strokeWidth={1.35} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--agent">
-          <Bot stroke="currentColor" strokeWidth={1.35} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--screen">
-          <Monitor stroke="currentColor" strokeWidth={1.35} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--phone">
-          <Smartphone stroke="currentColor" strokeWidth={1.35} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--code-sm">
-          <Code2 stroke="currentColor" strokeWidth={1.25} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--phone-sm">
-          <Smartphone stroke="currentColor" strokeWidth={1.25} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--screen-sm">
-          <Monitor stroke="currentColor" strokeWidth={1.25} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--agent-sm">
-          <Bot stroke="currentColor" strokeWidth={1.25} className="text-inherit" />
-        </div>
-        {/* Center band — fills empty space behind hero; stays subtle */}
-        <div className="landing-float-icon landing-float-icon--center landing-float-icon--center-1">
-          <Terminal stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--center landing-float-icon--center-2">
-          <Layers stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--center landing-float-icon--center-3">
-          <Monitor stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--center landing-float-icon--center-4">
+        <div className="landing-float-icon landing-float-icon--orbit-1">
           <Code2 stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
         </div>
-        <div className="landing-float-icon landing-float-icon--center landing-float-icon--center-5">
+        <div className="landing-float-icon landing-float-icon--orbit-2">
+          <Monitor stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
+        </div>
+        <div className="landing-float-icon landing-float-icon--orbit-3">
+          <Terminal stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
+        </div>
+        <div className="landing-float-icon landing-float-icon--orbit-4">
+          <Bot stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
+        </div>
+        <div className="landing-float-icon landing-float-icon--orbit-5">
           <Smartphone stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
+        </div>
+        <div className="landing-float-icon landing-float-icon--orbit-6">
+          <Layers stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
+        </div>
+        <div className="landing-float-icon landing-float-icon--orbit-7">
+          <Cpu stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
+        </div>
+        <div className="landing-float-icon landing-float-icon--orbit-8">
+          <Sparkles stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
+        </div>
+        <div className="landing-float-icon landing-float-icon--orbit-9">
+          <FileCode2 stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
+        </div>
+        <div className="landing-float-icon landing-float-icon--orbit-10">
+          <GitBranch stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
+        </div>
+        <div className="landing-float-icon landing-float-icon--orbit-11">
+          <Braces stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
+        </div>
+        <div className="landing-float-icon landing-float-icon--orbit-12">
+          <Server stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
         </div>
       </div>
 
