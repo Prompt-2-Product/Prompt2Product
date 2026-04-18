@@ -3,6 +3,7 @@
 import { Navigation } from '@/components/navigation'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
+import { Bot, Code2, Layers, Monitor, Smartphone, Terminal } from 'lucide-react'
 
 export default function LandingPage() {
   const router = useRouter()
@@ -45,9 +46,53 @@ export default function LandingPage() {
       <div className="mesh-gradient" />
       <div className="technical-grid" />
 
+      {/* Floating icon silhouettes only (no geometric blobs) */}
+      <div className="landing-float-layer" aria-hidden="true">
+        <div className="landing-float-icon landing-float-icon--code">
+          <Code2 stroke="currentColor" strokeWidth={1.35} className="text-inherit" />
+        </div>
+        <div className="landing-float-icon landing-float-icon--agent">
+          <Bot stroke="currentColor" strokeWidth={1.35} className="text-inherit" />
+        </div>
+        <div className="landing-float-icon landing-float-icon--screen">
+          <Monitor stroke="currentColor" strokeWidth={1.35} className="text-inherit" />
+        </div>
+        <div className="landing-float-icon landing-float-icon--phone">
+          <Smartphone stroke="currentColor" strokeWidth={1.35} className="text-inherit" />
+        </div>
+        <div className="landing-float-icon landing-float-icon--code-sm">
+          <Code2 stroke="currentColor" strokeWidth={1.25} className="text-inherit" />
+        </div>
+        <div className="landing-float-icon landing-float-icon--phone-sm">
+          <Smartphone stroke="currentColor" strokeWidth={1.25} className="text-inherit" />
+        </div>
+        <div className="landing-float-icon landing-float-icon--screen-sm">
+          <Monitor stroke="currentColor" strokeWidth={1.25} className="text-inherit" />
+        </div>
+        <div className="landing-float-icon landing-float-icon--agent-sm">
+          <Bot stroke="currentColor" strokeWidth={1.25} className="text-inherit" />
+        </div>
+        {/* Center band — fills empty space behind hero; stays subtle */}
+        <div className="landing-float-icon landing-float-icon--center landing-float-icon--center-1">
+          <Terminal stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
+        </div>
+        <div className="landing-float-icon landing-float-icon--center landing-float-icon--center-2">
+          <Layers stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
+        </div>
+        <div className="landing-float-icon landing-float-icon--center landing-float-icon--center-3">
+          <Monitor stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
+        </div>
+        <div className="landing-float-icon landing-float-icon--center landing-float-icon--center-4">
+          <Code2 stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
+        </div>
+        <div className="landing-float-icon landing-float-icon--center landing-float-icon--center-5">
+          <Smartphone stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
+        </div>
+      </div>
+
       <Navigation />
 
-      <main className="pt-16">
+      <main className="relative z-10 pt-16">
         <section className="min-h-[calc(100vh-4rem)] flex flex-col justify-center gap-6 sm:gap-8 md:gap-10 lg:gap-12 px-6 sm:px-10 lg:px-16 xl:px-24">
           {/* Row 1 - Hero copy + CTA */}
           <div className="space-y-4 sm:space-y-6 md:space-y-8 animate-in fade-in duration-1000 text-center relative z-20">

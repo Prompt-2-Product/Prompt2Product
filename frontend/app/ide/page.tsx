@@ -6,6 +6,7 @@ import { Navigation } from '@/components/navigation'
 import { Button } from '@/components/ui/button'
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable'
 import { ChevronRight, ChevronDown, File, Folder, ArrowLeft, Download, MessageSquare, Minimize2, Maximize2, Loader2 } from 'lucide-react'
+import { isFrontendOnly, seedDemoProjectInfoIfNeeded } from '@/lib/frontend-only'
 
 interface FileNode {
   id: string
@@ -13,6 +14,19 @@ interface FileNode {
   type: 'file' | 'folder'
   children?: FileNode[]
 }
+
+const MOCK_FILE_TREE: FileNode[] = [
+  {
+    id: 'src',
+    name: 'src',
+    type: 'folder',
+    children: [
+      { id: 'src/main.py', name: 'main.py', type: 'file' },
+      { id: 'src/app.tsx', name: 'app.tsx', type: 'file' },
+    ],
+  },
+  { id: 'README.md', name: 'README.md', type: 'file' },
+]
 
 export default function IDEPage() {
   const router = useRouter()
@@ -34,6 +48,11 @@ export default function IDEPage() {
   const fetchFileTree = useCallback(async (projectId: number, runId: number) => {
     setIsLoadingTree(true)
     try {
+      if (isFrontendOnly) {
+        setFileTree(MOCK_FILE_TREE)
+        setExpandedFolders(MOCK_FILE_TREE[0]?.type === 'folder' ? [MOCK_FILE_TREE[0].id] : [])
+        return
+      }
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
       const res = await fetch(`${apiUrl}/projects/${projectId}/runs/${runId}/files`)
       if (res.ok) {
@@ -54,6 +73,16 @@ export default function IDEPage() {
   const fetchFileContent = async (projectId: number, runId: number, filePath: string) => {
     setIsLoadingContent(true)
     try {
+      if (isFrontendOnly) {
+        const sample =
+          filePath.endsWith('.py')
+            ? 'def main():\n    print("Hello from mock Python")\n'
+            : filePath.endsWith('.tsx') || filePath.endsWith('.ts')
+              ? 'export default function App() {\n  return <div>Mock UI preview</div>\n}\n'
+              : `# ${filePath}\n\n(Mock file — connect the backend for real content.)\n`
+        setFileContent(sample)
+        return
+      }
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
       const res = await fetch(`${apiUrl}/projects/${projectId}/runs/${runId}/files/${filePath}`)
       if (res.ok) {
@@ -71,6 +100,7 @@ export default function IDEPage() {
   }
 
   useEffect(() => {
+    seedDemoProjectInfoIfNeeded()
     const stored = sessionStorage.getItem('projectInfo')
     if (stored) {
       const parsed = JSON.parse(stored)
@@ -130,10 +160,13 @@ export default function IDEPage() {
   }
 
   const handleDownload = () => {
-    if (projectInfo) {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      window.open(`${apiUrl}/projects/${projectInfo.projectId}/runs/${projectInfo.runId}/download`, '_blank')
+    if (!projectInfo) return
+    if (isFrontendOnly) {
+      window.alert('Download needs the backend. Turn off NEXT_PUBLIC_FRONTEND_ONLY in .env.local to reconnect.')
+      return
     }
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    window.open(`${apiUrl}/projects/${projectInfo.projectId}/runs/${projectInfo.runId}/download`, '_blank')
   }
 
   const renderTree = (nodes: FileNode[]) => {

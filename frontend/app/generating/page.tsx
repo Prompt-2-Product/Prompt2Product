@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Navigation } from '@/components/navigation'
 import { Check, Loader, ChevronLeft, ChevronRight } from 'lucide-react'
 import { api } from '@/lib/api'
+import { isFrontendOnly, seedDemoProjectInfoIfNeeded } from '@/lib/frontend-only'
 
 export default function GeneratingPage() {
   const router = useRouter()
@@ -24,6 +25,7 @@ export default function GeneratingPage() {
     if (hasInitializedRef.current) return
     hasInitializedRef.current = true
 
+    seedDemoProjectInfoIfNeeded()
     const stored = sessionStorage.getItem('projectInfo')
     if (!stored) {
       router.push('/describe')
@@ -62,7 +64,7 @@ export default function GeneratingPage() {
       }
     }
 
-    let intervalId: NodeJS.Timeout
+    let intervalId: ReturnType<typeof setInterval> | undefined
     let retryCount = 0
 
     const poll = async () => {
@@ -84,11 +86,11 @@ export default function GeneratingPage() {
             setProgress(100)
             setCurrentStep(3)
             setTimeout(() => router.push('/preview'), 1500)
-            clearInterval(intervalId)
+            if (intervalId !== undefined) clearInterval(intervalId)
             return
           } else if (run.status === 'failed') {
             setError('The generation process encountered an error.')
-            clearInterval(intervalId)
+            if (intervalId !== undefined) clearInterval(intervalId)
             return
           }
         }
@@ -105,7 +107,7 @@ export default function GeneratingPage() {
           if (fatalLog) {
               setStatus('failed')
               setError(fatalLog.message)
-              clearInterval(intervalId)
+              if (intervalId !== undefined) clearInterval(intervalId)
               return
           }
 
@@ -132,13 +134,55 @@ export default function GeneratingPage() {
       }
     }
 
+    const runMockGeneration = () => {
+      const baseLogs = [
+        '[INFO] Initializing project generation...',
+        '[INFO] Frontend-only mode: simulating pipeline',
+      ]
+      const steps = [
+        { lines: ['[INFO] [spec] Shaping product specification...'], step: 1, progress: 35 },
+        { lines: ['[INFO] [codegen] Synthesizing module layout...'], step: 2, progress: 68 },
+        { lines: ['[INFO] [validate] Checking structure...', '[INFO] [run] Packaging preview (mock)'], step: 3, progress: 94 },
+      ]
+      let idx = 0
+      const tick = () => {
+        if (idx >= steps.length) {
+          if (intervalId !== undefined) clearInterval(intervalId)
+          setStatus('success')
+          setProgress(100)
+          setCurrentStep(3)
+          setLogs([...baseLogs, '[SUCCESS] Mock build finished — opening preview'])
+          if (isModify) {
+            sessionStorage.removeItem('changeRequest')
+            sessionStorage.removeItem('generationFlow')
+          }
+          setTimeout(() => router.push('/preview'), 1500)
+          return
+        }
+        const s = steps[idx]
+        setStatus('running')
+        setCurrentStep(s.step)
+        setProgress(s.progress)
+        setLogs([...baseLogs, ...s.lines])
+        idx++
+      }
+      tick()
+      intervalId = setInterval(tick, 700)
+    }
+
     startModificationIfNeeded().then((ok) => {
       if (!ok) return
+      if (isFrontendOnly) {
+        runMockGeneration()
+        return
+      }
       intervalId = setInterval(poll, 3000)
       poll()
     })
 
-    return () => clearInterval(intervalId)
+    return () => {
+      if (intervalId !== undefined) clearInterval(intervalId)
+    }
   }, [router])
 
   const steps = [
@@ -148,10 +192,9 @@ export default function GeneratingPage() {
   ]
 
   return (
-    <div className="h-screen text-foreground relative overflow-hidden page-transition">
-      {/* Cinematic Background Layer */}
-      <div className="mesh-gradient" />
-      <div className="technical-grid" />
+    <div className="page-cinematic-gradient h-screen text-foreground relative overflow-hidden page-transition">
+      <div className="backdrop-vertical-cinematic" aria-hidden="true" />
+      <div className="technical-grid technical-grid-on-cinematic" aria-hidden="true" />
       
       <Navigation />
 
@@ -162,7 +205,7 @@ export default function GeneratingPage() {
             isSidebarCollapsed ? 'w-0' : 'w-full lg:w-[360px]'
           }`}
         >
-          <div className={`h-full flex flex-col glass-panel bg-background/20 backdrop-blur-2xl transition-opacity duration-300 ${isSidebarCollapsed ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+          <div className={`h-full flex flex-col glass-panel glass-panel-cinematic backdrop-blur-2xl transition-opacity duration-300 ${isSidebarCollapsed ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
             {/* Sidebar Header */}
             <div className="px-6 py-6 border-b border-white/5 shrink-0">
               <h2 className="text-sm font-bold uppercase tracking-widest text-foreground mb-3">Project Chat</h2>
@@ -171,7 +214,7 @@ export default function GeneratingPage() {
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-primary/20 text-primary border border-primary/20 uppercase tracking-tighter">
                     {projectInfo.language}
                   </span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-secondary/50 text-muted-foreground border border-border/50 uppercase tracking-tighter">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-black/30 text-foreground/85 dark:text-slate-200 border border-white/15 uppercase tracking-tighter">
                     {projectInfo.appType}
                   </span>
                 </div>
@@ -186,9 +229,9 @@ export default function GeneratingPage() {
                     <div className="h-6 w-6 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30">
                       <span className="text-[10px] font-bold text-primary">U</span>
                     </div>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">You</span>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-foreground/75 dark:text-slate-300">You</span>
                   </div>
-                  <div className="ml-8 rounded-2xl glass-panel bg-white/5 p-4 text-sm text-foreground/90 leading-relaxed font-light shadow-sm">
+                  <div className="ml-8 rounded-2xl glass-panel glass-panel-cinematic-dense p-4 text-sm text-foreground leading-relaxed font-light shadow-sm">
                     {projectInfo.description}
                   </div>
                 </div>
@@ -199,10 +242,10 @@ export default function GeneratingPage() {
                     <div className="h-4 w-4 rounded-full bg-primary flex items-center justify-center ring-2 ring-primary/20">
                       <span className="text-[10px] font-bold text-primary-foreground">P</span>
                     </div>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Prompt2Product</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-foreground/75 dark:text-slate-300">Prompt2Product</span>
                 </div>
                 <div className={`ml-8 rounded-2xl glass-panel p-4 text-sm font-light leading-relaxed shadow-lg ${
-                  status === 'failed' ? 'bg-red-500/10 border-red-500/20 text-red-600 dark:text-red-200' : 'bg-primary/5 border-primary/20 text-foreground'
+                  status === 'failed' ? 'glass-panel-cinematic-dense bg-red-950/50 border-red-500/30 text-red-100' : 'glass-panel-cinematic-dense border-primary/25 text-foreground'
                 }`}>
                   {status === 'failed' ? (
                     <div className="space-y-3">
@@ -236,7 +279,7 @@ export default function GeneratingPage() {
                             : (isModificationFlow ? 'APPLYING PATCHES...' : 'IGNITING THE CORE...')}
                         </span>
                       </div>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-foreground/75 dark:text-slate-300/95">
                         {status === 'pending'
                           ? 'Waiting for initialization...'
                           : (isModificationFlow
@@ -250,11 +293,11 @@ export default function GeneratingPage() {
             </div>
 
             {/* Sidebar Footer */}
-            <div className="px-6 py-4 border-t border-white/5 bg-background/20 backdrop-blur-3xl">
+            <div className="px-6 py-4 border-t border-white/10 bg-black/25 backdrop-blur-3xl">
               <textarea
                 disabled
                 placeholder={status === 'failed' ? "Core extinguished." : "System processing..."}
-                className="w-full min-h-[90px] rounded-xl bg-black/20 border border-white/5 px-4 py-3 text-sm text-muted-foreground font-light resize-none focus:outline-none disabled:cursor-not-allowed opacity-50 italic"
+                className="w-full min-h-[90px] rounded-xl bg-black/35 border border-white/10 px-4 py-3 text-sm text-slate-200/90 font-light resize-none focus:outline-none disabled:cursor-not-allowed opacity-80 italic"
                 rows={3}
               />
             </div>
@@ -278,12 +321,12 @@ export default function GeneratingPage() {
           <div className="max-w-5xl mx-auto px-6 h-full flex flex-col justify-between relative z-10 py-12 lg:py-16">
             {/* Cinematic Header */}
             <div className="shrink-0 text-center animate-in fade-in slide-in-from-top-4 duration-1000 relative z-20 mb-8 mt-2">
-              <h1 className="text-2xl sm:text-3xl md:text-5xl font-black mb-3 tracking-tighter text-foreground dark:text-white uppercase">
+              <h1 className="cinematic-hero-title text-2xl sm:text-3xl md:text-5xl font-black mb-3 tracking-tighter text-foreground dark:text-white uppercase">
                 {status === 'failed'
                   ? (isModificationFlow ? <>Core <span className="text-red-500">Error</span></> : <>Generation <span className="text-red-500">Failed</span></>)
                   : (isModificationFlow ? <>Applying <span className="hero-text-accent">Your Changes</span></> : <>Generating <span className="hero-text-accent">Your Project</span></>)}
               </h1>
-              <p className="text-[10px] sm:text-xs text-muted-foreground font-light tracking-widest uppercase opacity-70">
+              <p className="cinematic-on-canvas text-[10px] sm:text-xs font-light tracking-widest uppercase">
                 {status === 'failed' 
                   ? 'The engine encountered a critical logic error.'
                   : 'Synthesizing components, establishing framework, and validating logic layers.'}
@@ -307,8 +350,8 @@ export default function GeneratingPage() {
                             isCompleted 
                               ? 'bg-primary shadow-[0_0_15px_rgba(37,99,235,0.4)] border-primary' 
                               : isActive 
-                                ? 'glass-panel bg-primary/20 border-primary shadow-[0_0_20px_rgba(37,99,235,0.2)]' 
-                                : 'glass-panel bg-white/5 border-white/10'
+                                ? 'glass-panel glass-panel-cinematic bg-primary/25 border-primary shadow-[0_0_20px_rgba(37,99,235,0.35)]' 
+                                : 'glass-panel glass-panel-cinematic border-white/15 bg-black/25'
                           }`}>
                             {isCompleted ? (
                               <Check className="h-4 w-4 text-primary-foreground" />
@@ -325,7 +368,7 @@ export default function GeneratingPage() {
                         </div>
                         <div className="text-center">
                           <p className={`text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-colors duration-500 ${
-                            isPending ? 'text-muted-foreground/30' : isActive ? 'text-primary' : 'text-foreground'
+                            isPending ? 'text-slate-800/65 dark:text-slate-100/60' : isActive ? 'text-primary' : 'text-foreground'
                           }`}>
                             {step.label}
                           </p>
@@ -368,7 +411,7 @@ export default function GeneratingPage() {
                     </div>
                     {status === 'failed' && <span className="text-[10px] bg-red-500/20 text-red-600 dark:text-red-500 px-2 py-0.5 rounded font-black uppercase tracking-wider">CRITICAL_ERROR</span>}
                   </div>
-                  <div className="p-6 h-28 sm:h-32 lg:h-36 overflow-y-auto font-mono text-sm leading-relaxed space-y-3 custom-scrollbar-dark scroll-smooth">
+                  <div className="p-6 h-28 sm:h-32 lg:h-36 overflow-y-auto font-mono text-sm leading-relaxed space-y-3 custom-scrollbar-dark scroll-smooth bg-black/15 dark:bg-black/25">
                     {logs.map((log, index) => {
                       const isError = log.includes('[ERROR]') || log.includes('[fatal]')
                       const isInfo = log.includes('[INFO]')
