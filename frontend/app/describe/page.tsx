@@ -6,6 +6,7 @@ import { Navigation } from '@/components/navigation'
 import { Button } from '@/components/ui/button'
 import { SlidersHorizontal } from 'lucide-react'
 import { api } from '@/lib/api'
+import { isFrontendOnly } from '@/lib/frontend-only'
 
 const APP_TYPES = [
   'Web App',
@@ -127,54 +128,49 @@ export default function DescribePage() {
   }
 
   return (
-    <div className="min-h-screen text-foreground relative overflow-hidden page-transition">
-      {/* Overview gradient background - light pastel blue to cyan-blue */}
-      <div
-        className="pointer-events-none absolute inset-0 -z-10"
-        aria-hidden="true"
-        style={{
-          background: 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(0, 0, 139) 33.33%, rgb(135, 206, 250) 66.66%, rgb(255, 255, 255) 100%)',
-        }}
-      />
+    <div className="page-cinematic-gradient h-screen text-foreground relative overflow-hidden page-transition">
+      <div className="backdrop-vertical-cinematic" aria-hidden="true" />
+      <div className="technical-grid technical-grid-on-cinematic" aria-hidden="true" />
+      
       <Navigation />
 
-      <main className="flex items-center justify-center min-h-[calc(100vh-5rem)] pt-8 sm:pt-16 md:pt-24 pb-8 sm:pb-16">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 w-full page-content">
-          {/* Title - Centered */}
-          <div className="mb-12 md:mb-14 text-center">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3">
-              Describe Your Project
+      <main className="flex items-center justify-center h-[calc(100vh-4rem)] mt-16 overflow-hidden px-6 sm:px-10 lg:px-16 xl:px-24">
+        <div className="w-full page-content">
+          {/* Header - RESTORED SIZE */}
+          <div className="mb-10 md:mb-12 text-center animate-in fade-in duration-1000">
+            <h1 className="cinematic-hero-title text-3xl sm:text-4xl md:text-5xl font-bold mb-3 tracking-tight text-foreground dark:text-white">
+              Describe Your <span className="hero-text-accent">Project</span>
             </h1>
-            <p className="text-sm sm:text-base md:text-lg text-white max-w-2xl mx-auto">
+            <p className="cinematic-on-canvas text-sm sm:text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed">
               Tell Prompt2Product what you want to build, we&apos;ll handle the stack and structure.
             </p>
           </div>
 
-          {/* Chatbox and options side by side */}
+          {/* Grid Layout - RESTORED PROPORTIONS */}
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 items-stretch">
-            {/* Main prompt card - Centered */}
-            <section className="rounded-2xl bg-card/90 border border-white/10 shadow-2xl backdrop-blur-sm px-4 sm:px-6 py-4 sm:py-5 flex flex-col gap-4 h-full">
-              <div className="text-center">
-                <label className="block text-xs sm:text-sm font-medium text-foreground mb-2">
+            {/* Main prompt card - GLASS PANEL RETAINED */}
+            <section className="rounded-2xl glass-panel glass-panel-cinematic input-focal-glow px-4 sm:px-6 py-4 sm:py-5 flex flex-col gap-5 h-full relative overflow-hidden">
+              <div className="text-center relative z-10">
+                <label className="block text-xs sm:text-sm font-medium text-foreground mb-3">
                   What do you want to build?
                 </label>
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder={description.trim() ? "Describe your app, API, or tool in natural language..." : SIMPLE_PROMPTS[currentPromptIndex]}
-                  className="w-full min-h-[120px] sm:min-h-[140px] rounded-xl bg-black/30 border border-border/60 px-3 sm:px-4 py-3 sm:py-4 text-sm sm:text-base text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-vertical text-center"
+                  placeholder={description.trim() ? "Describe your app, API, or tool..." : SIMPLE_PROMPTS[currentPromptIndex]}
+                  className="w-full min-h-[140px] sm:min-h-[160px] rounded-xl bg-secondary/50 dark:bg-black/35 border border-border/80 dark:border-white/15 px-4 py-4 text-sm sm:text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none text-center transition-all"
                 />
               </div>
 
-              {/* Example prompts - Simple showcase */}
+              {/* Suggestions - CENTERED */}
               {!description.trim() && (
-                <div className="flex flex-wrap gap-2 justify-center">
+                <div className="flex flex-wrap gap-2 justify-center relative z-10">
                   {SIMPLE_PROMPTS.slice(0, 4).map((prompt, idx) => (
                     <button
                       key={idx}
                       type="button"
                       onClick={() => handlePromptClick(prompt)}
-                      className="text-xs sm:text-sm px-3 py-1.5 rounded-full bg-secondary/50 border border-border/50 text-muted-foreground hover:text-foreground hover:border-primary/60 hover:bg-secondary/80 transition-colors"
+                      className="text-xs sm:text-sm px-3 py-1.5 rounded-full bg-card/90 dark:bg-black/40 border border-border/70 dark:border-white/15 text-foreground/85 dark:text-slate-100 hover:text-foreground hover:border-primary/60 hover:bg-card dark:hover:bg-black/50 transition-all shadow-sm"
                     >
                       {prompt}
                     </button>
@@ -182,101 +178,102 @@ export default function DescribePage() {
                 </div>
               )}
 
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-1">
-                <div className="text-[11px] sm:text-xs text-muted-foreground text-center">
+              {/* Action Area - CENTERED RESTORED */}
+              <div className="flex flex-col items-center justify-center gap-4 pt-2 relative z-10">
+                <div className="text-[11px] sm:text-xs text-foreground/80 dark:text-slate-200/90 text-center">
                   {autoDetect
                     ? 'Auto-detecting language & app type from your description'
-                    : 'Using your custom language & app type settings'}
+                    : 'Using custom settings'}
                 </div>
                 <Button
                   onClick={handleGenerateProject}
                   disabled={!description.trim()}
                   size="lg"
-                  className="btn-glow bg-primary hover:bg-primary/85 text-primary-foreground disabled:opacity-50 disabled:cursor-not-allowed font-semibold shadow-lg hover:shadow-xl px-6 sm:px-8"
+                  className="btn-glow bg-primary hover:bg-primary/85 text-primary-foreground disabled:opacity-50 disabled:cursor-not-allowed font-semibold shadow-lg hover:shadow-xl px-10"
                 >
                   Generate Project
                 </Button>
               </div>
             </section>
 
-            {/* Side options panel - Always visible on right */}
-            <aside className="rounded-2xl bg-card/90 border border-white/10 shadow-2xl backdrop-blur-sm p-5 sm:p-6 flex flex-col h-full">
-              <div className="flex items-center justify-between mb-5">
+            {/* Sidebar - RESTORED WIDTH & CONTENT */}
+            <aside className="rounded-2xl glass-panel glass-panel-cinematic p-5 sm:p-6 flex flex-col h-full relative overflow-hidden">
+              <div className="flex items-center justify-between mb-6 relative z-10">
                 <h3 className="text-sm sm:text-base font-semibold text-foreground">Project Options</h3>
                 <button
                   type="button"
                   onClick={() => setOptionsOpen((open) => !open)}
-                  className="lg:hidden inline-flex items-center justify-center rounded-full border border-border/70 bg-black/30 p-1.5 text-muted-foreground hover:text-foreground hover:border-primary/60 hover:bg-black/60 transition-colors"
-                  aria-label="Toggle project options"
+                  className="lg:hidden inline-flex items-center justify-center rounded-full border border-border/70 bg-secondary/50 p-1.5 text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label="Toggle options"
                 >
                   <SlidersHorizontal className="w-3.5 h-3.5" />
                 </button>
               </div>
 
-              <div className={`space-y-4 ${optionsOpen ? 'block' : 'hidden lg:block'}`}>
+              <div className={`space-y-4 relative z-10 ${optionsOpen ? 'block' : 'hidden lg:block'}`}>
                 {/* Auto-detect toggle */}
-                <div className="flex items-start gap-3 rounded-lg bg-black/30 border border-border/70 px-3 py-2.5">
+                <div className="flex items-start gap-3 rounded-xl bg-secondary/50 dark:bg-black/30 border border-border/70 dark:border-white/12 px-3 py-3">
                   <div className="flex-1 min-w-0 text-xs sm:text-sm">
-                    <p className="font-medium text-foreground">Auto-detect settings</p>
-                    <p className="text-[11px] sm:text-xs text-muted-foreground break-words">
-                      Let Prompt2Product choose language & app type from your description.
+                    <p className="font-medium text-foreground leading-snug">Auto-detect settings</p>
+                    <p className="text-[11px] text-foreground/70 dark:text-slate-400 leading-tight mt-1">
+                      Let AI choose language & type.
                     </p>
                   </div>
                   <button
                     type="button"
                     onClick={() => setAutoDetect((v) => !v)}
-                    className={`relative inline-flex h-6 w-10 flex-shrink-0 items-center rounded-full border transition-colors ${autoDetect ? 'bg-primary/80 border-primary' : 'bg-black/40 border-border'
+                    className={`relative inline-flex h-6 w-10 flex-shrink-0 items-center rounded-full border transition-all ${autoDetect ? 'bg-primary border-primary' : 'bg-muted border-border'
                       }`}
                     role="switch"
                     aria-checked={autoDetect}
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${autoDetect ? 'translate-x-4' : 'translate-x-1'
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-md transition-transform ${autoDetect ? 'translate-x-5' : 'translate-x-1'
                         }`}
                     />
                   </button>
                 </div>
 
-                {/* Language Dropdown */}
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-medium text-muted-foreground">Language</label>
-                  <select
-                    value={language}
-                    onChange={(e) => setLanguage(e.target.value)}
-                    disabled={autoDetect}
-                    className="w-full rounded-lg bg-secondary border border-border px-3 py-2 text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-60 disabled:cursor-not-allowed"
-                  >
-                    <option>Python</option>
-                    <option>JavaScript</option>
-                    <option>TypeScript</option>
-                  </select>
-                </div>
+                {/* Parameters - Standard size restored */}
+                <div className="space-y-4">
+                  <div className="space-y-1.5">
+                    <label className="block text-[10px] font-bold text-foreground/65 dark:text-slate-400 uppercase tracking-widest">Language</label>
+                    <select
+                      value={language}
+                      onChange={(e) => setLanguage(e.target.value)}
+                      disabled={autoDetect}
+                      className="w-full rounded-lg bg-secondary/50 dark:bg-white/5 border border-black/5 dark:border-white/10 px-3 py-2 text-foreground dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 transition-all appearance-none cursor-pointer"
+                    >
+                      <option className="bg-background text-foreground">Python</option>
+                      <option className="bg-background text-foreground">JavaScript</option>
+                      <option className="bg-background text-foreground">TypeScript</option>
+                    </select>
+                  </div>
 
-                {/* App Type Dropdown */}
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-medium text-muted-foreground">App Type</label>
-                  <select
-                    value={appType}
-                    onChange={(e) => setAppType(e.target.value)}
-                    disabled={autoDetect}
-                    className="w-full rounded-lg bg-secondary border border-border px-3 py-2 text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-60 disabled:cursor-not-allowed"
-                  >
-                    {APP_TYPES.map((type) => (
-                      <option key={type}>{type}</option>
-                    ))}
-                  </select>
-                </div>
+                  <div className="space-y-1.5">
+                    <label className="block text-[10px] font-bold text-foreground/65 dark:text-slate-400 uppercase tracking-widest">App Type</label>
+                    <select
+                      value={appType}
+                      onChange={(e) => setAppType(e.target.value)}
+                      disabled={autoDetect}
+                      className="w-full rounded-lg bg-secondary/50 dark:bg-white/5 border border-black/5 dark:border-white/10 px-3 py-2 text-foreground dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 transition-all appearance-none cursor-pointer"
+                    >
+                      {APP_TYPES.map((type) => (
+                        <option key={type} className="bg-background text-foreground">{type}</option>
+                      ))}
+                    </select>
+                  </div>
 
-                {/* Additional Instructions */}
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-medium text-muted-foreground">Additional Instructions</label>
-                  <input
-                    type="text"
-                    value={additionalInstructions}
-                    onChange={(e) => setAdditionalInstructions(e.target.value)}
-                    placeholder="Any specific requirements..."
-                    className="w-full rounded-lg bg-secondary border border-border px-3 py-2 text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
+                  <div className="space-y-1.5">
+                    <label className="block text-[10px] font-bold text-foreground/65 dark:text-slate-400 uppercase tracking-widest">Additional Instructions</label>
+                    <input
+                      type="text"
+                      value={additionalInstructions}
+                      onChange={(e) => setAdditionalInstructions(e.target.value)}
+                      placeholder="Specific requirements..."
+                      className="w-full rounded-lg bg-secondary/50 dark:bg-white/5 border border-black/5 dark:border-white/10 px-3 py-2 text-foreground dark:text-white placeholder-muted-foreground/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                    />
+                  </div>
                 </div>
               </div>
             </aside>

@@ -395,11 +395,6 @@ The orchestrator is the central controller. It:
 - Timeout: 1200 seconds.
 - Converts system/user prompt to Ollama messages format.
 
-**OpenAICompatLLM** (`llm/providers/openai_compat_client.py`)
-- Calls `POST /v1/chat/completions` on any OpenAI-compatible endpoint.
-- Bearer token authentication.
-- Temperature: 0.2 (near-deterministic for code generation).
-- Compatible with: Claude API, Azure OpenAI, Groq, local vLLM, etc.
 
 ### 8.3 Patcher (`patcher.py`)
 
@@ -550,11 +545,7 @@ Three distinct LoRA adapters are trained, one per pipeline role:
 - **Input:** TaskSpec JSON.
 - **Output:** `GenOutput` JSON with file paths and contents.
 
-#### Variant 3: Repair LoRA (`train_taskspec_repair.py`)
-- **Goal:** Generate correct patches in response to Python runtime error tracebacks.
-- **Training Data:** Error-patch pairs derived from failed generation runs.
-- **Input:** Error traceback + relevant file snippets.
-- **Output:** Unified diff patch or `*** Begin Patch` format.
+
 
 ### 10.5 Dataset Construction
 

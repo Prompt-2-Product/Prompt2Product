@@ -6,6 +6,7 @@ import { Navigation } from '@/components/navigation'
 import { Button } from '@/components/ui/button'
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable'
 import { ChevronRight, ChevronDown, File, Folder, ArrowLeft, Download, MessageSquare, Minimize2, Maximize2, Loader2 } from 'lucide-react'
+import { isFrontendOnly, seedDemoProjectInfoIfNeeded } from '@/lib/frontend-only'
 
 interface FileNode {
   id: string
@@ -13,6 +14,19 @@ interface FileNode {
   type: 'file' | 'folder'
   children?: FileNode[]
 }
+
+const MOCK_FILE_TREE: FileNode[] = [
+  {
+    id: 'src',
+    name: 'src',
+    type: 'folder',
+    children: [
+      { id: 'src/main.py', name: 'main.py', type: 'file' },
+      { id: 'src/app.tsx', name: 'app.tsx', type: 'file' },
+    ],
+  },
+  { id: 'README.md', name: 'README.md', type: 'file' },
+]
 
 export default function IDEPage() {
   const router = useRouter()
@@ -34,6 +48,11 @@ export default function IDEPage() {
   const fetchFileTree = useCallback(async (projectId: number, runId: number) => {
     setIsLoadingTree(true)
     try {
+      if (isFrontendOnly) {
+        setFileTree(MOCK_FILE_TREE)
+        setExpandedFolders(MOCK_FILE_TREE[0]?.type === 'folder' ? [MOCK_FILE_TREE[0].id] : [])
+        return
+      }
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
       const res = await fetch(`${apiUrl}/projects/${projectId}/runs/${runId}/files`)
       if (res.ok) {
@@ -54,6 +73,16 @@ export default function IDEPage() {
   const fetchFileContent = async (projectId: number, runId: number, filePath: string) => {
     setIsLoadingContent(true)
     try {
+      if (isFrontendOnly) {
+        const sample =
+          filePath.endsWith('.py')
+            ? 'def main():\n    print("Hello from mock Python")\n'
+            : filePath.endsWith('.tsx') || filePath.endsWith('.ts')
+              ? 'export default function App() {\n  return <div>Mock UI preview</div>\n}\n'
+              : `# ${filePath}\n\n(Mock file — connect the backend for real content.)\n`
+        setFileContent(sample)
+        return
+      }
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
       const res = await fetch(`${apiUrl}/projects/${projectId}/runs/${runId}/files/${filePath}`)
       if (res.ok) {
@@ -71,6 +100,7 @@ export default function IDEPage() {
   }
 
   useEffect(() => {
+    seedDemoProjectInfoIfNeeded()
     const stored = sessionStorage.getItem('projectInfo')
     if (stored) {
       const parsed = JSON.parse(stored)
@@ -130,10 +160,13 @@ export default function IDEPage() {
   }
 
   const handleDownload = () => {
-    if (projectInfo) {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      window.open(`${apiUrl}/projects/${projectInfo.projectId}/runs/${projectInfo.runId}/download`, '_blank')
+    if (!projectInfo) return
+    if (isFrontendOnly) {
+      window.alert('Download needs the backend. Turn off NEXT_PUBLIC_FRONTEND_ONLY in .env.local to reconnect.')
+      return
     }
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    window.open(`${apiUrl}/projects/${projectInfo.projectId}/runs/${projectInfo.runId}/download`, '_blank')
   }
 
   const renderTree = (nodes: FileNode[]) => {
@@ -178,12 +211,12 @@ export default function IDEPage() {
   }
 
   return (
-    <div className="h-screen bg-background text-foreground flex flex-col overflow-hidden">
+    <div className="h-screen bg-background text-foreground flex flex-col overflow-hidden pt-16">
       <Navigation />
 
       {/* Top Bar - Refactored for better spacing and prominence */}
-      <div className="border-b border-border bg-background/95 backdrop-blur-sm flex-shrink-0 z-10 shadow-sm" style={{ marginTop: '3.5rem' }}>
-        <div className="px-6 md:px-8 py-4 grid grid-cols-3 items-center">
+      <div className="border-b border-border bg-background/80 backdrop-blur-md flex-shrink-0 z-10 shadow-sm relative">
+        <div className="px-6 md:px-8 py-3.5 grid grid-cols-3 items-center">
           {/* Left: Back Button */}
           <div className="flex justify-start">
             <Button
@@ -201,8 +234,8 @@ export default function IDEPage() {
           {/* Center: Title */}
           <div className="flex justify-center">
             <div className="flex items-center gap-3">
-              <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
-              <span className="text-sm md:text-base text-foreground font-bold tracking-wide uppercase px-4 py-1 rounded-full bg-secondary/30 border border-border/50">
+              <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse shadow-[0_0_8px_rgba(59,130,246,0.5)]" />
+              <span className="text-xs md:text-sm text-foreground font-bold tracking-widest uppercase px-4 py-1.5 rounded-full bg-secondary border border-border/50 shadow-inner">
                 PROMPT2PRODUCT <span className="text-muted-foreground font-medium ml-1">IDE</span>
               </span>
             </div>
@@ -266,10 +299,10 @@ export default function IDEPage() {
                           </>
                         )}
                       </div>
-                      <div className={`ml-7 rounded-lg p-3 text-xs leading-relaxed whitespace-pre-wrap break-words ${
+                      <div className={`ml-7 rounded-xl p-3.5 text-xs leading-relaxed whitespace-pre-wrap break-words shadow-sm ${
                         msg.role === 'user' 
-                          ? 'bg-secondary/60 border border-border/60 text-foreground' 
-                          : 'bg-primary/15 border border-primary/30 text-foreground'
+                          ? 'bg-secondary text-foreground border border-border/50' 
+                          : 'bg-primary/10 text-foreground border border-primary/20'
                       }`}>
                         {msg.content}
                       </div>
@@ -368,13 +401,13 @@ export default function IDEPage() {
                     </div>
                   ) : (
                     <div className="flex h-full min-h-0">
-                      <div className="w-10 bg-secondary/50 text-muted-foreground py-3 px-2 text-right select-none border-r border-border text-[10px] flex-shrink-0">
+                      <div className="w-12 bg-secondary/30 text-muted-foreground py-4 px-2 text-right select-none border-r border-border text-[10px] flex-shrink-0 font-mono opacity-60">
                         {fileContent.split('\n').map((_, i) => (
-                          <div key={i} className="leading-5">{i + 1}</div>
+                          <div key={i} className="leading-6">{i + 1}</div>
                         ))}
                       </div>
-                      <div className="flex-1 py-3 px-4 text-foreground bg-background overflow-auto min-w-0">
-                        <pre className="whitespace-pre-wrap break-words leading-5">{fileContent || (isLoadingContent ? '' : '// No content')}</pre>
+                      <div className="flex-1 py-4 px-6 text-foreground bg-background/50 overflow-auto min-w-0">
+                        <pre className="whitespace-pre-wrap break-words leading-6 font-mono selection:bg-primary/30">{fileContent || (isLoadingContent ? '' : '// No content')}</pre>
                       </div>
                     </div>
                   )}
