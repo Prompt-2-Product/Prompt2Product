@@ -6,7 +6,6 @@ import { Navigation } from '@/components/navigation'
 import { Button } from '@/components/ui/button'
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable'
 import { ChevronRight, ChevronDown, File, Folder, ArrowLeft, Download, MessageSquare, Minimize2, Maximize2, Loader2 } from 'lucide-react'
-import { isFrontendOnly, seedDemoProjectInfoIfNeeded } from '@/lib/frontend-only'
 
 interface FileNode {
   id: string
@@ -14,19 +13,6 @@ interface FileNode {
   type: 'file' | 'folder'
   children?: FileNode[]
 }
-
-const MOCK_FILE_TREE: FileNode[] = [
-  {
-    id: 'src',
-    name: 'src',
-    type: 'folder',
-    children: [
-      { id: 'src/main.py', name: 'main.py', type: 'file' },
-      { id: 'src/app.tsx', name: 'app.tsx', type: 'file' },
-    ],
-  },
-  { id: 'README.md', name: 'README.md', type: 'file' },
-]
 
 export default function IDEPage() {
   const router = useRouter()
@@ -48,12 +34,7 @@ export default function IDEPage() {
   const fetchFileTree = useCallback(async (projectId: number, runId: number) => {
     setIsLoadingTree(true)
     try {
-      if (isFrontendOnly) {
-        setFileTree(MOCK_FILE_TREE)
-        setExpandedFolders(MOCK_FILE_TREE[0]?.type === 'folder' ? [MOCK_FILE_TREE[0].id] : [])
-        return
-      }
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://10.1.129.232:8002';
       const res = await fetch(`${apiUrl}/projects/${projectId}/runs/${runId}/files`)
       if (res.ok) {
         const data = await res.json()
@@ -73,17 +54,7 @@ export default function IDEPage() {
   const fetchFileContent = async (projectId: number, runId: number, filePath: string) => {
     setIsLoadingContent(true)
     try {
-      if (isFrontendOnly) {
-        const sample =
-          filePath.endsWith('.py')
-            ? 'def main():\n    print("Hello from mock Python")\n'
-            : filePath.endsWith('.tsx') || filePath.endsWith('.ts')
-              ? 'export default function App() {\n  return <div>Mock UI preview</div>\n}\n'
-              : `# ${filePath}\n\n(Mock file — connect the backend for real content.)\n`
-        setFileContent(sample)
-        return
-      }
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://10.1.129.232:8002';
       const res = await fetch(`${apiUrl}/projects/${projectId}/runs/${runId}/files/${filePath}`)
       if (res.ok) {
         const data = await res.json()
@@ -100,7 +71,6 @@ export default function IDEPage() {
   }
 
   useEffect(() => {
-    seedDemoProjectInfoIfNeeded()
     const stored = sessionStorage.getItem('projectInfo')
     if (stored) {
       const parsed = JSON.parse(stored)
@@ -160,13 +130,10 @@ export default function IDEPage() {
   }
 
   const handleDownload = () => {
-    if (!projectInfo) return
-    if (isFrontendOnly) {
-      window.alert('Download needs the backend. Turn off NEXT_PUBLIC_FRONTEND_ONLY in .env.local to reconnect.')
-      return
+    if (projectInfo) {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://10.1.129.232:8002';
+      window.open(`${apiUrl}/projects/${projectInfo.projectId}/runs/${projectInfo.runId}/download`, '_blank')
     }
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-    window.open(`${apiUrl}/projects/${projectInfo.projectId}/runs/${projectInfo.runId}/download`, '_blank')
   }
 
   const renderTree = (nodes: FileNode[]) => {
@@ -211,49 +178,30 @@ export default function IDEPage() {
   }
 
   return (
-    <div className="h-screen bg-background text-foreground flex flex-col overflow-hidden pt-16">
+    <div className="h-screen bg-background text-foreground flex flex-col overflow-hidden">
       <Navigation />
 
-      {/* Top Bar - Refactored for better spacing and prominence */}
-      <div className="border-b border-border bg-background/80 backdrop-blur-md flex-shrink-0 z-10 shadow-sm relative">
-        <div className="px-6 md:px-8 py-3.5 grid grid-cols-3 items-center">
-          {/* Left: Back Button */}
-          <div className="flex justify-start">
-            <Button
-              onClick={() => router.push('/preview')}
-              variant="outline"
-              size="sm"
-              className="border-border hover:bg-secondary/50 gap-2 font-medium bg-secondary/10 shadow-sm transition-all hover:scale-[1.02]"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              <span className="hidden md:inline">Back to Project summary</span>
-              <span className="md:hidden">Back</span>
-            </Button>
-          </div>
-
-          {/* Center: Title */}
-          <div className="flex justify-center">
-            <div className="flex items-center gap-3">
-              <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse shadow-[0_0_8px_rgba(59,130,246,0.5)]" />
-              <span className="text-xs md:text-sm text-foreground font-bold tracking-widest uppercase px-4 py-1.5 rounded-full bg-secondary border border-border/50 shadow-inner">
-                PROMPT2PRODUCT <span className="text-muted-foreground font-medium ml-1">IDE</span>
-              </span>
-            </div>
-          </div>
-
-          {/* Right: Actions */}
-          <div className="flex justify-end gap-3">
-            <Button
-              onClick={handleDownload}
-              variant="outline"
-              size="sm"
-              className="border-border hover:bg-secondary/50 gap-2 font-medium bg-secondary/10 shadow-sm transition-all hover:scale-[1.02]"
-            >
-              <Download className="h-4 w-4 text-blue-400" />
-              <span className="hidden md:inline">Download</span>
-            </Button>
-          </div>
-        </div>
+      {/* Top Bar */}
+      <div className="border-b border-border px-4 md:px-6 py-3 flex items-center justify-between bg-background flex-shrink-0" style={{ marginTop: '3rem' }}>
+        <Button
+          onClick={() => router.push('/preview')}
+          variant="ghost"
+          size="sm"
+          className="text-foreground hover:bg-secondary/50 gap-2 font-medium"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span className="hidden sm:inline">Back to Project summary</span>
+        </Button>
+        <span className="text-xs md:text-sm text-foreground font-medium">Prompt2Product - IDE</span>
+        <Button
+          onClick={handleDownload}
+          variant="ghost"
+          size="sm"
+          className="text-foreground hover:bg-secondary/50 gap-2 font-medium"
+        >
+          <Download className="h-4 w-4" />
+          <span className="hidden sm:inline">Download</span>
+        </Button>
       </div>
 
       {/* Main IDE Layout */}
@@ -299,10 +247,10 @@ export default function IDEPage() {
                           </>
                         )}
                       </div>
-                      <div className={`ml-7 rounded-xl p-3.5 text-xs leading-relaxed whitespace-pre-wrap break-words shadow-sm ${
+                      <div className={`ml-7 rounded-lg p-3 text-xs leading-relaxed whitespace-pre-wrap break-words ${
                         msg.role === 'user' 
-                          ? 'bg-secondary text-foreground border border-border/50' 
-                          : 'bg-primary/10 text-foreground border border-primary/20'
+                          ? 'bg-secondary/60 border border-border/60 text-foreground' 
+                          : 'bg-primary/15 border border-primary/30 text-foreground'
                       }`}>
                         {msg.content}
                       </div>
@@ -401,13 +349,13 @@ export default function IDEPage() {
                     </div>
                   ) : (
                     <div className="flex h-full min-h-0">
-                      <div className="w-12 bg-secondary/30 text-muted-foreground py-4 px-2 text-right select-none border-r border-border text-[10px] flex-shrink-0 font-mono opacity-60">
+                      <div className="w-10 bg-secondary/50 text-muted-foreground py-3 px-2 text-right select-none border-r border-border text-[10px] flex-shrink-0">
                         {fileContent.split('\n').map((_, i) => (
-                          <div key={i} className="leading-6">{i + 1}</div>
+                          <div key={i} className="leading-5">{i + 1}</div>
                         ))}
                       </div>
-                      <div className="flex-1 py-4 px-6 text-foreground bg-background/50 overflow-auto min-w-0">
-                        <pre className="whitespace-pre-wrap break-words leading-6 font-mono selection:bg-primary/30">{fileContent || (isLoadingContent ? '' : '// No content')}</pre>
+                      <div className="flex-1 py-3 px-4 text-foreground bg-background overflow-auto min-w-0">
+                        <pre className="whitespace-pre-wrap break-words leading-5">{fileContent || (isLoadingContent ? '' : '// No content')}</pre>
                       </div>
                     </div>
                   )}

@@ -3,14 +3,12 @@
 import { Navigation } from '@/components/navigation'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
-import { Bot, Braces, Code2, Cpu, FileCode2, GitBranch, Layers, Monitor, Server, Smartphone, Sparkles, Terminal } from 'lucide-react'
+import Link from 'next/link'
 
 export default function LandingPage() {
   const router = useRouter()
 
-  const handleStartBuilding = () => {
-    router.push('/describe')
-  }
+  // Using Link for navigation now
 
   const steps = [
     {
@@ -41,106 +39,66 @@ export default function LandingPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-background text-foreground relative overflow-hidden page-transition">
-      {/* Cinematic Background Layer */}
-      <div className="mesh-gradient" />
-      <div className="technical-grid" />
-
-      {/* Floating icons — ring + mid accents, low contrast (see globals.css) */}
-      <div className="landing-float-layer" aria-hidden="true">
-        <div className="landing-float-icon landing-float-icon--orbit-1">
-          <Code2 stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--orbit-2">
-          <Monitor stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--orbit-3">
-          <Terminal stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--orbit-4">
-          <Bot stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--orbit-5">
-          <Smartphone stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--orbit-6">
-          <Layers stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--orbit-7">
-          <Cpu stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--orbit-8">
-          <Sparkles stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--orbit-9">
-          <FileCode2 stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--orbit-10">
-          <GitBranch stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--orbit-11">
-          <Braces stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--orbit-12">
-          <Server stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-      </div>
-
+    <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
       <Navigation />
 
-      <main className="relative z-10 pt-16">
-        <section className="min-h-[calc(100vh-4rem)] flex flex-col justify-center gap-6 sm:gap-8 md:gap-10 lg:gap-12 px-6 sm:px-10 lg:px-16 xl:px-24">
-          {/* Row 1 - Hero copy + CTA */}
-          <div className="space-y-4 sm:space-y-6 md:space-y-8 animate-in fade-in duration-1000 text-center relative z-20">
-            <div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black leading-tight text-foreground dark:text-white mb-3 sm:mb-4 text-balance tracking-tighter">
-                Natural Language to{' '}
-                <span className="hero-text-accent">
-                  Executable Code
-                </span>
-              </h1>
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-xl sm:max-w-2xl lg:max-w-3xl mx-auto font-light">
-                Where Ideas Become Running Code
-              </p>
+      <main className="pt-20 sm:pt-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-10">
+          {/* Hero Section */}
+          <section className="min-h-[calc(100vh-5rem)] sm:min-h-[calc(100vh-6rem)] flex flex-col justify-center gap-6 sm:gap-8 md:gap-10 lg:gap-12">
+            {/* Row 1 - Hero copy + CTA */}
+            <div className="space-y-4 sm:space-y-6 md:space-y-8 animate-in fade-in duration-1000 text-center">
+              <div>
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight text-foreground mb-3 sm:mb-4 text-balance px-2">
+                  Natural Language to{' '}
+                  <span className="bg-gradient-to-r from-blue-300 via-cyan-200 to-blue-200 bg-clip-text text-transparent">
+                    Executable Code
+                  </span>
+                </h1>
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-xl sm:max-w-2xl lg:max-w-3xl mx-auto font-light px-4">
+                  Where Ideas Become Running Code
+                </p>
+              </div>
+
+              <div className="flex justify-center gap-4 pt-2 flex-wrap px-4">
+                <Link href="/describe">
+                  <Button
+                    size="lg"
+                    className="btn-glow bg-primary hover:bg-primary/85 text-primary-foreground font-semibold shadow-lg hover:shadow-xl text-sm sm:text-base"
+                  >
+                    Start Building
+                  </Button>
+                </Link>
+              </div>
             </div>
 
-            <div className="flex justify-center gap-4 pt-2 flex-wrap">
-              <Button
-                size="lg"
-                className="btn-glow bg-primary hover:bg-primary/85 text-primary-foreground font-semibold shadow-lg hover:shadow-xl text-sm sm:text-base"
-                onClick={handleStartBuilding}
-              >
-                Start Building
-              </Button>
-            </div>
-          </div>
+            {/* Row 2 - Horizontal 5-step flow */}
+            <div className="animate-in fade-in duration-1000 delay-150 text-center px-2 sm:px-0">
+              <h2 className="text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-foreground mb-3 sm:mb-4 md:mb-5">
+                Your project in <span className="text-primary">5 easy steps</span>
+              </h2>
 
-          {/* Row 2 - Horizontal 5-step flow */}
-          <div className="animate-in fade-in duration-1000 delay-150 text-center relative z-20">
-            <h2 className="text-sm sm:text-base md:text-lg lg:text-xl font-black text-foreground dark:text-white mb-3 sm:mb-4 md:mb-5 tracking-tight uppercase">
-              Your project in <span className="text-primary italic">5 easy steps</span>
-            </h2>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-              {steps.map((item) => (
-                <div
-                  key={item.step}
-                  className="rounded-2xl glass-panel px-4 py-4 sm:px-5 sm:py-6 flex flex-col gap-2 text-center items-center group hover:scale-[1.02] transition-all duration-300"
-                >
-                  <div className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-primary/20 text-xs sm:text-sm font-semibold text-primary mb-1">
-                    {item.step}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-2 md:gap-3 lg:gap-4">
+                {steps.map((item) => (
+                  <div
+                    key={item.step}
+                    className="rounded-xl bg-card border border-border/70 px-3 py-3 sm:px-4 sm:py-4 md:px-5 md:py-5 lg:px-4 lg:py-4 xl:px-5 xl:py-5 flex flex-col gap-1.5 text-center items-center"
+                  >
+                    <div className="flex h-7 w-7 sm:h-8 sm:w-8 md:h-9 md:w-9 lg:h-8 lg:w-8 xl:h-9 xl:w-9 items-center justify-center rounded-full bg-primary/20 text-[10px] sm:text-xs md:text-sm lg:text-xs xl:text-sm font-semibold text-primary mb-1">
+                      {item.step}
+                    </div>
+                    <p className="text-xs sm:text-sm md:text-base lg:text-sm xl:text-base font-medium text-foreground">
+                      {item.title}
+                    </p>
+                    <p className="text-[10px] sm:text-xs md:text-sm lg:text-xs xl:text-sm text-muted-foreground leading-snug">
+                      {item.description}
+                    </p>
                   </div>
-                  <p className="text-sm sm:text-base font-medium text-foreground">
-                    {item.title}
-                  </p>
-                  <p className="text-xs sm:text-sm text-muted-foreground leading-snug">
-                    {item.description}
-                  </p>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
       </main>
     </div>
   )
