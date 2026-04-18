@@ -3,7 +3,6 @@
 import { Navigation } from '@/components/navigation'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
-import { Bot, Braces, Code2, Cpu, FileCode2, GitBranch, Layers, Monitor, Server, Smartphone, Sparkles, Terminal } from 'lucide-react'
 
 export default function LandingPage() {
   const router = useRouter()
@@ -46,49 +45,9 @@ export default function LandingPage() {
       <div className="mesh-gradient" />
       <div className="technical-grid" />
 
-      {/* Floating icons — ring + mid accents, low contrast (see globals.css) */}
-      <div className="landing-float-layer" aria-hidden="true">
-        <div className="landing-float-icon landing-float-icon--orbit-1">
-          <Code2 stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--orbit-2">
-          <Monitor stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--orbit-3">
-          <Terminal stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--orbit-4">
-          <Bot stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--orbit-5">
-          <Smartphone stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--orbit-6">
-          <Layers stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--orbit-7">
-          <Cpu stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--orbit-8">
-          <Sparkles stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--orbit-9">
-          <FileCode2 stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--orbit-10">
-          <GitBranch stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--orbit-11">
-          <Braces stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-        <div className="landing-float-icon landing-float-icon--orbit-12">
-          <Server stroke="currentColor" strokeWidth={1.2} className="text-inherit" />
-        </div>
-      </div>
-
       <Navigation />
 
-      <main className="relative z-10 pt-16">
+      <main className="pt-16">
         <section className="min-h-[calc(100vh-4rem)] flex flex-col justify-center gap-6 sm:gap-8 md:gap-10 lg:gap-12 px-6 sm:px-10 lg:px-16 xl:px-24">
           {/* Row 1 - Hero copy + CTA */}
           <div className="space-y-4 sm:space-y-6 md:space-y-8 animate-in fade-in duration-1000 text-center relative z-20">

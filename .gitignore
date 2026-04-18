@@ -32,3 +32,14 @@ finetune/logs/
 Fine tune attempt 3/
 Fine tune attempt 1/
 Fine tune attempt 2/
+
+finetune/outputs/
+storage/    
+# Fine-tuning and cache
+finetune/outputs/
+**/unsloth_compiled_cache/
+*.safetensors
+*.bin
+*.pt
+backend.log
+backend_debug.log

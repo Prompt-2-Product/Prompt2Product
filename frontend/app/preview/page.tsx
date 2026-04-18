@@ -17,7 +17,6 @@ interface ProjectInfo {
 }
 
 import { api } from '@/lib/api'
-import { isFrontendOnly, seedDemoProjectInfoIfNeeded } from '@/lib/frontend-only'
 
 export default function PreviewPage() {
   const router = useRouter()
@@ -29,7 +28,6 @@ export default function PreviewPage() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
 
   useEffect(() => {
-    seedDemoProjectInfoIfNeeded()
     const stored = sessionStorage.getItem('projectInfo')
     if (stored) {
       setProjectInfo(JSON.parse(stored))
@@ -52,10 +50,6 @@ export default function PreviewPage() {
 
   const handleDownload = () => {
     if (projectInfo?.projectId && projectInfo?.runId) {
-      if (isFrontendOnly) {
-        window.alert('Download needs the backend. Remove NEXT_PUBLIC_FRONTEND_ONLY from frontend/.env.local to reconnect.')
-        return
-      }
       const url = api.projects.downloadUrl(projectInfo.projectId, projectInfo.runId)
       window.open(url, '_blank')
     } else {
@@ -65,10 +59,6 @@ export default function PreviewPage() {
 
   const handlePreview = () => {
     if (projectInfo?.runId) {
-      if (isFrontendOnly) {
-        window.alert('Live preview is served by the backend. Disable frontend-only mode to use it.')
-        return
-      }
       const port = 8010 + projectInfo.runId
       window.open(`http://127.0.0.1:${port}`, '_blank')
     }
@@ -80,13 +70,18 @@ export default function PreviewPage() {
 
   if (!projectInfo) {
     return (
-      <div className="page-cinematic-gradient min-h-screen text-foreground relative overflow-hidden">
-        <div className="backdrop-vertical-cinematic" aria-hidden="true" />
-        <div className="technical-grid technical-grid-on-cinematic" aria-hidden="true" />
+      <div className="min-h-screen text-foreground relative overflow-hidden">
+        <div
+          className="pointer-events-none absolute inset-0 -z-10"
+          aria-hidden="true"
+          style={{
+            background: 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(0, 0, 139) 33.33%, rgb(135, 206, 250) 66.66%, rgb(255, 255, 255) 100%)',
+          }}
+        />
         <Navigation />
         <main className="flex items-center justify-center min-h-[calc(100vh-4rem)] pt-16 pb-8 sm:pb-16">
           <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 text-center">
-            <p className="cinematic-on-canvas text-base font-medium">Loading…</p>
+            <p className="text-slate-800 dark:text-slate-900">Loading...</p>
           </div>
         </main>
       </div>
@@ -94,21 +89,22 @@ export default function PreviewPage() {
   }
 
   return (
-    <div className="page-cinematic-gradient min-h-screen text-foreground relative overflow-hidden page-transition">
-      <div className="backdrop-vertical-cinematic" aria-hidden="true" />
-      <div className="technical-grid technical-grid-on-cinematic" aria-hidden="true" />
+    <div className="min-h-screen text-foreground relative overflow-hidden page-transition">
+      {/* Cinematic Background Layer */}
+      <div className="mesh-gradient" />
+      <div className="technical-grid" />
       <Navigation />
 
       <main className="absolute inset-x-0 top-16 bottom-0 flex">
         {/* Left: Chat Sidebar - Glass Panel */}
         {showChat && projectInfo && (
-          <aside className={`h-full transition-all duration-500 ease-in-out relative border-r border-slate-200/80 dark:border-white/5 ${isSidebarCollapsed ? 'w-0' : 'w-full lg:w-[380px]'
+          <aside className={`h-full transition-all duration-500 ease-in-out relative border-r border-white/5 ${isSidebarCollapsed ? 'w-0' : 'w-full lg:w-[380px]'
             }`}>
-            <div className={`h-full flex flex-col glass-panel glass-panel-cinematic backdrop-blur-2xl transition-opacity duration-300 ${isSidebarCollapsed ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+            <div className={`h-full flex flex-col glass-panel bg-background/20 backdrop-blur-2xl transition-opacity duration-300 ${isSidebarCollapsed ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
               {!isSidebarCollapsed && (
                 <>
                   {/* Chat Header */}
-                  <div className="px-6 py-6 border-b border-slate-200/80 dark:border-white/5 shrink-0">
+                  <div className="px-6 py-6 border-b border-white/5 shrink-0">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
                         <h2 className="text-sm font-bold uppercase tracking-widest text-foreground mb-3">Request Changes</h2>
@@ -116,7 +112,7 @@ export default function PreviewPage() {
                           <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-primary/20 text-primary border border-primary/20 uppercase tracking-tighter">
                             {projectInfo.language}
                           </span>
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-200/80 text-foreground/85 dark:bg-black/30 dark:text-slate-200 border border-slate-300/80 dark:border-white/15 uppercase tracking-tighter">
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-secondary/50 text-muted-foreground border border-border/50 uppercase tracking-tighter">
                             {projectInfo.appType}
                           </span>
                         </div>
@@ -148,9 +144,9 @@ export default function PreviewPage() {
                         <div className="h-6 w-6 rounded-full bg-primary/20 flex items-center justify-center">
                           <span className="text-xs font-semibold text-primary">U</span>
                         </div>
-                        <span className="text-xs font-medium text-foreground/75 dark:text-slate-300">You</span>
+                        <span className="text-xs font-medium text-muted-foreground">You</span>
                       </div>
-                      <div className="ml-8 rounded-xl bg-card/95 dark:bg-black/40 border border-border/80 dark:border-white/12 p-4 text-sm leading-relaxed text-foreground whitespace-pre-wrap break-words shadow-md">
+                      <div className="ml-8 rounded-xl bg-secondary/60 border border-border/60 p-4 text-sm leading-relaxed text-foreground whitespace-pre-wrap break-words shadow-sm">
                         {projectInfo.description}
                       </div>
                     </div>
@@ -161,9 +157,9 @@ export default function PreviewPage() {
                         <div className="h-6 w-6 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center">
                           <span className="text-xs font-semibold text-white">P</span>
                         </div>
-                        <span className="text-xs font-medium text-foreground/75 dark:text-slate-300">Prompt2Product</span>
+                        <span className="text-xs font-medium text-muted-foreground">Prompt2Product</span>
                       </div>
-                      <div className="ml-8 rounded-xl bg-primary/20 dark:bg-primary/15 border border-primary/35 dark:border-primary/40 p-4 text-sm leading-relaxed text-foreground shadow-md">
+                      <div className="ml-8 rounded-xl bg-primary/15 border border-primary/30 p-4 text-sm leading-relaxed text-foreground shadow-sm">
                         <p>How would you like to modify this project?</p>
                       </div>
                     </div>
@@ -175,9 +171,9 @@ export default function PreviewPage() {
                           <div className="h-6 w-6 rounded-full bg-primary/20 flex items-center justify-center">
                             <span className="text-xs font-semibold text-primary">U</span>
                           </div>
-                          <span className="text-xs font-medium text-foreground/75 dark:text-slate-300">You</span>
+                          <span className="text-xs font-medium text-muted-foreground">You</span>
                         </div>
-                        <div className="ml-8 rounded-xl bg-card/95 dark:bg-black/40 border border-border/80 dark:border-white/12 p-4 text-sm leading-relaxed text-foreground whitespace-pre-wrap break-words shadow-md">
+                        <div className="ml-8 rounded-xl bg-secondary/60 border border-border/60 p-4 text-sm leading-relaxed text-foreground whitespace-pre-wrap break-words shadow-sm">
                           {msg.content}
                         </div>
                       </div>
@@ -189,9 +185,9 @@ export default function PreviewPage() {
                           <div className="h-6 w-6 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center">
                             <span className="text-xs font-semibold text-white">P</span>
                           </div>
-                          <span className="text-xs font-medium text-foreground/75 dark:text-slate-300">Prompt2Product</span>
+                          <span className="text-xs font-medium text-muted-foreground">Prompt2Product</span>
                         </div>
-                        <div className="ml-8 rounded-xl bg-primary/20 dark:bg-primary/15 border border-primary/35 p-4 text-sm leading-relaxed text-foreground shadow-md">
+                        <div className="ml-8 rounded-xl bg-primary/15 border border-primary/30 p-4 text-sm leading-relaxed text-foreground shadow-sm">
                           <div className="flex items-center gap-2">
                             <Loader className="h-4 w-4 animate-spin text-primary" />
                             <span className="font-medium">Processing your request...</span>
@@ -202,7 +198,7 @@ export default function PreviewPage() {
                   </div>
 
                   {/* Chat Input Area */}
-                  <div className="px-5 py-4 border-t border-slate-200/80 dark:border-white/10 flex-shrink-0 bg-white/50 dark:bg-black/25 backdrop-blur-md">
+                  <div className="px-5 py-4 border-t border-border/50 flex-shrink-0 bg-background">
                     <div className="flex gap-3">
                       <textarea
                         value={changeMessage}
@@ -215,7 +211,7 @@ export default function PreviewPage() {
                         }}
                         placeholder="Describe the changes you want..."
                         disabled={isRegenerating}
-                        className="flex-1 min-h-[90px] rounded-xl bg-secondary/50 dark:bg-black/35 border border-border/80 dark:border-white/12 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:cursor-not-allowed disabled:opacity-70"
+                        className="flex-1 min-h-[90px] rounded-xl bg-secondary/40 border border-border/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:cursor-not-allowed disabled:opacity-70"
                         rows={3}
                       />
                       <div className="flex flex-col gap-2">
@@ -243,7 +239,7 @@ export default function PreviewPage() {
         {showChat && isSidebarCollapsed && (
           <button
             onClick={() => setIsSidebarCollapsed(false)}
-            className="fixed left-0 top-1/2 -translate-y-1/2 z-40 bg-card/95 dark:bg-black/55 border-y border-r border-border/70 dark:border-white/15 p-2 rounded-r-xl shadow-xl hover:bg-secondary/80 dark:hover:bg-black/70 transition-all group backdrop-blur-md"
+            className="fixed left-0 top-1/2 -translate-y-1/2 z-40 bg-background border-y border-r border-border/50 p-2 rounded-r-xl shadow-xl hover:bg-secondary/50 transition-all group"
             title="Expand chat"
           >
             <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-foreground transition-colors" />
@@ -255,10 +251,10 @@ export default function PreviewPage() {
           <div className="max-w-6xl mx-auto px-6 pt-8 lg:pt-12 pb-48 lg:pb-72 flex flex-col h-full justify-center items-stretch relative z-10 transition-all duration-500">
             {/* Cinematic Header */}
             <div className="shrink-0 text-center animate-in fade-in slide-in-from-top-4 duration-1000 relative z-20">
-              <h1 className="cinematic-hero-title text-4xl sm:text-5xl md:text-6xl font-black mb-4 tracking-tighter text-foreground dark:text-white">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black mb-4 tracking-tighter text-foreground dark:text-white">
                 Project <span className="hero-text-accent">Summary</span>
               </h1>
-              <p className="cinematic-on-canvas text-sm sm:text-base font-light tracking-wide max-w-xl mx-auto">
+              <p className="text-sm sm:text-base text-muted-foreground font-light tracking-wide max-w-xl mx-auto">
                 Review your generated project architecture and take next steps.
               </p>
             </div>
@@ -266,31 +262,31 @@ export default function PreviewPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8 md:mb-12 flex-1 min-h-0 py-8 lg:py-12">
               {/* Left: Project Info Card */}
               <div className="lg:col-span-2 flex h-full">
-                <div className="rounded-3xl glass-panel glass-panel-cinematic-dense backdrop-blur-3xl shadow-3xl p-6 sm:p-8 md:p-10 w-full flex flex-col h-full overflow-hidden">
+                <div className="rounded-3xl glass-panel bg-background/30 dark:bg-background/20 backdrop-blur-3xl shadow-3xl p-6 sm:p-8 md:p-10 w-full flex flex-col h-full overflow-hidden">
                   <h2 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8 text-foreground dark:text-white tracking-tight flex items-center gap-3">
                     <div className="h-2 w-2 rounded-full bg-primary" />
                     GENERATED PROJECT
                   </h2>
                   <div className="space-y-4 sm:space-y-6 flex-grow">
                     <div>
-                      <label className="text-xs sm:text-sm font-medium text-foreground/70 dark:text-slate-300 block mb-2">Project Description</label>
+                      <label className="text-xs sm:text-sm font-medium text-muted-foreground block mb-2">Project Description</label>
                       <p className="text-foreground text-sm sm:text-base leading-relaxed">{projectInfo.description}</p>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="text-sm font-medium text-foreground/70 dark:text-slate-300 block mb-2">Language</label>
+                        <label className="text-sm font-medium text-muted-foreground block mb-2">Language</label>
                         <p className="text-foreground font-medium">{projectInfo.language}</p>
                       </div>
                       <div>
-                        <label className="text-sm font-medium text-foreground/70 dark:text-slate-300 block mb-2">Project Type</label>
+                        <label className="text-sm font-medium text-muted-foreground block mb-2">Project Type</label>
                         <p className="text-foreground font-medium">{projectInfo.appType}</p>
                       </div>
                     </div>
 
                     {projectInfo.additionalInstructions && (
                       <div>
-                        <label className="text-sm font-medium text-foreground/70 dark:text-slate-300 block mb-2">Additional Instructions</label>
+                        <label className="text-sm font-medium text-muted-foreground block mb-2">Additional Instructions</label>
                         <p className="text-foreground text-sm">{projectInfo.additionalInstructions}</p>
                       </div>
                     )}
@@ -300,7 +296,7 @@ export default function PreviewPage() {
 
               {/* Right: Action Buttons */}
               <div className="flex h-full">
-                <div className="rounded-3xl glass-panel glass-panel-cinematic-dense backdrop-blur-3xl shadow-3xl p-6 sm:p-8 md:p-10 w-full flex flex-col h-full">
+                <div className="rounded-3xl glass-panel bg-background/30 dark:bg-background/20 backdrop-blur-3xl shadow-3xl p-6 sm:p-8 md:p-10 w-full flex flex-col h-full">
                   <h3 className="text-xl sm:text-2xl font-black text-foreground dark:text-white mb-6 sm:mb-8 tracking-tight flex items-center gap-3">
                     <div className="h-2 w-2 rounded-full bg-cyan-400" />
                     ACTIONS
@@ -318,7 +314,7 @@ export default function PreviewPage() {
                     <Button
                       onClick={handleRequestChanges}
                       variant="outline"
-                      className="w-full border border-black/10 dark:border-white/12 bg-secondary/60 dark:bg-black/35 backdrop-blur-xl text-foreground dark:text-white hover:bg-secondary/90 dark:hover:bg-black/50 hover:border-blue-400/50 transition-all duration-500 h-14 font-bold shadow-md hover:shadow-lg group rounded-2xl"
+                      className="w-full border border-black/5 dark:border-white/5 bg-secondary/40 dark:bg-white/5 backdrop-blur-xl text-foreground dark:text-white hover:bg-black/5 dark:hover:bg-white/10 hover:border-blue-400/50 transition-all duration-500 h-14 font-bold shadow-sm hover:shadow-md group rounded-2xl"
                       size="lg"
                     >
                       <RotateCcw className="mr-3 h-5 w-5 group-hover:rotate-180 transition-transform duration-700 group-hover:text-blue-500" />
@@ -328,7 +324,7 @@ export default function PreviewPage() {
                     <Button
                       onClick={handleDownload}
                       variant="outline"
-                      className="w-full border border-black/10 dark:border-white/12 bg-secondary/60 dark:bg-black/35 backdrop-blur-xl text-foreground dark:text-white hover:bg-secondary/90 dark:hover:bg-black/50 hover:border-emerald-400/50 transition-all duration-500 h-14 font-bold shadow-md hover:shadow-lg group rounded-2xl"
+                      className="w-full border border-black/5 dark:border-white/5 bg-secondary/40 dark:bg-white/5 backdrop-blur-xl text-foreground dark:text-white hover:bg-black/5 dark:hover:bg-white/10 hover:border-emerald-400/50 transition-all duration-500 h-14 font-bold shadow-sm hover:shadow-md group rounded-2xl"
                       size="lg"
                     >
                       <Download className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform group-hover:text-emerald-500" />
@@ -338,7 +334,7 @@ export default function PreviewPage() {
                     <Button
                       onClick={handlePreview}
                       variant="outline"
-                      className="w-full border border-black/10 dark:border-white/12 bg-secondary/60 dark:bg-black/35 backdrop-blur-xl text-foreground dark:text-white hover:bg-secondary/90 dark:hover:bg-black/50 hover:border-blue-400/50 transition-all duration-500 h-14 font-bold shadow-md hover:shadow-lg group rounded-2xl"
+                      className="w-full border border-black/5 dark:border-white/5 bg-secondary/40 dark:bg-white/5 backdrop-blur-xl text-foreground dark:text-white hover:bg-black/5 dark:hover:bg-white/10 hover:border-blue-400/50 transition-all duration-500 h-14 font-bold shadow-sm hover:shadow-md group rounded-2xl"
                       size="lg"
                     >
                       <Eye className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform group-hover:text-blue-400" />
