@@ -1,9 +1,0 @@
----
-description: Git commit messages and PR text must not include tool attribution footers
-alwaysApply: true
----
-
-# Git messages: no attribution footers
-
-- Do **not** append automated vendor or editor attribution lines to **any** git commit message, amend message, rebase message, tag message, or PR description you draft or suggest (including extra `Co-authored-by:` trailers unless the user explicitly asks for a real co-author).
-- Messages must end with real content only: subject, body, and trailers the user requested. No marketing or tool footers unless the user explicitly asks for them.
