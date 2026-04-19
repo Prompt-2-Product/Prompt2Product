@@ -281,25 +281,27 @@ export default function GeneratingPage() {
 
         {/* Main Production Area */}
         <div className="flex-1 h-full overflow-hidden relative">
-          <div className="max-w-5xl mx-auto px-6 h-full flex flex-col justify-between relative z-10 py-12 lg:py-16">
-            {/* Cinematic Header */}
-            <div className="shrink-0 text-center animate-in fade-in slide-in-from-top-4 duration-1000 relative z-20 mb-8 mt-2">
-              <h1 className="text-2xl sm:text-3xl md:text-5xl font-black mb-3 tracking-tighter text-foreground dark:text-white uppercase">
-                {status === 'failed'
-                  ? (isModificationFlow ? <>Core <span className="text-red-500">Error</span></> : <>Generation <span className="text-red-500">Failed</span></>)
-                  : (isModificationFlow ? <>Applying <span className="hero-text-accent">Your Changes</span></> : <>Generating <span className="hero-text-accent">Your Project</span></>)}
-              </h1>
-              <p className="text-[10px] sm:text-xs text-muted-foreground font-light tracking-widest uppercase opacity-70">
-                {status === 'failed' 
-                  ? 'The engine encountered a critical logic error.'
-                  : 'Synthesizing components, establishing framework, and validating logic layers.'}
-              </p>
-            </div>
+          <div className="max-w-[1440px] mx-auto px-6 lg:px-12 h-full flex flex-col justify-center gap-10 lg:gap-14 relative z-10 py-12 lg:py-16">
+            {/* Header + Stepper Group - Grouped to lessen gap */}
+            <div className="flex flex-col items-center gap-10 md:gap-16 shrink-0">
+              {/* Cinematic Header */}
+              <div className="text-center animate-in fade-in slide-in-from-top-4 duration-1000 relative z-20 mt-2">
+                <h1 className="text-3xl sm:text-4xl md:text-6xl font-black mb-3 tracking-tighter text-foreground dark:text-white uppercase">
+                  {status === 'failed'
+                    ? (isModificationFlow ? <>Core <span className="text-red-500">Error</span></> : <>Generation <span className="text-red-500">Failed</span></>)
+                    : (isModificationFlow ? <>Applying <span className="hero-text-accent">Your Changes</span></> : <>Generating <span className="hero-text-accent">Your Project</span></>)}
+                </h1>
+                <p className="text-xs sm:text-sm text-muted-foreground font-light tracking-widest uppercase opacity-70">
+                  {status === 'failed' 
+                    ? 'The engine encountered a critical logic error.'
+                    : 'Synthesizing components, establishing framework, and validating logic layers.'}
+                </p>
+              </div>
 
-            {/* Cinematic Stepper */}
-            {status !== 'failed' && (
-              <div className="relative max-w-3xl mx-auto w-full py-2">
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-12 relative z-10">
+              {/* Cinematic Stepper */}
+              {status !== 'failed' && (
+                <div className="relative max-w-5xl mx-auto w-full py-2">
+                <div className="grid grid-cols-1 sm:grid-cols-3 items-start gap-8 sm:gap-0 relative z-10">
                   {steps.map((step, index) => {
                     const isActive = step.number === currentStep
                     const isCompleted = step.number < currentStep
@@ -309,24 +311,24 @@ export default function GeneratingPage() {
                       <div key={step.number} className="flex flex-col items-center gap-5 group flex-1">
                         <div className="relative">
                           {/* Inner Circle */}
-                          <div className={`h-10 w-10 rounded-full flex items-center justify-center transition-all duration-700 z-10 relative overflow-hidden ${
+                          <div className={`h-14 w-14 rounded-full flex items-center justify-center transition-all duration-700 z-10 relative overflow-hidden ${
                             isCompleted 
-                              ? 'bg-primary shadow-[0_0_15px_rgba(37,99,235,0.4)] border-primary' 
+                              ? 'bg-primary shadow-[0_0_20px_rgba(37,99,235,0.4)] border-primary' 
                               : isActive 
-                                ? 'glass-panel bg-primary/20 border-primary shadow-[0_0_20px_rgba(37,99,235,0.2)]' 
+                                ? 'glass-panel bg-primary/20 border-primary shadow-[0_0_25px_rgba(37,99,235,0.2)]' 
                                 : 'glass-panel bg-white/5 border-white/10'
                           }`}>
                             {isCompleted ? (
-                              <Check className="h-4 w-4 text-primary-foreground" />
+                              <Check className="h-6 w-6 text-primary-foreground" />
                             ) : isActive ? (
-                              <Loader className="h-4 w-4 animate-spin text-primary" />
+                              <Loader className="h-6 w-6 animate-spin text-primary" />
                             ) : (
-                              <span className="text-[10px] font-black text-muted-foreground/50 tracking-tighter">{step.number}</span>
+                              <span className="text-xs font-black text-muted-foreground/50 tracking-tighter">{step.number}</span>
                             )}
                           </div>
                           {/* Outer Glow Ring for Active */}
                           {isActive && (
-                            <div className="absolute inset-0 -m-2 rounded-full border border-primary/20 animate-ping opacity-20" />
+                            <div className="absolute inset-0 -m-3 rounded-full border border-primary/20 animate-ping opacity-20" />
                           )}
                         </div>
                         <div className="text-center">
@@ -342,6 +344,7 @@ export default function GeneratingPage() {
                 </div>
               </div>
             )}
+            </div>
 
             {/* Error State - Cinematic Panel */}
             {/* Error Actions - Minimalist version (No Box) */}
@@ -365,7 +368,7 @@ export default function GeneratingPage() {
             {/* Bottom Dashboard: Feed + Progress */}
             <div className="shrink-0 space-y-6 lg:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500">
               {/* Production Log - THE HUB */}
-              <div className="max-w-2xl mx-auto w-full">
+              <div className="max-w-4xl mx-auto w-full">
                 <div className="rounded-3xl glass-panel overflow-hidden bg-background/40 dark:bg-background/30 backdrop-blur-3xl shadow-2xl border border-black/10 dark:border-white/10">
                   <div className="bg-black/[0.03] dark:bg-white/5 px-6 py-4 border-b border-black/5 dark:border-white/5 flex justify-between items-center">
                     <div className="flex items-center gap-3">
@@ -374,7 +377,7 @@ export default function GeneratingPage() {
                     </div>
                     {status === 'failed' && <span className="text-[10px] bg-red-500/20 text-red-600 dark:text-red-500 px-2 py-0.5 rounded font-black uppercase tracking-wider">CRITICAL_ERROR</span>}
                   </div>
-                  <div className="p-6 h-28 sm:h-32 lg:h-36 overflow-y-auto font-mono text-sm leading-relaxed space-y-3 custom-scrollbar-dark scroll-smooth">
+                  <div className="p-6 h-48 sm:h-56 lg:h-64 overflow-y-auto font-mono text-sm leading-relaxed space-y-3 custom-scrollbar-dark scroll-smooth">
                     {logs.map((log, index) => {
                       const isError = log.includes('[ERROR]') || log.includes('[fatal]')
                       const isInfo = log.includes('[INFO]')
@@ -398,7 +401,7 @@ export default function GeneratingPage() {
 
               {/* Progress Visualization */}
               {status !== 'failed' && (
-                <div className="max-w-xl mx-auto w-full space-y-3">
+                <div className="max-w-3xl mx-auto w-full space-y-3">
                   <div className="flex justify-between items-end">
                     <div className="text-left">
                       <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-0.5">Total Integrity</p>

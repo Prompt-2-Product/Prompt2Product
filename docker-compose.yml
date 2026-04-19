@@ -1,27 +1,55 @@
-version: '3.8'
+# Docker Compose for Prompt2Product
 
 services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: p2p-ollama
+    restart: always
+    volumes:
+      - /home/noor/.ollama:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    ports:
+      - "11434:11434"
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   backend:
     build:
-      context: .
-      dockerfile: backend/Dockerfile
+      context: ./backend-new
+      dockerfile: Dockerfile
+    container_name: p2p-backend
+    restart: always
     ports:
       - "8002:8000"
-      # Port range for generated websites (8010 + run.id)
-      - "8010-8310:8010-8310"
+      - "8010-8110:8010-8110"
     volumes:
-      # Mount the sqlite db for persistence
-      - ./backend/app.db:/code/backend/app.db
-    # Environment variables
+      - ./backend-new/app.db:/app/app.db
+      - ./backend-new/storage:/app/storage
+      - /home/noor/Prompt2Product/Prompt2Product/finetune/outputs:/home/noor/Prompt2Product/Prompt2Product/finetune/outputs
     environment:
       - DATABASE_URL=sqlite:///./app.db
-      - OLLAMA_BASE_URL=http://host.docker.internal:11434
-      - MODEL_SPEC=qwen2.5-coder:3b
-      - MODEL_CODE=qwen2.5-coder:7b
-      - MODEL_REPAIR=qwen2.5-coder:3b
-      - MODEL_ENHANCE=qwen2.5:7b-instruct
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - OLLAMA_URL=http://ollama:11434/api/chat
+      - ENHANCE_MODEL=qwen2.5:7b-instruct
+      - CODER_MODEL=qwen-code-model
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    depends_on:
+      ollama:
+        condition: service_healthy
 
   frontend:
     build:
@@ -29,11 +57,11 @@ services:
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_API_URL: http://localhost:8002
+    container_name: p2p-frontend
+    restart: always
     ports:
       - "3001:3000"
     environment:
-      # Ensure the frontend knows where to hit the backend
-      # Note: For client-side requests (browser), use localhost
       - NEXT_PUBLIC_API_URL=http://localhost:8002
     depends_on:
       - backend
