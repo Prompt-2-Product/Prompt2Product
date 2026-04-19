@@ -131,14 +131,14 @@ export default function DescribePage() {
       {/* Cinematic Background Layer - RETAINED */}
       <div className="mesh-gradient" />
       <div className="technical-grid" />
-      
+
       <Navigation />
 
       <main className="flex items-center justify-center h-[calc(100vh-4rem)] mt-16 overflow-hidden px-6 sm:px-10 lg:px-16 xl:px-24">
         <div className="w-full page-content">
           {/* Header - RESTORED SIZE */}
           <div className="mb-10 md:mb-12 text-center animate-in fade-in duration-1000">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 tracking-tight text-foreground dark:text-white">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tighter text-foreground dark:text-white text-balance">
               Describe Your <span className="hero-text-accent">Project</span>
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
