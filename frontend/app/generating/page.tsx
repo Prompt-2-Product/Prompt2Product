@@ -116,13 +116,19 @@ export default function GeneratingPage() {
               setProgress(10)
             } else if (lastLog.stage === 'spec') {
               setCurrentStep(1)
-              setProgress(30)
-            } else if (['codegen', 'enrich', 'validate'].includes(lastLog.stage)) {
+              setProgress(25)
+            } else if (lastLog.stage === 'codegen') {
               setCurrentStep(2)
-              setProgress(60)
-            } else if (['sandbox', 'deps', 'run', 'repair'].includes(lastLog.stage)) {
+              setProgress(50)
+            } else if (['sanity', 'extract'].includes(lastLog.stage)) {
+              setCurrentStep(2)
+              setProgress(70)
+            } else if (['correctness', 'repair'].includes(lastLog.stage)) {
               setCurrentStep(3)
-              setProgress(90)
+              setProgress(85)
+            } else if (['sandbox', 'deps', 'run'].includes(lastLog.stage)) {
+              setCurrentStep(3)
+              setProgress(95)
             }
           }
         }
