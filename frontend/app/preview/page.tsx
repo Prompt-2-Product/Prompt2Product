@@ -60,7 +60,7 @@ export default function PreviewPage() {
   const handlePreview = () => {
     if (projectInfo?.runId) {
       const port = 8010 + projectInfo.runId
-      window.open(`http://127.0.0.1:${port}`, '_blank')
+      window.open(`http://34.180.63.91:${port}`, '_blank')
     }
   }
 
