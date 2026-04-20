@@ -8,7 +8,7 @@ import asyncio
 from typing import Optional, List, Dict
 from pathlib import Path
 
-from app.db.repo import list_projects, create_project, create_run, get_run, list_logs
+from app.db.repo import list_projects, create_project, create_run, get_run, list_logs, get_latest_run
 from app.core.config import STORAGE_DIR
 from app.pipeline.manager import run_pipeline, run_modification_pipeline
 
@@ -24,6 +24,7 @@ app.add_middleware(
 
 class CreateProjectRequest(BaseModel):
     name: str
+    user_id: Optional[str] = None
 
 class CreateRunRequest(BaseModel):
     prompt: str
@@ -34,11 +35,18 @@ class ModifyRunRequest(BaseModel):
 
 @app.post("/projects")
 def add_project(payload: CreateProjectRequest):
-    return create_project(payload.name)
+    return create_project(payload.name, payload.user_id)
 
 @app.get("/projects")
-def get_projects():
-    return list_projects()
+def get_projects(user_id: Optional[str] = None):
+    return list_projects(user_id)
+
+@app.get("/projects/{project_id}/latest_run")
+def fetch_latest_run(project_id: int):
+    run_id = get_latest_run(project_id)
+    if not run_id:
+        raise HTTPException(status_code=404, detail="No runs found for this project")
+    return {"run_id": run_id}
 
 def run_background_pipeline(run_id: int, project_id: int, prompt: str):
     asyncio.run(run_pipeline(run_id, project_id, prompt))
