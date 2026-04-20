@@ -18,7 +18,7 @@ JUNK_FILES = {
 
 REPAIR_MODEL = CODER_MODEL # Default to using the same coder model for repairs
 
-def extract_files(result: dict, output_dir: str):
+def extract_files(result: dict, output_dir: str, log_fn=None):
     """Writes files from the result dictionary to the specified directory."""
     files = result.get("files", [])
     manifest = result.get("manifest", [])
@@ -33,6 +33,9 @@ def extract_files(result: dict, output_dir: str):
 
         if not path or os.path.basename(path) in JUNK_FILES:
             continue
+            
+        if log_fn:
+            log_fn('extract', f"Materializing {path}...")
 
         if content.strip() in ["<placeholder-image-data>", "<binary data>", "<binary>", ""]:
             continue
