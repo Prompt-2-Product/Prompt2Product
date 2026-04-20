@@ -55,9 +55,10 @@ async def run_pipeline(run_id: int, project_id: int, prompt: str):
         log('spec', f"Generated TaskSpec. Features: {len(taskspec.get('frontend',{}).get('features',[]))}")
 
         # Stage 2
-        log('codegen', "Using Ollama coder model to generate full stack application...")
+        log('codegen', "Initiating deep synthesis with GIKI-Coder...")
+        log('plan', "Formulating application architecture and dependencies...")
         raw_code = await generate_code_async(taskspec)
-        log('codegen', "Raw code blocks successfully received from the model.")
+        log('codegen', "Full application logic received from model.")
 
         # Debug: Save raw output immediately
         with open(os.path.join(output_dir, "raw_model_output.txt"), "w", encoding="utf-8") as f:
@@ -68,6 +69,10 @@ async def run_pipeline(run_id: int, project_id: int, prompt: str):
         if result is None:
             raise ValueError("Could not parse JSON output from model")
         result = normalize_result(result)
+        
+        # Phase Reporting
+        log('plan', f"Strategic Plan: {result.get('plan', 'Standard implementation flow')}")
+        log('manifest', f"Project Manifest: {', '.join(result.get('manifest', []))}")
 
         # Stage 3: Sanity Tests
         log('sanity', "Performing static analysis and syntax checks...")
@@ -81,10 +86,10 @@ async def run_pipeline(run_id: int, project_id: int, prompt: str):
             log('sanity', "Static analysis passed. Basic code structure is valid.")
 
         # Stage 4: Extract Files
-        log('extract', "Materializing files into project workspace...")
+        log('extract', "Writing code modules to project workspace...")
         shutil.rmtree(output_dir, ignore_errors=True)
-        created_files, manifest = extract_files(result, output_dir)
-        log('extract', f"Extracted {len(created_files)} files into storage.")
+        created_files, manifest = extract_files(result, output_dir, log_fn=log)
+        log('extract', f"Successfully materialized {len(created_files)} files.")
 
         # Stage 5: Correctness Tests (Dynamic)
         log('correctness', "Evaluating runtime integrity (launching app and hitting routes)...")
@@ -102,7 +107,7 @@ async def run_pipeline(run_id: int, project_id: int, prompt: str):
             # Re-extract and re-test
             log('extract', "Applying repaired code to workspace...")
             shutil.rmtree(output_dir, ignore_errors=True)
-            created_files, manifest = extract_files(result, output_dir)
+            created_files, manifest = extract_files(result, output_dir, log_fn=log)
             
             log('correctness', "Final verification of repaired application...")
             correctness_passed, correctness_issues = run_correctness_tests(output_dir, run_cmd, port=8099)
