@@ -34,7 +34,7 @@ export default function IDEPage() {
   const fetchFileTree = useCallback(async (projectId: number, runId: number) => {
     setIsLoadingTree(true)
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8002';
       const res = await fetch(`${apiUrl}/projects/${projectId}/runs/${runId}/files`)
       if (res.ok) {
         const data = await res.json()
@@ -54,7 +54,7 @@ export default function IDEPage() {
   const fetchFileContent = async (projectId: number, runId: number, filePath: string) => {
     setIsLoadingContent(true)
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8002';
       const res = await fetch(`${apiUrl}/projects/${projectId}/runs/${runId}/files/${filePath}`)
       if (res.ok) {
         const data = await res.json()
@@ -131,7 +131,7 @@ export default function IDEPage() {
 
   const handleDownload = () => {
     if (projectInfo) {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8002';
       window.open(`${apiUrl}/projects/${projectInfo.projectId}/runs/${projectInfo.runId}/download`, '_blank')
     }
   }

@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8002'
 
 export async function fetchApi(endpoint: string, options: RequestInit = {}) {
     const url = `${API_BASE_URL}${endpoint}`
@@ -20,11 +20,20 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}) {
 
 export const api = {
     projects: {
-        create: (name: string) => fetchApi('/projects', {
-            method: 'POST',
-            body: JSON.stringify({ name }),
-        }),
-        list: () => fetchApi('/projects'),
+        create: (name: string) => {
+            const user = JSON.parse(localStorage.getItem('user') || 'null')
+            const user_id = user?.email || null
+            return fetchApi('/projects', {
+                method: 'POST',
+                body: JSON.stringify({ name, user_id }),
+            })
+        },
+        list: () => {
+            const user = JSON.parse(localStorage.getItem('user') || 'null')
+            const user_id = user?.email
+            const query = user_id ? `?user_id=${encodeURIComponent(user_id)}` : ''
+            return fetchApi(`/projects${query}`)
+        },
         startRun: (projectId: number, prompt: string, entrypoint: string = 'app.main:app') =>
             fetchApi(`/projects/${projectId}/runs`, {
                 method: 'POST',
@@ -37,6 +46,11 @@ export const api = {
                 method: 'POST',
                 body: JSON.stringify({ prompt }),
             }),
+        getLatestRun: (projectId: number) => fetchApi(`/projects/${projectId}/latest_run`),
+        getFile: (projectId: number, runId: number, filePath: string) => 
+            fetchApi(`/projects/${projectId}/runs/${runId}/files/${filePath}`),
+        listFiles: (projectId: number, runId: number) =>
+            fetchApi(`/projects/${projectId}/runs/${runId}/files`),
     },
     runs: {
         get: (runId: number) => fetchApi(`/runs/${runId}`),

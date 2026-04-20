@@ -27,6 +27,39 @@ export default function GeneratingPage() {
   const [isModificationFlow, setIsModificationFlow] = useState(false)
   const [activeTab, setActiveTab] = useState<'chat' | 'history'>('chat')
 
+  const flattenFiles = (nodes: any[]): any[] =>
+    nodes.flatMap((n: any) => n.type === 'folder' ? flattenFiles(n.children || []) : [n])
+
+  const handleSelectHistoryProject = async (projectId: number) => {
+    try {
+      const runData = await api.projects.getLatestRun(projectId)
+      const runId = runData.run_id
+
+      let language = 'Python'
+      let appType = 'Web App'
+      try {
+        const files = await api.projects.listFiles(projectId, runId)
+        const names = flattenFiles(files).map((f: any) => f.name as string)
+        if (names.some((n: string) => n.endsWith('.ts') || n.endsWith('.tsx'))) language = 'TypeScript'
+        else if (names.some((n: string) => n.endsWith('.js') || n.endsWith('.jsx'))) language = 'JavaScript'
+      } catch (e) {}
+
+      let description = `Project #${projectId}`
+      try {
+        const fileData = await api.projects.getFile(projectId, runId, 'pipeline_output.json')
+        if (fileData?.content && typeof fileData.content === 'string') {
+          const meta = JSON.parse(fileData.content)
+          if (meta?.user_prompt) description = meta.user_prompt
+        }
+      } catch (e) {}
+
+      sessionStorage.setItem('projectInfo', JSON.stringify({ projectId, runId, description, language, appType, additionalInstructions: '' }))
+      router.push('/ide')
+    } catch (err) {
+      console.error('Failed to open historical project:', err)
+    }
+  }
+
   useEffect(() => {
     // 1. Get Project Info
     const stored = sessionStorage.getItem('projectInfo')
@@ -55,6 +88,14 @@ export default function GeneratingPage() {
         } else {
           await api.generateProject(info, (log) => {
             setLogs(prev => [...prev, log])
+            
+            // Sniff for port number in logs
+            const portMatch = log.match(/port\s+(\d+)/i) || log.match(/localhost:(\d+)/i)
+            if (portMatch && portMatch[1]) {
+              const port = portMatch[1]
+              const currentInfo = JSON.parse(sessionStorage.getItem('projectInfo') || '{}')
+              sessionStorage.setItem('projectInfo', JSON.stringify({ ...currentInfo, previewPort: port }))
+            }
           })
         }
         
@@ -159,7 +200,7 @@ export default function GeneratingPage() {
             {/* Content Area */}
             <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6 custom-scrollbar relative">
               {activeTab === 'history' ? (
-                <HistoryView />
+                <HistoryView onSelectProject={handleSelectHistoryProject} />
               ) : (
                 <>
                   {projectInfo && (

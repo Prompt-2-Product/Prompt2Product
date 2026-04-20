@@ -15,6 +15,7 @@ def init_db():
         CREATE TABLE IF NOT EXISTS projects (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
+            user_id TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
         CREATE TABLE IF NOT EXISTS runs (
@@ -36,6 +37,12 @@ def init_db():
             FOREIGN KEY (run_id) REFERENCES runs (id)
         );
     ''')
+    # Safe migration: add user_id column to existing DBs
+    try:
+        c.execute('ALTER TABLE projects ADD COLUMN user_id TEXT')
+        conn.commit()
+    except Exception:
+        pass  # Column already exists
     conn.commit()
     conn.close()
 

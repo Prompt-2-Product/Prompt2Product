@@ -1,21 +1,24 @@
 from app.db.database import get_db
 
-def create_project(name: str):
+def create_project(name: str, user_id: str = None):
     conn = get_db()
     c = conn.cursor()
-    c.execute("INSERT INTO projects (name) VALUES (?)", (name,))
+    c.execute("INSERT INTO projects (name, user_id) VALUES (?, ?)", (name, user_id))
     project_id = c.lastrowid
     conn.commit()
     conn.close()
-    return {"id": project_id, "name": name}
+    return {"id": project_id, "name": name, "user_id": user_id}
 
-def list_projects():
+def list_projects(user_id: str = None):
     conn = get_db()
     c = conn.cursor()
-    c.execute("SELECT * FROM projects ORDER BY id DESC")
+    if user_id:
+        c.execute("SELECT * FROM projects WHERE user_id = ? ORDER BY id DESC", (user_id,))
+    else:
+        c.execute("SELECT * FROM projects ORDER BY id DESC")
     rows = c.fetchall()
     conn.close()
-    return [{"id": r["id"], "name": r["name"]} for r in rows]
+    return [{"id": r["id"], "name": r["name"], "user_id": r["user_id"]} for r in rows]
 
 def create_run(project_id: int, entrypoint: str = "app.main:app"):
     conn = get_db()
@@ -60,3 +63,11 @@ def list_logs(run_id: int):
     rows = c.fetchall()
     conn.close()
     return [dict(r) for r in rows]
+
+def get_latest_run(project_id: int):
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("SELECT id FROM runs WHERE project_id = ? ORDER BY id DESC LIMIT 1", (project_id,))
+    row = c.fetchone()
+    conn.close()
+    return row["id"] if row else None

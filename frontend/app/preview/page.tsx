@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Navigation } from '@/components/navigation'
 import { Button } from '@/components/ui/button'
 import { Code2, Edit3, Download, Eye, Loader, X, ChevronLeft, ChevronRight, RotateCcw, Check, CornerDownRight, History, MessageSquare } from 'lucide-react'
@@ -15,24 +15,121 @@ interface ProjectInfo {
   additionalInstructions: string
   projectId?: number
   runId?: number
+  previewPort?: string
 }
 
-export default function PreviewPage() {
+function PreviewContent() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [projectInfo, setProjectInfo] = useState<ProjectInfo | null>(null)
   const [showChat, setShowChat] = useState(true)
   const [isRegenerating, setIsRegenerating] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [changeMessage, setChangeMessage] = useState('')
   const [chatHistory, setChatHistory] = useState<Array<{ role: 'user' | 'system'; content: string }>>([])
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
   const [activeTab, setActiveTab] = useState<'chat' | 'history'>('chat')
 
   useEffect(() => {
-    const stored = sessionStorage.getItem('projectInfo')
-    if (stored) {
-      setProjectInfo(JSON.parse(stored))
+    const fetchHistoricalProject = async (pid: string) => {
+      setIsLoading(true)
+      try {
+        const projectId = parseInt(pid)
+        // 1. Get latest run
+        const runData = await api.projects.getLatestRun(projectId)
+        const runId = runData.run_id
+
+        // 2. Try to get pipeline_output.json for metadata
+        try {
+          const fileData = await api.projects.getFile(projectId, runId, 'pipeline_output.json')
+          const metadata = typeof fileData.content === 'string' ? JSON.parse(fileData.content) : fileData
+          
+          const info: ProjectInfo = {
+            projectId,
+            runId,
+            description: metadata.user_prompt || 'No description available',
+            language: metadata.result?.language || 'Unknown',
+            appType: metadata.result?.app_type || metadata.result?.type || 'App',
+            additionalInstructions: '',
+          }
+          setProjectInfo(info)
+          sessionStorage.setItem('projectInfo', JSON.stringify(info))
+        } catch (e) {
+          console.error("Failed to fetch full metadata, using fallback", e)
+          setProjectInfo({
+            projectId,
+            runId,
+            description: 'Historical Project #' + projectId,
+            language: 'Unknown',
+            appType: 'App',
+            additionalInstructions: ''
+          })
+        }
+      } catch (err) {
+        console.error("Failed to load historical project:", err)
+      } finally {
+        setIsLoading(false)
+      }
     }
-  }, [])
+
+    const projectId = searchParams.get('projectId')
+    if (projectId) {
+      fetchHistoricalProject(projectId)
+    } else {
+      const stored = sessionStorage.getItem('projectInfo')
+      if (stored) {
+        setProjectInfo(JSON.parse(stored))
+      }
+      setIsLoading(false)
+    }
+  }, [searchParams])
+
+  // Helper: flatten nested file tree to get all file names
+  const flattenFiles = (nodes: any[]): any[] => {
+    return nodes.flatMap((n: any) => n.type === 'folder' ? flattenFiles(n.children || []) : [n])
+  }
+
+  const handleSelectHistoryProject = async (projectId: number) => {
+    setIsLoading(true)
+    try {
+      // 1. Get latest run ID for this project
+      const runData = await api.projects.getLatestRun(projectId)
+      const runId = runData.run_id
+
+      // 2. Detect language from actual files
+      let language = 'Python'
+      let appType = 'Web App'
+      try {
+        const files = await api.projects.listFiles(projectId, runId)
+        const allFiles = flattenFiles(files).map((f: any) => f.name as string)
+        if (allFiles.some((n: string) => n.endsWith('.ts') || n.endsWith('.tsx'))) {
+          language = 'TypeScript'
+        } else if (allFiles.some((n: string) => n.endsWith('.js') || n.endsWith('.jsx'))) {
+          language = 'JavaScript'
+        }
+      } catch (e) { /* use Python default */ }
+
+      // 3. Try to get user prompt from pipeline_output.json
+      let description = `Project #${projectId}`
+      try {
+        const fileData = await api.projects.getFile(projectId, runId, 'pipeline_output.json')
+        if (fileData?.content && typeof fileData.content === 'string') {
+          const meta = JSON.parse(fileData.content)
+          if (meta?.user_prompt) description = meta.user_prompt
+        }
+      } catch (e) { /* use fallback */ }
+
+      // 4. Populate sessionStorage (same format as describe/page.tsx)
+      const info = { projectId, runId, description, language, appType, additionalInstructions: '' }
+      sessionStorage.setItem('projectInfo', JSON.stringify(info))
+
+      // 5. Navigate to IDE to see all files
+      router.push('/ide')
+    } catch (err) {
+      console.error('Failed to open historical project:', err)
+      setIsLoading(false)
+    }
+  }
 
   const handleChatSubmit = (message: string) => {
     if (message.trim()) {
@@ -59,8 +156,9 @@ export default function PreviewPage() {
 
   const handlePreview = () => {
     if (projectInfo?.projectId && projectInfo?.runId) {
-      // Local preview logic
-      window.open('http://127.0.0.1:8000', '_blank')
+      // Use dynamic port if available, otherwise default to 8002
+      const port = (projectInfo as any).previewPort || '8002'
+      window.open(`http://127.0.0.1:${port}`, '_blank')
     }
   }
 
@@ -121,7 +219,7 @@ export default function PreviewPage() {
                {/* Content Area */}
                <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6 custom-scrollbar relative">
                  {activeTab === 'history' ? (
-                   <HistoryView />
+                   <HistoryView onSelectProject={handleSelectHistoryProject} />
                  ) : (
                    <>
                    {projectInfo && (
@@ -254,6 +352,15 @@ export default function PreviewPage() {
 
         {/* Right: Main Content Area */}
         <div className="flex-1 h-full overflow-y-auto relative custom-scrollbar-dark">
+          {/* Loading overlay for history project switching */}
+          {isLoading && (
+            <div className="absolute inset-0 z-50 flex items-center justify-center bg-background/50 backdrop-blur-sm">
+              <div className="flex flex-col items-center gap-4">
+                <Loader className="h-8 w-8 animate-spin text-primary" />
+                <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Loading Project...</p>
+              </div>
+            </div>
+          )}
           <div className="max-w-[1440px] mx-auto px-6 lg:px-12 py-12 lg:py-16 flex flex-col min-h-full justify-center gap-12 lg:gap-16 relative z-10">
             {/* Cinematic Header */}
             <div className="shrink-0 text-center animate-in fade-in slide-in-from-top-4 duration-1000 relative z-20">
@@ -343,5 +450,17 @@ export default function PreviewPage() {
         </div>
       </main>
     </div>
+  )
+}
+
+export default function PreviewPage() {
+  return (
+    <Suspense fallback={
+      <div className="h-screen flex items-center justify-center">
+        <Loader className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    }>
+      <PreviewContent />
+    </Suspense>
   )
 }

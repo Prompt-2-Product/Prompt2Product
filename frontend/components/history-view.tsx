@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { History, Lock, Clock, CornerDownRight, ExternalLink } from 'lucide-react'
+import { History, Lock, Clock, CornerDownRight } from 'lucide-react'
 import { api } from '@/lib/api'
 import { Button } from '@/components/ui/button'
 
@@ -11,10 +11,15 @@ interface Project {
   created_at?: string
 }
 
-export function HistoryView() {
+interface HistoryViewProps {
+  onSelectProject?: (projectId: number) => void
+}
+
+export function HistoryView({ onSelectProject }: HistoryViewProps) {
   const [user, setUser] = useState<{ name: string } | null>(null)
   const [projects, setProjects] = useState<Project[]>([])
   const [loading, setLoading] = useState(false)
+  const [selectedId, setSelectedId] = useState<number | null>(null)
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user')
@@ -41,6 +46,15 @@ export function HistoryView() {
     window.dispatchEvent(new CustomEvent('open-auth-modal', { 
       detail: { mode: 'login' } 
     }))
+  }
+
+  const handleSelect = (project: Project) => {
+    setSelectedId(project.id)
+    if (onSelectProject) {
+      onSelectProject(project.id)
+    } else {
+      window.location.href = `/preview?projectId=${project.id}`
+    }
   }
 
   if (!user) {
@@ -94,12 +108,18 @@ export function HistoryView() {
                <div className="flex gap-3 px-4">
                   <CornerDownRight className="h-4 w-4 mt-1 text-muted-foreground/40 shrink-0" />
                   <button 
-                    onClick={() => window.location.href = `/preview?projectId=${project.id}`}
-                    className="flex-1 text-left rounded-xl glass-panel bg-white/5 p-3 hover:bg-primary/10 border border-transparent hover:border-primary/20 transition-all duration-300 group/item"
+                    onClick={() => handleSelect(project)}
+                    className={`flex-1 text-left rounded-xl glass-panel p-3 border transition-all duration-300 group/item ${
+                      selectedId === project.id
+                        ? 'bg-primary/15 border-primary/40 shadow-lg shadow-primary/10'
+                        : 'bg-white/5 border-transparent hover:bg-primary/10 hover:border-primary/20'
+                    }`}
                   >
                     <div className="flex justify-between items-center">
                       <span className="text-xs font-light text-foreground/80 group-hover/item:text-foreground">Project #{project.id}</span>
-                      <ExternalLink className="h-3 w-3 text-muted-foreground opacity-0 group-hover/item:opacity-100 transition-opacity" />
+                      {selectedId === project.id && (
+                        <span className="text-[9px] font-black text-primary uppercase tracking-widest">Active</span>
+                      )}
                     </div>
                     {project.created_at && (
                       <p className="text-[9px] text-muted-foreground/50 mt-1">{new Date(project.created_at).toLocaleDateString()}</p>
