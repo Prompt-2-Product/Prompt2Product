@@ -158,7 +158,7 @@ function PreviewContent() {
     if (projectInfo?.projectId && projectInfo?.runId) {
       // Use dynamic port if available, otherwise default to 8002
       const port = (projectInfo as any).previewPort || '8002'
-      window.open(`http://127.0.0.1:${port}`, '_blank')
+      window.open(`http://34.180.63.91:${port}`, '_blank')
     }
   }
 
